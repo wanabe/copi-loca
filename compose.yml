@@ -3,7 +3,6 @@ services:
     build: ./caddy
     image: local-caddy:latest
     ports:
-      - "80:80"
       - "443:443"
     volumes:
       - caddy_data:/data
@@ -12,13 +11,9 @@ services:
     environment:
       - SITE_HOSTNAME=${SITE_HOSTNAME:-localhost}
   rails:
-    build:
-      context: .
-      dockerfile: rails/Dockerfile
+    build: ./rails
     command: >
       bash -lc "bundle check || bundle install && rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p 3000"
-    ports:
-      - "3000:3000"
     volumes:
       - .:/app:delegated
       - vendor_bundle:/app/rails/vendor/bundle
@@ -28,7 +23,19 @@ services:
       - BUNDLE_PATH=/app/rails/vendor/bundle
       - SITE_HOSTNAME=${SITE_HOSTNAME:-localhost}
     user: "${USR:-root}"
+  copilot:
+    build: ./copilot
+    environment:
+      - HOME=/homedir
+    restart: unless-stopped
+    volumes:
+      - .:/app:delegated
+      - copilot_home:/homedir
+    working_dir: /app
+    user: "${USR:-root}"
+
 volumes:
   caddy_data:
   caddy_config:
   vendor_bundle:
+  copilot_home:
