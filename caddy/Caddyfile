@@ -1,0 +1,8 @@
+{
+    local_certs
+}
+
+{$SITE_HOSTNAME:localhost} {
+    tls internal
+    respond "Connection Established! You can now proceed to the app."
+}

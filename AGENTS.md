@@ -6,9 +6,9 @@
 
 # Code Style
 
-## Documents and comments
+## Git commit messages, Documents and comments
 
-Comments and documentation in languages other than English are prohibited.
+Git commit messages, Comments and documentation in languages other than English are prohibited.
 If comments or documentation appear in a language other than English, translate them into English.
 
 # Git Workflow
