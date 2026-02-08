@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   caddy:
     build: ./caddy
@@ -12,7 +11,23 @@ services:
     restart: unless-stopped
     environment:
       - SITE_HOSTNAME=${SITE_HOSTNAME:-localhost}
-
+  rails:
+    build:
+      context: .
+      dockerfile: rails/Dockerfile
+    command: >
+      bash -lc "bundle check || bundle install && rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p 3000"
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app:delegated
+      - vendor_bundle:/app/rails/vendor/bundle
+    working_dir: /app/rails
+    environment:
+      - RAILS_ENV=development
+      - BUNDLE_PATH=/app/rails/vendor/bundle
+    user: "${USR:-root}"
 volumes:
   caddy_data:
   caddy_config:
+  vendor_bundle:

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+export USR=`id -u`:`id -g`
+bin/docker compose run --build --rm -uroot rails chown -R $USR vendor
+bin/docker compose run --build --rm rails bundle install
