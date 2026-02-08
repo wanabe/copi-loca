@@ -10,4 +10,5 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   gnupg \
   libyaml-dev \
   git \
+  libssl-dev \
   && rm -rf /var/lib/apt/lists/*

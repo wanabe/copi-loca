@@ -38,5 +38,11 @@ module CopiLoca
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    config.active_support.isolation_level = :fiber
+
+    # DBコネクションの永続的なチェックアウトを禁止
+    # （Fiber間でコネクションを適切に共有するため）
+    config.active_record.permanent_connection_checkout = :disallowed
   end
 end
