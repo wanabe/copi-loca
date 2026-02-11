@@ -14,22 +14,12 @@ class MessagesController < ApplicationController
 
   # POST /messages
   def create
-    @message = @session.send_prompt(message_params[:content])
+    SendPromptJob.perform_now(@session.id, message_params[:content])
 
-    if @message
-      @session.close_after_idle
-      if params[:from] == 'session_show'
-        redirect_to session_path(@session)
-      else
-        redirect_to action: :index
-      end
+    if params[:from] == 'session_show'
+      redirect_to session_path(@session)
     else
-      @messages = @session.messages.all
-      if params[:from] == 'session_show'
-        render template: 'sessions/show', status: :unprocessable_content
-      else
-        render :index, status: :unprocessable_content
-      end
+      redirect_to action: :index
     end
   end
 
