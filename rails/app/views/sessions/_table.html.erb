@@ -1,10 +1,5 @@
 <tr>
-  <td><%= session.id %></td>
+  <td><%= link_to session.id, session %></td>
   <td><%= session.model %></td>
-  <td>
-    <%= link_to "Show", session %> |
-    <%= link_to "Messages", session_messages_path(session) %> |
-    <%= link_to "RPC logs", session_rpc_logs_path(session) %> |
-    <%= link_to "Destroy", session, method: :delete, data: { confirm: "Are you sure?" } %>
-  </td>
+  <td></td>
 </tr>

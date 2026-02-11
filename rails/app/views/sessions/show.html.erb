@@ -5,5 +5,11 @@
 <div>
   <%= link_to "Back to sessions", sessions_path %>
 
+  <h2>Links</h2>
+  <ul>
+    <li><%= link_to "Messages", session_messages_path(@session) %></li>
+    <li><%= link_to "RPC logs", session_rpc_logs_path(@session) %></li>
+  </ul>
+
   <%= button_to "Destroy this session", @session, method: :delete %>
 </div>
