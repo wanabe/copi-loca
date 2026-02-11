@@ -14,9 +14,9 @@ class MessagesController < ApplicationController
 
   # POST /messages
   def create
-    @message = @session.messages.new(message_params.merge(direction: :outgoing))
+    @message = @session.send_prompt(message_params[:content])
 
-    if @message.save
+    if @message
       @session.close_after_idle
       if params[:from] == 'session_show'
         redirect_to session_path(@session)

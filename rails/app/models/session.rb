@@ -2,31 +2,49 @@ class Session < ApplicationRecord
   has_many :rpc_logs, dependent: :destroy
   has_many :messages, dependent: :destroy
 
+  after_initialize :initialize_internals
   before_validation :create_session, on: :create
 
-  def send_prompt(prompt)
-    copilot_session.send(prompt)
+  def initialize_internals
+    @copilot_session = nil
   end
 
-  def handle(rpc_id, message)
-    rpc_log = rpc_logs.create(
-      direction: :incoming,
-      rpc_id: rpc_id,
-      data: message
-    )
-    return if message[:method] != "session.event"
-    event = message.dig(:params, :event)
-    return unless event
-    type = event[:type]
-    return if type != "assistant.message"
-    content = event.dig(:data, :content)
-    return if content.blank?
-    message = messages.create(
+  def send_prompt(prompt)
+    rpc_id = copilot_session.send(prompt)
+    rpc_log = rpc_logs.find_by(rpc_id: rpc_id)
+    unless rpc_log
+      raise "RPC log not found for sent prompt with RPC ID: #{rpc_id}"
+    end
+    messages.create(
       session_id: id,
       rpc_log: rpc_log,
-      direction: :incoming,
-      content: content
+      direction: :outgoing,
+      content: prompt
     )
+  end
+
+  def handle(direction, rpc_id, data)
+    rpc_log = rpc_logs.create(
+      direction: direction,
+      rpc_id: rpc_id,
+      data: data
+    )
+    case
+    when rpc_log.incoming?
+      return if data[:method] != "session.event"
+      event = data.dig(:params, :event)
+      return unless event
+      type = event[:type]
+      return if type != "assistant.message"
+      content = event.dig(:data, :content)
+      return if content.blank?
+      messages.create(
+        session_id: id,
+        rpc_log: rpc_log,
+        direction: :incoming,
+        content: content
+      )
+    end
   end
 
   def close_after_idle

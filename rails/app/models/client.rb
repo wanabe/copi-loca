@@ -18,30 +18,26 @@ class Client
     @copilot_client = Copilot::Client.cache(cli_url: CLI_URL)
     @waiting_map = {}
 
-    @copilot_client.on_send do |message|
-      session_id = message.dig(:params, :sessionId)
+    @copilot_client.on_send do |data|
+      session_id = data.dig(:params, :sessionId)
       session = Session.find_by(id: session_id) if session_id
       if session
-        rpc_id = message[:id]
+        rpc_id = data[:id]
         @waiting_map[rpc_id] = session if rpc_id
-        session.rpc_logs.create(
-          direction: :outgoing,
-          rpc_id: rpc_id,
-          data: message
-        )
+        session.handle(:outgoing, rpc_id, data)
       end
-      Rails.logger.debug("Sent message: #{message}")
+      Rails.logger.debug("Sent data: #{data}")
     end
 
-    @copilot_client.on_receive do |message|
-      session_id = message.dig(:params, :sessionId)
+    @copilot_client.on_receive do |data|
+      session_id = data.dig(:params, :sessionId)
       session = Session.find_by(id: session_id) if session_id
-      rpc_id = message[:id]
+      rpc_id = data[:id]
       session ||= @waiting_map.delete(rpc_id) if rpc_id
       if session
-        session.handle(rpc_id, message)
+        session.handle(:incoming, rpc_id, data)
       end
-      Rails.logger.debug("Received message: #{message}")
+      Rails.logger.debug("Received data: #{data}")
     end
   end
 
