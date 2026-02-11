@@ -3,4 +3,11 @@
 export USR=`id -u`:`id -g`
 bin/docker compose run --build --rm -uroot rails chown -R $USR vendor
 bin/docker compose run --build --rm rails bundle install
-bin/docker compose run --build --rm copilot sh -c 'grep -q "^ *\"logged_in_users\":" ~/.copilot/config.json || copilot login'
+
+GIT_USER_NAME="$(git config --get user.name)"
+GIT_USER_EMAIL="$(git config --get user.email)"
+bin/docker compose run --build --rm -T copilot sh -x <<EOS
+git config --global user.name "$GIT_USER_NAME"
+git config --global user.email "$GIT_USER_EMAIL"
+grep -q "^ *\"logged_in_users\":" ~/.copilot/config.json || copilot login
+EOS

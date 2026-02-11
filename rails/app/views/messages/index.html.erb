@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Messages" %>
+
+<h1>Messages</h1>
+
+<%= render "form", message: @message %>
+
+<table id="messages">
+  <%= render "table_header" %>
+  <tbody>
+    <% @messages.reverse_each do |message| %>
+      <%= render "table", message: message %>
+    <% end %>
+  </tbody>
+</table>

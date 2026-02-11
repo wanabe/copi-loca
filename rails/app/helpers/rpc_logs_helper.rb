@@ -1,0 +1,2 @@
+module RpcLogsHelper
+end

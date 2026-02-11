@@ -15,6 +15,7 @@ module Copilot
       @client.sessions[@session_id] = self
       @idle = true
       @turn_id = nil
+      @event_handlers = {}
       return unless block_given?
       begin
         yield self
@@ -72,6 +73,7 @@ module Copilot
       else
         @client.logger&.warn("Unknown event type: #{type}")
       end
+      @event_handlers[type]&.call(**data)
       @event_handler&.call(type, **data)
     end
 
@@ -79,8 +81,12 @@ module Copilot
       # No-op for now
     end
 
-    def on(&block)
-      @event_handler = block
+    def on(type = nil, &block)
+      if type
+        @event_handlers[type] ||= block
+      else
+        @event_handler = block
+      end
     end
   end
 end

@@ -51,6 +51,7 @@ module Copilot
     def push(message)
       raw_message = JSON.generate({ jsonrpc: "2.0" }.merge(message))
       @socket.write("Content-Length: ", raw_message.bytesize, "\r\n\r\n", raw_message)
+      @on_send_callback&.call(message)
       logger&.debug("Sent message: #{message}")
     end
 
@@ -75,6 +76,7 @@ module Copilot
       content_length = header.match(/Content-Length: (\d+)/)[1].to_i
       raw_message = @socket.read(content_length)
       message = JSON.parse(raw_message, symbolize_names: true)
+      @on_receive_callback&.call(message)
       id = message[:id]
       method = message[:method]
       if id && @waiting_ids.delete(id)
@@ -106,6 +108,14 @@ module Copilot
 
     def create_session(params = {}, &block)
       Session.new(self, **params, &block)
+    end
+
+    def on_send(&block)
+      @on_send_callback = block
+    end
+
+    def on_receive(&block)
+      @on_receive_callback = block
     end
 
     private

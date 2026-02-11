@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Rpc logs" %>
+
+<h1>Rpc logs</h1>
+
+<table id="rpc_logs">
+  <%= render "table_header" %>
+  <tbody>
+    <% @rpc_logs.each do |rpc_log| %>
+      <%= render "table", rpc_log: rpc_log %>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Sessions" %>
+
+<h1>Sessions</h1>
+
+<table id="sessions">
+  <%= render "table_header" %>
+  <tbody>
+    <% @sessions.each do |session| %>
+      <%= render "table", session: session %>
+    <% end %>
+  </tbody>
+</table>
+
+<%= render "form", session: @session %>
