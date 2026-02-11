@@ -1,5 +1,8 @@
 <p style="color: green"><%= notice %></p>
 
+<%= turbo_stream_from [@session, :messages] %>
+<%= turbo_stream_from [@session, :rpc_logs] %>
+
 <%= render @session %>
 
 <div>
@@ -8,7 +11,7 @@
   <%= render 'messages/form', message: @session.messages.new, from: 'session_show' %>
   <table>
     <%= render 'messages/table_header' %>
-    <tbody>
+    <tbody id="messages">
       <% @session.messages.order(created_at: :desc).limit(5).each do |message| %>
         <%= render 'messages/table', message: message %>
       <% end %>
@@ -19,7 +22,7 @@
   <h2>Latest RPC Logs</h2>
   <table>
     <%= render 'rpc_logs/table_header' %>
-    <tbody>
+    <tbody id="rpc_logs">
       <% @session.rpc_logs.order(created_at: :desc).limit(5).reverse.each do |rpc_log| %>
         <%= render 'rpc_logs/table', rpc_log: rpc_log %>
       <% end %>

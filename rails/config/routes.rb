@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  root to: 'home#index'
+  root to: "home#index"
 
-  get 'r', to: 'changes#revert'
+  get "r", to: "changes#revert"
   resources :changes, only: [] do
     collection do
       get :revert
@@ -9,10 +9,10 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :models, only: [:index]
+  resources :models, only: [ :index ]
 
-  resources :sessions, only: [:index, :show, :create, :destroy] do
-    resources :messages, only: [:index, :create]
-    resources :rpc_logs, only: [:index, :show]
+  resources :sessions, only: [ :index, :show, :create, :destroy ] do
+    resources :messages, only: [ :index, :create ]
+    resources :rpc_logs, only: [ :index, :show ]
   end
 end

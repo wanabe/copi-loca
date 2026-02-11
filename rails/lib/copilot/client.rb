@@ -85,7 +85,7 @@ module Copilot
         case method
         when /^session\./
           params = message[:params]
-          session_id = params.delete(:sessionId)
+          session_id = params[:sessionId]
           sessions[session_id]&.handle(method, params)
         else
           logger&.warn("Unknown method received: #{method}")

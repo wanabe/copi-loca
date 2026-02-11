@@ -1,4 +1,4 @@
-<%= form_for [@session, message] do |form| %>
+<%= form_with model: [@session, message], data: { controller: "clear-form" } do |form| %>
   <%= hidden_field_tag :from, local_assigns[:from] if local_assigns[:from] %>
   <% if message.errors.any? %>
     <div style="color: red">

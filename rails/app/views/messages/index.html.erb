@@ -1,5 +1,5 @@
 <p style="color: green"><%= notice %></p>
-
+<%= turbo_stream_from [@session, :messages] %>
 <% content_for :title, "Messages" %>
 
 <h1>Messages</h1>
@@ -8,7 +8,7 @@
 
 <table id="messages">
   <%= render "table_header" %>
-  <tbody>
+  <tbody  id="messages">
     <% @messages.reverse_each do |message| %>
       <%= render "table", message: message %>
     <% end %>

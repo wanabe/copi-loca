@@ -14,12 +14,17 @@ class MessagesController < ApplicationController
 
   # POST /messages
   def create
-    SendPromptJob.perform_now(@session.id, message_params[:content])
+    SendPromptJob.perform_later(@session.id, message_params[:content])
 
-    if params[:from] == 'session_show'
-      redirect_to session_path(@session)
-    else
-      redirect_to action: :index
+    respond_to do |format|
+      format.turbo_stream { head :ok }
+      format.html do
+        if params[:from] == "session_show"
+          redirect_to session_path(@session)
+        else
+          redirect_to action: :index
+        end
+      end
     end
   end
 

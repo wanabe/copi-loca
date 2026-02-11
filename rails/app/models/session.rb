@@ -29,27 +29,41 @@ class Session < ApplicationRecord
       rpc_id: rpc_id,
       data: data
     )
-    case
-    when rpc_log.incoming?
-      return if data[:method] != "session.event"
+    if rpc_log.incoming? && data[:method] == "session.event"
       event = data.dig(:params, :event)
-      return unless event
-      type = event[:type]
-      return if type != "assistant.message"
-      content = event.dig(:data, :content)
-      return if content.blank?
-      messages.create(
-        session_id: id,
-        rpc_log: rpc_log,
-        direction: :incoming,
-        content: content
-      )
+      handle_event(rpc_log, event) if event
     end
+    rpc_log
+  end
+
+  def handle_event(rpc_log, event)
+    type = event[:type]
+    return if type != "assistant.message"
+    content = event.dig(:data, :content)
+    return if content.blank?
+    rpc_log.create_message(
+      session_id: id,
+      direction: :incoming,
+      content: content
+    )
   end
 
   def close_after_idle
-    Client.wait { @copilot_session.idle? }
+    wait_until_idle
     close_session
+  end
+
+  def wait_until_idle
+    Client.wait do |rpc_log|
+      yield(rpc_log) if block_given? && rpc_log && rpc_log.session_id == id
+      @copilot_session.idle?
+    end
+  end
+
+  def close_session
+    return unless @copilot_session
+    @copilot_session.destroy
+    @copilot_session = nil
   end
 
   private
@@ -57,15 +71,10 @@ class Session < ApplicationRecord
       @copilot_session = Client.create_session(self)
     end
 
+
     def copilot_session
       return @copilot_session if @copilot_session
       @copilot_session = Client.resume_session(self)
-    end
-
-    def close_session
-      return unless @copilot_session
-      @copilot_session.destroy
-      @copilot_session = nil
     end
 
     def open
@@ -73,5 +82,4 @@ class Session < ApplicationRecord
     ensure
       close_session
     end
-
 end
