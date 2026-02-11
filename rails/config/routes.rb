@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: 'sessions#index'
+  root to: 'home#index'
 
   get 'r', to: 'changes#revert'
   resources :changes, only: [] do
