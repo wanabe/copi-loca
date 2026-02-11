@@ -2,6 +2,6 @@
   <h2>Session <%= session.id %></h2>
   <p>
     <strong>Model:</strong>
-    <%= session.model %>
+    <%= link_to session.model, models_path(id: session.model, anchor: "model_#{session.model}") %>
   </p>
 </div>

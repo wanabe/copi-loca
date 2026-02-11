@@ -2,6 +2,9 @@
   <ol class="breadcrumb">
     <% if controller_name == 'home' && action_name == 'index' %>
       <li class="breadcrumb-item active" aria-current="page">Home</li>
+    <% elsif controller_name == 'models' && action_name == 'index' %>
+      <li class="breadcrumb-item"><%= link_to 'Home', root_path %></li>
+      <li class="breadcrumb-item active" aria-current="page">Models</li>
     <% else %>
       <li class="breadcrumb-item"><%= link_to 'Home', root_path %></li>
       <% if controller_name == 'sessions' && action_name == 'index' %>

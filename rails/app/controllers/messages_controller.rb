@@ -19,9 +19,9 @@ class MessagesController < ApplicationController
     if @message.save
       @session.close_after_idle
       if params[:from] == 'session_show'
-        redirect_to session_path(@session), notice: "Message was successfully created."
+        redirect_to session_path(@session)
       else
-        redirect_to action: :index, notice: "Message was successfully created."
+        redirect_to action: :index
       end
     else
       @messages = @session.messages.all

@@ -1,0 +1,11 @@
+<h1>Available AI Models</h1>
+<ul>
+  <% @models.each do |model| %>
+    <li>
+      <details id="model_<%= model[:id] %>" <%= 'open' if model[:id].to_s == @open_id.to_s %>>
+        <summary><%= model[:id] %> (x<%= model.dig(:billing, :multiplier) %>)</summary>
+        <%= render partial: 'data', locals: { data: model } %>
+      </details>
+    </li>
+  <% end %>
+</ul>

@@ -9,6 +9,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :models, only: [:index]
+
   resources :sessions, only: [:index, :show, :create, :destroy] do
     resources :messages, only: [:index, :create]
     resources :rpc_logs, only: [:index, :show]

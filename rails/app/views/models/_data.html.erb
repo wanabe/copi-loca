@@ -1,0 +1,37 @@
+<% if data.is_a?(Hash) && local_assigns[:key].present? %>
+  <details>
+    <summary><%= local_assigns[:key] %></summary>
+    <ul>
+      <% data.each do |k, v| %>
+        <li>
+          <%= render partial: 'data', locals: { data: v, key: k } %>
+        </li>
+      <% end %>
+    </ul>
+  </details>
+<% elsif data.is_a?(Hash) %>
+  <ul>
+    <% data.each do |k, v| %>
+      <li>
+        <%= render partial: 'data', locals: { data: v, key: k } %>
+      </li>
+    <% end %>
+  </ul>
+<% elsif data.is_a?(Array) && local_assigns[:key].present? %>
+  <details>
+    <summary><%= local_assigns[:key] %> (<%= data.size %> items)</summary>
+    <ol>
+      <% data.each do |item| %>
+        <li><%= render partial: 'data', locals: { data: item } %></li>
+      <% end %>
+    </ol>
+  </details>
+<% elsif data.is_a?(Array) %>
+  <ol>
+    <% data.each do |item| %>
+      <li><%= render partial: 'data', locals: { data: item } %></li>
+    <% end %>
+  </ol>
+<% else %>
+  <span><strong><%= local_assigns[:key] %>:</strong> <%= data %></span>
+<% end %>
