@@ -1,4 +1,5 @@
 <%= form_for [@session, message] do |form| %>
+  <%= hidden_field_tag :from, local_assigns[:from] if local_assigns[:from] %>
   <% if message.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(message.errors.count, "error") %> prohibited this message from being saved:</h2>

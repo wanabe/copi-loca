@@ -18,10 +18,18 @@ class MessagesController < ApplicationController
 
     if @message.save
       @session.close_after_idle
-      redirect_to action: :index, notice: "Message was successfully created."
+      if params[:from] == 'session_show'
+        redirect_to session_path(@session), notice: "Message was successfully created."
+      else
+        redirect_to action: :index, notice: "Message was successfully created."
+      end
     else
       @messages = @session.messages.all
-      render :index, status: :unprocessable_content
+      if params[:from] == 'session_show'
+        render template: 'sessions/show', status: :unprocessable_content
+      else
+        render :index, status: :unprocessable_content
+      end
     end
   end
 

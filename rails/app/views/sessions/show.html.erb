@@ -3,11 +3,29 @@
 <%= render @session %>
 
 <div>
-  <h2>Links</h2>
-  <ul>
-    <li><%= link_to "Messages", session_messages_path(@session) %></li>
-    <li><%= link_to "RPC logs", session_rpc_logs_path(@session) %></li>
-  </ul>
+
+  <h2>Latest Messages</h2>
+  <%= render 'messages/form', message: @session.messages.new, from: 'session_show' %>
+  <table>
+    <%= render 'messages/table_header' %>
+    <tbody>
+      <% @session.messages.order(created_at: :desc).limit(5).each do |message| %>
+        <%= render 'messages/table', message: message %>
+      <% end %>
+    </tbody>
+  </table>
+  <div><%= link_to 'More messages', session_messages_path(@session) %></div>
+
+  <h2>Latest RPC Logs</h2>
+  <table>
+    <%= render 'rpc_logs/table_header' %>
+    <tbody>
+      <% @session.rpc_logs.order(created_at: :desc).limit(5).reverse.each do |rpc_log| %>
+        <%= render 'rpc_logs/table', rpc_log: rpc_log %>
+      <% end %>
+    </tbody>
+  </table>
+  <div><%= link_to 'More RPC logs', session_rpc_logs_path(@session) %></div>
 
   <%= button_to "Destroy this session", @session, method: :delete %>
 </div>
