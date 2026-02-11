@@ -30,7 +30,7 @@ services:
       - GITHUB_TOKEN=${COPILOCA_GITHUB_TOKEN:-}
     restart: unless-stopped
     volumes:
-      - .:/app:delegated
+      - ${COPILOCA_APP_PATH:-.}:/app:delegated
       - copilot_home:/homedir
     working_dir: /app
     user: "${USR:-root}"
