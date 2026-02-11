@@ -1,0 +1,21 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <% if controller_name == 'sessions' && action_name == 'index' %>
+      <li class="breadcrumb-item active" aria-current="page">Sessions</li>
+    <% else %>
+      <li class="breadcrumb-item"><%= link_to 'Sessions', sessions_path %></li>
+      <% if defined?(@session) && @session.present? && @session&.id.present? %>
+        <% if controller_name == 'sessions' && action_name == 'show' %>
+          <li class="breadcrumb-item active" aria-current="page"><%= @session&.id&.to_s.length > 10 ? @session.id.to_s[0,10] + '…' : @session&.id %></li>
+        <% else %>
+          <li class="breadcrumb-item"><%= link_to (@session&.id&.to_s.length > 10 ? @session.id.to_s[0,10] + '…' : @session&.id), session_path(@session) %></li>
+        <% end %>
+      <% end %>
+    <% end %>
+    <% if controller_name == 'messages' %>
+      <li class="breadcrumb-item active" aria-current="page">Messages</li>
+    <% elsif controller_name == 'rpc_logs' %>
+      <li class="breadcrumb-item active" aria-current="page">RPC logs</li>
+    <% end %>
+  </ol>
+</nav>
