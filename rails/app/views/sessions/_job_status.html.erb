@@ -1,0 +1,10 @@
+<div id="job-status">
+  <% if job_status == :running %>
+    <div id="job-status-indicator" style="color: #007bff; font-size: 1em; display: flex; align-items: center; gap: 0.5em;">
+      <span class="spinner" style="width:0.5em;height:0.5em;border:2px solid #007bff;border-top:2px solid #fff;border-radius:50%;display:inline-block;animation:spin 1s linear infinite;"></span>
+    </div>
+  <% end %>
+</div>
+<style>
+@keyframes spin { 100% { transform: rotate(360deg); } }
+</style>

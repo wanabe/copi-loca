@@ -1,6 +1,8 @@
 <%= turbo_stream_from [@session, :messages] %>
 <%= turbo_stream_from [@session, :rpc_logs] %>
 
+<%= turbo_stream_from "job_status" %>
+
 <div class="summary-flex-row" style="align-items:center; min-width:0; overflow:hidden;">
   <style>.summary-flex-row .meta { font-size: 0.78em; }</style>
   <div class="summary-text" style="flex:1 1 0%;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;align-items:center;">
@@ -35,7 +37,7 @@
     </nav>
   </div>
   <div class="meta" style="flex:0 0 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;align-items:center;">
-    <span class="session-id">Session <%= @session.id.to_s[0, 8] %></span>
+    <%= render partial: "sessions/job_status", locals: { job_status: :idle } %>
     <span class="session-model" style="margin-left:0.7em;"> <%= @session.model %></span>
   </div>
 </div>

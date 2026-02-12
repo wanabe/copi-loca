@@ -3,6 +3,7 @@ class SendPromptJob < ApplicationJob
 
   def perform(session_id, prompt, file_paths = [])
     session = Session.find(session_id)
+    broadcast_job_status(:running)
     if file_paths.present?
       attachments = file_paths.map do |path|
         { type: "file", path: path }
@@ -18,6 +19,7 @@ class SendPromptJob < ApplicationJob
           broadcast_message(session, rpc_log.message)
         end
       end
+      broadcast_job_status(:idle)
       # Delete uploaded files after Copilot response is complete
       if file_paths.present?
         file_paths.each do |shared_path|
@@ -30,6 +32,17 @@ class SendPromptJob < ApplicationJob
     end
   ensure
     session.close_session if session
+  end
+
+  private
+
+  def broadcast_job_status(status)
+    Turbo::StreamsChannel.broadcast_replace_to(
+      "job_status",
+      target: "job-status",
+      partial: "sessions/job_status",
+      locals: { job_status: status }
+    )
   end
 
   private
