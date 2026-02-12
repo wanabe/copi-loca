@@ -1,4 +1,4 @@
-<div id="<%= dom_id message %>" class="message-item">
+<div id="<%= dom_id message %>" class="message-item <%= message.direction == 'incoming' ? 'incoming' : 'outgoing' %>">
   <div class="meta">
     <span><%= message.created_at.strftime("%Y-%m-%d %H:%M:%S.%L") %></span>
     <span style="margin-left:0.5em; color:<%= message.direction == 'incoming' ? '#1976d2' : '#888' %>"><%= message.direction.capitalize %></span>

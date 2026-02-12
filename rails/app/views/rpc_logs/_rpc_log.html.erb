@@ -1,4 +1,4 @@
-<div id="<%= dom_id rpc_log %>" class="rpc-log-item">
+<div id="<%= dom_id rpc_log %>" class="rpc-log-item <%= rpc_log.direction == 'incoming' ? 'incoming' : 'outgoing' %>">
   <div class="meta">
     <span><%= rpc_log.created_at.strftime("%Y-%m-%d %H:%M:%S.%L") %></span>
     <span style="margin-left:0.5em; color:<%= rpc_log.direction == 'incoming' ? '#1976d2' : '#888' %>"><%= rpc_log.direction.capitalize %></span>
