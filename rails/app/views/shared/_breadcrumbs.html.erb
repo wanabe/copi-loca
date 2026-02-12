@@ -1,5 +1,5 @@
-<nav aria-label="breadcrumb" class="mobile-breadcrumbs">
-  <ol class="breadcrumb">
+<nav aria-label="breadcrumb" class="mobile-breadcrumbs" style="display: flex; align-items: center; min-width:0; overflow:hidden;">
+  <ol class="breadcrumb" style="flex:1 1 0%; min-width:0; overflow:hidden;">
     <% if controller_name == 'home' && action_name == 'index' %>
       <li class="breadcrumb-item active" aria-current="page">Home</li>
     <% elsif controller_name == 'models' && action_name == 'index' %>
@@ -26,4 +26,7 @@
       <li class="breadcrumb-item active" aria-current="page">RPC logs</li>
     <% end %>
   </ol>
+  <% if defined?(@session) && @session.present? && @session&.model.present? %>
+    <span class="session-model" style="flex:0 0 auto; margin-left:0.7em; font-style:italic; color:#888; white-space:nowrap;"> <%= @session.model %></span>
+  <% end %>
 </nav>
