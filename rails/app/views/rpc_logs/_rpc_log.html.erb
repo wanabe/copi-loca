@@ -10,5 +10,8 @@
       <%= JSON.generate(rpc_log.data) %>
     </summary>
     <pre class="content"><%= JSON.pretty_generate(rpc_log.data) %></pre>
+    <div class="timestamp-detail">
+      <%= rpc_log.created_at.strftime("%Y-%m-%d %H:%M:%S.%L") %>
+    </div>
   </details>
 </div>
