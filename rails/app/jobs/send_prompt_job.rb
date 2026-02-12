@@ -47,7 +47,7 @@ class SendPromptJob < ApplicationJob
     rpc_log.broadcast_append_to(
       [ session, :rpc_logs ],
       target: "rpc_logs",
-      partial: "rpc_logs/table",
+      partial: "rpc_logs/rpc_log",
       locals: { rpc_log: rpc_log }
     )
   end

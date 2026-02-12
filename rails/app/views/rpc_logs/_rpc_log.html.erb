@@ -1,21 +1,14 @@
-<div id="<%= dom_id rpc_log %>">
-  <div>
-    <strong>Session:</strong>
-    <%= rpc_log.session_id %>
+<div id="<%= dom_id rpc_log %>" class="rpc-log-item">
+  <div class="meta">
+    <span><%= rpc_log.created_at.strftime("%Y-%m-%d %H:%M") %></span>
+    <span style="margin-left:0.5em; color:<%= rpc_log.direction == 'incoming' ? '#1976d2' : '#888' %>"><%= rpc_log.direction.capitalize %></span>
+    <span style="margin-left:0.5em;">ID: <%= rpc_log.rpc_id %></span>
   </div>
 
-  <div>
-    <strong>Direction:</strong>
-    <%= rpc_log.direction %>
-  </div>
-
-  <div>
-    <strong>Message:</strong>
-    <%= rpc_log.message %>
-  </div>
-
-  <div>
-    <strong>Data</strong>
-    <%= rpc_log.data %>
-
+  <details>
+    <summary style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">
+      <%= JSON.generate(rpc_log.data) %>
+    </summary>
+    <pre class="content"><%= JSON.pretty_generate(rpc_log.data) %></pre>
+  </details>
 </div>
