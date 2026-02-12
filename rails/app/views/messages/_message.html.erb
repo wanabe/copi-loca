@@ -1,19 +1,23 @@
 <div id="<%= dom_id message %>" class="message-item <%= message.direction == 'incoming' ? 'incoming' : 'outgoing' %>">
  <details>
-    <summary style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">
-      <span>
-        <%= message.content.to_s.lines.first&.chomp || '' %>
-        <% if message.content.to_s.lines.size > 1 %>...<% end %>
-      </span>
+    <summary>
+      <div class="summary-flex-row">
+        <span class="summary-text">
+          <%= message.content.to_s.lines.first&.chomp || '' %>
+          <% if message.content.to_s.lines.size > 1 %>...<% end %>
+        </span>
+        <span class="meta">
+          <% now = Time.zone.now %>
+          <% if message.created_at.to_date == now.to_date %>
+            <span class="timestamp-main"><%= message.created_at.strftime("%H:%M:%S.%L") %></span>
+          <% else %>
+            <span class="timestamp-main"><%= message.created_at.strftime("%Y-%m-%d %H:%M:%S.%L") %></span>
+          <% end %>
+        </span>
+      </div>
+    </summary>
     </summary>
     <div class="content" style="white-space: pre-wrap;"><%= message.content -%><div class="timestamp-detail"><%= message.created_at.strftime("%Y-%m-%d %H:%M:%S.%L") %></div></div>
   </details>
-  <div class="meta">
-    <% now = Time.zone.now %>
-    <% if message.created_at.to_date == now.to_date %>
-      <span class="timestamp-main"><%= message.created_at.strftime("%H:%M:%S.%L") %></span>
-    <% else %>
-      <span class="timestamp-main"><%= message.created_at.strftime("%Y-%m-%d %H:%M:%S.%L") %></span>
-    <% end %>
-  </div>
+
  </div>

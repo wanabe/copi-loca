@@ -38,6 +38,63 @@ details:open > summary > span {
   visibility: hidden;
 }
 
+.summary-flex-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.summary-flex-row .summary-text {
+  flex: 1 1 0%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  word-break: break-all;
+}
+
+.summary-flex-row .meta {
+  flex: 0 0 auto;
+  margin-left: 1em;
+  white-space: nowrap;
+  display: block;
+}
+
+
+summary > span,
+summary > .meta {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  vertical-align: middle;
+  flex-shrink: 1;
+}
+
+summary > span {
+  flex: 1 1 0%;
+}
+
+summary > .meta {
+  flex: 0 0 auto;
+  margin-left: 1em;
+}
+
+summary > span,
+summary > .meta {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 1;
+}
+
 .rpc-log-item .content {
   position: relative;
 }

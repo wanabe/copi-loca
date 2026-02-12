@@ -38,6 +38,109 @@ details:open > summary > span {
   visibility:hidden;
 }
 
+summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  width: 100%;
+  min-width: 0;
+}
+
+summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  width: 100%;
+  min-width: 0;
+}
+
+summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-width: 0;
+}
+
+.summary-flex-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.summary-flex-row .summary-text {
+  flex: 1 1 0%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  word-break: break-all;
+}
+
+.summary-flex-row .meta {
+  flex: 0 0 auto;
+  margin-left: 1em;
+  white-space: nowrap;
+  display: block;
+}
+
+
+summary > span:first-child {
+  flex: 1 1 0%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
+summary > span.meta {
+  flex: 0 0 auto;
+  margin-left: 1em;
+  white-space: nowrap;
+  display: block;
+}
+
+summary > span:first-child {
+  flex: 1 1 0%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
+summary > span.meta {
+  flex: 0 0 auto;
+  margin-left: 1em;
+  white-space: nowrap;
+  display: block;
+}
+
+summary > span:first-child {
+  min-width: 0;
+}
+
+summary > span.meta {
+  min-width: 0;
+}
+
+summary > span,
+summary > .meta {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 1;
+}
+
 .messages-list .message-item .content {
   position: relative;
 }
