@@ -1,0 +1,37 @@
+@media (max-width: 600px) {
+  .mobile-breadcrumbs {
+    font-size: 0.7em;
+    margin-bottom: 0.2em;
+  }
+  .session-header {
+    font-size: 0.9em;
+    display: flex;
+    gap: 0.5em;
+    margin-bottom: 0.2em;
+  }
+  .session-id, .session-model {
+    font-size: 0.9em;
+    color: #555;
+  }
+  .mobile-messages-area, .mobile-rpclogs-area {
+    margin: 0;
+    padding: 0;
+  }
+  .messages-table, .rpc-logs-table {
+    font-size: 0.95em;
+  }
+  .more-link {
+    font-size: 0.8em;
+    margin: 0.2em 0;
+  }
+  .mobile-destroy-btn {
+    margin-top: 0.5em;
+  }
+  #message-form label, #message-form button, #message-form input, #message-form textarea {
+    font-size: 0.95em;
+    padding: 0.2em 0.4em;
+  }
+  #message-form {
+    margin-bottom: 0.3em;
+  }
+}

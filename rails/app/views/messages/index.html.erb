@@ -6,11 +6,8 @@
 
 <%= render "form", message: @message %>
 
-<table id="messages">
-  <%= render "table_header" %>
-  <tbody  id="messages">
-    <% @messages.reverse_each do |message| %>
-      <%= render "table", message: message %>
-    <% end %>
-  </tbody>
-</table>
+<div id="messages" class="messages-list">
+  <% @messages.reverse_each do |message| %>
+    <%= render "message", message: message %>
+  <% end %>
+</div>

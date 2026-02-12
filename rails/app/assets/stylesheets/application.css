@@ -10,3 +10,5 @@
  */
  *= require breadcrumbs
  *= require breadcrumbs_session_id
+ *= require mobile_overrides
+ *= require messages_list

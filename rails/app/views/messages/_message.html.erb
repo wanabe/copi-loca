@@ -1,16 +1,15 @@
-<div id="<%= dom_id message %>">
-  <div>
-    <strong>Time:</strong>
-    <%= message.created_at.strftime("%Y-%m-%d %H:%M:%S.%L") %>
+<div id="<%= dom_id message %>" class="message-item">
+  <div class="meta">
+    <span><%= message.created_at.strftime("%Y-%m-%d %H:%M") %></span>
+    <span style="margin-left:0.5em; color:<%= message.direction == 'incoming' ? '#1976d2' : '#888' %>"><%= message.direction.capitalize %></span>
   </div>
-  <div>
-    <strong>Direction:</strong>
-    <%= message.direction %>
-  </div>
-
-  <div>
-    <strong>Content:</strong>
-    <%= message.content %>
-  </div>
-
+  <details>
+    <summary style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">
+      <%= message.content.to_s.lines.first&.chomp || '' %>
+      <% if message.content.to_s.lines.size > 1 %>...<% end %>
+    </summary>
+    <div class="content" style="white-space: pre-wrap;">
+      <%= message.content %>
+    </div>
+  </details>
 </div>

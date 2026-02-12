@@ -38,7 +38,7 @@ class SendPromptJob < ApplicationJob
      message.broadcast_prepend_to(
       [ session, :messages ],
       target: "messages",
-      partial: "messages/table",
+      partial: "messages/message",
       locals: { message: message }
     )
   end

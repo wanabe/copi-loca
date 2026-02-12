@@ -7,28 +7,24 @@
 
 <div>
 
-  <h2>Latest Messages</h2>
-  <%= render 'messages/form', message: @session.messages.new, from: 'session_show' %>
-  <table>
-    <%= render 'messages/table_header' %>
-    <tbody id="messages" data-controller="limit-list" data-limit-list-max-value="5" data-limit-list-order-value="prepend">
+  <div class="mobile-messages-area">
+    <%= render 'messages/form', message: @session.messages.new, from: 'session_show' %>
+    <div id="messages" class="messages-list" data-controller="limit-list" data-limit-list-max-value="5" data-limit-list-order-value="prepend">
       <% @session.messages.order(created_at: :desc).limit(5).each do |message| %>
-        <%= render 'messages/table', message: message %>
+        <%= render 'messages/message', message: message %>
       <% end %>
-    </tbody>
-  </table>
-  <div><%= link_to 'More messages', session_messages_path(@session) %></div>
-
-  <h2>Latest RPC Logs</h2>
-  <table>
-    <%= render 'rpc_logs/table_header' %>
-    <tbody id="rpc_logs" data-controller="limit-list" data-limit-list-max-value="5" data-limit-list-order-value="append">
-      <% @session.rpc_logs.order(created_at: :desc).limit(5).reverse.each do |rpc_log| %>
-        <%= render 'rpc_logs/table', rpc_log: rpc_log %>
-      <% end %>
-    </tbody>
-  </table>
-  <div><%= link_to 'More RPC logs', session_rpc_logs_path(@session) %></div>
-
-  <%= button_to "Destroy this session", @session, method: :delete %>
+    </div>
+    <div class="more-link"><%= link_to 'More messages', session_messages_path(@session) %></div>
+  </div>
+  <div class="mobile-rpclogs-area">
+    <table class="rpc-logs-table">
+      <tbody id="rpc_logs" data-controller="limit-list" data-limit-list-max-value="5" data-limit-list-order-value="append">
+        <% @session.rpc_logs.order(created_at: :desc).limit(5).reverse.each do |rpc_log| %>
+          <%= render 'rpc_logs/table', rpc_log: rpc_log %>
+        <% end %>
+      </tbody>
+    </table>
+    <div class="more-link"><%= link_to 'More RPC logs', session_rpc_logs_path(@session) %></div>
+  </div>
+  <div class="mobile-destroy-btn"><%= button_to "Destroy this session", @session, method: :delete %></div>
 </div>

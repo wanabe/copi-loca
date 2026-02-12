@@ -1,0 +1,24 @@
+.messages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.messages-list .message-item {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 0.5em 0.7em;
+  background: #fafbfc;
+  font-size: 1em;
+  word-break: break-word;
+}
+
+.messages-list .message-item .meta {
+  font-size: 0.8em;
+  color: #888;
+  margin-bottom: 0.2em;
+}
+
+.messages-list .message-item .content {
+  white-space: pre-wrap;
+}

@@ -1,7 +1,6 @@
 <div id="<%= dom_id session %>">
-  <h2>Session <%= session.id %></h2>
-  <p>
-    <strong>Model:</strong>
-    <%= link_to session.model, models_path(id: session.model, anchor: "model_#{session.model}") %>
-  </p>
+  <div class="session-header">
+    <span class="session-id">Session <%= session.id.to_s[0, 8] %></span>
+    <span class="session-model"><%= session.model %></span>
+  </div>
 </div>
