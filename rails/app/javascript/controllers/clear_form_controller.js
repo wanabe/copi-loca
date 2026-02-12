@@ -15,7 +15,7 @@ export default class extends Controller {
     if (event.detail && event.detail.success) {
       // Reset the form fields
       this.element.reset()
-      // 明示的にfile inputの値とラベルをリセット
+      // Explicitly reset the value and label of the file input
       const fileInput = this.element.querySelector('#file_upload');
       if (fileInput) {
         fileInput.value = '';

@@ -41,8 +41,8 @@ module CopiLoca
 
     config.active_support.isolation_level = :fiber
 
-    # DBコネクションの永続的なチェックアウトを禁止
-    # （Fiber間でコネクションを適切に共有するため）
+    # Prohibit permanent DB connection checkout
+    # (To properly share connections between Fibers)
     config.active_record.permanent_connection_checkout = :disallowed
   end
 end
