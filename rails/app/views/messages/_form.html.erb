@@ -17,12 +17,14 @@
     <%= form.text_area :content, rows: 2, style: 'width: calc(100% - 0.5em); resize: none; margin-right: 0.5em;' %>
   </div>
 
-  <div>
-    <%= form.submit "Create Message" %>
+  <div style="display: flex; align-items: center; gap: 0.3em; justify-content: flex-end;">
+    <%= turbo_stream_from "job_status" %>
+    <%= render partial: "sessions/job_status", locals: { job_status: :idle } %>
     <button type="button" onclick="document.getElementById('file_upload').click()" id="file_upload_label">File</button>
     <input type="file" id="file_upload" name="file[]" accept="image/*" multiple style="display:none" onchange="document.getElementById('file_upload_label').innerText = this.files.length > 1 ? this.files.length + ' files' : (this.files[0]?.name || 'File')">
     <button type="button" onclick="document.getElementById('camera_upload').click()" id="camera_upload_label">Camera</button>
     <input type="file" id="camera_upload" name="camera_file" accept="image/*" capture="environment" style="display:none" onchange="document.getElementById('camera_upload_label').innerText = this.files[0]?.name || 'Camera'">
+    <%= form.submit "Send" %>
   </div>
 
 <% end %>
