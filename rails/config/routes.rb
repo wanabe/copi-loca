@@ -15,4 +15,6 @@ Rails.application.routes.draw do
     resources :messages, only: [ :index, :create ]
     resources :rpc_logs, only: [ :index, :show ]
   end
+
+  resources :auth_sessions, only: [ :new, :create, :destroy ]
 end

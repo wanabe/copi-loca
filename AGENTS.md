@@ -12,15 +12,41 @@ Copi Loca is a Rails-based web UI for interacting with Copilot AI agents. Users 
 
 ### Architecture
 - Rails 8.1.2, SQLite, Falcon server, Hotwire frontend
+- Docker Compose orchestrates Rails, Copilot backend, and Caddy reverse proxy
+- Caddy serves as the public entrypoint and reverse proxy for Rails
 - Communicates with Copilot service via TCP (localhost:3100)
 - Message-driven, event-based design
 
 ### Directory Structure
-- app/controllers: Session, Message, and RPC log controllers
-- app/models: Session, Message, RpcLog, and Client (Copilot connection)
-- app/views: ERB templates for sessions, messages, and logs
-- db/migrate: Schema definitions
-- config/routes.rb: RESTful routing
+- rails/
+  - app/
+    - controllers: Session, Message, RPC log, Home, Models, AuthSessions controllers
+    - models: Session, Message, RpcLog, Client
+    - views: ERB templates for sessions, messages, logs, authentication
+    - jobs: background job classes
+    - helpers: view helpers
+    - assets: static assets
+    - javascript: JS files
+  - config/
+    - application.rb: Rails config
+    - routes.rb: RESTful routing
+    - initializers/: custom initializers
+    - environments/: env configs
+    - database.yml: DB config
+  - db/
+    - migrate/: schema migrations
+    - schema.rb: current schema
+    - seeds.rb: seed data
+  - lib/
+    - copilot/: Copilot client logic
+  - test/: tests for models, controllers, jobs
+- caddy/
+  - Caddyfile: reverse proxy config
+  - Dockerfile: Caddy container
+- copilot/
+  - Dockerfile: Copilot backend container
+- bin/: scripts
+- compose.yml: Docker Compose orchestration
 
 ### Database Schema
 - Sessions: id (UUID), model, timestamps

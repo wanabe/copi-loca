@@ -22,6 +22,7 @@ services:
       - RAILS_ENV=development
       - BUNDLE_PATH=/app/rails/vendor/bundle
       - SITE_HOSTNAME=${SITE_HOSTNAME:-localhost}
+      - COPI_ADMIN_PASSWORD=${COPI_ADMIN_PASSWORD:-}
     user: "${USR:-root}"
   copilot:
     build: ./copilot
