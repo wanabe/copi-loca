@@ -4,6 +4,16 @@
   gap: 0.5em;
 }
 
+.rpc-log-item.incoming {
+  margin-right: 0.7em;
+}
+
+.rpc-log-item.outgoing {
+  margin-left: 0.7em;
+  background: #d2f8e5;
+  filter: saturate(1.2);
+}
+
 .rpc-log-item {
   border: 1px solid #e0e0e0;
   border-radius: 6px;
