@@ -87,6 +87,8 @@ If comments or documentation appear in a language other than English, translate 
 
 # Git Workflow
 
+- Do not commit changes unless the user explicitly instructs you to commit. Never commit automatically or without user permission.
+
 # Boundaries
 
 # Chat Style
