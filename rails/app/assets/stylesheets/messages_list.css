@@ -27,6 +27,15 @@
   font-size: 0.8em;
   color: #888;
   margin-bottom: 0.2em;
+  text-align: right;
+}
+
+.messages-list .message-item details:open + .meta {
+  visibility: hidden;
+}
+
+details:open > summary > span {
+  visibility:hidden;
 }
 
 .messages-list .message-item .content {

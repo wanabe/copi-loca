@@ -1,17 +1,19 @@
 <div id="<%= dom_id rpc_log %>" class="rpc-log-item <%= rpc_log.direction == 'incoming' ? 'incoming' : 'outgoing' %>">
-  <div class="meta">
-    <span><%= rpc_log.created_at.strftime("%Y-%m-%d %H:%M:%S.%L") %></span>
-
-
-  </div>
-
   <details>
     <summary style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">
-      <%= JSON.generate(rpc_log.data) %>
+      <span><%= JSON.generate(rpc_log.data) %></span>
     </summary>
     <pre class="content"><%= JSON.pretty_generate(rpc_log.data) %></pre>
     <div class="timestamp-detail">
       <%= rpc_log.created_at.strftime("%Y-%m-%d %H:%M:%S.%L") %>
     </div>
   </details>
+  <div class="meta">
+    <% now = Time.zone.now %>
+    <% if rpc_log.created_at.to_date == now.to_date %>
+      <span class="timestamp-main"><%= rpc_log.created_at.strftime("%H:%M:%S.%L") %></span>
+    <% else %>
+      <span class="timestamp-main"><%= rpc_log.created_at.strftime("%Y-%m-%d %H:%M:%S.%L") %></span>
+    <% end %>
+  </div>
 </div>
