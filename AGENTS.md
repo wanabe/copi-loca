@@ -69,6 +69,7 @@ Copi Loca is a Rails-based web UI for interacting with Copilot AI agents. Users 
 - Message.rpc_log_id is set only for AI responses
 - Consider log cleanup for storage
 - Copilot service runs in a separate container (see compose.yml)
+- ⚠️ If you add authentication via before_action in ApplicationController, be sure to skip authentication for Turbo Stream requests (e.g., `skip_before_action :authenticate, if: -> { request.format.turbo_stream? }`). Otherwise, real-time updates will break because Turbo Streams requests will be redirected to the login page.
 
 
 # Commands

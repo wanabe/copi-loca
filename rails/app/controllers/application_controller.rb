@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   stale_when_importmap_changes
 
   before_action :authenticate
+  skip_before_action :authenticate, if: -> { request.format.turbo_stream? }
 
   private
   def authenticate
