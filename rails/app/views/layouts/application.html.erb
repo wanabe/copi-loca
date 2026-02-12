@@ -24,7 +24,11 @@
   </head>
 
   <body>
-    <%= render 'shared/breadcrumbs' %>
-    <%= yield %>
+    <% if controller_name == 'sessions' && action_name == 'show' %>
+      <%= yield %>
+    <% else %>
+      <%= render 'shared/breadcrumbs' %>
+      <%= yield %>
+    <% end %>
   </body>
 </html>

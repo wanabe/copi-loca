@@ -1,7 +1,46 @@
-<p style="color: green"><%= notice %></p>
-
 <%= turbo_stream_from [@session, :messages] %>
 <%= turbo_stream_from [@session, :rpc_logs] %>
+
+<div class="summary-flex-row" style="align-items:center; min-width:0; overflow:hidden;">
+  <style>.summary-flex-row .meta { font-size: 0.78em; }</style>
+  <div class="summary-text" style="flex:1 1 0%;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;align-items:center;">
+    <nav aria-label="breadcrumb" class="mobile-breadcrumbs" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+      <ol class="breadcrumb" style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;align-items:center;">
+        <% if controller_name == 'home' && action_name == 'index' %>
+          <li class="breadcrumb-item active" aria-current="page">Home</li>
+        <% elsif controller_name == 'models' && action_name == 'index' %>
+          <li class="breadcrumb-item"><%= link_to 'Home', root_path %></li>
+          <li class="breadcrumb-item active" aria-current="page">Models</li>
+        <% else %>
+          <li class="breadcrumb-item"><%= link_to 'Home', root_path %></li>
+          <% if controller_name == 'sessions' && action_name == 'index' %>
+            <li class="breadcrumb-item active" aria-current="page">Sessions</li>
+          <% else %>
+            <li class="breadcrumb-item"><%= link_to 'Sessions', sessions_path %></li>
+            <% if defined?(@session) && @session.present? && @session&.id.present? %>
+              <% if controller_name == 'sessions' && action_name == 'show' %>
+                <li class="breadcrumb-item active" aria-current="page"><%= @session&.id&.to_s.length > 10 ? @session.id.to_s[0,10] + '...' : @session&.id %></li>
+              <% else %>
+                <li class="breadcrumb-item"><%= link_to (@session&.id&.to_s.length > 10 ? @session.id.to_s[0,10] + '...' : @session&.id), session_path(@session) %></li>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+        <% if controller_name == 'messages' %>
+          <li class="breadcrumb-item active" aria-current="page">Messages</li>
+        <% elsif controller_name == 'rpc_logs' %>
+          <li class="breadcrumb-item active" aria-current="page">RPC logs</li>
+        <% end %>
+      </ol>
+    </nav>
+  </div>
+  <div class="meta" style="flex:0 0 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;align-items:center;">
+    <span class="session-id">Session <%= @session.id.to_s[0, 8] %></span>
+    <span class="session-model" style="margin-left:0.7em;"> <%= @session.model %></span>
+  </div>
+</div>
+
+<% if notice.present? %><p style="color: green"><%= notice %></p><% end %>
 
 <%= render @session %>
 

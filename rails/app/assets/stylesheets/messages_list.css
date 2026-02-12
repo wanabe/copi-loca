@@ -145,6 +145,64 @@ summary > .meta {
   position: relative;
 }
 
+.session-header-flex-row {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: 0.5em;
+  min-width: 0;
+  overflow: hidden;
+  gap: 1em;
+  font-size: 0.78em;
+  color: #666;
+  white-space: nowrap;
+}
+.session-header-flex-row span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  flex: 0 0 auto;
+}
+.session-header-flex-row .session-id {
+  font-weight: bold;
+  color: #333;
+}
+.session-header-flex-row .session-model {
+  font-style: italic;
+  color: #888;
+}
+.session-header-id-model {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1em;
+  align-items: center;
+  font-size: 0.78em;
+  color: #666;
+  white-space: nowrap;
+  min-width: 0;
+  overflow: hidden;
+}
+.session-header-id-model .session-id,
+.session-header-id-model .session-model {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.session-header-id-model .session-id {
+  font-weight: bold;
+  color: #333;
+}
+.session-header-id-model .session-model {
+  font-style: italic;
+  color: #888;
+}
+
+
 .messages-list .message-item .timestamp-detail {
   display: block;
   text-align: right;
