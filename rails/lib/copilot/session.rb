@@ -35,9 +35,9 @@ module Copilot
       @client.sessions.delete(@session_id)
     end
 
-    def send(prompt)
+    def send(prompt, attachments: nil)
       @idle = false
-      call("session.send", prompt: prompt)
+      call("session.send", **{prompt: prompt, attachments: attachments}.compact)
     end
 
     def call(method, params = {})

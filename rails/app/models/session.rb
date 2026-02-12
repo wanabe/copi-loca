@@ -9,8 +9,8 @@ class Session < ApplicationRecord
     @copilot_session = nil
   end
 
-  def send_prompt(prompt)
-    rpc_id = copilot_session.send(prompt)
+  def send_prompt(prompt, attachments: nil)
+    rpc_id = copilot_session.send(prompt, attachments: attachments)
     rpc_log = rpc_logs.find_by(rpc_id: rpc_id)
     unless rpc_log
       raise "RPC log not found for sent prompt with RPC ID: #{rpc_id}"

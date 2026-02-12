@@ -14,7 +14,27 @@ class MessagesController < ApplicationController
 
   # POST /messages
   def create
-    SendPromptJob.perform_later(@session.id, message_params[:content])
+    # Save uploaded files to tmp directory
+    shared_paths = []
+    if params[:file].present?
+      Array(params[:file]).each do |uploaded|
+        next unless uploaded.respond_to?(:original_filename)
+        tmp_path = Rails.root.join('tmp', "upload_#{SecureRandom.hex}_#{uploaded.original_filename}")
+        File.open(tmp_path, 'wb') { |f| f.write(uploaded.read) }
+        # Convert to copilot container path
+        shared_paths << File.join('/shared-tmp', File.basename(tmp_path))
+      end
+    end
+    if params[:camera_file].present?
+      Array(params[:camera_file]).each do |uploaded|
+        next unless uploaded.respond_to?(:original_filename)
+        tmp_path = Rails.root.join('tmp', "upload_#{SecureRandom.hex}_#{uploaded.original_filename}")
+        File.open(tmp_path, 'wb') { |f| f.write(uploaded.read) }
+        shared_paths << File.join('/shared-tmp', File.basename(tmp_path))
+      end
+    end
+
+    SendPromptJob.perform_later(@session.id, message_params[:content], shared_paths)
 
     respond_to do |format|
       format.turbo_stream { head :ok }

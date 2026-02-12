@@ -15,6 +15,21 @@ export default class extends Controller {
     if (event.detail && event.detail.success) {
       // Reset the form fields
       this.element.reset()
+      // 明示的にfile inputの値とラベルをリセット
+      const fileInput = this.element.querySelector('#file_upload');
+      if (fileInput) {
+        fileInput.value = '';
+        fileInput.dispatchEvent(new Event('change'));
+        const fileLabel = this.element.querySelector('#file_upload_label');
+        if (fileLabel) fileLabel.innerText = 'File';
+      }
+      const cameraInput = this.element.querySelector('#camera_upload');
+      if (cameraInput) {
+        cameraInput.value = '';
+        cameraInput.dispatchEvent(new Event('change'));
+        const cameraLabel = this.element.querySelector('#camera_upload_label');
+        if (cameraLabel) cameraLabel.innerText = 'Camera';
+      }
       // Focus the textarea for convenience
       const textarea = this.element.querySelector("textarea")
       if (textarea) textarea.focus()

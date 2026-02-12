@@ -33,6 +33,7 @@ services:
     volumes:
       - ${COPILOCA_APP_PATH:-.}:/app:delegated
       - copilot_home:/homedir
+      - ./rails/tmp:/shared-tmp:delegated
     working_dir: /app
     user: "${USR:-root}"
 
