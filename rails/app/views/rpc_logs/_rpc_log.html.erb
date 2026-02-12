@@ -1,9 +1,9 @@
-<div id="<%= dom_id rpc_log %>" class="rpc-log-item <%= rpc_log.direction == 'incoming' ? 'incoming' : 'outgoing' %>">
+<div id="<%= dom_id rpc_log %>" class="rpc-log-item <%= rpc_log.direction == 'incoming' ? 'incoming' : 'outgoing' %>" data-controller="toggle-details" data-action="click->toggle-details#toggle">
   <details>
     <summary>
       <div class="summary-flex-row">
         <span class="summary-text">
-          <%= JSON.generate(rpc_log.data) %>
+          <pre class="content"><%= JSON.generate(rpc_log.data) %></pre>
         </span>
         <span class="meta">
           <% now = Time.zone.now %>

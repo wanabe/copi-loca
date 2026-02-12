@@ -98,6 +98,8 @@ summary > .meta {
 
 .rpc-log-item .content {
   position: relative;
+  margin: 0;
+  padding: 0;
 }
 
 .rpc-log-item .timestamp-detail {

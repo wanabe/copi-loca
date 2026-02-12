@@ -37,6 +37,9 @@
 details[open] > summary .summary-text,
 details[open] > summary .meta {
   visibility: hidden;
+  height: 0;
+  margin: 0;
+  padding: 0;
 }
 
 summary {
