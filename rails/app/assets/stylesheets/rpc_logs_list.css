@@ -34,7 +34,8 @@
   visibility: hidden;
 }
 
-details:open > summary > span {
+details[open] > summary .summary-text,
+details[open] > summary .meta {
   visibility: hidden;
 }
 
