@@ -15,12 +15,13 @@ services:
     command: >
       bash -lc "bundle check || bundle install && rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p 3000"
     volumes:
-      - .:/app:delegated
-      - vendor_bundle:/app/rails/vendor/bundle
-    working_dir: /app/rails
+      - .:/copi-loca:delegated
+      - vendor_bundle:/copi-loca/rails/vendor/bundle
+      - ${COPILOCA_APP_PATH:-.}:/app:delegated
+    working_dir: /copi-loca/rails
     environment:
       - RAILS_ENV=development
-      - BUNDLE_PATH=/app/rails/vendor/bundle
+      - BUNDLE_PATH=/copi-loca/rails/vendor/bundle
       - SITE_HOSTNAME=${SITE_HOSTNAME:-localhost}
       - COPI_ADMIN_PASSWORD=${COPI_ADMIN_PASSWORD:-}
     user: "${USR:-root}"

@@ -1,28 +1,33 @@
 <nav aria-label="breadcrumb" class="mobile-breadcrumbs" style="display: flex; align-items: center; min-width:0; overflow:hidden;">
   <ol class="breadcrumb" style="flex:1 1 0%; min-width:0; overflow:hidden;">
-    <% if controller_name == 'home' && action_name == 'index' %>
-      <li class="breadcrumb-item active" aria-current="page">Home</li>
+    <li class="breadcrumb-item"><%= link_to 'Home', root_path %></li>
+    <% if controller_name == 'sessions' && action_name == 'index' %>
+      <li class="breadcrumb-item active" aria-current="page">Sessions</li>
     <% elsif controller_name == 'models' && action_name == 'index' %>
-      <li class="breadcrumb-item"><%= link_to 'Home', root_path %></li>
       <li class="breadcrumb-item active" aria-current="page">Models</li>
-    <% else %>
-      <li class="breadcrumb-item"><%= link_to 'Home', root_path %></li>
-      <% if controller_name == 'sessions' && action_name == 'index' %>
-        <li class="breadcrumb-item active" aria-current="page">Sessions</li>
-      <% else %>
-        <li class="breadcrumb-item"><%= link_to 'Sessions', sessions_path %></li>
-        <% if defined?(@session) && @session.present? && @session&.id.present? %>
-          <% if controller_name == 'sessions' && action_name == 'show' %>
-            <li class="breadcrumb-item active" aria-current="page"><%= @session&.id&.to_s.length > 10 ? @session.id.to_s[0,10] + '...' : @session&.id %></li>
-          <% else %>
-            <li class="breadcrumb-item"><%= link_to (@session&.id&.to_s.length > 10 ? @session.id.to_s[0,10] + '...' : @session&.id), session_path(@session) %></li>
-          <% end %>
-        <% end %>
-      <% end %>
-    <% end %>
-    <% if controller_name == 'messages' %>
+    <% elsif controller_name == 'files' && action_name == 'index' %>
+      <li class="breadcrumb-item active" aria-current="page">Files</li>
+    <% elsif controller_name == 'changes' && action_name == 'revert' %>
+      <li class="breadcrumb-item"><%= link_to 'Changes', '#' %></li>
+      <li class="breadcrumb-item active" aria-current="page">Revert</li>
+    <% elsif controller_name == 'changes' %>
+      <li class="breadcrumb-item active" aria-current="page">Changes</li>
+    <% elsif controller_name == 'sessions' && action_name == 'show' && defined?(@session) && @session.present? && @session&.id.present? %>
+      <li class="breadcrumb-item"><%= link_to 'Sessions', sessions_path %></li>
+      <li class="breadcrumb-item active" aria-current="page"><%= @session&.id&.to_s.length > 10 ? @session.id.to_s[0,10] + '...' : @session&.id %></li>
+    <% elsif controller_name == 'messages' && defined?(@session) && @session.present? && @session&.id.present? %>
+      <li class="breadcrumb-item"><%= link_to 'Sessions', sessions_path %></li>
+      <li class="breadcrumb-item"><%= link_to (@session&.id&.to_s.length > 10 ? @session.id.to_s[0,10] + '...' : @session&.id), session_path(@session) %></li>
+      <li class="breadcrumb-item active" aria-current="page">Messages</li>
+    <% elsif controller_name == 'rpc_logs' && defined?(@session) && @session.present? && @session&.id.present? %>
+      <li class="breadcrumb-item"><%= link_to 'Sessions', sessions_path %></li>
+      <li class="breadcrumb-item"><%= link_to (@session&.id&.to_s.length > 10 ? @session.id.to_s[0,10] + '...' : @session&.id), session_path(@session) %></li>
+      <li class="breadcrumb-item active" aria-current="page">RPC logs</li>
+    <% elsif controller_name == 'messages' %>
+      <li class="breadcrumb-item"><%= link_to 'Sessions', sessions_path %></li>
       <li class="breadcrumb-item active" aria-current="page">Messages</li>
     <% elsif controller_name == 'rpc_logs' %>
+      <li class="breadcrumb-item"><%= link_to 'Sessions', sessions_path %></li>
       <li class="breadcrumb-item active" aria-current="page">RPC logs</li>
     <% end %>
   </ol>

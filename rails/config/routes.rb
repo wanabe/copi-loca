@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root to: "home#index"
+  resources :files, only: [:index]
 
   get "r", to: "changes#revert"
   resources :changes, only: [] do
