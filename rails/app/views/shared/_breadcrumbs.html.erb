@@ -23,6 +23,9 @@
     <% elsif controller_name == 'changes' && action_name == 'revert' %>
       <li class="breadcrumb-item"><%= link_to 'Changes', '#' %></li>
       <li class="breadcrumb-item active" aria-current="page">Revert</li>
+    <% elsif controller_name == 'changes' && action_name == 'uncommitted' %>
+      <li class="breadcrumb-item"><%= link_to 'Changes', '#' %></li>
+      <li class="breadcrumb-item active" aria-current="page">Uncommitted</li>
     <% elsif controller_name == 'changes' %>
       <li class="breadcrumb-item active" aria-current="page">Changes</li>
     <% elsif controller_name == 'sessions' && action_name == 'show' && defined?(@session) && @session.present? && @session&.id.present? %>
