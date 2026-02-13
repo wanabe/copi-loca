@@ -1,0 +1,6 @@
+<h1>File: <%= h @path %></h1>
+<% if @content %>
+  <pre><code><%= h @content %></code></pre>
+<% else %>
+  <p>File not found or not a regular file.</p>
+<% end %>

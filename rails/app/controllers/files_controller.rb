@@ -1,7 +1,22 @@
 class FilesController < ApplicationController
   def index
-    files = `git ls-files -c -o --exclude-standard`.chomp.split("\n")
+    files = `git -C /app ls-files -c -o --exclude-standard`.chomp.split("\n")
     @tree = build_tree(files)
+  end
+
+  def show
+    @path = params[:path].to_s
+    abs_path = Pathname.new("/app").join(@path).expand_path.to_s
+    unless abs_path.start_with?(File.expand_path("/app/"))
+      render plain: "Invalid path", status: :bad_request
+      return
+    end
+    if File.file?(abs_path)
+      @content = File.read(abs_path)
+    else
+      @content = nil
+    end
+    render :show
   end
 
   private

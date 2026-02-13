@@ -7,6 +7,19 @@
       <li class="breadcrumb-item active" aria-current="page">Models</li>
     <% elsif controller_name == 'files' && action_name == 'index' %>
       <li class="breadcrumb-item active" aria-current="page">Files</li>
+    <% elsif controller_name == 'files' && action_name == 'show' %>
+      <li class="breadcrumb-item"><%= link_to 'Files', files_path %></li>
+      <% if @path.present? %>
+        <% path_parts = @path.split('/') %>
+        <% path_parts.each_with_index do |part, i| %>
+          <% is_last = (i == path_parts.size - 1) %>
+          <% if is_last %>
+            <li class="breadcrumb-item active" aria-current="page"><%= part %></li>
+          <% else %>
+            <li class="breadcrumb-item"><%= part %></li>
+          <% end %>
+        <% end %>
+      <% end %>
     <% elsif controller_name == 'changes' && action_name == 'revert' %>
       <li class="breadcrumb-item"><%= link_to 'Changes', '#' %></li>
       <li class="breadcrumb-item active" aria-current="page">Revert</li>
