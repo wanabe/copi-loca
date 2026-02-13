@@ -1,6 +1,6 @@
 class ChangesController < ApplicationController
   def uncommitted
-    raw = `git -C /app diff`
+    raw = `git -C /app diff HEAD`
     @file_diffs = []
     current = nil
     raw.each_line do |line|
@@ -12,9 +12,11 @@ class ChangesController < ApplicationController
         current = [path, ""]
       elsif current
         # Skip index lines and +++/--- lines
-        unless line.start_with?("index ") || line.start_with?("+++ ") || line.start_with?("--- ")
-          current[1] << line
-        end
+        next if line.start_with?("index ")
+        next if line.start_with?("+++ ")
+        next if line.start_with?("--- ")
+        next if line.start_with?("new file mode ")
+        current[1] << line
       end
     end
     @file_diffs << current if current
