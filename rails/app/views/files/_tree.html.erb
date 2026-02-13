@@ -1,0 +1,15 @@
+<ul>
+  <% if tree[:dirs] %>
+    <% tree[:dirs].sort.each do |dirname, subtree| %>
+      <li>
+        <strong><%= dirname %>/</strong>
+        <%= render partial: 'tree', locals: { tree: subtree, path: File.join(path, dirname) } %>
+      </li>
+    <% end %>
+  <% end %>
+  <% if tree[:files] %>
+    <% tree[:files].sort.each do |filename| %>
+      <li><%= filename %></li>
+    <% end %>
+  <% end %>
+</ul>
