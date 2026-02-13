@@ -2,8 +2,10 @@
   <% if tree[:dirs] %>
     <% tree[:dirs].sort.each do |dirname, subtree| %>
       <li>
-        <strong><%= dirname %>/</strong>
-        <%= render partial: 'tree', locals: { tree: subtree, path: File.join(path, dirname) } %>
+        <details>
+          <summary><strong><%= dirname %>/</strong></summary>
+          <%= render partial: 'tree', locals: { tree: subtree, path: File.join(path, dirname) } %>
+        </details>
       </li>
     <% end %>
   <% end %>
