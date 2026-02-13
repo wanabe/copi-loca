@@ -21,10 +21,10 @@
         <% end %>
       <% end %>
     <% elsif controller_name == 'changes' && action_name == 'revert' %>
-      <li class="breadcrumb-item"><%= link_to 'Changes', '#' %></li>
+      <li class="breadcrumb-item"><%= link_to 'Changes', changes_path %></li>
       <li class="breadcrumb-item active" aria-current="page">Revert</li>
     <% elsif controller_name == 'changes' && action_name == 'uncommitted' %>
-      <li class="breadcrumb-item"><%= link_to 'Changes', '#' %></li>
+      <li class="breadcrumb-item"><%= link_to 'Changes', changes_path %></li>
       <li class="breadcrumb-item active" aria-current="page">Uncommitted</li>
     <% elsif controller_name == 'changes' %>
       <li class="breadcrumb-item active" aria-current="page">Changes</li>

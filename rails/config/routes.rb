@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get "r", to: "changes#revert"
   resources :changes, only: [] do
     collection do
+      get :index
       get :uncommitted, as: :uncommitted_changes
       get :revert
       post :execute_revert

@@ -36,6 +36,15 @@ class ChangesController < ApplicationController
     end
     @file_diffs.sort_by! { |fd| fd[0] }
   end
+  def index
+    log = `git -C /app log --pretty=format:'%H|%an|%s'`
+    all_commits = log.lines.map do |line|
+      hash, author, message = line.chomp.split('|', 3)
+      { hash: hash, author: author, message: message }
+    end
+    @commits = Kaminari.paginate_array(all_commits).page(params[:page]).per(10)
+  end
+
   def revert
   end
 
