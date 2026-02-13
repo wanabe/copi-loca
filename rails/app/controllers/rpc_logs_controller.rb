@@ -4,7 +4,7 @@ class RpcLogsController < ApplicationController
 
   # GET /sessions/:session_id/rpc_logs
   def index
-    @rpc_logs = @session.rpc_logs.all
+    @rpc_logs = @session.rpc_logs.order(id: :desc).page(params[:page])
   end
 
   # GET /sessions/:session_id/rpc_logs/1

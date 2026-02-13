@@ -5,7 +5,7 @@ class MessagesController < ApplicationController
   # GET /messages
   def index
     @message = @session.messages.new
-    @messages = @session.messages.all
+    @messages = @session.messages.order(id: :desc).page(params[:page])
   end
 
   # GET /messages/1
