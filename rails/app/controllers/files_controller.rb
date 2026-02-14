@@ -1,6 +1,6 @@
 class FilesController < ApplicationController
   def index
-    files = `git -C /app ls-files -c -o --exclude-standard`.chomp.split("\n")
+    files = Repository.ls_files
     @tree = build_tree(files)
   end
 
