@@ -19,4 +19,9 @@ class ChangesController < ApplicationController
 
     redirect_to root_path, notice: "Code changes reverted."
   end
+
+  def show
+    id = params[:id]
+    @file_diffs = Repository.tracked_diffs(id)
+  end
 end

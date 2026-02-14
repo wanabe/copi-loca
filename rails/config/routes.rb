@@ -11,6 +11,9 @@ Rails.application.routes.draw do
       get :revert
       post :execute_revert
     end
+    member do
+      get :show, constraints: { id: /[0-9a-f]{40}/ }
+    end
   end
 
   resources :models, only: [ :index ]

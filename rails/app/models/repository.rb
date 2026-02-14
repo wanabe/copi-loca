@@ -17,7 +17,11 @@ class Repository
     def log(limit = 10)
       instance.log(limit)
     end
-    delegate :diff, :status, :ls_files, :uncommitted_diffs, :untracked_files, to: :instance
+    delegate :diff, :status, :ls_files, :uncommitted_diffs, :untracked_files, :tracked_diffs, to: :instance
+  end
+
+  def self.git(cmd)
+    `git -C #{DEFAULT_PATH} #{cmd}`
   end
 
   def git(cmd)
@@ -41,10 +45,10 @@ class Repository
     git("ls-files -c -o --exclude-standard").chomp.split("\n")
   end
 
-  def uncommitted_diffs
+  def tracked_diffs(commit = nil)
     diffs = []
     current = nil
-    diff_raw = diff
+    diff_raw = commit ? git("show -p --format='' #{commit}") : diff
     diff_raw.each_line do |line|
       if line.start_with?("diff --git ")
         diffs << current if current
@@ -61,6 +65,11 @@ class Repository
     end
     diffs << current if current
     diffs.reject! { |fd| fd[0].nil? }
+    diffs
+  end
+
+  def untracked_diffs
+    diffs = []
     untracked_files.each do |path|
       abs_path = Pathname.new(@path).join(path).expand_path.to_s
       if File.file?(abs_path)
@@ -72,7 +81,11 @@ class Repository
         diffs << [path, "Untracked file"]
       end
     end
-    diffs.sort_by { |fd| fd[0] }
+    diffs
+  end
+
+  def uncommitted_diffs
+    (tracked_diffs + untracked_diffs).sort_by { |fd| fd[0] }
   end
 
   def untracked_files

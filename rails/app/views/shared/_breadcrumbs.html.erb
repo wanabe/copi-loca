@@ -26,8 +26,11 @@
     <% elsif controller_name == 'changes' && action_name == 'uncommitted' %>
       <li class="breadcrumb-item"><%= link_to 'Changes', changes_path %></li>
       <li class="breadcrumb-item active" aria-current="page">Uncommitted</li>
-    <% elsif controller_name == 'changes' %>
+    <% elsif controller_name == 'changes' && action_name == 'index' %>
       <li class="breadcrumb-item active" aria-current="page">Changes</li>
+    <% elsif controller_name == 'changes' && action_name == 'show' %>
+      <li class="breadcrumb-item"><%= link_to 'Changes', changes_path %></li>
+      <li class="breadcrumb-item active" aria-current="page"><%= params[:id] %></li>
     <% elsif controller_name == 'sessions' && action_name == 'show' && defined?(@session) && @session.present? && @session&.id.present? %>
       <li class="breadcrumb-item"><%= link_to 'Sessions', sessions_path %></li>
       <li class="breadcrumb-item active" aria-current="page"><%= @session&.id&.to_s.length > 10 ? @session.id.to_s[0,10] + '...' : @session&.id %></li>

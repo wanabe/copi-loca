@@ -2,7 +2,7 @@
 <ul class="changes-list">
   <% @commits.each do |commit| %>
     <li style="margin-bottom:1em; word-break:break-all;">
-      <strong>Hash:</strong> <%= commit[:hash] %><br>
+      <strong>Hash:</strong> <%= link_to commit[:hash], change_path(commit[:hash]) %><br>
       <strong>Author:</strong> <%= commit[:author] %><br>
       <strong>Message:</strong> <%= commit[:message] %>
     </li>
