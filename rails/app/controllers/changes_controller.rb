@@ -3,7 +3,8 @@ class ChangesController < ApplicationController
     @file_diffs = Repository.uncommitted_diffs
   end
   def index
-    all_commits = Repository.log(10_000) # large enough for pagination
+    uncommitted = [{ hash: 'uncommitted', author: '', message: '' }]
+    all_commits = uncommitted + Repository.log(10_000)
     @commits = Kaminari.paginate_array(all_commits).page(params[:page]).per(10)
   end
 
