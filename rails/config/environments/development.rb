@@ -67,4 +67,5 @@ Rails.application.configure do
   if site_hostname.present?
     config.hosts << site_hostname
   end
+  config.web_console.allowed_ips = '0.0.0.0/0'
 end

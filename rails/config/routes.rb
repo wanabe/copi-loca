@@ -24,4 +24,11 @@ Rails.application.routes.draw do
   end
 
   resources :auth_sessions, only: [ :new, :create, :destroy ]
+
+  resources :app_ops, only: [:index] do
+    collection do
+      get :confirm, to: 'app_ops#confirm', as: :confirm
+      post :bundle_install, to: 'app_ops#bundle_install', as: :bundle_install
+    end
+  end
 end

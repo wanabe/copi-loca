@@ -17,7 +17,7 @@ class Repository
     def log(limit = 10)
       instance.log(limit)
     end
-    delegate :diff, :status, :ls_files, :uncommitted_diffs, :untracked_files, :tracked_diffs, to: :instance
+    delegate :diff, :status, :ls_files, :uncommitted_diffs, :untracked_files, :tracked_diffs, :run_command, to: :instance
   end
 
   def self.git(cmd)
@@ -90,5 +90,20 @@ class Repository
 
   def untracked_files
     git("ls-files --others --exclude-standard").chomp.split("\n")
+  end
+
+  def run_command(cmd)
+    output = ''
+    status = nil
+    Dir.chdir(@path) do
+      reader, writer = IO.pipe
+      pid = Process.spawn(cmd, out: writer, err: writer)
+      writer.close
+      output = reader.read
+      _, process_status = Process.wait2(pid)
+      status = process_status.exitstatus
+      reader.close
+    end
+    [output, status]
   end
 end
