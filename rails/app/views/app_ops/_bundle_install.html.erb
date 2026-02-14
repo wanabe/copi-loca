@@ -1,0 +1,6 @@
+<p>Operation: Bundle Install</p>
+<p>Description: Installs gems using Bundler.</p>
+<%= form_with url: bundle_install_app_ops_path, method: :post, data: { turbo: false } do %>
+  <%= submit_tag 'OK' %>
+  <%= link_to 'Cancel', app_ops_path %>
+<% end %>

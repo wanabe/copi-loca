@@ -1,12 +1,2 @@
 <h1>Confirm Operation</h1>
-<% if @op_key == 'bundle_install' %>
-  <p>Operation: Bundle Install</p>
-  <p>Description: Installs gems using Bundler.</p>
-  <%= form_with url: bundle_install_app_ops_path, method: :post, data: { turbo: false } do %>
-    <%= submit_tag 'OK' %>
-    <%= link_to 'Cancel', app_ops_path %>
-  <% end %>
-<% else %>
-  <p>Unknown operation.</p>
-  <%= link_to 'Back', app_ops_path %>
-<% end %>
+<%= render partial: @partial_name %>

@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     collection do
       get :confirm, to: 'app_ops#confirm', as: :confirm
       post :bundle_install, to: 'app_ops#bundle_install', as: :bundle_install
+      post :rspec, to: 'app_ops#rspec', as: :rspec
     end
   end
 end
