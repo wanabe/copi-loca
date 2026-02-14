@@ -15,7 +15,7 @@ class Repository
     end
 
     def log(limit = 10)
-      instance.log(limit: limit)
+      instance.log(limit)
     end
     delegate :diff, :status, :ls_files, :uncommitted_diffs, :untracked_files, to: :instance
   end
