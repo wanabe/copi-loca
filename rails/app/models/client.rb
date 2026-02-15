@@ -54,8 +54,9 @@ class Client
   end
 
   def available_models
+    return @available_models if @available_models
     models = copilot_client.await(copilot_client.call("models.list"))[:models]
-    models.sort_by { |model| [ model.dig(:billing, :multiplier), model[:id] ] }
+    @available_models = models.sort_by { |model| [ model.dig(:billing, :multiplier), model[:id] ] }
   end
 
   def wait
