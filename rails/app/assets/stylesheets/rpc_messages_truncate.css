@@ -1,0 +1,7 @@
+/* Truncate long content in RPC message table */
+.rpc-messages-table td.truncate {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
