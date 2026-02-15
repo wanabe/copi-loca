@@ -17,7 +17,6 @@ class Client
     super()
     @copilot_client = Copilot::Client.cache(cli_url: CLI_URL)
     @waiting_map = {}
-    @last_rpc_log = nil
     @last_rpc_message = nil
 
     @copilot_client.on_send do |data|
@@ -26,7 +25,7 @@ class Client
       if session
         rpc_id = data[:id]
         @waiting_map[rpc_id] = session if rpc_id
-        @last_rpc_log = session.handle(:outgoing, rpc_id, data)
+        @last_rpc_message = session.handle(:outgoing, rpc_id, data)
       end
       Rails.logger.debug("Sent data: #{data}")
     end
@@ -37,7 +36,7 @@ class Client
       rpc_id = data[:id]
       session ||= @waiting_map.delete(rpc_id) if rpc_id
       if session
-        @last_rpc_log = session.handle(:incoming, rpc_id, data)
+        @last_rpc_message = session.handle(:incoming, rpc_id, data)
       end
       Rails.logger.debug("Received data: #{data}")
     end
@@ -62,9 +61,9 @@ class Client
 
   def wait
     copilot_client.wait do
-      rpc_log = @last_rpc_log
-      @last_rpc_log = nil
-      yield(rpc_log)
+      rpc_message = @last_rpc_message
+      @last_rpc_message = nil
+      yield(rpc_message)
     end
   end
 end

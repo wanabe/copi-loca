@@ -1,5 +1,4 @@
 class Session < ApplicationRecord
-  has_many :rpc_logs, dependent: :destroy
   has_many :messages, dependent: :destroy
   has_many :rpc_messages, dependent: :destroy
 
@@ -12,17 +11,12 @@ class Session < ApplicationRecord
 
   def send_prompt(prompt, attachments: nil)
     rpc_id = copilot_session.send(prompt, attachments: attachments)
-    rpc_log = rpc_logs.find_by(rpc_id: rpc_id)
-    unless rpc_log
-      raise "RPC log not found for sent prompt with RPC ID: #{rpc_id}"
-    end
     rpc_message = rpc_messages.find_by(rpc_id: rpc_id)
     unless rpc_message
       raise "RPC message not found for sent prompt with RPC ID: #{rpc_id}"
     end
     messages.create(
       session_id: id,
-      rpc_log: rpc_log,
       rpc_message: rpc_message,
       direction: :outgoing,
       content: prompt
@@ -30,11 +24,6 @@ class Session < ApplicationRecord
   end
 
   def handle(direction, rpc_id, data)
-    rpc_log = rpc_logs.create(
-      direction: direction,
-      rpc_id: rpc_id,
-      data: data
-    )
     rpc_message = rpc_messages.create!(
       direction: direction,
       rpc_id: rpc_id,
@@ -43,21 +32,20 @@ class Session < ApplicationRecord
       result: data[:result]&.except(:sessionId),
       error: data[:error]
     )
-    if rpc_log.incoming? && data[:method] == "session.event"
+    if rpc_message.incoming? && data[:method] == "session.event"
       event = data.dig(:params, :event)
-      handle_event(rpc_log, rpc_message, event) if event
+      handle_event(rpc_message, event) if event
     end
-    [ rpc_log, rpc_message ]
+    rpc_message
   end
 
-  def handle_event(rpc_log, rpc_message, event)
+  def handle_event(rpc_message, event)
     type = event[:type]
     return if type != "assistant.message"
     content = event.dig(:data, :content)
     return if content.blank?
-    rpc_log.create_message(
+    rpc_message.create_message(
       session_id: id,
-      rpc_message: rpc_message,
       direction: :incoming,
       content: content
     )
@@ -69,8 +57,8 @@ class Session < ApplicationRecord
   end
 
   def wait_until_idle
-    Client.wait do |rpc_log, rpc_message|
-      yield(rpc_log, rpc_message) if block_given? && rpc_log && rpc_message && rpc_log.session_id == id
+    Client.wait do |rpc_message|
+      yield(rpc_message) if block_given? && rpc_message && rpc_message.session_id == id
       @copilot_session.idle?
     end
   end

@@ -10,16 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_15_202024) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_15_221703) do
   create_table "messages", force: :cascade do |t|
     t.string "content", null: false
     t.datetime "created_at", null: false
     t.integer "direction", default: 1, null: false
-    t.integer "rpc_log_id", null: false
     t.integer "rpc_message_id", null: false
     t.string "session_id", null: false
     t.datetime "updated_at", null: false
-    t.index ["rpc_log_id"], name: "index_messages_on_rpc_log_id"
     t.index ["rpc_message_id"], name: "index_messages_on_rpc_message_id"
     t.index ["session_id"], name: "index_messages_on_session_id"
   end
@@ -29,16 +27,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_15_202024) do
     t.datetime "created_at", null: false
     t.string "directory"
     t.datetime "updated_at", null: false
-  end
-
-  create_table "rpc_logs", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.json "data", null: false
-    t.integer "direction", default: 1, null: false
-    t.string "rpc_id"
-    t.string "session_id", null: false
-    t.datetime "updated_at", null: false
-    t.index ["session_id"], name: "index_rpc_logs_on_session_id"
   end
 
   create_table "rpc_messages", force: :cascade do |t|

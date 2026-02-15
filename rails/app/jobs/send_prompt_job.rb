@@ -17,7 +17,7 @@ class SendPromptJob < ApplicationJob
       wait_until = Time.current
       messages = session.messages.last(5)
       rpc_messages = session.rpc_messages.last(5)
-      session.wait_until_idle do |rpc_log, rpc_message|
+      session.wait_until_idle do |rpc_message|
         push_limit(rpc_messages, rpc_message)
         push_limit(messages, rpc_message.message)
 
