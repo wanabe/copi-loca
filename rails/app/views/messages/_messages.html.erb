@@ -1,0 +1,5 @@
+<div id="<%= limit == 5 ? 'latest_5_messages' : 'messages' %>" class="messages-list" data-controller="limit-list" data-limit-list-max-value="<%= limit %>" data-limit-list-order-value="prepend">
+  <% messages.each do |message| %>
+    <%= render message %>
+  <% end %>
+</div>

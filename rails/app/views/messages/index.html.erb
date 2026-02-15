@@ -1,14 +1,8 @@
 <p style="color: green"><%= notice %></p>
-<%= turbo_stream_from [@session, :messages] %>
+
 <% content_for :title, "Messages" %>
 
 <h1>Messages</h1>
 
-<%= render "form", message: @message %>
-
-<div id="messages" class="messages-list">
-  <% @messages.each do |message| %>
-    <%= render "message", message: message %>
-  <% end %>
-</div>
+<%= render "messages", messages: @messages, limit: 10 %>
 <%= paginate @messages %>

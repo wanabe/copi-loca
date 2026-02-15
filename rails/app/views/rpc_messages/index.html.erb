@@ -9,7 +9,7 @@
     <strong>Filter by method:</strong><br>
     <% @methods.each do |method| %>
       <label>
-        <%= check_box_tag 'methods[]', method, @selected_methods.include?(method), id: "method_{method}" %>
+        <%= check_box_tag 'methods[]', method, @selected_methods.include?(method), id: "method_#{method}" %>
         <%= method %>
       </label>
     <% end %>
@@ -23,9 +23,9 @@
     <%= select_tag :direction, options_for_select(RpcMessage.directions.keys.map { |k| [k.titleize, k] }, @selected_direction), include_blank: true %>
   </div>
   <div>
-    <%= submit_tag '絞り込み' %>
+    <%= submit_tag 'Show' %>
   </div>
 <% end %>
 
-<%= render 'table', rpc_messages: @rpc_messages, session: @streaming ? @session : nil %>
+<%= render 'rpc_messages', rpc_messages: @rpc_messages, limit: 10 %>
 <%= paginate @rpc_messages %>

@@ -1,5 +1,4 @@
-<%= turbo_stream_from [session, :rpc_messages] if session %>
-<table class="rpc-messages-table">
+<table id="<%= limit == 5 ? 'latest_5_rpc_messages' : 'rpc_messages' %>" class="rpc-messages-table">
   <thead>
     <tr>
       <th>ID</th>
@@ -12,7 +11,7 @@
       <th>Error</th>
     </tr>
   </thead>
-  <tbody id="rpc_messages" data-controller="limit-list" data-limit-list-max-value="5" data-limit-list-order-value="prepend">
+  <tbody data-controller="limit-list" data-limit-list-max-value="<%= limit %>" data-limit-list-order-value="prepend">
     <% rpc_messages.each do |rpc_message| %>
       <%= render rpc_message %>
     <% end %>
