@@ -1,4 +1,19 @@
 class ApplicationController < ActionController::Base
+  before_action :add_home_breadcrumb
+  helper_method :breadcrumbs
+
+  def breadcrumbs
+    @breadcrumbs ||= []
+  end
+
+  def add_breadcrumb(name, path = nil)
+    breadcrumbs << Breadcrumb.new(name, path)
+  end
+
+  def add_home_breadcrumb
+    add_breadcrumb("Home", root_path)
+  end
+
   allow_browser versions: :modern
   stale_when_importmap_changes
 

@@ -1,56 +1,13 @@
 <nav aria-label="breadcrumb" class="mobile-breadcrumbs" style="display: flex; align-items: center; min-width:0; overflow:hidden;">
   <ol class="breadcrumb" style="flex:1 1 0%; min-width:0; overflow:hidden;">
-    <li class="breadcrumb-item"><%= link_to 'Home', root_path %></li>
-    <% if controller_name == 'sessions' && action_name == 'index' %>
-      <li class="breadcrumb-item active" aria-current="page">Sessions</li>
-    <% elsif controller_name == 'models' && action_name == 'index' %>
-      <li class="breadcrumb-item active" aria-current="page">Models</li>
-    <% elsif controller_name == 'files' && action_name == 'index' %>
-      <li class="breadcrumb-item active" aria-current="page">Files</li>
-    <% elsif controller_name == 'files' && action_name == 'show' %>
-      <li class="breadcrumb-item"><%= link_to 'Files', files_path %></li>
-      <% if @path.present? %>
-        <% path_parts = @path.split('/') %>
-        <% path_parts.each_with_index do |part, i| %>
-          <% is_last = (i == path_parts.size - 1) %>
-          <% if is_last %>
-            <li class="breadcrumb-item active" aria-current="page"><%= part %></li>
-          <% else %>
-            <li class="breadcrumb-item"><%= part %></li>
-          <% end %>
+    <% breadcrumbs.each do |crumb| %>
+      <li class="breadcrumb-item">
+        <% if crumb.link? && crumb != breadcrumbs.last %>
+          <%= link_to crumb.name, crumb.path, class: "breadcrumb-link" %>
+        <% else %>
+          <span class="breadcrumb-page"><%= crumb.name %></span>
         <% end %>
-      <% end %>
-    <% elsif controller_name == 'changes' && action_name == 'revert' %>
-      <li class="breadcrumb-item"><%= link_to 'Changes', changes_path %></li>
-      <li class="breadcrumb-item active" aria-current="page">Revert</li>
-    <% elsif controller_name == 'changes' && action_name == 'uncommitted' %>
-      <li class="breadcrumb-item"><%= link_to 'Changes', changes_path %></li>
-      <li class="breadcrumb-item active" aria-current="page">Uncommitted</li>
-    <% elsif controller_name == 'changes' && action_name == 'index' %>
-      <li class="breadcrumb-item active" aria-current="page">Changes</li>
-    <% elsif controller_name == 'changes' && action_name == 'show' %>
-      <li class="breadcrumb-item"><%= link_to 'Changes', changes_path %></li>
-      <li class="breadcrumb-item active" aria-current="page"><%= params[:id] %></li>
-    <% elsif controller_name == 'sessions' && action_name == 'show' && defined?(@session) && @session.present? && @session&.id.present? %>
-      <li class="breadcrumb-item"><%= link_to 'Sessions', sessions_path %></li>
-      <li class="breadcrumb-item active" aria-current="page"><%= @session&.id&.to_s.length > 10 ? @session.id.to_s[0,10] + '...' : @session&.id %></li>
-    <% elsif controller_name == 'messages' && defined?(@session) && @session.present? && @session&.id.present? %>
-      <li class="breadcrumb-item"><%= link_to 'Sessions', sessions_path %></li>
-      <li class="breadcrumb-item"><%= link_to (@session&.id&.to_s.length > 10 ? @session.id.to_s[0,10] + '...' : @session&.id), session_path(@session) %></li>
-      <li class="breadcrumb-item active" aria-current="page">Messages</li>
-    <% elsif controller_name == 'rpc_logs' && defined?(@session) && @session.present? && @session&.id.present? %>
-      <li class="breadcrumb-item"><%= link_to 'Sessions', sessions_path %></li>
-      <li class="breadcrumb-item"><%= link_to (@session&.id&.to_s.length > 10 ? @session.id.to_s[0,10] + '...' : @session&.id), session_path(@session) %></li>
-      <li class="breadcrumb-item active" aria-current="page">RPC logs</li>
-    <% elsif controller_name == 'messages' %>
-      <li class="breadcrumb-item"><%= link_to 'Sessions', sessions_path %></li>
-      <li class="breadcrumb-item active" aria-current="page">Messages</li>
-    <% elsif controller_name == 'rpc_logs' %>
-      <li class="breadcrumb-item"><%= link_to 'Sessions', sessions_path %></li>
-      <li class="breadcrumb-item active" aria-current="page">RPC logs</li>
+      </li>
     <% end %>
   </ol>
-  <% if defined?(@session) && @session.present? && @session&.model.present? %>
-    <span class="session-model" style="flex:0 0 auto; margin-left:0.7em; font-style:italic; color:#888; white-space:nowrap;"> <%= @session.model %></span>
-  <% end %>
 </nav>

@@ -1,5 +1,9 @@
 class SessionsController < ApplicationController
+  include SessionRelated
   before_action :set_session, only: %i[ show destroy ]
+
+  before_action :add_sessions_breadcrumb
+  before_action :add_session_breadcrumb, only: %i[ show ]
 
   # GET /sessions
   def index
@@ -39,8 +43,8 @@ class SessionsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_session
-      @session = Session.find(params.expect(:id))
+    def session_id_param
+     params.require(:id)
     end
 
     # Only allow a list of trusted parameters through.

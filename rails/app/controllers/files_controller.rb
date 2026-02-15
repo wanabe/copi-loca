@@ -1,11 +1,15 @@
 class FilesController < ApplicationController
+  before_action :set_path, only: [ :show ]
+
+  before_action :add_files_breadcrumb
+  before_action :add_filepath_breadcrumb, only: [ :show ]
+
   def index
     files = Repository.ls_files
     @tree = build_tree(files)
   end
 
   def show
-    @path = params[:path].to_s
     abs_path = Pathname.new("/app").join(@path).expand_path.to_s
     unless abs_path.start_with?(File.expand_path("/app/"))
       render plain: "Invalid path", status: :bad_request
@@ -20,6 +24,21 @@ class FilesController < ApplicationController
   end
 
   private
+
+  def set_path
+    @path = params[:path].to_s
+  end
+
+  def add_files_breadcrumb
+    add_breadcrumb("Files", files_path)
+  end
+
+  def add_filepath_breadcrumb
+    parts = @path.split("/")
+    parts.each do |part|
+      add_breadcrumb(part)
+    end
+  end
 
   def build_tree(paths)
     tree = {}

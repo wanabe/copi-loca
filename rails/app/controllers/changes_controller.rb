@@ -1,7 +1,10 @@
 class ChangesController < ApplicationController
-  def uncommitted
-    @file_diffs = Repository.uncommitted_diffs
-  end
+  before_action :set_id, only: [ :show ]
+
+  before_action :add_changes_breadcrumb
+  before_action :add_change_breadcrumb, only: [ :show ]
+  before_action :add_action_breadcrumb, only: [ :uncommitted ]
+
   def index
     uncommitted = [ { hash: "uncommitted", author: "", message: "" } ]
     all_commits = uncommitted + Repository.log(10_000)
@@ -21,8 +24,29 @@ class ChangesController < ApplicationController
     redirect_to root_path, notice: "Code changes reverted."
   end
 
+  def uncommitted
+    @file_diffs = Repository.uncommitted_diffs
+  end
+
   def show
-    id = params[:id]
-    @file_diffs = Repository.tracked_diffs(id)
+    @file_diffs = Repository.tracked_diffs(@id)
+  end
+
+  private
+
+  def set_id
+    @id = params[:id]
+  end
+
+  def add_changes_breadcrumb
+    add_breadcrumb("Changes", changes_path)
+  end
+
+  def add_change_breadcrumb
+    add_breadcrumb(@id, change_path(@id))
+  end
+
+  def add_action_breadcrumb
+    add_breadcrumb(action_name)
   end
 end

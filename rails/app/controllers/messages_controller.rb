@@ -1,6 +1,13 @@
 class MessagesController < ApplicationController
+  include SessionRelated
+
   before_action :set_session
   before_action :set_message, only: %i[ show ]
+
+  before_action :add_sessions_breadcrumb
+  before_action :add_session_breadcrumb
+  before_action :add_messages_breadcrumb
+  before_action :add_message_breadcrumb, only: %i[ show ]
 
   # GET /messages
   def index
@@ -62,5 +69,13 @@ class MessagesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def message_params
       params.expect(message: [ :content ])
+    end
+
+    def add_messages_breadcrumb
+      add_breadcrumb("Messages", session_messages_path(@session))
+    end
+
+    def add_message_breadcrumb
+      add_breadcrumb(@message.id, session_message_path(@session, @message))
     end
 end

@@ -1,5 +1,8 @@
 class OperationsController < ApplicationController
   before_action :set_operation, only: %i[ show edit update destroy run ]
+  before_action :add_collection_breadcrumb
+  before_action :add_member_breadcrumb, only: %i[ show edit ]
+  before_action :add_action_breadcrumb, only: %i[ new edit ]
 
   # GET /operations
   def index
@@ -54,6 +57,18 @@ class OperationsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_operation
       @operation = Operation.find(params[:id])
+    end
+
+    def add_collection_breadcrumb
+      add_breadcrumb("Operations", operations_path)
+    end
+
+    def add_member_breadcrumb
+      add_breadcrumb(@operation.id, operation_path(@operation))
+    end
+
+    def add_action_breadcrumb
+      add_breadcrumb(action_name)
     end
 
     # Only allow a list of trusted parameters through.
