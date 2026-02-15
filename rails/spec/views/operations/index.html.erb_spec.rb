@@ -16,8 +16,8 @@ RSpec.describe "operations/index", type: :view do
 
   it "renders a list of operations" do
     render
-    cell_selector = 'div>p'
-    assert_select cell_selector, text: Regexp.new("Command".to_s), count: 2
-    assert_select cell_selector, text: Regexp.new("Directory".to_s), count: 2
+    cell_selector = 'div > strong'
+    assert_select cell_selector, text: /Command:/, count: 2
+    assert_select cell_selector, text: /Directory:/, count: 2
   end
 end
