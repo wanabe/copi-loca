@@ -7,8 +7,8 @@ class ApplicationController < ActionController::Base
 
   private
   def authenticate
-    return if ENV['COPI_ADMIN_PASSWORD'].blank?
+    return if ENV["COPI_ADMIN_PASSWORD"].blank?
     return if session[:admin]
-    redirect_to new_auth_session_path, alert: 'Please log in.'
+    redirect_to new_auth_session_path, alert: "Please log in."
   end
 end

@@ -31,7 +31,7 @@ class Repository
   def log(limit = 10)
     log = git("log --pretty=format:'%H|%an|%s' -n#{limit}")
     log.lines.map do |line|
-      hash, author, message = line.chomp.split('|', 3)
+      hash, author, message = line.chomp.split("|", 3)
       { hash: hash, author: author, message: message }
     end
   end
@@ -54,7 +54,7 @@ class Repository
         diffs << current if current
         m = line.match(%r{diff --git a/(.+?) b/\1})
         path = m ? m[1] : nil
-        current = [path, ""]
+        current = [ path, "" ]
       elsif current
         next if line.start_with?("index ")
         next if line.start_with?("+++ ")
@@ -76,9 +76,9 @@ class Repository
         content = File.read(abs_path)
         lines = content.lines
         diff = "@@ -0,0 +1,#{lines.size} @@\n" + lines.map { |l| "+#{l}" }.join
-        diffs << [path, diff]
+        diffs << [ path, diff ]
       else
-        diffs << [path, "Untracked file"]
+        diffs << [ path, "Untracked file" ]
       end
     end
     diffs

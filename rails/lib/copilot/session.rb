@@ -37,7 +37,7 @@ module Copilot
 
     def send(prompt, attachments: nil)
       @idle = false
-      call("session.send", **{prompt: prompt, attachments: attachments}.compact)
+      call("session.send", **{ prompt: prompt, attachments: attachments }.compact)
     end
 
     def call(method, params = {})

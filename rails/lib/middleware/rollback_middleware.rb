@@ -10,11 +10,11 @@ class RollbackMiddleware
     if request.path == PATH
       if request.post?
         begin
-          output = `git -C /app reset --hard HEAD 2>&1` 
-          
-          return [200, { "Content-Type" => "text/plain" }, ["Rollback successful:\n#{output}"]]
+          output = `git -C /app reset --hard HEAD 2>&1`
+
+          return [ 200, { "Content-Type" => "text/plain" }, [ "Rollback successful:\n#{output}" ] ]
         rescue => e
-          return [500, { "Content-Type" => "text/plain" }, ["Rollback failed: #{e.message}"]]
+          return [ 500, { "Content-Type" => "text/plain" }, [ "Rollback failed: #{e.message}" ] ]
         end
       elsif request.get?
         html = <<~HTML
@@ -24,7 +24,7 @@ class RollbackMiddleware
             <button type="submit">Yes, Rollback</button>
           </form>
         HTML
-        return [200, { "Content-Type" => "text/html" }, [html]]
+        return [ 200, { "Content-Type" => "text/html" }, [ html ] ]
       end
     end
 
@@ -34,8 +34,8 @@ class RollbackMiddleware
       error_message = "CRITICAL ERROR: #{e.class} - #{e.message}\n\n"
       html = "<h1>System Down</h1><pre>#{error_message}</pre>"
       html += "<form action='#{PATH}' method='post'><button>Force Rollback</button></form>"
-      
-      [500, { "Content-Type" => "text/html" }, [html]]
+
+      [ 500, { "Content-Type" => "text/html" }, [ html ] ]
     end
   end
 end

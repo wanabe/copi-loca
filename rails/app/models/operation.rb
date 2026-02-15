@@ -1,6 +1,6 @@
 class Operation < ApplicationRecord
   def run
-    output = ''
+    output = ""
     status = nil
     Dir.chdir(directory) do
       reader, writer = IO.pipe
@@ -11,6 +11,6 @@ class Operation < ApplicationRecord
       status = process_status.exitstatus
       reader.close
     end
-    [output, status]
+    [ output, status ]
   end
 end

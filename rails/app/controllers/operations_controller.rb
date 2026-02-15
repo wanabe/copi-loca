@@ -47,7 +47,7 @@ class OperationsController < ApplicationController
 
   def run
     @output, @status = @operation.run
-    render partial: 'run'
+    render partial: "run"
   end
 
   private

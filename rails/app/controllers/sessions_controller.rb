@@ -16,8 +16,8 @@ class SessionsController < ApplicationController
 
   # POST /sessions
   def create
-    unless session[:admin] || ENV['COPI_ADMIN_PASSWORD'].blank?
-      redirect_to new_auth_session_path, alert: 'Admin only.' and return
+    unless session[:admin] || ENV["COPI_ADMIN_PASSWORD"].blank?
+      redirect_to new_auth_session_path, alert: "Admin only." and return
     end
     @session = Session.new(session_params)
 
@@ -30,8 +30,8 @@ class SessionsController < ApplicationController
 
   # DELETE /sessions/1
   def destroy
-    unless session[:admin] || ENV['COPI_ADMIN_PASSWORD'].blank?
-      redirect_to new_auth_session_path, alert: 'Admin only.' and return
+    unless session[:admin] || ENV["COPI_ADMIN_PASSWORD"].blank?
+      redirect_to new_auth_session_path, alert: "Admin only." and return
     end
     @session.destroy!
     redirect_to sessions_path, notice: "Session was successfully destroyed.", status: :see_other

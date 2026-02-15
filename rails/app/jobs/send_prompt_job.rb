@@ -24,7 +24,7 @@ class SendPromptJob < ApplicationJob
       if file_paths.present?
         file_paths.each do |shared_path|
           if shared_path.start_with?("/shared-tmp/")
-            tmp_path = Rails.root.join('tmp', File.basename(shared_path))
+            tmp_path = Rails.root.join("tmp", File.basename(shared_path))
             File.delete(tmp_path) if File.exist?(tmp_path)
           end
         end

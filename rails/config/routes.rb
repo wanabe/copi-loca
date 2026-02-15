@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   root to: "home#index"
 
-  resources :files, only: [:index]
-  get 'files/*path', to: 'files#show', as: :file, format: "html"
+  resources :files, only: [ :index ]
+  get "files/*path", to: "files#show", as: :file, format: "html"
 
   get "r", to: "changes#revert"
   resources :changes, only: [] do
@@ -26,11 +26,11 @@ Rails.application.routes.draw do
 
   resources :auth_sessions, only: [ :new, :create, :destroy ]
 
-  resources :app_ops, only: [:index] do
+  resources :app_ops, only: [ :index ] do
     collection do
-      get :confirm, to: 'app_ops#confirm', as: :confirm
-      post :bundle_install, to: 'app_ops#bundle_install', as: :bundle_install
-      post :rspec, to: 'app_ops#rspec', as: :rspec
+      get :confirm, to: "app_ops#confirm", as: :confirm
+      post :bundle_install, to: "app_ops#bundle_install", as: :bundle_install
+      post :rspec, to: "app_ops#rspec", as: :rspec
     end
   end
 
