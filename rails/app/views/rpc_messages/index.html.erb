@@ -4,6 +4,29 @@
 
 <h1>Rpc messages</h1>
 
+<%= form_with url: session_rpc_messages_path(@session), method: :get, local: true do %>
+  <div>
+    <strong>Filter by method:</strong><br>
+    <% @methods.each do |method| %>
+      <label>
+        <%= check_box_tag 'methods[]', method, @selected_methods.include?(method), id: "method_{method}" %>
+        <%= method %>
+      </label>
+    <% end %>
+  </div>
+  <div>
+    <strong>Type:</strong>
+    <%= select_tag :message_type, options_for_select(RpcMessage.message_types.keys.map { |k| [k.titleize, k] }, @selected_message_type), include_blank: true %>
+  </div>
+  <div>
+    <strong>Direction:</strong>
+    <%= select_tag :direction, options_for_select(RpcMessage.directions.keys.map { |k| [k.titleize, k] }, @selected_direction), include_blank: true %>
+  </div>
+  <div>
+    <%= submit_tag '絞り込み' %>
+  </div>
+<% end %>
+
 <table>
   <thead>
     <tr>

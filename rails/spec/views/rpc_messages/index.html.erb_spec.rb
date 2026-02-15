@@ -4,6 +4,10 @@ RSpec.describe "rpc_messages/index", type: :view do
   before(:each) do
     session = Session.create!(model: "gpt-4", created_at: Time.now)
     assign(:session, session)
+    assign(:methods, [ "test_method" ])
+    assign(:selected_methods, [])
+    assign(:selected_message_type, nil)
+    assign(:selected_direction, nil)
     assign(:rpc_messages, Kaminari.paginate_array([
       RpcMessage.create!(
         session: session,

@@ -11,7 +11,15 @@ class RpcMessagesController < ApplicationController
 
   # GET /rpc_messages
   def index
-    @rpc_messages = @session.rpc_messages.order(id: :desc).page(params[:page])
+    @methods = @session.rpc_messages.distinct.pluck(:method).compact.sort || []
+    @selected_methods = Array(params[:methods])
+    @selected_direction = params[:direction]
+    @selected_message_type = params[:message_type]
+    scope = @session.rpc_messages
+    scope = scope.where(method: @selected_methods) if @selected_methods.present?
+    scope = scope.where(direction: @selected_direction) if @selected_direction.present?
+    scope = scope.where(message_type: @selected_message_type) if @selected_message_type.present?
+    @rpc_messages = scope.order(id: :desc).page(params[:page])
   end
 
   # GET /rpc_messages/1
