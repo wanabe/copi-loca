@@ -53,11 +53,11 @@ class OperationsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_operation
-      @operation = Operation.find(params.expect(:id))
+      @operation = Operation.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def operation_params
-      params.expect(operation: [ :command, :directory ])
+      params.require(:operation).permit(:command, :directory)
     end
 end

@@ -17,11 +17,11 @@ RSpec.describe "/operations", type: :request do
   # Operation. As you add validations to Operation, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    { command: 'echo hello', directory: '/tmp' }
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    { command: '', directory: '' }
   }
 
   describe "GET /index" do
@@ -86,14 +86,14 @@ RSpec.describe "/operations", type: :request do
   describe "PATCH /update" do
     context "with valid parameters" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        { command: 'echo updated', directory: '/tmp' }
       }
 
       it "updates the requested operation" do
         operation = Operation.create! valid_attributes
         patch operation_url(operation), params: { operation: new_attributes }
         operation.reload
-        skip("Add assertions for updated state")
+        expect(operation.command).to eq('echo updated')
       end
 
       it "redirects to the operation" do

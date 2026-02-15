@@ -1,4 +1,7 @@
 class Operation < ApplicationRecord
+  validates :command, presence: true
+  validates :directory, presence: true
+
   def run
     output = ""
     status = nil
