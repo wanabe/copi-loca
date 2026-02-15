@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root to: "home#index"
+
   resources :files, only: [:index]
   get 'files/*path', to: 'files#show', as: :file, format: "html"
 
@@ -30,6 +31,12 @@ Rails.application.routes.draw do
       get :confirm, to: 'app_ops#confirm', as: :confirm
       post :bundle_install, to: 'app_ops#bundle_install', as: :bundle_install
       post :rspec, to: 'app_ops#rspec', as: :rspec
+    end
+  end
+
+  resources :operations do
+    member do
+      post :run
     end
   end
 end

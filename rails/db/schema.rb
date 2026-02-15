@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_09_213453) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_14_205811) do
   create_table "messages", force: :cascade do |t|
     t.string "content", null: false
     t.datetime "created_at", null: false
@@ -20,6 +20,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_09_213453) do
     t.datetime "updated_at", null: false
     t.index ["rpc_log_id"], name: "index_messages_on_rpc_log_id"
     t.index ["session_id"], name: "index_messages_on_session_id"
+  end
+
+  create_table "operations", force: :cascade do |t|
+    t.string "command"
+    t.datetime "created_at", null: false
+    t.string "directory"
+    t.datetime "updated_at", null: false
   end
 
   create_table "rpc_logs", force: :cascade do |t|
