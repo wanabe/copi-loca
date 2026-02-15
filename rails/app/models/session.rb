@@ -47,7 +47,7 @@ class Session < ApplicationRecord
       event = data.dig(:params, :event)
       handle_event(rpc_log, rpc_message, event) if event
     end
-    [rpc_log, rpc_message]
+    [ rpc_log, rpc_message ]
   end
 
   def handle_event(rpc_log, rpc_message, event)

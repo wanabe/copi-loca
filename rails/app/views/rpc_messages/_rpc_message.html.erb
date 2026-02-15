@@ -1,10 +1,10 @@
 <tr id="<%= dom_id rpc_message %>">
   <td><%= rpc_message.id %></td>
-  <td><%= rpc_message.message_type %></td>
-  <td><%= rpc_message.direction %></td>
-  <td class="truncate"><%= rpc_message.rpc_id %></td>
+  <td><%= rpc_message.message_type.to_s[0,3] %></td>
+  <td><%= rpc_message.direction.to_s[0,3] %></td>
+  <td class="truncate rpc-id"><%= rpc_message.rpc_id %></td>
   <td class="truncate"><%= rpc_message.method %></td>
-  <td class="truncate"><%= rpc_message.params %></td>
-  <td class="truncate"><%= rpc_message.result %></td>
-  <td class="truncate"><%= rpc_message.error %></td>
+  <td class="truncate"><%= rpc_message.params&.to_json %></td>
+  <td class="truncate"><%= rpc_message.result&.to_json %></td>
+  <td class="truncate"><%= rpc_message.error&.to_json %></td>
 </tr>
