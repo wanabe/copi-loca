@@ -10,4 +10,7 @@
       </li>
     <% end %>
   </ol>
+  <% if defined?(@session) && @session.present? && @session&.model.present? %>
+    <span class="session-model" style="flex:0 0 auto; margin-left:0.7em; font-style:italic; color:#888; white-space:nowrap;"> <%= @session.model %></span>
+  <% end %>
 </nav>
