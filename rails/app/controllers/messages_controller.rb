@@ -41,7 +41,21 @@ class MessagesController < ApplicationController
       end
     end
 
-    SendPromptJob.perform_later(@session.id, message_params[:content], shared_paths)
+    content = message_params[:content].to_s.strip
+    if content.blank?
+      respond_to do |format|
+        format.turbo_stream { head :ok }
+        format.html do
+          if params[:from] == "session_show"
+            redirect_to session_path(@session)
+          else
+            redirect_to action: :index
+          end
+        end
+      end
+      return
+    end
+    SendPromptJob.perform_later(@session.id, content, shared_paths)
 
     respond_to do |format|
       format.turbo_stream { head :ok }
