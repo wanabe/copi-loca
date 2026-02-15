@@ -12,7 +12,7 @@ class SendPromptJob < ApplicationJob
 
     if message
       broadcast_job_status(:running)
-      broadcast(session, [message.rpc_log], [message])
+      broadcast(session, [ message.rpc_log ], [ message ])
 
       wait_range = 0.1.seconds
       wait_until = Time.current + wait_range

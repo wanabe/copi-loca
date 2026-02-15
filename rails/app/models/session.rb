@@ -1,6 +1,7 @@
 class Session < ApplicationRecord
   has_many :rpc_logs, dependent: :destroy
   has_many :messages, dependent: :destroy
+  has_many :rpc_messages, dependent: :destroy
 
   after_initialize :initialize_internals
   before_validation :create_session, on: :create
@@ -28,6 +29,14 @@ class Session < ApplicationRecord
       direction: direction,
       rpc_id: rpc_id,
       data: data
+    )
+    rpc_messages.create!(
+      direction: direction,
+      rpc_id: rpc_id,
+      method: data[:method],
+      params: data[:params]&.except(:sessionId),
+      result: data[:result]&.except(:sessionId),
+      error: data[:error]
     )
     if rpc_log.incoming? && data[:method] == "session.event"
       event = data.dig(:params, :event)

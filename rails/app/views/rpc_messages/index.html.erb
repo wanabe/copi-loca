@@ -1,0 +1,26 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Rpc messages" %>
+
+<h1>Rpc messages</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Type</th>
+      <th>Direction</th>
+      <th>Rpc id</th>
+      <th>Method</th>
+      <th>Params</th>
+      <th>Result</th>
+      <th>Error</th>
+    </tr>
+  </thead>
+  <tbody id="rpc_messages">
+    <% @rpc_messages.each do |rpc_message| %>
+      <%= render rpc_message %>
+    <% end %>
+  </tbody>
+</table>
+<%= paginate @rpc_messages %>
