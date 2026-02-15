@@ -1,10 +1,10 @@
-<tr id="<%= dom_id rpc_message %>">
-  <td><%= rpc_message.id %></td>
-  <td><%= rpc_message.message_type.to_s[0,3] %></td>
-  <td><%= rpc_message.direction.to_s[0,3] %></td>
-  <td class="truncate rpc-id"><%= rpc_message.rpc_id %></td>
-  <td class="truncate"><%= rpc_message.method %></td>
-  <td class="truncate"><%= rpc_message.params&.to_json %></td>
-  <td class="truncate"><%= rpc_message.result&.to_json %></td>
-  <td class="truncate"><%= rpc_message.error&.to_json %></td>
-</tr>
+<div class="<%= @rpc_message == rpc_message ? 'rpc-message' : 'rpc-messages-flex-row' %>">
+  <strong class="rpc-label">ID:</strong><div class="rpc-col-id"><%= link_to rpc_message.id, session_rpc_message_path(rpc_message.session, rpc_message) %></div>
+  <strong class="rpc-label">Type:</strong><div class="rpc-col-type"><%= rpc_message.message_type %></div>
+  <strong class="rpc-label">Direction:</strong><div class="rpc-col-dir"><%= rpc_message.direction %></div>
+  <strong class="rpc-label">RPC ID:</strong><div class="rpc-col-rpcid"><%= rpc_message.rpc_id %></div>
+  <strong class="rpc-label">Method:</strong><div class="rpc-col-method"><%= rpc_message.method %></div>
+  <strong class="rpc-label">Params:</strong><div class="rpc-col-params"><%= rpc_message.params ? JSON.pretty_generate(rpc_message.params) : nil %></div>
+  <strong class="rpc-label">Result:</strong><div class="rpc-col-result"><%= rpc_message.result ? JSON.pretty_generate(rpc_message.result) : nil %></div>
+  <strong class="rpc-label">Error:</strong><div class="rpc-col-error"><%= rpc_message.error ? JSON.pretty_generate(rpc_message.error) : nil %></div>
+</div>

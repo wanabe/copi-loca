@@ -1,0 +1,28 @@
+.rpc-messages-flex-table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.rpc-messages-flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+.rpc-messages-flex-header {
+  font-weight: bold;
+  background: #f5f5f5;
+}
+.rpc-messages-flex-row .rpc-label { display: none;}
+.rpc-messages-flex-row .rpc-col-id { width: auto; min-width: 2em; max-width: none; overflow: visible; margin-right: 1em; text-overflow: ellipsis; }
+.rpc-messages-flex-row .rpc-col-type { width: 4em; min-width: 3em; max-width: 6em; overflow: hidden; margin-right: 0.5em; text-overflow: ellipsis; }
+.rpc-messages-flex-row .rpc-col-dir { width: 4em; min-width: 3em; max-width: 6em; overflow: hidden; text-overflow: ellipsis; }
+.rpc-messages-flex-row .rpc-col-rpcid { width: 8em; min-width: 5em; max-width: 12em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rpc-messages-flex-row .rpc-col-method { width: 10em; min-width: 6em; max-width: 16em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rpc-messages-flex-row .rpc-col-params { flex: 2 1 16em; min-width: 8em; max-width: 24em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rpc-messages-flex-row .rpc-col-result { flex: 2 1 16em; min-width: 8em; max-width: 24em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rpc-messages-flex-row .rpc-col-error { flex: 1 1 10em; min-width: 6em; max-width: 16em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.rpc-message .rpc-col-params, .rpc-message .rpc-col-result, .rpc-message .rpc-col-error {
+  font-family: monospace;
+  white-space: pre;
+}

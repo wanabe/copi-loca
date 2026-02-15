@@ -1,19 +1,15 @@
-<table id="<%= limit == 5 ? 'latest_5_rpc_messages' : 'rpc_messages' %>" class="rpc-messages-table">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Type</th>
-      <th>Dir</th>
-      <th>Rpc id</th>
-      <th>Method</th>
-      <th>Params</th>
-      <th>Result</th>
-      <th>Error</th>
-    </tr>
-  </thead>
-  <tbody data-controller="limit-list" data-limit-list-max-value="<%= limit %>" data-limit-list-order-value="prepend">
-    <% rpc_messages.each do |rpc_message| %>
-      <%= render rpc_message %>
-    <% end %>
-  </tbody>
-</table>
+<div class="rpc-messages-flex-table" id="<%= limit == 5 ? 'latest_5_rpc_messages' : 'rpc_messages' %>">
+  <div class="rpc-messages-flex-row rpc-messages-flex-header">
+    <div class="rpc-col-id">ID</div>
+    <div class="rpc-col-type">Type</div>
+    <div class="rpc-col-dir">Dir</div>
+    <div class="rpc-col-rpcid">Rpc id</div>
+    <div class="rpc-col-method">Method</div>
+    <div class="rpc-col-params">Params</div>
+    <div class="rpc-col-result">Result</div>
+    <div class="rpc-col-error">Error</div>
+  </div>
+  <% rpc_messages.each do |rpc_message| %>
+    <%= render rpc_message %>
+  <% end %>
+</div>
