@@ -12,24 +12,24 @@ class SendPromptJob < ApplicationJob
 
     if message
       broadcast_job_status(:running)
-      broadcast(session, [ message.rpc_log ], [ message ])
+      broadcast(session, [ message.rpc_message ], [ message ])
 
       wait_range = 0.1.seconds
       wait_until = Time.current + wait_range
       messages = []
-      rpc_logs = []
-      session.wait_until_idle do |rpc_log|
-        push_limit(rpc_logs, rpc_log)
-        push_limit(messages, rpc_log.message)
+      rpc_messages = []
+      session.wait_until_idle do |rpc_log, rpc_message|
+        push_limit(rpc_messages, rpc_message)
+        push_limit(messages, rpc_message.message)
 
         if Time.current >= wait_until
-          broadcast(session, rpc_logs, messages)
+          broadcast(session, rpc_messages, messages)
           wait_until = Time.current + wait_range
-          rpc_logs.clear
+          rpc_messages.clear
           messages.clear
         end
       end
-      broadcast(session, rpc_logs, messages)
+      broadcast(session, rpc_messages, messages)
       broadcast_job_status(:idle)
     end
   ensure
@@ -60,13 +60,13 @@ class SendPromptJob < ApplicationJob
     )
   end
 
-  def broadcast(session, rpc_logs, messages)
-    rpc_logs.each do |rpc_log|
-      rpc_log.broadcast_append_to(
-        [ session, :rpc_logs ],
-        target: "rpc_logs",
-        partial: "rpc_logs/rpc_log",
-        locals: { rpc_log: rpc_log }
+  def broadcast(session, rpc_messages, messages)
+    rpc_messages.each do |rpc_message|
+      rpc_message.broadcast_prepend_to(
+        [ session, :rpc_messages ],
+        target: "rpc_messages",
+        partial: "rpc_messages/rpc_message",
+        locals: { rpc_message: rpc_message }
       )
     end
 

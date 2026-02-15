@@ -1,17 +1,12 @@
-<%= turbo_stream_from [@session, :messages] %>
-<%= turbo_stream_from [@session, :rpc_logs] %>
-
-<%= turbo_stream_from "job_status" %>
-
-
 <% if notice.present? %><p style="color: green"><%= notice %></p><% end %>
 
 <%= render @session %>
 
 <div>
-
   <div class="mobile-messages-area">
+    <%= turbo_stream_from "job_status" %>
     <%= render 'messages/form', message: @session.messages.new, from: 'session_show' %>
+    <%= turbo_stream_from [@session, :messages] %>
     <div id="messages" class="messages-list" data-controller="limit-list" data-limit-list-max-value="5" data-limit-list-order-value="prepend">
       <% @session.messages.order(created_at: :desc).limit(5).each do |message| %>
         <%= render 'messages/message', message: message %>
@@ -19,13 +14,11 @@
     </div>
     <div class="more-link"><%= link_to 'More messages', session_messages_path(@session) %></div>
   </div>
-  <div class="mobile-rpclogs-area">
-    <div id="rpc_logs" class="rpc-logs-list" data-controller="limit-list" data-limit-list-max-value="5" data-limit-list-order-value="append">
-      <% @session.rpc_logs.order(created_at: :desc).limit(5).reverse.each do |rpc_log| %>
-        <%= render 'rpc_logs/rpc_log', rpc_log: rpc_log %>
-      <% end %>
-    </div>
-    <div class="more-link"><%= link_to 'More RPC logs', session_rpc_logs_path(@session) %></div>
+  <div class="mobile-rpcmessages-area">
+    <h3>Latest RPC Messages</h3>
+    <%= render 'rpc_messages/table', rpc_messages: @session.rpc_messages.order(created_at: :desc).limit(5), session: @session %>
+    <div class="more-link"><%= link_to 'More RPC messages', session_rpc_messages_path(@session) %></div>
   </div>
+
   <div class="mobile-destroy-btn"><%= button_to "Destroy this session", @session, method: :delete %></div>
 </div>

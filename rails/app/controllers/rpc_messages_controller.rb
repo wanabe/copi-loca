@@ -20,6 +20,7 @@ class RpcMessagesController < ApplicationController
     scope = scope.where(direction: @selected_direction) if @selected_direction.present?
     scope = scope.where(message_type: @selected_message_type) if @selected_message_type.present?
     @rpc_messages = scope.order(id: :desc).page(params[:page])
+    @streaming = params[:page].nil? || params[:page].to_i == 1
   end
 
   # GET /rpc_messages/1
