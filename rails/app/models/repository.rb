@@ -37,7 +37,7 @@ class Repository
   end
 
   def diff
-    git("diff")
+    git("diff HEAD")
   end
 
 
