@@ -25,6 +25,7 @@ services:
       - SITE_HOSTNAME=${SITE_HOSTNAME:-localhost}
       - COPI_ADMIN_PASSWORD=${COPI_ADMIN_PASSWORD:-}
     user: "${USR:-root}"
+    restart: unless-stopped
   copilot:
     build: ./copilot
     environment:
