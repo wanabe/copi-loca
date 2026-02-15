@@ -10,15 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_15_111929) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_15_202024) do
   create_table "messages", force: :cascade do |t|
     t.string "content", null: false
     t.datetime "created_at", null: false
     t.integer "direction", default: 1, null: false
     t.integer "rpc_log_id", null: false
+    t.integer "rpc_message_id", null: false
     t.string "session_id", null: false
     t.datetime "updated_at", null: false
     t.index ["rpc_log_id"], name: "index_messages_on_rpc_log_id"
+    t.index ["rpc_message_id"], name: "index_messages_on_rpc_message_id"
     t.index ["session_id"], name: "index_messages_on_session_id"
   end
 
@@ -58,4 +60,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_15_111929) do
     t.string "model", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "messages", "rpc_messages"
 end

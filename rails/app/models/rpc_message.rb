@@ -1,5 +1,6 @@
 class RpcMessage < ApplicationRecord
   belongs_to :session, optional: false
+  has_one :message, required: false
 
   enum :direction, { outgoing: 1, incoming: 2 }
   enum :message_type, { request: 1, response: 2, notification: 3 }

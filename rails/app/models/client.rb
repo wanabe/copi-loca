@@ -18,6 +18,7 @@ class Client
     @copilot_client = Copilot::Client.cache(cli_url: CLI_URL)
     @waiting_map = {}
     @last_rpc_log = nil
+    @last_rpc_message = nil
 
     @copilot_client.on_send do |data|
       session_id = data.dig(:params, :sessionId)
