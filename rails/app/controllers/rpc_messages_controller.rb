@@ -25,6 +25,8 @@ class RpcMessagesController < ApplicationController
 
   # GET /rpc_messages/1
   def show
+    @prev_rpc_message = @session.rpc_messages.where('id < ?', @rpc_message.id).order(id: :desc).first
+    @next_rpc_message = @session.rpc_messages.where('id > ?', @rpc_message.id).order(id: :asc).first
   end
 
   private

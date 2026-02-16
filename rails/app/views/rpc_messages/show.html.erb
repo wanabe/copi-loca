@@ -3,5 +3,11 @@
 <%= render @rpc_message %>
 
 <div>
+  <% if @prev_rpc_message %>
+    <%= link_to "Prev", session_rpc_message_path(@session, @prev_rpc_message) %>
+  <% end %>
+  <% if @next_rpc_message %>
+    <%= link_to "Next", session_rpc_message_path(@session, @next_rpc_message) %>
+  <% end %>
   <%= link_to "Back to rpc messages", session_rpc_messages_path(@session) %>
 </div>
