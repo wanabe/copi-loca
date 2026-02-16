@@ -3,8 +3,7 @@
 <%= render @session %>
 
 <div>
-  <div>
-      <div class="mobile-messages-area">
+  <div class="mobile-messages-area">
     <%= turbo_stream_from "job_status" %>
     <%= render 'messages/form', message: @session.messages.new, from: 'session_show' %>
     <div class="toggle-link" style="margin: 0.5em 0;">
@@ -30,8 +29,29 @@
     <% end %>
   </div>
 </div>
-  <div>
-    <% if @display_state[:show_rpc_messages] %>
+
+<div>
+  <% if @display_state[:show_events] %>
+    <div class="mobile-events-area">
+      <div class="toggle-link" style="margin: 0.5em 0;">
+        <span>Events:</span>
+        <% merged = @display_state.merge(show_events: false) %>
+        <%= link_to 'Hide', session_path(@session, merged), class: 'toggle' %>
+        <%= link_to 'More', session_events_path(@session), class: 'toggle' %>
+      </div>
+      <%= turbo_stream_from [@session, :events] %>
+      <%= render 'events/events', events: @session.events.order(id: :desc).limit(5), limit: 5 %>
+    </div>
+  <% else %>
+    <div class="toggle-link" style="margin: 0.5em 0;">
+      <span>Events:</span>
+      <%= link_to 'Show', session_path(@session, @display_state.merge(show_events: true)), class: 'toggle' %>
+    </div>
+  <% end %>
+</div>
+
+<div>
+  <% if @display_state[:show_rpc_messages] %>
     <div class="mobile-rpcmessages-area">
       <div class="toggle-link" style="margin: 0.5em 0;">
         <span>RPC Messages:</span>
@@ -40,7 +60,7 @@
         <%= link_to 'More', session_rpc_messages_path(@session), class: 'toggle' %>
       </div>
       <%= turbo_stream_from [@session, :rpc_messages] %>
-      <%= render 'rpc_messages/rpc_messages', rpc_messages: @session.rpc_messages.order(created_at: :desc).limit(5), limit: 5 %>
+      <%= render 'rpc_messages/rpc_messages', rpc_messages: @session.rpc_messages.order(id: :desc).limit(5), limit: 5 %>
     </div>
   <% else %>
     <div class="toggle-link" style="margin: 0.5em 0;">

@@ -1,37 +1,8 @@
-<div id="<%= dom_id event %>">
-  <div>
-    <strong>Session:</strong>
-    <%= event.session_id %>
-  </div>
-
-  <div>
-    <strong>Event type:</strong>
-    <%= event.event_type %>
-  </div>
-
-  <div>
-    <strong>Event ID:</strong>
-    <%= event.event_id %>
-  </div>
-
-  <div>
-    <strong>Data:</strong>
-    <%= event.data %>
-  </div>
-
-  <div>
-    <strong>Timestamp:</strong>
-    <%= event.timestamp %>
-  </div>
-
-  <div>
-    <strong>Parent:</strong>
-    <%= event.parent_event_id %>
-  </div>
-
-  <div>
-    <strong>Ephemeral:</strong>
-    <%= event.ephemeral %>
-  </div>
-
+<div id="<%= dom_id event %>" class="<%= @event == event ? 'event' : 'events-flex-row' %>">
+  <strong class="event-label">ID:</strong><div class="events-col-id"><%= link_to event.id, session_event_path(event.session, event) %></div>
+  <strong class="event-label">Type:</strong><div class="events-col-type"><%= event.event_type %></div>
+  <strong class="event-label">Event ID:</strong><div class="events-col-eventid"><%= event.event_id %></div>
+  <strong class="event-label">Data:</strong><div class="events-col-data"><%= JSON.pretty_generate(event.data) %></div>
+  <strong class="event-label">Timestamp:</strong><div class="events-col-timestamp"><%= event.timestamp %></div>
+  <strong class="event-label">Parent:</strong><div class="events-col-parent"><%= event.parent_event_id ? link_to(event.parent_event_id, session_event_path(event.session, event.parent_event_id)) : '' %></div>
 </div>

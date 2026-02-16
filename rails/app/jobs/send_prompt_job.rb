@@ -17,16 +17,18 @@ class SendPromptJob < ApplicationJob
       wait_until = Time.current
       messages = session.messages.last(5)
       rpc_messages = session.rpc_messages.last(5)
+      events = session.events.last(5)
       session.wait_until_idle do |rpc_message|
         push_limit(rpc_messages, rpc_message)
         push_limit(messages, rpc_message.message)
+        push_limit(events, rpc_message.event)
 
         if Time.current >= wait_until
-          broadcast(session, rpc_messages, messages)
+          broadcast(session, rpc_messages, messages, events)
           wait_until = Time.current + wait_range
         end
       end
-      broadcast(session, rpc_messages, messages)
+      broadcast(session, rpc_messages, messages, events)
       broadcast_job_status(:idle)
     end
   ensure
@@ -57,7 +59,7 @@ class SendPromptJob < ApplicationJob
     )
   end
 
-  def broadcast(session, rpc_messages, messages)
+  def broadcast(session, rpc_messages, messages, events)
     Turbo::StreamsChannel.broadcast_replace_to(
       [ session, :rpc_messages ],
       target: "latest_5_rpc_messages",
@@ -70,6 +72,13 @@ class SendPromptJob < ApplicationJob
       target: "latest_5_messages",
       partial: "messages/messages",
       locals: { messages: messages.reverse, limit: 5 }
+    )
+
+    Turbo::StreamsChannel.broadcast_replace_to(
+      [ session, :events ],
+      target: "latest_5_events",
+      partial: "events/events",
+      locals: { events: events.reverse, limit: 5 }
     )
   end
 end

@@ -26,7 +26,7 @@ RSpec.describe "events/index", type: :view do
     cell_selector = 'div#events>div>div'
     elements = css_select(cell_selector).to_a
     texts = elements.map(&:text)
-    expect(texts.map { _1[/Session:\s*(.*)/, 1] }.compact).to eq([session.id] * 2)
-    expect(texts.map { _1[/Event type:\s*(.*)/, 1] }.compact).to eq(["type1", "type2"])
+    expect(texts.map { _1[/Session:\s*(.*)/, 1] }.compact).to eq([ session.id ] * 2)
+    expect(texts.map { _1[/Event type:\s*(.*)/, 1] }.compact).to eq([ "type1", "type2" ])
   end
 end

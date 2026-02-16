@@ -1,0 +1,15 @@
+<div class="events-flex-table" id="<%= limit == 5 ? 'latest_5_events' : 'events' %>">
+  <div class="events-flex-row events-flex-header">
+    <div class="events-col-id">ID</div>
+    <div class="events-col-type">Event type</div>
+    <div class="events-col-eventid">Event ID</div>
+    <div class="events-col-data">Data</div>
+    <div class="events-col-timestamp">Timestamp</div>
+    <div class="events-col-parent">Parent</div>
+  </div>
+  <div class="events-flex-body">
+    <% events.each do |event| %>
+      <%= render event %>
+    <% end %>
+  </div>
+</div>

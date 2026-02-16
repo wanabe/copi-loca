@@ -21,7 +21,8 @@ class SessionsController < ApplicationController
 
     @display_state = {
       show_messages: show_messages_value,
-      show_rpc_messages: params[:show_rpc_messages] != "false"
+      show_rpc_messages: params[:show_rpc_messages] != "false",
+      show_events: params[:show_events] != "false"
     }
   end
 
