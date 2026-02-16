@@ -9,9 +9,12 @@ Copi Loca is a Rails-based web UI for interacting with Copilot AI agents. Users 
 - Message exchange within sessions (user prompt and AI response)
 - Full RPC logging for all backend communication
 - Persistent storage of sessions, messages, and logs
+- File upload support for prompts
+- Admin authentication (optional)
+- Operation execution and change tracking
 
 ### Architecture
-- Rails 8.1.2, SQLite, Falcon server, Hotwire frontend
+- Rails 8.1.x, SQLite, Falcon server, Hotwire frontend
 - Docker Compose orchestrates Rails, Copilot backend, and Caddy reverse proxy
 - Caddy serves as the public entrypoint and reverse proxy for Rails
 - Communicates with Copilot service via TCP (localhost:3100)
@@ -20,9 +23,9 @@ Copi Loca is a Rails-based web UI for interacting with Copilot AI agents. Users 
 ### Directory Structure
 - rails/
   - app/
-    - controllers: Session, Message, RPC log, Home, Models, AuthSessions controllers
-    - models: Session, Message, RpcLog, Client
-    - views: ERB templates for sessions, messages, logs, authentication
+    - controllers: sessions, messages, rpc_messages, home, models, auth_sessions, operations, changes, files
+    - models: session, message, rpc_message, client, operation, repository, breadcrumb
+    - views: ERB templates for sessions, messages, rpc_messages, authentication, operations, changes, files
     - jobs: background job classes
     - helpers: view helpers
     - assets: static assets
@@ -49,24 +52,27 @@ Copi Loca is a Rails-based web UI for interacting with Copilot AI agents. Users 
 - compose.yml: Docker Compose orchestration
 
 ### Database Schema
-- Sessions: id (UUID), model, timestamps
-- Messages: session_id, rpc_log_id (AI only), direction, content, timestamps
-- RpcLogs: session_id, rpc_id, direction, data (JSON), timestamps
+- sessions: id (string, Copilot session ID), model, timestamps
+- messages: session_id, rpc_message_id (AI only), direction, content, timestamps
+- rpc_messages: session_id, rpc_id, direction, method, params, result, error, message_type, timestamps
+- operations: command, directory, timestamps
 
 ### Data Flow
-1. User sends a message in a session; Message and outgoing RpcLog are created
-2. Copilot event is received; incoming Message and RpcLog are created
+1. User sends a message in a session; Message and outgoing RpcMessage are created
+2. Copilot event is received; incoming Message and RpcMessage are created
 3. Session management (create, resume, destroy) handled via Client
+4. File uploads are saved to shared-tmp and passed to Copilot
+5. Operations and changes are tracked and executed
 
 ### Key Workflows for AI Agents
 - Entry: config/routes.rb, controllers, models, and views
 - Add features: update schema, models, controllers, and views
-- Debug: check RpcLog and session/message associations
+- Debug: check RpcMessage and session/message associations
 
 ### Maintenance Notes
-- Session IDs are UUID strings
+- Session IDs are Copilot session strings
 - All RPC communication is logged for debugging
-- Message.rpc_log_id is set only for AI responses
+- Message.rpc_message_id is set only for AI responses
 - Consider log cleanup for storage
 - Copilot service runs in a separate container (see compose.yml)
 - **CAUTION**: If you add authentication via before_action in ApplicationController, be sure to skip authentication for Turbo Stream requests (e.g., `skip_before_action :authenticate, if: -> { request.format.turbo_stream? }`). Otherwise, real-time updates will break because Turbo Streams requests will be redirected to the login page.
