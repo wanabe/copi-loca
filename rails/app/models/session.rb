@@ -1,6 +1,7 @@
 class Session < ApplicationRecord
   has_many :messages, dependent: :destroy
   has_many :rpc_messages, dependent: :destroy
+  has_many :events, dependent: :destroy
 
   after_initialize :initialize_internals
   before_validation :create_session, on: :create
@@ -15,8 +16,7 @@ class Session < ApplicationRecord
     unless rpc_message
       raise "RPC message not found for sent prompt with RPC ID: #{rpc_id}"
     end
-    messages.create(
-      session_id: id,
+    messages.create!(
       rpc_message: rpc_message,
       direction: :outgoing,
       content: prompt
@@ -24,31 +24,14 @@ class Session < ApplicationRecord
   end
 
   def handle(direction, rpc_id, data)
-    rpc_message = rpc_messages.create!(
+    rpc_messages.create!(
       direction: direction,
       rpc_id: rpc_id,
       method: data[:method],
       params: data[:params]&.except(:sessionId),
       result: data[:result]&.except(:sessionId),
       error: data[:error]
-    )
-    if rpc_message.incoming? && data[:method] == "session.event"
-      event = data.dig(:params, :event)
-      handle_event(rpc_message, event) if event
-    end
-    rpc_message
-  end
-
-  def handle_event(rpc_message, event)
-    type = event[:type]
-    return if type != "assistant.message"
-    content = event.dig(:data, :content)
-    return if content.blank?
-    rpc_message.create_message(
-      session_id: id,
-      direction: :incoming,
-      content: content
-    )
+    ).tap(&:handle)
   end
 
   def close_after_idle

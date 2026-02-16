@@ -1,6 +1,7 @@
 class RpcMessage < ApplicationRecord
   belongs_to :session, optional: false
   has_one :message, required: false
+  has_one :event, required: false
 
   enum :direction, { outgoing: 1, incoming: 2 }
   enum :message_type, { request: 1, response: 2, notification: 3 }
@@ -19,6 +20,25 @@ class RpcMessage < ApplicationRecord
 
   before_validation :set_message_type
   before_save :set_method_for_response, if: -> { response? && method.nil? }
+
+  def handle
+    return unless incoming?
+    return if method != "session.event"
+    event_data = params["event"]
+    return unless event_data
+    if event_data["parentId"]
+      parent_event = session.events.find_by(event_id: event_data["parentId"])
+    end
+    create_event!(
+      event_id: event_data["id"],
+      session: session,
+      event_type: event_data["type"],
+      data: event_data["data"],
+      timestamp: event_data["timestamp"],
+      parent_event: parent_event,
+      ephemeral: event_data["ephemeral"] || false
+    ).handle
+  end
 
   private
     def set_message_type
