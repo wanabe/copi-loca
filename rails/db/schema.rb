@@ -10,7 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_15_221703) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_16_105140) do
+  create_table "events", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.json "data"
+    t.boolean "ephemeral"
+    t.string "event_id", null: false
+    t.string "event_type"
+    t.integer "parent_event_id"
+    t.integer "rpc_message_id"
+    t.string "session_id", null: false
+    t.datetime "timestamp"
+    t.datetime "updated_at", null: false
+    t.index ["parent_event_id"], name: "index_events_on_parent_event_id"
+    t.index ["rpc_message_id"], name: "index_events_on_rpc_message_id"
+    t.index ["session_id"], name: "index_events_on_session_id"
+  end
+
   create_table "messages", force: :cascade do |t|
     t.string "content", null: false
     t.datetime "created_at", null: false
