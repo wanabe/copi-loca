@@ -8,5 +8,5 @@
   <%= render partial: 'run' %>
 
   <hr />
-  <%= button_to "Destroy this operation", @operation, method: :delete %>
+  <%= button_to "Destroy this operation", @operation, method: :delete, data: { turbo_confirm: "Are you sure you want to destroy this operation?" } %>
 </div>
