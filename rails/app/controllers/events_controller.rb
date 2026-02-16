@@ -10,7 +10,11 @@ class EventsController < ApplicationController
 
   # GET /events
   def index
-    @events = @session.events.order(id: :desc).page(params[:page])
+    @types = @session.events.distinct.pluck(:event_type).compact.sort || []
+    @selected_types = Array(params[:types])
+    scope = @session.events
+    scope = scope.where(event_type: @selected_types) if @selected_types.present?
+    @events = scope.order(id: :desc).page(params[:page])
   end
 
   # GET /events/1

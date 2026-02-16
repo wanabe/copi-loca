@@ -4,5 +4,20 @@
 
 <h1>Events</h1>
 
+<%= form_with url: session_events_path(@session), method: :get, local: true do %>
+  <div>
+    <strong>Filter by type:</strong><br>
+    <% @types.each do |type| %>
+      <label>
+        <%= check_box_tag 'types[]', type, @selected_types.include?(type), id: "type_#{type}" %>
+        <%= type %>
+      </label>
+    <% end %>
+  </div>
+  <div>
+    <%= submit_tag 'Show' %>
+  </div>
+<% end %>
+
 <%= render 'events', events: @events, limit: 10 %>
 <%= paginate @events %>
