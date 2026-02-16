@@ -16,6 +16,13 @@ class SessionsController < ApplicationController
 
   # GET /sessions/1
   def show
+    show_messages_value = params[:show_messages]
+    show_messages_value = "true" unless ["open", "false"].include?(show_messages_value)
+
+    @display_state = {
+      show_messages: show_messages_value,
+      show_rpc_messages: params[:show_rpc_messages] != "false",
+    }
   end
 
   # POST /sessions

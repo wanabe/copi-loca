@@ -3,19 +3,52 @@
 <%= render @session %>
 
 <div>
-  <div class="mobile-messages-area">
+  <div>
+      <div class="mobile-messages-area">
     <%= turbo_stream_from "job_status" %>
     <%= render 'messages/form', message: @session.messages.new, from: 'session_show' %>
-    <%= turbo_stream_from [@session, :messages] %>
-    <%= render 'messages/messages', messages: @session.messages.order(id: :desc).limit(5), limit: 5 %>
-    <div class="more-link"><%= link_to 'More messages', session_messages_path(@session) %></div>
+    <div class="toggle-link" style="margin: 0.5em 0;">
+      <span>Messages:</span>
+      <% merged = @display_state.merge(show_messages: "false") %>
+      <% if @display_state[:show_messages] == "true" || @display_state[:show_messages] == "open" %>
+        <%= link_to 'Hide', session_path(@session, merged), class: 'toggle' %>
+        <% if @display_state[:show_messages] == "open" %>
+          <%= link_to 'Close all', session_path(@session, @display_state.merge(show_messages: "true")), class: 'toggle' %>
+        <% else %>
+          <%= link_to 'Open all', session_path(@session, @display_state.merge(show_messages: "open")), class: 'toggle' %>
+        <% end %>
+        <%= link_to 'More', session_messages_path(@session), class: 'toggle' %>
+      <% else %>
+        <%= link_to 'Show', session_path(@session, @display_state.merge(show_messages: "true")), class: 'toggle' %>
+      <% end %>
+    </div>
+    <% if @display_state[:show_messages] == "true" || @display_state[:show_messages] == "open" %>
+      <%= turbo_stream_from [@session, :messages] %>
+      <div data-controller="message-open" data-message-open-open-value="<%= @display_state[:show_messages] == "open" %>">
+        <%= render 'messages/messages', messages: @session.messages.order(id: :desc).limit(5), limit: 5 %>
+      </div>
+    <% end %>
   </div>
-  <div class="mobile-rpcmessages-area">
-    <h3>Latest RPC Messages</h3>
-    <%= turbo_stream_from [@session, :rpc_messages] %>
-    <%= render 'rpc_messages/rpc_messages', rpc_messages: @session.rpc_messages.order(created_at: :desc).limit(5), limit: 5 %>
-    <div class="more-link"><%= link_to 'More RPC messages', session_rpc_messages_path(@session) %></div>
-  </div>
+</div>
+  <div>
+    <% if @display_state[:show_rpc_messages] %>
+    <div class="mobile-rpcmessages-area">
+      <div class="toggle-link" style="margin: 0.5em 0;">
+        <span>RPC Messages:</span>
+        <% merged = @display_state.merge(show_rpc_messages: false) %>
+        <%= link_to 'Hide', session_path(@session, merged), class: 'toggle' %>
+        <%= link_to 'More', session_rpc_messages_path(@session), class: 'toggle' %>
+      </div>
+      <%= turbo_stream_from [@session, :rpc_messages] %>
+      <%= render 'rpc_messages/rpc_messages', rpc_messages: @session.rpc_messages.order(created_at: :desc).limit(5), limit: 5 %>
+    </div>
+  <% else %>
+    <div class="toggle-link" style="margin: 0.5em 0;">
+      <span>RPC Messages:</span>
+      <%= link_to 'Show', session_path(@session, @display_state.merge(show_rpc_messages: true)), class: 'toggle' %>
+    </div>
+  <% end %>
+</div>
 
   <div class="mobile-destroy-btn"><%= button_to "Destroy this session", @session, method: :delete %></div>
 </div>

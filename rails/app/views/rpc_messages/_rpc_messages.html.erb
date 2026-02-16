@@ -9,7 +9,9 @@
     <div class="rpc-col-result">Result</div>
     <div class="rpc-col-error">Error</div>
   </div>
-  <% rpc_messages.each do |rpc_message| %>
-    <%= render rpc_message %>
-  <% end %>
+  <div class="rpc-messages-flex-body" data-controller="limit-list" data-limit-list-max-value="<%= limit %>" data-limit-list-order-value="prepend">
+    <% rpc_messages.each do |rpc_message| %>
+      <%= render rpc_message %>
+    <% end %>
+  </div>
 </div>
