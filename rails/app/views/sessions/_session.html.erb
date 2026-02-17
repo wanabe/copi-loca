@@ -1,7 +1,6 @@
 <%= turbo_stream_from [session, :stream] %>
 <div id="session-stream-<%= stream_id %>">
   <div class="mobile-messages-area">
-    <%= render 'messages/form', session: session, message: session.messages.new, from: 'session_show', stream_id: stream_id, display_state: display_state, job_status: job_status %>
     <div class="toggle-link" style="margin: 0.5em 0;">
       <span>Messages:</span>
       <% merged = display_state.merge(show_messages: "false") %>
