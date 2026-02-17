@@ -2,7 +2,7 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 
-// Prism.js再初期化: Turboページ遷移後にもハイライトを適用
+// Re-initialize Prism.js: Apply highlight after Turbo page transitions
 if (window.Prism) {
   document.addEventListener('turbo:load', function() {
     window.Prism.highlightAll();
