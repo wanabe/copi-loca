@@ -24,13 +24,10 @@
         <span>(<%= number_to_percentage(session.current_tokens.to_f / session.token_limit * 100, precision: 0) %>)</span>
       <% end %>
     </span>
-    <%= turbo_stream_from "job_status" %>
-    <%= render partial: "sessions/job_status", locals: { job_status: job_status } %>
     <button type="button" onclick="document.getElementById('file_upload').click()" id="file_upload_label">File</button>
     <input type="file" id="file_upload" name="file[]" accept="image/*" multiple style="display:none" onchange="document.getElementById('file_upload_label').innerText = this.files.length > 1 ? this.files.length + ' files' : (this.files[0]?.name || 'File')">
     <button type="button" onclick="document.getElementById('camera_upload').click()" id="camera_upload_label">Camera</button>
     <input type="file" id="camera_upload" name="camera_file" accept="image/*" capture="environment" style="display:none" onchange="document.getElementById('camera_upload_label').innerText = this.files[0]?.name || 'Camera'">
-    <input type="hidden" name="stream_id" value="<%= stream_id %>" />
     <input type="hidden" name="show_messages" value="<%= display_state[:show_messages] %>" />
     <input type="hidden" name="show_events" value="<%= display_state[:show_events] %>" />
     <input type="hidden" name="show_rpc_messages" value="<%= display_state[:show_rpc_messages] %>" />

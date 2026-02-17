@@ -1,7 +1,7 @@
 class SendPromptJob < ApplicationJob
   queue_as :default
 
-  def perform(stream_id, session_id, prompt, file_paths, display_state)
+  def perform(session_id, prompt, file_paths, display_state)
     session = Session.find(session_id)
     if file_paths.present?
       attachments = file_paths.map do |path|
@@ -15,11 +15,11 @@ class SendPromptJob < ApplicationJob
       wait_until = Time.current
       session.wait_until_idle do |rpc_message|
         if Time.current >= wait_until
-          broadcast(session, display_state, stream_id, :running)
+          broadcast(session, display_state, :running)
           wait_until = Time.current + wait_range
         end
       end
-      broadcast(session.reload, display_state, stream_id, :idle)
+      broadcast(session.reload, display_state, :idle)
     end
   ensure
     # Delete uploaded files after Copilot response is complete
@@ -34,12 +34,12 @@ class SendPromptJob < ApplicationJob
 
   private
 
-  def broadcast(session, display_state, stream_id, job_status)
+  def broadcast(session, display_state, job_status)
     Turbo::StreamsChannel.broadcast_replace_to(
       [ session, :stream ],
-      target: "session-stream-#{stream_id}",
+      target: "session-stream",
       partial: "sessions/session",
-      locals: {  session: session, display_state: display_state, stream_id: stream_id, job_status: job_status }
+      locals: {  session: session, display_state: display_state, job_status: job_status }
     )
   end
 end

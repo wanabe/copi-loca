@@ -1,7 +1,8 @@
 <%= turbo_stream_from [session, :stream] %>
-<div id="session-stream-<%= stream_id %>">
+<div id="session-stream">
   <div class="mobile-messages-area">
     <div class="toggle-link" style="margin: 0.5em 0;">
+      <%= render partial: "sessions/job_status", locals: { job_status: job_status } %>
       <span>Messages:</span>
       <% merged = display_state.merge(show_messages: "false") %>
       <% if display_state[:show_messages] == "true" || display_state[:show_messages] == "open" %>
@@ -17,7 +18,6 @@
       <% end %>
     </div>
     <% if display_state[:show_messages] == "true" || display_state[:show_messages] == "open" %>
-      <%= turbo_stream_from [session, :messages] %>
       <div data-controller="message-open" data-message-open-open-value="<%= display_state[:show_messages] == "open" %>">
         <%= render 'messages/messages', messages: session.messages.order(id: :desc).limit(5), limit: 5 %>
       </div>
@@ -32,7 +32,6 @@
         <%= link_to 'Hide', session_path(session, merged), class: 'toggle' %>
         <%= link_to 'More', session_events_path(session), class: 'toggle' %>
       </div>
-      <%= turbo_stream_from [session, :events] %>
       <%= render 'events/events', events: session.events.order(id: :desc).limit(5), limit: 5 %>
     </div>
   <% else %>
@@ -50,7 +49,6 @@
         <%= link_to 'Hide', session_path(session, merged), class: 'toggle' %>
         <%= link_to 'More', session_rpc_messages_path(session), class: 'toggle' %>
       </div>
-      <%= turbo_stream_from [session, :rpc_messages] %>
       <%= render 'rpc_messages/rpc_messages', rpc_messages: session.rpc_messages.order(id: :desc).limit(5), limit: 5 %>
     </div>
   <% else %>

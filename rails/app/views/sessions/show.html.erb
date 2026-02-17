@@ -1,4 +1,4 @@
 <% if notice.present? %><p style="color: green"><%= notice %></p><% end %>
 
-<%= render 'messages/form', session: @session, message: @session.messages.new, from: 'session_show', stream_id: @stream_id, display_state: @display_state, job_status: @job_status %>
-<%= render 'session', session: @session, display_state: @display_state, stream_id: @stream_id, job_status: :idle %>
+<%= render 'messages/form', session: @session, message: @session.messages.new, from: 'session_show', display_state: @display_state, job_status: :idle %>
+<%= render 'session', session: @session, display_state: @display_state, job_status: :idle %>
