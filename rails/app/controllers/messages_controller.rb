@@ -21,6 +21,8 @@ class MessagesController < ApplicationController
 
   # POST /messages
   def create
+    stream_id = params[:stream_id]
+
     # Save uploaded files to tmp directory
     shared_paths = []
     if params[:file].present?
@@ -55,7 +57,12 @@ class MessagesController < ApplicationController
       end
       return
     end
-    SendPromptJob.perform_later(@session.id, content, shared_paths)
+    display_state = {
+      show_messages: params[:show_messages],
+      show_rpc_messages: params[:show_rpc_messages],
+      show_events: params[:show_events]
+    }
+    SendPromptJob.perform_later(stream_id, @session.id, content, shared_paths, display_state)
 
     respond_to do |format|
       format.turbo_stream { head :ok }

@@ -1,7 +1,7 @@
 class SendPromptJob < ApplicationJob
   queue_as :default
 
-  def perform(session_id, prompt, file_paths)
+  def perform(stream_id, session_id, prompt, file_paths, display_state)
     session = Session.find(session_id)
     if file_paths.present?
       attachments = file_paths.map do |path|
@@ -11,25 +11,15 @@ class SendPromptJob < ApplicationJob
     message = session.send_prompt(prompt, attachments: attachments)
 
     if message
-      broadcast_job_status(:running)
-
       wait_range = 0.1.seconds
       wait_until = Time.current
-      messages = session.messages.last(5)
-      rpc_messages = session.rpc_messages.last(5)
-      events = session.events.last(5)
       session.wait_until_idle do |rpc_message|
-        push_limit(rpc_messages, rpc_message)
-        push_limit(messages, rpc_message.message)
-        push_limit(events, rpc_message.event)
-
         if Time.current >= wait_until
-          broadcast(session, rpc_messages, messages, events)
+          broadcast(session, display_state, stream_id, :running)
           wait_until = Time.current + wait_range
         end
       end
-      broadcast(session, rpc_messages, messages, events)
-      broadcast_job_status(:idle)
+      broadcast(session, display_state, stream_id, :idle)
     end
   ensure
     # Delete uploaded files after Copilot response is complete
@@ -44,41 +34,12 @@ class SendPromptJob < ApplicationJob
 
   private
 
-  def push_limit(array, obj, limit = 5)
-    return unless obj
-    array.shift while array.size >= limit
-    array << obj
-  end
-
-  def broadcast_job_status(status)
+  def broadcast(session, display_state, stream_id, job_status)
     Turbo::StreamsChannel.broadcast_replace_to(
-      "job_status",
-      target: "job-status",
-      partial: "sessions/job_status",
-      locals: { job_status: status }
-    )
-  end
-
-  def broadcast(session, rpc_messages, messages, events)
-    Turbo::StreamsChannel.broadcast_replace_to(
-      [ session, :rpc_messages ],
-      target: "latest_5_rpc_messages",
-      partial: "rpc_messages/rpc_messages",
-      locals: { rpc_messages: rpc_messages.reverse, limit: 5 }
-    )
-
-    Turbo::StreamsChannel.broadcast_replace_to(
-      [ session, :messages ],
-      target: "latest_5_messages",
-      partial: "messages/messages",
-      locals: { messages: messages.reverse, limit: 5 }
-    )
-
-    Turbo::StreamsChannel.broadcast_replace_to(
-      [ session, :events ],
-      target: "latest_5_events",
-      partial: "events/events",
-      locals: { events: events.reverse, limit: 5 }
+      [ session, :stream ],
+      target: "session-stream-#{stream_id}",
+      partial: "sessions/session",
+      locals: {  session: session, display_state: display_state, stream_id: stream_id, job_status: job_status }
     )
   end
 end
