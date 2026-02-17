@@ -18,6 +18,12 @@
   </div>
 
   <div style="display: flex; align-items: center; gap: 0.3em; justify-content: flex-end;">
+    <span style="margin-right: auto;">
+      <% if session.current_tokens && session.token_limit %>
+        <span><%= session.current_tokens %> / <%= session.token_limit %> tokens</span>
+        <span>(<%= number_to_percentage(session.current_tokens.to_f / session.token_limit * 100, precision: 0) %>)</span>
+      <% end %>
+    </span>
     <%= turbo_stream_from "job_status" %>
     <%= render partial: "sessions/job_status", locals: { job_status: job_status } %>
     <button type="button" onclick="document.getElementById('file_upload').click()" id="file_upload_label">File</button>
@@ -30,5 +36,4 @@
     <input type="hidden" name="show_rpc_messages" value="<%= display_state[:show_rpc_messages] %>" />
     <%= form.submit "Send" %>
   </div>
-
 <% end %>

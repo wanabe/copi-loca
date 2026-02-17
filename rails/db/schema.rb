@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_16_105140) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_17_034026) do
   create_table "events", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.json "data"
@@ -61,7 +61,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_16_105140) do
 
   create_table "sessions", id: :string, force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.integer "current_tokens"
     t.string "model", null: false
+    t.integer "token_limit"
     t.datetime "updated_at", null: false
   end
 

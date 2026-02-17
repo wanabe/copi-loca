@@ -19,7 +19,7 @@ class SendPromptJob < ApplicationJob
           wait_until = Time.current + wait_range
         end
       end
-      broadcast(session, display_state, stream_id, :idle)
+      broadcast(session.reload, display_state, stream_id, :idle)
     end
   ensure
     # Delete uploaded files after Copilot response is complete
