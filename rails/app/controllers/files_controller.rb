@@ -16,6 +16,7 @@ class FilesController < ApplicationController
       return
     end
     if File.file?(abs_path)
+      @language = abs_path[/\.(\w+)$/, 1] || "txt"
       @content = File.read(abs_path)
     else
       @content = nil
