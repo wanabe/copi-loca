@@ -8,6 +8,7 @@ RSpec.describe "events/show", type: :view do
     )
     assign(:event, Event.create!(
       session: session,
+      rpc_message: RpcMessage.create!(session: session, direction: :incoming, message_type: :notification, method: "session.event", params: {}),
       event_type: "Event Type",
       event_id: "Id",
       data: "",
@@ -17,11 +18,11 @@ RSpec.describe "events/show", type: :view do
 
   it "renders attributes in <p>" do
     render
-    expect(rendered).to match(//)
-    expect(rendered).to match(/Event Type/)
-    expect(rendered).to match(/Id/)
-    expect(rendered).to match(//)
-    expect(rendered).to match(/Parent/)
-    expect(rendered).to match(/false/)
+    expect(rendered).to match(/ID:/)
+    expect(rendered).to match(/Type:/)
+    expect(rendered).to match(/Event ID:/)
+    expect(rendered).to match(/Data:/)
+    expect(rendered).to match(/Timestamp:/)
+    expect(rendered).to match(/Parent:/)
   end
 end
