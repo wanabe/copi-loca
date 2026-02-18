@@ -1,4 +1,5 @@
 class SendPromptJob < ApplicationJob
+  WAIT_INTERVAL = 0.1.seconds
   queue_as :default
 
   def perform(session_id, prompt, file_paths, display_state)
@@ -11,14 +12,14 @@ class SendPromptJob < ApplicationJob
     message = session.send_prompt(prompt, attachments: attachments)
 
     if message
-      wait_range = 0.1.seconds
       wait_until = Time.current
       session.wait_until_idle do |rpc_message|
         if Time.current >= wait_until
           broadcast(session, display_state, :running)
-          wait_until = Time.current + wait_range
+          wait_until = Time.current + WAIT_INTERVAL
         end
       end
+      sleep(WAIT_INTERVAL)
       broadcast(session.reload, display_state, :idle)
     end
   ensure
