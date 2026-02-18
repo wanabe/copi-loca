@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_17_034026) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_18_070820) do
   create_table "events", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.json "data"
@@ -42,6 +42,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_17_034026) do
     t.string "command"
     t.datetime "created_at", null: false
     t.string "directory"
+    t.integer "execution_timing", default: 1, null: false
     t.datetime "updated_at", null: false
   end
 

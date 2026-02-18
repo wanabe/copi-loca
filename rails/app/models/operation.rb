@@ -2,6 +2,8 @@ class Operation < ApplicationRecord
   validates :command, presence: true
   validates :directory, presence: true
 
+  enum :execution_timing, { manual: 1, immediate: 2 }
+
   def run
     output = ""
     status = nil

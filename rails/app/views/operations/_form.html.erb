@@ -22,6 +22,11 @@
   </div>
 
   <div>
+    <%= form.label :execution_timing, "Execution timing", style: "display: block" %>
+    <%= form.select :execution_timing, Operation.execution_timings.keys.map { |k| [k.humanize, k] }, {}, {} %>
+  </div>
+
+  <div>
     <%= form.submit %>
   </div>
 <% end %>

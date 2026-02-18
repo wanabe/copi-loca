@@ -11,6 +11,9 @@ class OperationsController < ApplicationController
 
   # GET /operations/1
   def show
+    if @operation.immediate?
+      @output, @status = @operation.run
+    end
   end
 
   # GET /operations/new
@@ -73,6 +76,6 @@ class OperationsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def operation_params
-      params.require(:operation).permit(:command, :directory)
+      params.require(:operation).permit(:command, :directory, :execution_timing)
     end
 end
