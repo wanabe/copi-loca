@@ -5,7 +5,10 @@
 <div>
   <%= link_to "Edit this operation", edit_operation_path(@operation) %> |
   <%= link_to "Back to operations", operations_path %>
-  <%= render partial: 'run' %>
+  <% if @operation.background? %>
+    <%= turbo_stream_from @operation %>
+  <% end %>
+  <%= render partial: 'run', locals: { operation: @operation, output: @output, status: @status } %>
 
   <hr />
   <%= button_to "Destroy this operation", @operation, method: :delete, data: { turbo_confirm: "Are you sure you want to destroy this operation?" } %>

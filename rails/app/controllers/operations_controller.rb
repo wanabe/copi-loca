@@ -52,8 +52,12 @@ class OperationsController < ApplicationController
   end
 
   def run
-    @output, @status = @operation.run
-    render partial: "run"
+    if @operation.background?
+      RunOperationJob.perform_later(@operation.id)
+    else
+      @output, @status = @operation.run
+    end
+    render partial: "run", locals: { operation: @operation, output: @output, status: @status }
   end
 
   private
