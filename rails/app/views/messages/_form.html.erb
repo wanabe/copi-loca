@@ -18,12 +18,7 @@
   </div>
 
   <div style="display: flex; align-items: center; gap: 0.3em; justify-content: flex-end;">
-    <span style="margin-right: auto;">
-      <% if session.current_tokens && session.token_limit %>
-        <span><%= session.current_tokens %> / <%= session.token_limit %> tokens</span>
-        <span>(<%= number_to_percentage(session.current_tokens.to_f / session.token_limit * 100, precision: 0) %>)</span>
-      <% end %>
-    </span>
+
     <button type="button" onclick="document.getElementById('file_upload').click()" id="file_upload_label">File</button>
     <input type="file" id="file_upload" name="file[]" accept="image/*" multiple style="display:none" onchange="document.getElementById('file_upload_label').innerText = this.files.length > 1 ? this.files.length + ' files' : (this.files[0]?.name || 'File')">
     <button type="button" onclick="document.getElementById('camera_upload').click()" id="camera_upload_label">Camera</button>

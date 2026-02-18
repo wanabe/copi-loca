@@ -2,7 +2,15 @@
 <div id="session-stream">
   <div class="mobile-messages-area">
     <div class="toggle-link" style="margin: 0.5em 0;">
-      <%= render partial: "sessions/job_status", locals: { job_status: job_status } %>
+      <% if session.current_tokens && session.token_limit %>
+        <div style="margin-bottom: 0.3em; display: flex; align-items: center; gap: 0.7em;">
+          <span>
+            <%= session.current_tokens %> / <%= session.token_limit %> tokens
+            (<%= number_to_percentage(session.current_tokens.to_f / session.token_limit * 100, precision: 0) %>)
+          </span>
+          <%= render partial: "sessions/job_status", locals: { job_status: job_status } %>
+        </div>
+      <% end %>
       <span>Messages:</span>
       <% merged = display_state.merge(show_messages: "false") %>
       <% if display_state[:show_messages] == "true" || display_state[:show_messages] == "open" %>
