@@ -1,0 +1,13 @@
+<%= turbo_frame_tag :remote_modal do %>
+  <dialog aria-labelledby="modal_title" data-controller="remote-modal message-copy">
+    <header>
+      <form method="dialog">
+        <button aria-label="close">X</button>
+      </form>
+    </header>
+    <div>
+      <%= render "messages/messages", messages: @messages %>
+<%= paginate @messages, remote: true %>
+    </div>
+  </dialog>
+<% end %>

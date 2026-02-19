@@ -13,3 +13,18 @@
  *= require mobile_overrides
  *= require messages_list
  *= require rpc_logs_list
+
+html, body {
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 400px;
+  margin: 0;
+}

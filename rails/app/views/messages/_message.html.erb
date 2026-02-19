@@ -7,6 +7,9 @@
           <% if message.content.to_s.lines.size > 1 %>...<% end %>
         </span>
         <span class="meta">
+          <% if defined?(@history_mode) && @history_mode %>
+            <a href="#" data-action="message-copy#copy" data-content="<%= h message.content %>" tabindex="-1"><strong>Pick</strong></a>
+          <% end %>
           <% now = Time.zone.now %>
           <% if message.created_at.to_date == now.to_date %>
             <span class="timestamp-main"><%= message.created_at.strftime("%H:%M:%S.%L") %></span>

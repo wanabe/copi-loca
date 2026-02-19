@@ -21,7 +21,11 @@ Rails.application.routes.draw do
   resources :models, only: [ :index ]
 
   resources :sessions, only: [ :new, :update, :edit, :index, :show, :create, :destroy ] do
-    resources :messages, only: [ :index, :create ]
+    resources :messages, only: [ :index, :create ] do
+      collection do
+        get :history
+      end
+    end
     resources :rpc_messages, only: [ :index, :show ]
     resources :events, only: [ :index, :show ]
   end

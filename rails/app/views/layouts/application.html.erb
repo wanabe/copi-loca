@@ -31,5 +31,6 @@
   <body>
     <%= render 'shared/breadcrumbs' %>
     <%= yield %>
+    <%= turbo_frame_tag :remote_modal %>
   </body>
 </html>
