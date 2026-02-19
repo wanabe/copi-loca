@@ -31,7 +31,7 @@ class SessionsController < ApplicationController
 
   # GET /sessions/1/edit
   def edit
-    @models = [@session.model]
+    @models = [ @session.model ]
     @custom_agents = CustomAgent.all
   end
 
