@@ -30,6 +30,7 @@ class ChangesController < ApplicationController
 
   def show
     @file_diffs = Repository.tracked_diffs(@id)
+    @commit_message = Repository.commit_message(@id)
   end
 
   private

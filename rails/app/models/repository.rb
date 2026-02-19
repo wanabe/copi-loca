@@ -17,7 +17,7 @@ class Repository
     def log(limit = 10)
       instance.log(limit)
     end
-    delegate :diff, :status, :ls_files, :uncommitted_diffs, :untracked_files, :tracked_diffs, to: :instance
+    delegate :diff, :status, :ls_files, :uncommitted_diffs, :untracked_files, :tracked_diffs, :commit_message, to: :instance
   end
 
   def self.git(cmd)
@@ -90,5 +90,9 @@ class Repository
 
   def untracked_files
     git("ls-files --others --exclude-standard").chomp.split("\n")
+  end
+
+  def commit_message(commit)
+    git("log -1 --pretty=format:'%B' #{commit}")
   end
 end

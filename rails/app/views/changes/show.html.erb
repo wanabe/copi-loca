@@ -1,3 +1,6 @@
+<h1>Commit <%= h @id %> Changes</h1>
+<pre><%= h @commit_message %></pre>
+
 <% @file_diffs.each do |path, diff| %>
   <h2><%= h path %></h2>
   <pre><code class="language-diff" style="white-space: pre;"><%= h diff %></code></pre>
