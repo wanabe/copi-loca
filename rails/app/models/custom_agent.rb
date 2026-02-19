@@ -1,0 +1,2 @@
+class CustomAgent < ApplicationRecord
+end

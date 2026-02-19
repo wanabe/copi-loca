@@ -17,6 +17,11 @@
   </div>
 
   <div>
+    <%= form.label :custom_agent_ids, 'Custom Agents' %><br>
+    <%= form.collection_check_boxes(:custom_agent_ids, @custom_agents, :id, :name) %>
+  </div>
+
+  <div>
     <%= form.submit %>
   </div>
 <% end %>

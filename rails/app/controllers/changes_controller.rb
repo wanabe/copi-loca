@@ -45,8 +45,4 @@ class ChangesController < ApplicationController
   def add_change_breadcrumb
     add_breadcrumb(@id, change_path(@id))
   end
-
-  def add_action_breadcrumb
-    add_breadcrumb(action_name)
-  end
 end

@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Custom agents" %>
+
+<h1>Custom agents</h1>
+
+<div id="custom_agents">
+  <% @custom_agents.each do |custom_agent| %>
+    <%= render custom_agent %>
+    <p>
+      <%= link_to "Show this custom agent", custom_agent %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New custom agent", new_custom_agent_path %>

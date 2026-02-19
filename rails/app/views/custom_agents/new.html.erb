@@ -1,0 +1,11 @@
+<% content_for :title, "New custom agent" %>
+
+<h1>New custom agent</h1>
+
+<%= render "form", custom_agent: @custom_agent %>
+
+<br>
+
+<div>
+  <%= link_to "Back to custom agents", custom_agents_path %>
+</div>

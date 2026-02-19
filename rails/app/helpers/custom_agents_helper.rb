@@ -1,0 +1,2 @@
+module CustomAgentsHelper
+end

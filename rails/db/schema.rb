@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_18_070820) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_19_031825) do
+  create_table "custom_agents", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "display_name"
+    t.string "name"
+    t.text "prompt"
+    t.datetime "updated_at", null: false
+  end
+
   create_table "events", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.json "data"
@@ -58,6 +67,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_070820) do
     t.string "session_id", null: false
     t.datetime "updated_at", null: false
     t.index ["session_id"], name: "index_rpc_messages_on_session_id"
+  end
+
+  create_table "session_custom_agents", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "custom_agent_id", null: false
+    t.integer "session_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["custom_agent_id"], name: "index_session_custom_agents_on_custom_agent_id"
+    t.index ["session_id"], name: "index_session_custom_agents_on_session_id"
   end
 
   create_table "sessions", id: :string, force: :cascade do |t|

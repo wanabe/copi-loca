@@ -7,11 +7,7 @@ class SessionsController < ApplicationController
 
   # GET /sessions
   def index
-    @session = Session.new
     @sessions = Session.all
-    @models = Client.available_models.map do |model|
-      [ "#{model[:id]} (x#{model.dig(:billing, :multiplier)})", model[:id] ]
-    end
   end
 
   # GET /sessions/1
@@ -21,6 +17,15 @@ class SessionsController < ApplicationController
       show_rpc_messages: params[:show_rpc_messages].presence_in(%w[ true false ]) || "true",
       show_events: params[:show_events].presence_in(%w[ true false ]) || "true"
     }
+  end
+
+  # GET /sessions/new
+  def new
+    @session = Session.new
+    @models = Client.available_models.map do |model|
+      [ "#{model[:id]} (x#{model.dig(:billing, :multiplier)})", model[:id] ]
+    end
+    @custom_agents = CustomAgent.all
   end
 
   # POST /sessions
@@ -54,6 +59,6 @@ class SessionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def session_params
-      params.fetch(:session, {}).permit(:model)
+      params.fetch(:session, {}).permit(:model, custom_agent_ids: [])
     end
 end

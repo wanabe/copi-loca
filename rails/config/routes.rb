@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :custom_agents
   root to: "home#index"
 
   resources :files, only: [ :index ]
@@ -19,7 +20,7 @@ Rails.application.routes.draw do
 
   resources :models, only: [ :index ]
 
-  resources :sessions, only: [ :index, :show, :create, :destroy ] do
+  resources :sessions, only: [ :new, :index, :show, :create, :destroy ] do
     resources :messages, only: [ :index, :create ]
     resources :rpc_messages, only: [ :index, :show ]
     resources :events, only: [ :index, :show ]

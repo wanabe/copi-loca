@@ -2,6 +2,8 @@ class Session < ApplicationRecord
   has_many :messages, dependent: :destroy
   has_many :rpc_messages, dependent: :destroy
   has_many :events, dependent: :destroy
+  has_many :session_custom_agents, dependent: :destroy
+  has_many :custom_agents, through: :session_custom_agents
 
   after_initialize :initialize_internals
   before_validation :create_session, on: :create

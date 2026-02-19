@@ -74,10 +74,6 @@ class OperationsController < ApplicationController
       add_breadcrumb(@operation.id, operation_path(@operation))
     end
 
-    def add_action_breadcrumb
-      add_breadcrumb(action_name)
-    end
-
     # Only allow a list of trusted parameters through.
     def operation_params
       params.require(:operation).permit(:command, :directory, :execution_timing)
