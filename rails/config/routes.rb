@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :tools
   resources :custom_agents
   root to: "home#index"
 

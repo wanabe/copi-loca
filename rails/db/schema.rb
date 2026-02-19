@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_19_083536) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_19_113128) do
   create_table "custom_agents", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.text "description"
@@ -84,6 +84,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_19_083536) do
     t.string "model", null: false
     t.string "skill_directory_pattern"
     t.integer "token_limit"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tool_parameters", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "description"
+    t.string "name"
+    t.integer "tool_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tool_id"], name: "index_tool_parameters_on_tool_id"
+  end
+
+  create_table "tools", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "description"
+    t.text "script"
     t.datetime "updated_at", null: false
   end
 
