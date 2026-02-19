@@ -17,11 +17,10 @@
   </div>
 
   <div style="display: flex; align-items: center; gap: 0.3em; justify-content: flex-end;">
-    <%= form.label :custom_agent_id, '@' %><br>
     <select name="custom_agent_id" id="custom_agent_id">
       <option value=""></option>
       <% session.custom_agents.each do |agent| %>
-        <option value="<%= agent.id %>"><%= agent.display_name.presence || agent.name %> (<%= agent.name %>)</option>
+        <option value="<%= agent.id %>">@<%= agent.name %></option>
       <% end %>
     </select>
 
