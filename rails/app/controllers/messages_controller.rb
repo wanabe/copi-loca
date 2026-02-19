@@ -42,6 +42,13 @@ class MessagesController < ApplicationController
     end
 
     content = message_params[:content].to_s.strip
+    custom_agent_id = params[:custom_agent_id].to_s.strip
+    if custom_agent_id.present?
+      agent = @session.custom_agents.find_by(id: custom_agent_id)
+      if agent
+        content = "#{content} @#{agent.name}"
+      end
+    end
     if content.blank?
       respond_to do |format|
         format.turbo_stream { head :ok }

@@ -54,6 +54,20 @@ class Session < ApplicationRecord
     @copilot_session = nil
   end
 
+  def options
+    options = {}
+    if custom_agents.any?
+      options[:customAgents] = custom_agents.map do |agent|
+        {
+          name: agent.name,
+          prompt: agent.prompt || "",
+          description: agent.description || ""
+        }
+      end
+    end
+    options
+  end
+
   private
     def create_session
       @copilot_session = Client.create_session(self)

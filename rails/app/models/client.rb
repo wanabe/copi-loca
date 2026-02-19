@@ -43,14 +43,14 @@ class Client
   end
 
   def create_session(session)
-    copilot_session = copilot_client.create_session(model: session.model)
+    copilot_session = copilot_client.create_session(model: session.model, **session.options)
     session.id = copilot_session.session_id
     copilot_session
   end
 
   def resume_session(session)
     copilot_client.sessions[session.id] ||
-      copilot_client.create_session(session_id: session.id)
+      copilot_client.create_session(session_id: session.id, **session.options)
   end
 
   def available_models

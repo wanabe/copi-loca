@@ -1,4 +1,5 @@
 <% if notice.present? %><p style="color: green"><%= notice %></p><% end %>
 
 <%= render 'messages/form', session: @session, message: @session.messages.new, from: 'session_show', display_state: @display_state, job_status: :idle %>
+<%= turbo_stream_from [@session, :stream] %>
 <%= render 'session', session: @session, display_state: @display_state, job_status: :idle %>

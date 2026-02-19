@@ -17,6 +17,7 @@ class Event < ApplicationRecord
     def handle_assistant_message
       content = data["content"]
       return if content.blank?
+      return if data["parentToolCallId"].present? # Ignore messages from tools
       rpc_message.create_message!(
         session: session,
         direction: :incoming,

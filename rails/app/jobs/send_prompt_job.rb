@@ -1,5 +1,5 @@
 class SendPromptJob < ApplicationJob
-  WAIT_INTERVAL = 0.1.seconds
+  WAIT_INTERVAL = 0.5.seconds
   queue_as :default
 
   def perform(session_id, prompt, file_paths, display_state)

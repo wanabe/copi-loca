@@ -13,11 +13,17 @@
   <% end %>
 
   <div>
-    
     <%= form.text_area :content, rows: 2, style: 'width: calc(100% - 0.5em); resize: none; margin-right: 0.5em;' %>
   </div>
 
   <div style="display: flex; align-items: center; gap: 0.3em; justify-content: flex-end;">
+    <%= form.label :custom_agent_id, '@' %><br>
+    <select name="custom_agent_id" id="custom_agent_id">
+      <option value=""></option>
+      <% session.custom_agents.each do |agent| %>
+        <option value="<%= agent.id %>"><%= agent.display_name.presence || agent.name %> (<%= agent.name %>)</option>
+      <% end %>
+    </select>
 
     <button type="button" onclick="document.getElementById('file_upload').click()" id="file_upload_label">File</button>
     <input type="file" id="file_upload" name="file[]" accept="image/*" multiple style="display:none" onchange="document.getElementById('file_upload_label').innerText = this.files.length > 1 ? this.files.length + ' files' : (this.files[0]?.name || 'File')">
