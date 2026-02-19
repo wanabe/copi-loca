@@ -16,7 +16,6 @@ RSpec.describe "tools/edit", type: :view do
     render
 
     assert_select "form[action=?][method=?]", tool_path(tool), "post" do
-
       assert_select "input[name=?]", "tool[description]"
 
       assert_select "textarea[name=?]", "tool[script]"

@@ -1,5 +1,8 @@
 class ToolsController < ApplicationController
   before_action :set_tool, only: %i[ show edit update destroy ]
+  before_action :add_collection_breadcrumb
+  before_action :add_member_breadcrumb, only: %i[ show edit ]
+  before_action :add_action_breadcrumb, only: %i[ new edit ]
 
   # GET /tools
   def index
@@ -53,6 +56,14 @@ class ToolsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def tool_params
-      params.expect(tool: [ :description, :script ])
+      params.require(:tool).permit(:description, :script, tool_parameters_attributes: [ :id, :name, :description, :_destroy ])
+    end
+
+    def add_collection_breadcrumb
+      add_breadcrumb("Tools", tools_path)
+    end
+
+    def add_member_breadcrumb
+      add_breadcrumb(@tool.id, tool_path(@tool))
     end
 end
