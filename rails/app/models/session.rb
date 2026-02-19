@@ -65,6 +65,11 @@ class Session < ApplicationRecord
         }
       end
     end
+    if skill_directory_pattern.present?
+      pattern = skill_directory_pattern
+      directories = Dir.glob("#{pattern}/SKILL.md").map { File.dirname(_1) }
+      options[:skillDirectories] = directories
+    end
     options
   end
 

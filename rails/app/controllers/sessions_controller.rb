@@ -1,9 +1,10 @@
 class SessionsController < ApplicationController
   include SessionRelated
-  before_action :set_session, only: %i[ show destroy ]
+  before_action :set_session, only: %i[ show update edit destroy ]
 
   before_action :add_sessions_breadcrumb
-  before_action :add_session_breadcrumb, only: %i[ show ]
+  before_action :add_session_breadcrumb, only: %i[ show edit ]
+  before_action :add_action_breadcrumb, only: %i[ new edit ]
 
   # GET /sessions
   def index
@@ -21,10 +22,16 @@ class SessionsController < ApplicationController
 
   # GET /sessions/new
   def new
-    @session = Session.new
+    @session = Session.new(skill_directory_pattern: "/app/.github/skills/*")
     @models = Client.available_models.map do |model|
       [ "#{model[:id]} (x#{model.dig(:billing, :multiplier)})", model[:id] ]
     end
+    @custom_agents = CustomAgent.all
+  end
+
+  # GET /sessions/1/edit
+  def edit
+    @models = [@session.model]
     @custom_agents = CustomAgent.all
   end
 
@@ -38,7 +45,16 @@ class SessionsController < ApplicationController
     if @session.save
       redirect_to @session, notice: "Session was successfully created."
     else
-      render :index, status: :unprocessable_content
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  # PATCH/PUT /sessions/1
+  def update
+    if @session.update(session_params)
+      redirect_to @session, notice: "Session was successfully updated.", status: :see_other
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -59,6 +75,6 @@ class SessionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def session_params
-      params.fetch(:session, {}).permit(:model, custom_agent_ids: [])
+      params.fetch(:session, {}).permit(:model, :skill_directory_pattern, custom_agent_ids: [])
     end
 end

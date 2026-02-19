@@ -22,6 +22,11 @@
   </div>
 
   <div>
+    <%= form.label :skill_directory_pattern, 'Skill Directory Pattern (Glob pattern)' %><br>
+    <%= form.text_field :skill_directory_pattern %>
+  </div>
+
+  <div>
     <%= form.submit %>
   </div>
 <% end %>
