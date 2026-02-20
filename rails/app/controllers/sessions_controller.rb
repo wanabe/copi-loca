@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
   # GET /sessions/1
   def show
     @display_state = {
-      show_messages: params[:show_messages].presence_in(%w[ open true false ]) || "true",
+      show_messages: params[:show_messages].presence_in(%w[ open true false ]) || "open",
       show_rpc_messages: params[:show_rpc_messages].presence_in(%w[ true false ]) || "true",
       show_events: params[:show_events].presence_in(%w[ true false ]) || "true"
     }
