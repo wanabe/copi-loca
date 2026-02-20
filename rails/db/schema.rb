@@ -78,6 +78,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_19_113128) do
     t.index ["session_id"], name: "index_session_custom_agents_on_session_id"
   end
 
+  create_table "session_tools", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "session_id", null: false
+    t.integer "tool_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_session_tools_on_session_id"
+    t.index ["tool_id"], name: "index_session_tools_on_tool_id"
+  end
+
   create_table "sessions", id: :string, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "current_tokens"
