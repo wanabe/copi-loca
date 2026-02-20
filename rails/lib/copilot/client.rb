@@ -55,6 +55,11 @@ module Copilot
       logger&.debug("Sent message: #{message}")
     end
 
+    def respond(id, result: nil, error: nil)
+      message = { id: id, result: result, error: error }.compact
+      push(message)
+    end
+
     def await(id)
       wait { messages[id] }
       message = messages.delete(id)
@@ -79,17 +84,16 @@ module Copilot
       @on_receive_callback&.call(message)
       id = message[:id]
       method = message[:method]
-      if id && @waiting_ids.delete(id)
-        messages[id] = message
-      elsif method
-        case method
-        when /^session\./
-          params = message[:params]
-          session_id = params[:sessionId]
-          sessions[session_id]&.handle(method, params)
+      if method
+        params = message[:params]
+        session_id = params[:sessionId]
+        if session_id && method =~ /^session\.|^tool\./
+          sessions[session_id]&.handle(id, method, params)
         else
           logger&.warn("Unknown method received: #{method}")
         end
+      elsif id && @waiting_ids.delete(id)
+        messages[id] = message
       end
       logger&.debug("Received message: #{message}")
       message

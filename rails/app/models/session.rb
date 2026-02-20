@@ -70,7 +70,29 @@ class Session < ApplicationRecord
     if skill_directory_pattern.present?
       pattern = skill_directory_pattern
       directories = Dir.glob("#{pattern}/SKILL.md").map { File.dirname(_1) }
-      options[:skillDirectories] = directories
+      options[:skillDirectories] = directories if directories.any?
+    end
+    if tools.any?
+      options[:tools] = tools.map do |tool|
+        {
+          name: tool.name,
+          description: tool.description,
+          required: tool.tool_parameters.map(&:name),
+          parameters: {
+            type: "object",
+            properties: tool.tool_parameters.to_h do |arg|
+              [
+                arg.name,
+                {
+                  type: "string",
+                  description: arg.description
+                }
+              ]
+            end
+          },
+          handler: tool
+        }
+      end
     end
     options
   end

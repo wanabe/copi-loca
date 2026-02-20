@@ -2,13 +2,24 @@ module Copilot
   class Session
     attr_reader :session_id, :turn_id
 
-    def initialize(client, session_id: nil, **params)
+    def initialize(client, session_id: nil, tools: [], **params)
       @client = client
+      @tool_handlers = tools.to_h do |tool|
+        [tool[:name].to_sym, tool[:handler]]
+      end
+      tools = tools.map do |tool|
+        {
+          name: tool[:name],
+          description: tool[:description],
+          required: tool[:required],
+          parameters: tool[:parameters]
+        }.compact
+      end
       if session_id
-        await @client.call("session.resume", sessionId: session_id, **params)
+        await @client.call("session.resume", sessionId: session_id, tools: tools, **params)
         @session_id = session_id
       else
-        result = await @client.call("session.create", params)
+        result = await @client.call("session.create", tools: tools, **params)
         @session_id = result[:sessionId]
       end
       @client.logger&.info("Created session #{@session_id}")
@@ -49,7 +60,7 @@ module Copilot
       @client.await(id)
     end
 
-    def handle(method, params)
+    def handle(id, method, params)
       case method
       when "session.event"
         type, data = params[:event].values_at(:type, :data)
@@ -57,6 +68,10 @@ module Copilot
       when "session.lifecycle"
         type, metadata = params.values_at(:type, :metadata)
         handle_lifecycle(type, **metadata)
+      when "tool.call"
+        name, arguments = params.values_at(:toolName, :arguments)
+        handler = @tool_handlers[name.to_sym]
+        handle_tool_call(id, name, handler, arguments)
       else
         @client.logger&.warn("Unknown session method: #{method}")
       end
@@ -79,6 +94,46 @@ module Copilot
 
     def handle_lifecycle(type, **metadata)
       # No-op for now
+    end
+
+    def handle_tool_call(id, name, handler, arguments)
+      unless handler
+        @client.logger&.warn("No handler for tool: #{name}")
+        @client.respond(id, error: { code: -32000, message: "Tool '#{name}' not found in this session" })
+        return
+      end
+      result = call_tool_handler(handler, arguments)
+      @client.respond(id, result: result)
+    end
+
+    def call_tool_handler(handler, arguments)
+      raw_result = handler.call(**arguments)
+      if raw_result.is_a?(Hash)
+        result = raw_result[:result] || raw_result["result"]
+        if result.is_a?(Hash)
+          keys = (result.keys.map(&:to_sym) - %i[error toolTelemetry]).sort
+          if keys == %i[resultType textResultForLlm]
+            return raw_result
+          end
+        end
+      end
+
+      {
+        result: {
+          textResultForLlm: raw_result.to_s,
+          resultType: "success",
+          toolTelemetry: {},
+        }
+      }
+    rescue => e
+      @client.logger&.warn("Error in tool handler: #{e.message}")
+      {
+        result: {
+          textResultForLlm: "Failed to execute",
+          resultType: "failure",
+          error: e.full_message,
+        }
+      }
     end
 
     def on(type = nil, &block)
