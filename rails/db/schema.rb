@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_19_113128) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_19_212900) do
   create_table "custom_agents", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.text "description"
@@ -108,6 +108,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_19_113128) do
   create_table "tools", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "description"
+    t.string "name"
     t.text "script"
     t.datetime "updated_at", null: false
   end

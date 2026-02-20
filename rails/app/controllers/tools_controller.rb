@@ -56,7 +56,7 @@ class ToolsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def tool_params
-      params.require(:tool).permit(:description, :script, tool_parameters_attributes: [ :id, :name, :description, :_destroy ])
+      params.require(:tool).permit(:name, :description, :script, tool_parameters_attributes: [ :id, :name, :description, :_destroy ])
     end
 
     def add_collection_breadcrumb
