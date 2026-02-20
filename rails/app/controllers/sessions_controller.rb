@@ -27,12 +27,14 @@ class SessionsController < ApplicationController
       [ "#{model[:id]} (x#{model.dig(:billing, :multiplier)})", model[:id] ]
     end
     @custom_agents = CustomAgent.all
+    @tools = Tool.all
   end
 
   # GET /sessions/1/edit
   def edit
     @models = [ @session.model ]
     @custom_agents = CustomAgent.all
+    @tools = Tool.all
   end
 
   # POST /sessions
@@ -75,6 +77,6 @@ class SessionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def session_params
-      params.fetch(:session, {}).permit(:model, :skill_directory_pattern, custom_agent_ids: [])
+      params.fetch(:session, {}).permit(:model, :skill_directory_pattern, custom_agent_ids: [], tool_ids: [])
     end
 end
