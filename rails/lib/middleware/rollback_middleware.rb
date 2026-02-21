@@ -13,7 +13,7 @@ class RollbackMiddleware
     when ROLLBACK_PATH
       if request.post?
         begin
-          output = `git -C /app reset --hard HEAD 2>&1`
+          output = `git -C /app reset --hard HEAD 2>&1; git -C /app clean -fd 2>&1`
 
           return [ 200, { "Content-Type" => "text/plain" }, [ "Rollback successful:\n#{output}" ] ]
         rescue => e

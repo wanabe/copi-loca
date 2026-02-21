@@ -24,6 +24,7 @@ services:
       - BUNDLE_PATH=/copi-loca/rails/vendor/bundle
       - SITE_HOSTNAME=${SITE_HOSTNAME:-localhost}
       - COPI_ADMIN_PASSWORD=${COPI_ADMIN_PASSWORD:-}
+      - SKIP_PENDING_MIGRATIONS_CHECK=true
     user: "${USR:-root}"
     restart: unless-stopped
   copilot:
