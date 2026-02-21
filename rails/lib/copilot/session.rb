@@ -5,7 +5,7 @@ module Copilot
     def initialize(client, session_id: nil, tools: [], **params)
       @client = client
       @tool_handlers = tools.to_h do |tool|
-        [tool[:name].to_sym, tool[:handler]]
+        [ tool[:name].to_sym, tool[:handler] ]
       end
       tools = tools.map do |tool|
         {
@@ -122,7 +122,7 @@ module Copilot
         result: {
           textResultForLlm: raw_result.to_s,
           resultType: "success",
-          toolTelemetry: {},
+          toolTelemetry: {}
         }
       }
     rescue => e
@@ -131,7 +131,7 @@ module Copilot
         result: {
           textResultForLlm: "Failed to execute",
           resultType: "failure",
-          error: e.full_message,
+          error: e.full_message
         }
       }
     end

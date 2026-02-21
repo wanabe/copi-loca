@@ -77,6 +77,13 @@ class SessionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def session_params
-      params.fetch(:session, {}).permit(:model, :skill_directory_pattern, custom_agent_ids: [], tool_ids: [])
+      params.fetch(:session, {}).permit(
+        :model,
+        :skill_directory_pattern,
+        :system_message_mode,
+        :system_message,
+        custom_agent_ids: [],
+        tool_ids: [],
+      )
     end
 end

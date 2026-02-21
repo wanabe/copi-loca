@@ -1,4 +1,6 @@
 class Session < ApplicationRecord
+  enum :system_message_mode, { default: 0, replace: 1, append: 2 }, prefix: true
+
   has_many :messages, dependent: :destroy
   has_many :rpc_messages, dependent: :destroy
   has_many :events, dependent: :destroy
@@ -58,13 +60,29 @@ class Session < ApplicationRecord
 
   def options
     options = {}
-    if File.exist?("/app/AGENTS.md")
-      agents = File.read("/app/AGENTS.md")
+    if system_message_mode_replace?
       options[:systemMessage] = {
-        mode: "append",
-        content: "<attachments path=\"/app/AGENTS.md\">\n#{agents}\n</attachments>"
+        mode: "replace",
+        content: system_message
       }
+    else
+      system_messages = []
+      if File.exist?("/app/AGENTS.md")
+        agents = File.read("/app/AGENTS.md")
+        system_messages << "<attachments path=\"/app/AGENTS.md\">\n#{agents}\n</attachments>\n"
+      end
+      if system_message_mode_append? && system_message.present?
+        system_messages << system_message
+      end
+
+      if system_messages.any?
+        options[:systemMessage] = {
+          mode: "append",
+          content: system_messages.join("\n")
+        }
+      end
     end
+
     if custom_agents.any?
       options[:customAgents] = custom_agents.map do |agent|
         {
