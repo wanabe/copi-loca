@@ -31,7 +31,7 @@
 
   <div>
     <%= form.label :tool_ids, 'Tools' %><br>
-    <%= form.collection_check_boxes(:tool_ids, @tools, :id, :description) %>
+    <%= form.collection_check_boxes(:tool_ids, @tools, :id, :name) %>
   </div>
 
   <div>
