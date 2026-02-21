@@ -58,6 +58,13 @@ class Session < ApplicationRecord
 
   def options
     options = {}
+    if File.exist?("/app/AGENTS.md")
+      agents = File.read("/app/AGENTS.md")
+      options[:systemMessage] = {
+        mode: "append",
+        content: "<attachments path=\"/app/AGENTS.md\">\n#{agents}\n</attachments>"
+      }
+    end
     if custom_agents.any?
       options[:customAgents] = custom_agents.map do |agent|
         {
