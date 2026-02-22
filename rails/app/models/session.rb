@@ -132,10 +132,4 @@ class Session < ApplicationRecord
       return @copilot_session if @copilot_session
       @copilot_session = Client.resume_session(self)
     end
-
-    def open
-      yield(copilot_session)
-    ensure
-      close_session
-    end
 end

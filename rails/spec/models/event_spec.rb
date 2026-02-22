@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Event, type: :model do
-
   describe "#handle" do
     context "assistant.message" do
       it "creates a message when content is present and parentToolCallId is blank" do
