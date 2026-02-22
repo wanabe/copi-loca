@@ -98,6 +98,11 @@ For schema details and migration rules, see [db/AGENTS.md](rails/db/AGENTS.md).
 Git commit messages, Comments and documentation in languages other than English are prohibited.
 If comments or documentation appear in a language other than English, translate them into English.
 
+## Local Variable Naming
+- Use descriptive names for local variables; avoid abbreviations that obscure meaning (e.g., do not use 'CA' for 'custom agent').
+- Abbreviations or short names are allowed only if they are conventional and widely understood (e.g., 'n', 'x' for integers).
+- All variable names must be clear and convey their purpose unambiguously.
+
 # Git Workflow
 
 - Do not commit changes unless the user explicitly instructs you to commit. Never commit automatically or without user permission.
