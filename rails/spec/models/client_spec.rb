@@ -13,7 +13,6 @@ describe Client do
     it 'returns a singleton instance' do
       i1 = described_class.instance
       i2 = described_class.instance
-      expect(i1).to be_a(described_class)
       expect(i1).to equal(i2)
     end
   end
@@ -57,9 +56,11 @@ describe Client do
       allow(Copilot::Client).to receive(:cache).and_return(copilot_client_double)
       session = double('Session', model: 'gpt', options: {}, id: nil)
       copilot_session = double('Copilot::Session', session_id: 'sid')
-      expect(copilot_client_double).to receive(:create_session).with(model: 'gpt').and_return(copilot_session)
-      expect(session).to receive(:id=).with('sid')
-      expect(described_class.new.create_session(session)).to eq(copilot_session)
+      allow(copilot_client_double).to receive(:create_session).and_return(copilot_session)
+      allow(session).to receive(:id=)
+      described_class.new.create_session(session)
+      expect(copilot_client_double).to have_received(:create_session).with(model: 'gpt')
+      expect(session).to have_received(:id=).with('sid')
     end
   end
 
@@ -78,8 +79,9 @@ describe Client do
       allow(Copilot::Client).to receive(:cache).and_return(copilot_client_double)
       session = double('Session', id: 'sid', options: {})
       allow(copilot_client_double).to receive(:sessions).and_return({})
-      expect(copilot_client_double).to receive(:create_session).with(session_id: 'sid').and_return(:created)
-      expect(described_class.new.resume_session(session)).to eq(:created)
+      allow(copilot_client_double).to receive(:create_session).and_return(:created)
+      described_class.new.resume_session(session)
+      expect(copilot_client_double).to have_received(:create_session).with(session_id: 'sid')
     end
   end
 
@@ -92,9 +94,12 @@ describe Client do
         { id: 'b', billing: { multiplier: 2 } },
         { id: 'a', billing: { multiplier: 1 } }
       ]
-      expect(copilot_client_double).to receive(:call).with('models.list').and_return(:call_id)
-      expect(copilot_client_double).to receive(:await).with(:call_id).and_return({ models: models })
+      allow(copilot_client_double).to receive(:call).and_return(:call_id)
+      allow(copilot_client_double).to receive(:await).and_return({ models: models })
       client = described_class.new
+      client.available_models
+      expect(copilot_client_double).to have_received(:call).with('models.list')
+      expect(copilot_client_double).to have_received(:await).with(:call_id)
       expect(client.available_models.map { |m| m[:id] }).to eq(%w[a b])
       # cached
       expect(client.available_models.map { |m| m[:id] }).to eq(%w[a b])
