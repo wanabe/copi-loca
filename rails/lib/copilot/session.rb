@@ -85,8 +85,6 @@ module Copilot
         @turn_id = data[:turnId]
       when "assistant.turn_end"
         @turn_id = nil
-      else
-        @client.logger&.warn("Unknown event type: #{type}")
       end
       @event_handlers[type]&.call(**data)
       @event_handler&.call(type, **data)
