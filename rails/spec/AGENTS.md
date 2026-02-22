@@ -1,5 +1,8 @@
 # RSpec Writing Guidelines for Copi Loca
 
+## Matcher Restrictions
+- The use of `expect(...).to receive` is prohibited; it is deprecated and should not be used in any tests.
+
 ## File Correspondence Rule
 - Each spec file must correspond one-to-one with its implementation file (e.g., model, controller, job, etc.).
 - Do not create multiple spec files for a single model or implementation file. All tests for a given model must reside in a single spec file.
