@@ -54,18 +54,6 @@ Copi Loca is a Rails-based web UI for interacting with Copilot AI agents. Users 
 - bin/: scripts
 - compose.yml: Docker Compose orchestration
 
-### Database Schema
-- sessions: id (string, Copilot session ID), model, skill_directory_pattern, token_limit, current_tokens, timestamps
-- messages: session_id, rpc_message_id (AI only), direction, content, timestamps
-- rpc_messages: session_id, rpc_id, direction, method, params, result, error, message_type, timestamps
-- operations: command, directory, execution_timing, timestamps
-- custom_agents: name, display_name, description, prompt, timestamps
-- session_custom_agents: session_id, custom_agent_id, timestamps
-- tools: name, description, script, timestamps
-- tool_parameters: tool_id, name, description, timestamps
-- session_tools: session_id, tool_id, timestamps
-- events: session_id, rpc_message_id, event_id, event_type, data, parent_event_id, ephemeral, timestamp, timestamps
-
 ### Data Flow
 1. User sends a message in a session; Message and outgoing RpcMessage are created
 2. Copilot event is received; incoming Message and RpcMessage are created
@@ -90,6 +78,16 @@ Copi Loca is a Rails-based web UI for interacting with Copilot AI agents. Users 
 # Commands
 
 # Testing
+
+For detailed RSpec writing guidelines and best practices, see [spec/AGENTS.md](rails/spec/AGENTS.md).
+
+# Library Guidelines
+
+For Copilot::Clientやlib拡張の設計指針は [lib/AGENTS.md](rails/lib/AGENTS.md) を参照してください。
+
+# Database Schema
+
+For schema details and migration rules, see [db/AGENTS.md](rails/db/AGENTS.md).
 
 # Project Structure
 
