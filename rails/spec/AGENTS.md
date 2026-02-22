@@ -1,5 +1,9 @@
 # RSpec Writing Guidelines for Copi Loca
 
+## Context Usage
+- Use `describe` or `context` to clarify test scope
+- Do not place `it` blocks directly under the top-level
+
 ## Matcher Restrictions
 - The use of `expect(...).to receive` is prohibited; it is deprecated and should not be used in any tests.
 
