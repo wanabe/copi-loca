@@ -1,12 +1,12 @@
 class Session < ApplicationRecord
   enum :system_message_mode, { default: 0, replace: 1, append: 2 }, prefix: true
 
-  has_many :messages, dependent: :destroy
-  has_many :rpc_messages, dependent: :destroy
-  has_many :events, dependent: :destroy
-  has_many :session_custom_agents, dependent: :destroy
+  has_many :messages, dependent: :delete_all
+  has_many :rpc_messages, dependent: :delete_all
+  has_many :events, dependent: :delete_all
+  has_many :session_custom_agents, dependent: :delete_all
   has_many :custom_agents, through: :session_custom_agents
-  has_many :session_tools, dependent: :destroy
+  has_many :session_tools, dependent: :delete_all
   has_many :tools, through: :session_tools
 
   after_initialize :initialize_internals
