@@ -8,14 +8,16 @@ class Tool < ApplicationRecord
     def load_script
       return if script.blank?
       keyword_parameters = tool_parameters.map { |parameter| "#{parameter.name}: nil" }.join(", ")
-      eval <<~RUBY
-        class << self
-          def call(#{keyword_parameters})
-            #{script}
+      begin
+        eval <<~RUBY
+          class << self
+            def call(#{keyword_parameters})
+              #{script}
+            end
           end
-        end
-      RUBY
-    rescue => e
-      Rails.logger&.error("Error loading script for tool #{name}: #{e.message}")
+        RUBY
+      rescue Exception => e
+        Rails.logger&.error("Error loading script for tool #{name}: #{e.message}")
+      end
     end
 end
