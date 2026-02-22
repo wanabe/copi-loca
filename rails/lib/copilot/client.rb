@@ -1,5 +1,27 @@
 module Copilot
   class Client
+    class << self
+      def cache(cli_url: nil)
+        @cache ||= {}
+        client = @cache[cli_url]
+        return client unless client.nil?
+        if cli_url.nil?
+          raise "No default CLI URL configured"
+        end
+
+        client = Client.new(cli_url: cli_url).tap(&:start)
+        @cache[nil] ||= client
+        @cache[cli_url] = client
+      end
+
+      def clear_cache
+        return if @cache.nil?
+
+        @cache.each_value(&:stop)
+        @cache = {}
+      end
+    end
+
     attr_reader :logger, :sessions, :messages
 
     def initialize(cli_url:, logger: nil, &block)
@@ -19,7 +41,7 @@ module Copilot
 
     def start
       uri = URI.parse(@cli_url)
-      @socket = TCPSocket.new(uri.host, uri.port)
+      @io = TCPSocket.new(uri.host, uri.port)
       logger&.info("Connected to Copilot CLI at #{@cli_url}")
       return self unless block_given?
 
@@ -31,12 +53,12 @@ module Copilot
     end
 
     def stop
-      if @socket
-        unless @socket.closed?
-          @socket.close
+      if io
+        unless io.closed?
+          io.close
           logger&.info("Disconnected from Copilot CLI at #{@cli_url}")
         end
-        @socket = nil
+        io = nil
       end
     end
 
@@ -50,7 +72,7 @@ module Copilot
 
     def push(message)
       raw_message = JSON.generate({ jsonrpc: "2.0" }.merge(message))
-      @socket.write("Content-Length: ", raw_message.bytesize, "\r\n\r\n", raw_message)
+      io.write("Content-Length: ", raw_message.bytesize, "\r\n\r\n", raw_message)
       @on_send_callback&.call(message)
       logger&.debug("Sent message: #{message}")
     end
@@ -71,15 +93,15 @@ module Copilot
     end
 
     def readable?(timeout: nil)
-      !!@socket.wait_readable(timeout)
+      !!io.wait_readable(timeout)
     end
 
     def pop(timeout: nil)
       return unless readable?(timeout: timeout)
 
-      header = @socket.gets("\r\n\r\n")
+      header = io.gets("\r\n\r\n")
       content_length = header.match(/Content-Length: (\d+)/)[1].to_i
-      raw_message = @socket.read(content_length)
+      raw_message = io.read(content_length)
       message = JSON.parse(raw_message, symbolize_names: true)
       @on_receive_callback&.call(message)
       id = message[:id]
@@ -124,26 +146,6 @@ module Copilot
 
     private
 
-    class << self
-      def cache(cli_url: nil)
-        @cache ||= {}
-        client = @cache[cli_url]
-        return client unless client.nil?
-        if cli_url.nil?
-          raise "No default CLI URL configured"
-        end
-
-        client = Client.new(cli_url: cli_url).tap(&:start)
-        @cache[nil] ||= client
-        @cache[cli_url] = client
-      end
-
-      def clear_cache
-        return if @cache.nil?
-
-        @cache.each_value(&:stop)
-        @cache = {}
-      end
-    end
+    attr_reader :io
   end
 end
