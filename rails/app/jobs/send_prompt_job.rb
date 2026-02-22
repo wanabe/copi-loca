@@ -12,7 +12,7 @@ class SendPromptJob < ApplicationJob
     message = session.send_prompt(prompt, attachments: attachments)
 
     if message
-      wait_until = Time.current
+      wait_until = Time.current + WAIT_INTERVAL
       session.wait_until_idle do |rpc_message|
         if Time.current >= wait_until
           broadcast(session, display_state, :running)
