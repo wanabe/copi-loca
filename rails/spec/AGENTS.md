@@ -1,5 +1,9 @@
 # RSpec Writing Guidelines for Copi Loca
 
+## File Correspondence Rule
+- Each spec file must correspond one-to-one with its implementation file (e.g., model, controller, job, etc.).
+- Do not create multiple spec files for a single model or implementation file. All tests for a given model must reside in a single spec file.
+
 ## General Principles
 - Test each method individually; do not combine multiple methods in a single example (e.g., avoid 'describe "#a and #b"').
 - Avoid direct manipulation of instance variables (e.g., do not use `instance_variable_set`).
