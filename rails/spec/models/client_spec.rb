@@ -1,0 +1,122 @@
+require 'rails_helper'
+require_relative '../../app/models/client'
+
+describe Client do
+  let(:copilot_client_double) do
+    double = instance_double(Copilot::Client)
+    allow(double).to receive(:on_send)
+    allow(double).to receive(:on_receive)
+    double
+  end
+
+  describe '.instance' do
+    it 'returns a singleton instance' do
+      i1 = described_class.instance
+      i2 = described_class.instance
+      expect(i1).to be_a(described_class)
+      expect(i1).to equal(i2)
+    end
+  end
+
+  describe '#initialize' do
+    it 'assigns copilot_client from Copilot::Client.cache' do
+      allow(Copilot::Client).to receive(:cache).and_return(copilot_client_double)
+      client = described_class.new
+      expect(client.copilot_client).to eq(copilot_client_double)
+    end
+
+    it 'executes on_send block' do
+      allow(copilot_client_double).to receive(:on_send).and_yield({ params: { sessionId: 1 }, id: 2 })
+      allow(copilot_client_double).to receive(:on_receive)
+      allow(Copilot::Client).to receive(:cache).and_return(copilot_client_double)
+      stub_const('Session', Class.new do
+        def self.find_by(id:); new; end
+        def handle(*args); :handled; end
+      end)
+      allow(Rails.logger).to receive(:debug)
+      expect { described_class.new }.not_to raise_error
+    end
+
+    it 'executes on_receive block' do
+      allow(copilot_client_double).to receive(:on_send)
+      allow(copilot_client_double).to receive(:on_receive).and_yield({ params: { sessionId: 1 }, id: 2 })
+      allow(Copilot::Client).to receive(:cache).and_return(copilot_client_double)
+      stub_const('Session', Class.new do
+        def self.find_by(id:); new; end
+        def handle(*args); :handled; end
+      end)
+      allow(Rails.logger).to receive(:debug)
+      expect { described_class.new }.not_to raise_error
+    end
+  end
+
+  describe '#create_session' do
+    it 'creates a copilot session and sets session id' do
+      allow(copilot_client_double).to receive(:on_send)
+      allow(copilot_client_double).to receive(:on_receive)
+      allow(Copilot::Client).to receive(:cache).and_return(copilot_client_double)
+      session = double('Session', model: 'gpt', options: {}, id: nil)
+      copilot_session = double('Copilot::Session', session_id: 'sid')
+      expect(copilot_client_double).to receive(:create_session).with(model: 'gpt').and_return(copilot_session)
+      expect(session).to receive(:id=).with('sid')
+      expect(described_class.new.create_session(session)).to eq(copilot_session)
+    end
+  end
+
+  describe '#resume_session' do
+    it 'returns existing session if present' do
+      allow(copilot_client_double).to receive(:on_send)
+      allow(copilot_client_double).to receive(:on_receive)
+      allow(Copilot::Client).to receive(:cache).and_return(copilot_client_double)
+      session = double('Session', id: 'sid', options: {})
+      allow(copilot_client_double).to receive(:sessions).and_return({ 'sid' => :existing })
+      expect(described_class.new.resume_session(session)).to eq(:existing)
+    end
+    it 'creates session if not present' do
+      allow(copilot_client_double).to receive(:on_send)
+      allow(copilot_client_double).to receive(:on_receive)
+      allow(Copilot::Client).to receive(:cache).and_return(copilot_client_double)
+      session = double('Session', id: 'sid', options: {})
+      allow(copilot_client_double).to receive(:sessions).and_return({})
+      expect(copilot_client_double).to receive(:create_session).with(session_id: 'sid').and_return(:created)
+      expect(described_class.new.resume_session(session)).to eq(:created)
+    end
+  end
+
+  describe '#available_models' do
+    it 'returns sorted models and caches them' do
+      allow(copilot_client_double).to receive(:on_send)
+      allow(copilot_client_double).to receive(:on_receive)
+      allow(Copilot::Client).to receive(:cache).and_return(copilot_client_double)
+      models = [
+        { id: 'b', billing: { multiplier: 2 } },
+        { id: 'a', billing: { multiplier: 1 } }
+      ]
+      expect(copilot_client_double).to receive(:call).with('models.list').and_return(:call_id)
+      expect(copilot_client_double).to receive(:await).with(:call_id).and_return({ models: models })
+      client = described_class.new
+      expect(client.available_models.map { |m| m[:id] }).to eq(%w[a b])
+      # cached
+      expect(client.available_models.map { |m| m[:id] }).to eq(%w[a b])
+    end
+  end
+
+  describe '#wait' do
+    it 'yields last_rpc_message and resets it' do
+      allow(copilot_client_double).to receive(:on_send).and_yield({ params: { sessionId: 1 }, id: 2 })
+      allow(copilot_client_double).to receive(:on_receive)
+      allow(copilot_client_double).to receive(:wait).and_yield
+      allow(Copilot::Client).to receive(:cache).and_return(copilot_client_double)
+      stub_const('Session', Class.new do
+        def self.find_by(id:); new; end
+        def handle(*args); 'msg'; end
+      end)
+      allow(Rails.logger).to receive(:debug)
+      client = described_class.new
+      yielded = nil
+      client.wait { |m| yielded = m }
+      expect(yielded).to eq('msg')
+      client.wait { |m| expect(m).to be_nil }
+    end
+  end
+end
