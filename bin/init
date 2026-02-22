@@ -1,5 +1,6 @@
 #!/bin/sh
 
+cd "$(dirname "$0")/.."
 export USR=`id -u`:`id -g`
 
 GIT_USER_NAME="$(git config --get user.name)"
