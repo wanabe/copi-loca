@@ -11,6 +11,11 @@
 - Each spec file must correspond one-to-one with its implementation file (e.g., model, controller, job, etc.).
 - Do not create multiple spec files for a single model or implementation file. All tests for a given model must reside in a single spec file.
 
+## Request spec organization
+- For request specs, create one spec file per controller action. Place request specs in a controller-named directory under spec/requests and name the file after the action, for example: spec/requests/sessions/create_spec.rb for SessionsController#create.
+- Do not group multiple controller actions into a single request spec file; keep each request spec focused on a single action's behavior and edge cases.
+- Follow the existing file correspondence rule: a request spec file should map directly to the single action it tests, making it easier to find, maintain, and review request-level tests.
+
 ## General Principles
 - Test each method individually; do not combine multiple methods in a single example (e.g., avoid 'describe "#a and #b"').
 - Avoid direct manipulation of instance variables (e.g., do not use `instance_variable_set`).

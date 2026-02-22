@@ -1,3 +1,7 @@
+# IMPORTANT
+NEVER make persistent or configuration changes (e.g., modifying git configuration, adding/removing repository hooks, or altering CI) without explicit, prior approval from a project maintainer.
+Any automation that would change repository behavior must be proposed first and approved before implementation.
+
 # Overview
 
 ## Project Overview
