@@ -25,8 +25,17 @@ class ChangesController < ApplicationController
   end
 
   def uncommitted
-    @staged_diffs = Repository.staged_diffs
-    @unstaged_diffs = Repository.unstaged_diffs
+    staged_diffs = Repository.staged_diffs
+    unstaged_diffs = Repository.unstaged_diffs
+    @staged_files = staged_diffs.map(&:first)
+    @unstaged_files = unstaged_diffs.map(&:first)
+    if params[:staged_file_path]
+      @staged_file_path = params[:staged_file_path]
+      @file_diff = staged_diffs.find { |fd| fd[0] == params[:staged_file_path] }
+    elsif params[:unstaged_file_path]
+      @unstaged_file_path = params[:unstaged_file_path]
+      @file_diff = unstaged_diffs.find { |fd| fd[0] == params[:unstaged_file_path] }
+    end
   end
 
   def show

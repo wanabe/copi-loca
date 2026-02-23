@@ -1,5 +1,19 @@
 <h1>Uncommitted Changes</h1>
 <h2>Unstaged Changes</h2>
-<%= render "diff", file_diffs: @unstaged_diffs %>
+<ul>
+  <% @unstaged_files.each do |file| %>
+    <% selected = (file == @unstaged_file_path) %>
+    <li class="changes-list__item<%= " changes-list__item--selected" if selected %>"><a href="<%= uncommitted_changes_path(unstaged_file_path: file) %>"><%= h file %></a></li>
+  <% end %>
+</ul>
 <h2>Staged Changes</h2>
-<%= render "diff", file_diffs: @staged_diffs %>
+<ul>
+  <% @staged_files.each do |file| %>
+    <% selected = (file == @staged_file_path) %>
+    <li class="changes-list__item<%= " changes-list__item--selected" if selected %>"><a href="<%= uncommitted_changes_path(staged_file_path: file) %>"><%= h file %></a></li>
+  <% end %>
+</ul>
+<% if @file_diff %>
+  <hr>
+  <%= render partial: "diff", locals: { file_diffs: [ @file_diff ] } %>
+<% end %>
