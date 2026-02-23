@@ -1,9 +1,9 @@
-<div id="<%= dom_id message %>" class="message-item <%= message.direction == 'incoming' ? 'incoming' : 'outgoing' %>" data-controller="toggle-details" data-action="click->toggle-details#toggle">
+<div id="<%= dom_id message %>" class="message-item <%= message.direction == "incoming" ? "incoming" : "outgoing" %>" data-controller="toggle-details" data-action="click->toggle-details#toggle">
  <details>
     <summary>
       <div class="summary-flex-row">
         <span class="summary-text">
-          <%= message.content.to_s.lines.first&.chomp || '' %>
+          <%= message.content.to_s.lines.first&.chomp || "" %>
           <% if message.content.to_s.lines.size > 1 %>...<% end %>
         </span>
         <span class="meta">

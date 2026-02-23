@@ -28,16 +28,16 @@
 
   <div id="tool-parameters" data-controller="tool-parameters" data-tool-parameters-target="container">
     <%= form.fields_for :tool_parameters do |f| %>
-      <%= render 'tool_parameter_fields', f: f %>
+      <%= render "tool_parameter_fields", f: f %>
     <% end %>
     <div>
-      <%= link_to 'Add Parameter', '#', data: { action: 'tool-parameters#add' } %>
+      <%= link_to "Add Parameter", "#", data: { action: "tool-parameters#add" } %>
     </div>
   </div>
 
   <template id="tool-parameter-template">
-    <%= form.fields_for :tool_parameters, ToolParameter.new, child_index: 'NEW_RECORD' do |f| %>
-      <%= render 'tool_parameter_fields', f: f %>
+    <%= form.fields_for :tool_parameters, ToolParameter.new, child_index: "NEW_RECORD" do |f| %>
+      <%= render "tool_parameter_fields", f: f %>
     <% end %>
   </template>
 

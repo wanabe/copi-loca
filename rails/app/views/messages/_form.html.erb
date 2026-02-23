@@ -1,4 +1,4 @@
-<%= form_with model: [session, message], data: { controller: "clear-form message-form" }, html: { multipart: true, id: "message-form" } do |form| %>
+<%= form_with model: [ session, message ], data: { controller: "clear-form message-form" }, html: { multipart: true, id: "message-form" } do |form| %>
   <%= hidden_field_tag :from, local_assigns[:from] if local_assigns[:from] %>
   <% if message.errors.any? %>
     <div style="color: red">
@@ -13,11 +13,11 @@
   <% end %>
 
   <div data-controller="message-form">
-    <%= form.text_area :content, rows: 2, style: 'width: calc(100% - 0.5em); resize: none; margin-right: 0.5em; box-sizing: border-box;', id: "message_content", data: { message_form_target: "messageContent" } %>
+    <%= form.text_area :content, rows: 2, style: "width: calc(100% - 0.5em); resize: none; margin-right: 0.5em; box-sizing: border-box;", id: "message_content", data: { message_form_target: "messageContent" } %>
   </div>
 
   <div style="display: flex; align-items: center; gap: 0.3em; justify-content: flex-end;">
-    <%= link_to 'History', history_session_messages_path(session), id: 'open-history', data: { turbo_frame: :remote_modal } %>
+    <%= link_to "History", history_session_messages_path(session), id: "open-history", data: { turbo_frame: :remote_modal } %>
     <select name="custom_agent_id" id="custom_agent_id">
       <option value=""></option>
       <% session.custom_agents.each do |agent| %>
@@ -29,9 +29,9 @@
     <input type="file" id="file_upload" name="file[]" accept="image/*" multiple style="display:none" onchange="document.getElementById('file_upload_label').innerText = this.files.length > 1 ? this.files.length + ' files' : (this.files[0]?.name || 'File')">
     <button type="button" onclick="document.getElementById('camera_upload').click()" id="camera_upload_label">Camera</button>
     <input type="file" id="camera_upload" name="camera_file" accept="image/*" capture="environment" style="display:none" onchange="document.getElementById('camera_upload_label').innerText = this.files[0]?.name || 'Camera'">
-    <input type="hidden" name="show_messages" value="<%= display_state[:show_messages] %>" />
-    <input type="hidden" name="show_events" value="<%= display_state[:show_events] %>" />
-    <input type="hidden" name="show_rpc_messages" value="<%= display_state[:show_rpc_messages] %>" />
+    <input type="hidden" name="show_messages" value="<%= display_state[:show_messages] %>">
+    <input type="hidden" name="show_events" value="<%= display_state[:show_events] %>">
+    <input type="hidden" name="show_rpc_messages" value="<%= display_state[:show_rpc_messages] %>">
     <%= form.submit "Send" %>
   </div>
 <% end %>

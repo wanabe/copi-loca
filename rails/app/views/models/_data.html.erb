@@ -4,7 +4,7 @@
     <ul>
       <% data.each do |k, v| %>
         <li>
-          <%= render partial: 'data', locals: { data: v, key: k } %>
+          <%= render partial: "data", locals: { data: v, key: k } %>
         </li>
       <% end %>
     </ul>
@@ -13,7 +13,7 @@
   <ul>
     <% data.each do |k, v| %>
       <li>
-        <%= render partial: 'data', locals: { data: v, key: k } %>
+        <%= render partial: "data", locals: { data: v, key: k } %>
       </li>
     <% end %>
   </ul>
@@ -22,14 +22,14 @@
     <summary><%= local_assigns[:key] %> (<%= data.size %> items)</summary>
     <ol>
       <% data.each do |item| %>
-        <li><%= render partial: 'data', locals: { data: item } %></li>
+        <li><%= render partial: "data", locals: { data: item } %></li>
       <% end %>
     </ol>
   </details>
 <% elsif data.is_a?(Array) %>
   <ol>
     <% data.each do |item| %>
-      <li><%= render partial: 'data', locals: { data: item } %></li>
+      <li><%= render partial: "data", locals: { data: item } %></li>
     <% end %>
   </ol>
 <% else %>

@@ -17,25 +17,25 @@
   </div>
 
   <div data-controller="system-message-mode">
-    <%= form.label :system_message_mode, 'System Message Mode' %><br>
-    <%= form.select :system_message_mode, Session.system_message_modes.keys.map { |k| [k.titleize, k] }, { selected: session.system_message_mode }, { data: { system_message_mode_target: "mode", action: "change->system-message-mode#toggleMessage" } } %>
+    <%= form.label :system_message_mode, "System Message Mode" %><br>
+    <%= form.select :system_message_mode, Session.system_message_modes.keys.map { |k| [ k.titleize, k ] }, { selected: session.system_message_mode }, { data: { system_message_mode_target: "mode", action: "change->system-message-mode#toggleMessage" } } %>
     <br>
-    <%= form.label :system_message, 'System Message', for: "system-message" %><br>
+    <%= form.label :system_message, "System Message", for: "system-message" %><br>
     <%= form.text_area :system_message, rows: 3, data: { system_message_mode_target: "message" } %>
   </div>
 
   <div>
-    <%= form.label :custom_agent_ids, 'Custom Agents' %><br>
+    <%= form.label :custom_agent_ids, "Custom Agents" %><br>
     <%= form.collection_check_boxes(:custom_agent_ids, @custom_agents, :id, :name) %>
   </div>
 
   <div>
-    <%= form.label :tool_ids, 'Tools' %><br>
+    <%= form.label :tool_ids, "Tools" %><br>
     <%= form.collection_check_boxes(:tool_ids, @tools, :id, :name) %>
   </div>
 
   <div>
-    <%= form.label :skill_directory_pattern, 'Skill Directory Pattern (Glob pattern)' %><br>
+    <%= form.label :skill_directory_pattern, "Skill Directory Pattern (Glob pattern)" %><br>
     <%= form.text_field :skill_directory_pattern %>
   </div>
 

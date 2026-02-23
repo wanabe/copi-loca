@@ -9,15 +9,15 @@
     <strong>Filter by type:</strong><br>
     <% @types.each do |type| %>
       <label>
-        <%= check_box_tag 'types[]', type, @selected_types.include?(type), id: "type_#{type}" %>
+        <%= check_box_tag "types[]", type, @selected_types.include?(type), id: "type_#{type}" %>
         <%= type %>
       </label>
     <% end %>
   </div>
   <div>
-    <%= submit_tag 'Show' %>
+    <%= submit_tag "Show" %>
   </div>
 <% end %>
 
-<%= render 'events', events: @events, limit: 10 %>
+<%= render "events", events: @events, limit: 10 %>
 <%= paginate @events %>

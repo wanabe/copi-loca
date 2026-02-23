@@ -13,20 +13,20 @@
       <span>Messages:</span>
       <% merged = display_state.merge(show_messages: "false") %>
       <% if display_state[:show_messages] == "true" || display_state[:show_messages] == "open" %>
-        <%= link_to 'Hide', session_path(session, merged), class: 'toggle' %>
+        <%= link_to "Hide", session_path(session, merged), class: "toggle" %>
         <% if display_state[:show_messages] == "open" %>
-          <%= link_to 'Close all', session_path(session, display_state.merge(show_messages: "true")), class: 'toggle' %>
+          <%= link_to "Close all", session_path(session, display_state.merge(show_messages: "true")), class: "toggle" %>
         <% else %>
-          <%= link_to 'Open all', session_path(session, display_state.merge(show_messages: "open")), class: 'toggle' %>
+          <%= link_to "Open all", session_path(session, display_state.merge(show_messages: "open")), class: "toggle" %>
         <% end %>
-        <%= link_to 'More', session_messages_path(session), class: 'toggle' %>
+        <%= link_to "More", session_messages_path(session), class: "toggle" %>
       <% else %>
-        <%= link_to 'Show', session_path(session, display_state.merge(show_messages: "true")), class: 'toggle' %>
+        <%= link_to "Show", session_path(session, display_state.merge(show_messages: "true")), class: "toggle" %>
       <% end %>
     </div>
     <% if display_state[:show_messages] == "true" || display_state[:show_messages] == "open" %>
       <div data-controller="message-open" data-message-open-open-value="<%= display_state[:show_messages] == "open" %>">
-        <%= render 'messages/messages', messages: session.messages.order(id: :desc).limit(5), limit: 5 %>
+        <%= render "messages/messages", messages: session.messages.order(id: :desc).limit(5), limit: 5 %>
       </div>
     <% end %>
   </div>
@@ -37,16 +37,16 @@
         <div class="toggle-link" style="margin: 0.5em 0;">
           <span>Events:</span>
           <% merged = display_state.merge(show_events: "false") %>
-          <%= link_to 'Hide', session_path(session, merged), class: 'toggle' %>
-          <%= link_to 'More', session_events_path(session), class: 'toggle' %>
+          <%= link_to "Hide", session_path(session, merged), class: "toggle" %>
+          <%= link_to "More", session_events_path(session), class: "toggle" %>
         </div>
-        <%= render 'events/events', events: session.events.order(id: :desc).limit(5), limit: 5 %>
+        <%= render "events/events", events: session.events.order(id: :desc).limit(5), limit: 5 %>
       </div>
     </div>
   <% else %>
     <div class="toggle-link" style="margin: 0.5em 0;">
       <span>Events:</span>
-      <%= link_to 'Show', session_path(session, display_state.merge(show_events: "true")), class: 'toggle' %>
+      <%= link_to "Show", session_path(session, display_state.merge(show_events: "true")), class: "toggle" %>
     </div>
   <% end %>
 
@@ -56,16 +56,16 @@
         <div class="toggle-link" style="margin: 0.5em 0;">
           <span>RPC Messages:</span>
           <% merged = display_state.merge(show_rpc_messages: "false") %>
-          <%= link_to 'Hide', session_path(session, merged), class: 'toggle' %>
-          <%= link_to 'More', session_rpc_messages_path(session), class: 'toggle' %>
+          <%= link_to "Hide", session_path(session, merged), class: "toggle" %>
+          <%= link_to "More", session_rpc_messages_path(session), class: "toggle" %>
         </div>
-        <%= render 'rpc_messages/rpc_messages', rpc_messages: session.rpc_messages.order(id: :desc).limit(5), limit: 5 %>
+        <%= render "rpc_messages/rpc_messages", rpc_messages: session.rpc_messages.order(id: :desc).limit(5), limit: 5 %>
       </div>
     </div>
   <% else %>
     <div class="toggle-link" style="margin: 0.5em 0;">
       <span>RPC Messages:</span>
-      <%= link_to 'Show', session_path(session, display_state.merge(show_rpc_messages: "true")), class: 'toggle' %>
+      <%= link_to "Show", session_path(session, display_state.merge(show_rpc_messages: "true")), class: "toggle" %>
     </div>
   <% end %>
 
