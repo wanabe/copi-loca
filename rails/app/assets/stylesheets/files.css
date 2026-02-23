@@ -1,3 +1,6 @@
+.files-show__title {
+  overflow-wrap: anywhere;
+}
 .files-show__content {
   white-space: pre;
 }
