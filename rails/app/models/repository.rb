@@ -27,6 +27,7 @@ class Repository
       :unstaged_diffs,
       :staged_diffs,
       :commit_message,
+      :stage_file,
       to: :instance
     )
   end
@@ -90,6 +91,10 @@ class Repository
 
   def commit_message(commit)
     git("log -1 --pretty=format:'%B' #{commit}")
+  end
+
+  def stage_file(file_path)
+    git("add -- #{file_path}")
   end
 
   private

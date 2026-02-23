@@ -3,12 +3,12 @@
 <ul>
   <% @file_paths.each do |file| %>
     <% selected = (file == @selected_file_path) %>
-    <li class="changes-list__item<%= ' changes-list__item--selected' if selected %>">
+    <li class="changes-list__item<%= " changes-list__item--selected" if selected %>">
       <a href="<%= change_path(@id, file_path: file) %>"><%= h file %></a>
     </li>
   <% end %>
 </ul>
 <% if @file_diff %>
   <hr>
-  <%= render partial: "diff", locals: { file_diffs: [@file_diff] } %>
+  <%= render partial: "diff", locals: { file_diffs: [ @file_diff ] } %>
 <% end %>

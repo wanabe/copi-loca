@@ -15,5 +15,11 @@
 </ul>
 <% if @file_diff %>
   <hr>
+  <% if @unstaged_file_path %>
+    <%= form_with url: stage_changes_path, method: :post, local: true do |form| %>
+      <%= form.hidden_field :file_path, value: @unstaged_file_path %>
+      <%= form.submit "Stage this change", class: "changes-stage-btn" %>
+    <% end %>
+  <% end %>
   <%= render partial: "diff", locals: { file_diffs: [ @file_diff ] } %>
 <% end %>

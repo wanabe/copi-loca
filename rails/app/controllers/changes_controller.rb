@@ -48,6 +48,13 @@ class ChangesController < ApplicationController
     end
   end
 
+  def stage
+    if params[:file_path].present?
+      Repository.stage_file(params[:file_path])
+    end
+    redirect_to uncommitted_changes_path
+  end
+
   private
 
   def set_id
