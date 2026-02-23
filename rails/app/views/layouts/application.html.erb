@@ -30,6 +30,12 @@
 
   <body>
     <%= render "shared/breadcrumbs", session: @session %>
+    <% if notice.present? %>
+      <p class="layout__flash--notice"><%= notice %></p>
+    <% end %>
+    <% if flash[:alert] %>
+      <p class="layout__flash--alert"><%= flash[:alert] %></p>
+    <% end %>
     <%= yield %>
     <%= turbo_frame_tag :remote_modal %>
   </body>

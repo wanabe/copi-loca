@@ -1,5 +1,5 @@
 ---
-glob: "app/**/*.{html,text,js}{+*,}.erb"
+glob: "app/**/*.{html,text,js}.erb"
 EnableDefaultLinters: true
 linters:
   Rubocop:
@@ -12,4 +12,6 @@ linters:
   HardCodedString:
     enabled: false
   PartialInstanceVariable:
+    enabled: true
+  NoStyleAttribute:
     enabled: true

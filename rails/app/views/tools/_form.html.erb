@@ -1,7 +1,7 @@
 <%# locals: (tool:) %>
 <%= form_with(model: tool) do |form| %>
   <% if tool.errors.any? %>
-    <div style="color: red">
+    <div class="tool__form--errors">
       <h2><%= pluralize(tool.errors.count, "error") %> prohibited this tool from being saved:</h2>
 
       <ul>

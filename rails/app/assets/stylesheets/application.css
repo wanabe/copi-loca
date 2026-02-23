@@ -9,7 +9,6 @@
  * Consider organizing styles into separate files for maintainability.
  */
  *= require breadcrumbs
- *= require breadcrumbs_session_id
  *= require mobile_overrides
  *= require messages_list
  *= require rpc_logs_list
@@ -30,3 +29,10 @@ dialog {
 }
 
 @keyframes spin { 100% { transform: rotate(360deg); } }
+
+layout__flash--notice {
+  color: green;
+}
+layout__flash--alert {
+  color: red;
+}

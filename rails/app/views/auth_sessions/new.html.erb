@@ -1,7 +1,5 @@
 <h1>Login</h1>
-<% if flash[:alert] %>
-  <p style="color: red"><%= flash[:alert] %></p>
-<% end %>
+
 <form action="<%= auth_sessions_path %>" method="post">
   <%= csrf_meta_tags %>
   <label>Password:</label>
