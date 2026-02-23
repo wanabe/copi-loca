@@ -35,11 +35,6 @@ class RpcMessagesController < ApplicationController
       @rpc_message = @session.rpc_messages.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
-    def rpc_message_params
-      params.fetch(:rpc_message, {})
-    end
-
     def add_rpc_messages_breadcrumb
       add_breadcrumb("RPC Messages", session_rpc_messages_path(@session))
     end
