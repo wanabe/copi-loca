@@ -1,7 +1,7 @@
 <%# locals: (operation:) %>
 <%= form_with(model: operation) do |form| %>
   <% if operation.errors.any? %>
-    <div style="color: red">
+    <div class="operations-form__errors">
       <h2><%= pluralize(operation.errors.count, "error") %> prohibited this operation from being saved:</h2>
 
       <ul>
