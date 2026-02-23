@@ -1,7 +1,7 @@
 <%# locals: (session:, custom_agents:, models:, tools:) %>
 <%= form_with(model: session) do |form| %>
   <% if session.errors.any? %>
-    <div style="color: red">
+    <div class="sessions-form__errors">
       <h2><%= pluralize(session.errors.count, "error") %> prohibited this session from being saved:</h2>
 
       <ul>

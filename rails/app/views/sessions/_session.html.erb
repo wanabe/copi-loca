@@ -1,9 +1,9 @@
 <%# locals: (session:, display_state:, job_status:) %>
 <div id="session-stream">
   <div class="mobile-messages-area">
-    <div class="toggle-link" style="margin: 0.5em 0;">
+    <div class="toggle-link sessions-session__toggle-link">
       <% if session.current_tokens && session.token_limit %>
-        <div style="margin-bottom: 0.3em; display: flex; align-items: center; gap: 0.7em;">
+        <div class="sessions-session__token-status">
           <span>
             <%= session.current_tokens %> / <%= session.token_limit %> tokens
             (<%= number_to_percentage(session.current_tokens.to_f / session.token_limit * 100, precision: 0) %>)
@@ -33,9 +33,9 @@
   </div>
 
   <% if display_state[:show_events] == "true" %>
-    <div style="max-width: 100vw; overflow-x: auto;">
+    <div class="sessions-session__scroll-x">
       <div class="mobile-events-area">
-        <div class="toggle-link" style="margin: 0.5em 0;">
+        <div class="toggle-link sessions-session__toggle-link">
           <span>Events:</span>
           <% merged = display_state.merge(show_events: "false") %>
           <%= link_to "Hide", session_path(session, merged), class: "toggle" %>
@@ -45,16 +45,16 @@
       </div>
     </div>
   <% else %>
-    <div class="toggle-link" style="margin: 0.5em 0;">
+    <div class="toggle-link sessions-session__toggle-link">
       <span>Events:</span>
       <%= link_to "Show", session_path(session, display_state.merge(show_events: "true")), class: "toggle" %>
     </div>
   <% end %>
 
   <% if display_state[:show_rpc_messages] == "true" %>
-    <div style="max-width: 100vw; overflow-x: auto;">
+    <div class="sessions-session__scroll-x">
       <div class="mobile-rpcmessages-area">
-        <div class="toggle-link" style="margin: 0.5em 0;">
+        <div class="toggle-link sessions-session__toggle-link">
           <span>RPC Messages:</span>
           <% merged = display_state.merge(show_rpc_messages: "false") %>
           <%= link_to "Hide", session_path(session, merged), class: "toggle" %>
@@ -64,7 +64,7 @@
       </div>
     </div>
   <% else %>
-    <div class="toggle-link" style="margin: 0.5em 0;">
+    <div class="toggle-link sessions-session__toggle-link">
       <span>RPC Messages:</span>
       <%= link_to "Show", session_path(session, display_state.merge(show_rpc_messages: "true")), class: "toggle" %>
     </div>
