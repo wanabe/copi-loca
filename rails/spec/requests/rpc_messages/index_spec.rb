@@ -1,7 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe "GET /sessions/:session_id/rpc_messages", type: :request do
-  let(:session) { Session.create!(model: 'gpt-4.1') }
+  before do
+    allow(Client).to receive(:create_session)
+  end
+
+  let(:session) { Session.create!(id: 'dummy', model: 'gpt-4.1') }
 
   let!(:older_rpc_message) do
     session.rpc_messages.create!(rpc_id: '1', method: 'foo', direction: 'outgoing', message_type: 'request', params: {})

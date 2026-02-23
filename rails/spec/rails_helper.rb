@@ -73,4 +73,12 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  config.before(:each) do
+    allow(TCPSocket).to receive(:new).and_raise("TCPSocket is disabled in tests")
+  end
+  config.before(:each, type: :request) do
+    allow(Client).to receive(:create_session)
+    allow(Client).to receive(:resume_session)
+  end
 end

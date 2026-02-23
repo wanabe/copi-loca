@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe RpcMessage, type: :model do
+  before do
+    allow(Client).to receive(:create_session)
+  end
+
   describe "#initialize" do
     it "sets direction and message_type" do
       rpc_message = described_class.new(direction: :outgoing, message_type: :request, rpc_id: "id", method: "foo", params: {})
@@ -10,7 +14,7 @@ RSpec.describe RpcMessage, type: :model do
   end
 
   describe "#handle" do
-    let(:session) { Session.create!(model: 'test') }
+    let(:session) { Session.create!(id: 'dummy', model: 'test') }
 
     it "does nothing if not incoming" do
       rpc_message = RpcMessage.create!(session: session, direction: :outgoing, message_type: :request, rpc_id: 'id', method: 'foo', params: {})
@@ -76,7 +80,7 @@ RSpec.describe RpcMessage, type: :model do
     let(:session) { Session.new }
 
     it "infers method for response when request exists" do
-      session = Session.create!(model: 'test')
+      session = Session.create!(id: 'dummy', model: 'test')
       request = RpcMessage.create!(session: session, rpc_id: 'id', message_type: :request, method: 'foo', direction: :outgoing, params: {})
       response = RpcMessage.new(session: session, rpc_id: 'id', message_type: :response, method: nil, direction: :incoming, result: 'ok')
       response.save
@@ -84,14 +88,14 @@ RSpec.describe RpcMessage, type: :model do
     end
 
     it "does not infer method for response when request does not exist" do
-      session = Session.create!(model: 'test')
+      session = Session.create!(id: 'dummy', model: 'test')
       response = RpcMessage.new(session: session, rpc_id: 'id', message_type: :response, method: nil, direction: :incoming, result: 'ok')
       response.save
       expect(response.method).to be_nil
     end
 
     it "does not infer method for non-response message_type" do
-      session = Session.create!(model: 'test')
+      session = Session.create!(id: 'dummy', model: 'test')
       request = RpcMessage.create!(session: session, rpc_id: 'id', message_type: :request, method: 'foo', direction: :outgoing, params: {})
       rpc_message = RpcMessage.new(session: session, rpc_id: 'id', message_type: :request, method: nil, direction: :incoming)
       rpc_message.save

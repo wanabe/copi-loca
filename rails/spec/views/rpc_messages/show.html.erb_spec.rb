@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe "rpc_messages/show", type: :view do
   before(:each) do
-    session = Session.create!(model: "gpt-4", created_at: Time.now)
+    allow(Client).to receive(:create_session)
+    session = Session.create!(id: 'dummy', model: "gpt-4", created_at: Time.now)
     assign(:session, session)
     assign(:rpc_message, RpcMessage.create!(
       session: session,

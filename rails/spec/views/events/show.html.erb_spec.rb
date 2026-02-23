@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "events/show", type: :view do
   before(:each) do
+    allow(Client).to receive(:create_session)
     session = Session.create!(
       id: "Id",
       model: "Model",

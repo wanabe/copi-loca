@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe "events/index", type: :view do
   before(:each) do
-    session = Session.create!(model: "Model")
+    allow(Client).to receive(:create_session)
+    session = Session.create!(id: 'dummy', model: "Model")
     assign(:session, session)
     assign(:types, [])
     assign(:events, Kaminari.paginate_array([

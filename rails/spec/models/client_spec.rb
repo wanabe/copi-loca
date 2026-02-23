@@ -10,6 +10,10 @@ describe Client do
   end
 
   describe '.instance' do
+    before do
+      allow(Copilot::Client).to receive(:cache).and_return(copilot_client_double)
+    end
+
     it 'returns a singleton instance' do
       i1 = described_class.instance
       i2 = described_class.instance
