@@ -1,5 +1,5 @@
 module StubAuthenticate
   def authenticate
-    # no-op for tests
+    return super if RSpec.current_example.metadata[:with_auth]
   end
 end
