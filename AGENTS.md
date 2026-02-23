@@ -87,7 +87,7 @@ For detailed RSpec writing guidelines and best practices, see [spec/AGENTS.md](r
 
 # Library Guidelines
 
-For Copilot::Clientやlib拡張の設計指針は [lib/AGENTS.md](rails/lib/AGENTS.md) を参照してください。
+For Copilot::Client and library extension design guidelines, see [lib/AGENTS.md](rails/lib/AGENTS.md).
 
 # Database Schema
 
