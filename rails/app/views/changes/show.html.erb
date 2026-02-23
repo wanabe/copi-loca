@@ -1,7 +1,3 @@
 <h1>Commit <%= h @id %> Changes</h1>
 <pre><%= h @commit_message %></pre>
-
-<% @file_diffs.each do |path, diff| %>
-  <h2><%= h path %></h2>
-  <pre><code class="language-diff changes-show__diff"><%= h diff %></code></pre>
-<% end %>
+<%= render 'diff', file_diffs: @file_diffs %>

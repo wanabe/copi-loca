@@ -1,5 +1,2 @@
 <h1>Uncommitted Changes</h1>
-<% @file_diffs.each do |path, diff| %>
-  <h2><%= h path %></h2>
-  <pre><code class="language-diff changes-uncommitted__diff"><%= h diff %></code></pre>
-<% end %>
+<%= render 'diff', file_diffs: @file_diffs %>
