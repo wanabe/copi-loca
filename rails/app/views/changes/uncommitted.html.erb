@@ -1,2 +1,5 @@
 <h1>Uncommitted Changes</h1>
-<%= render "diff", file_diffs: @file_diffs %>
+<h2>Unstaged Changes</h2>
+<%= render "diff", file_diffs: @unstaged_diffs %>
+<h2>Staged Changes</h2>
+<%= render "diff", file_diffs: @staged_diffs %>

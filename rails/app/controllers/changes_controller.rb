@@ -25,7 +25,8 @@ class ChangesController < ApplicationController
   end
 
   def uncommitted
-    @file_diffs = Repository.uncommitted_diffs
+    @staged_diffs = Repository.staged_diffs
+    @unstaged_diffs = Repository.unstaged_diffs
   end
 
   def show

@@ -1,6 +1,6 @@
 <%# locals: (file_diffs:) %>
 <% file_diffs.each do |path, diff| %>
-  <h2>
+  <h2 class="changes-diff__file-path">
     <a href="<%= file_path(path) %>"><%= h path %></a>
   </h2>
   <pre><code class="language-diff"><%= h diff %></code></pre>

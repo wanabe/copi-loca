@@ -17,7 +17,18 @@ class Repository
     def log(limit = 10)
       instance.log(limit)
     end
-    delegate :diff, :status, :ls_files, :uncommitted_diffs, :untracked_files, :tracked_diffs, :commit_message, to: :instance
+    delegate(
+      :diff,
+      :status,
+      :ls_files,
+      :uncommitted_diffs,
+      :untracked_files,
+      :tracked_diffs,
+      :unstaged_diffs,
+      :staged_diffs,
+      :commit_message,
+      to: :instance
+    )
   end
 
   def self.git(cmd)
@@ -36,36 +47,8 @@ class Repository
     end
   end
 
-  def diff
-    git("diff HEAD")
-  end
-
-
   def ls_files
     git("ls-files -c -o --exclude-standard").chomp.split("\n")
-  end
-
-  def tracked_diffs(commit = nil)
-    diffs = []
-    current = nil
-    diff_raw = commit ? git("show -p --format='' #{commit}") : diff
-    diff_raw.each_line do |line|
-      if line.start_with?("diff --git ")
-        diffs << current if current
-        m = line.match(%r{diff --git a/(.+?) b/\1})
-        path = m ? m[1] : nil
-        current = [ path, "" ]
-      elsif current
-        next if line.start_with?("index ")
-        next if line.start_with?("+++ ")
-        next if line.start_with?("--- ")
-        next if line.start_with?("new file mode ")
-        current[1] << line
-      end
-    end
-    diffs << current if current
-    diffs.reject! { |fd| fd[0].nil? }
-    diffs
   end
 
   def untracked_diffs
@@ -84,8 +67,21 @@ class Repository
     diffs
   end
 
+  def tracked_diffs(commit)
+    diff_raw = git("show -p --format='' #{commit}")
+    diff_pairs(diff_raw)
+  end
+
+  def unstaged_diffs
+    (diff_pairs(git("diff")) + untracked_diffs).sort_by { |fd| fd[0] }
+  end
+
+  def staged_diffs
+    diff_pairs(git("diff --cached"))
+  end
+
   def uncommitted_diffs
-    (tracked_diffs + untracked_diffs).sort_by { |fd| fd[0] }
+    (unstaged_diffs + staged_diffs + untracked_diffs).sort_by { |fd| fd[0] }
   end
 
   def untracked_files
@@ -95,4 +91,27 @@ class Repository
   def commit_message(commit)
     git("log -1 --pretty=format:'%B' #{commit}")
   end
+
+  private
+    def diff_pairs(diff_raw)
+      diffs = []
+      current = nil
+      diff_raw.each_line do |line|
+        if line.start_with?("diff --git ")
+          diffs << current if current
+          m = line.match(%r{diff --git a/(.+?) b/\1})
+          path = m ? m[1] : nil
+          current = [ path, "" ]
+        elsif current
+          next if line.start_with?("index ")
+          next if line.start_with?("+++ ")
+          next if line.start_with?("--- ")
+          next if line.start_with?("new file mode ")
+          current[1] << line
+        end
+      end
+      diffs << current if current
+      diffs.reject! { |fd| fd[0].nil? }
+      diffs
+    end
 end
