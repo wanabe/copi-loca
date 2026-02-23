@@ -1,7 +1,7 @@
 <%# locals: (custom_agent:) %>
 <%= form_with(model: custom_agent) do |form| %>
   <% if custom_agent.errors.any? %>
-    <div style="color: red">
+    <div class="custom-agents-form__errors">
       <h2><%= pluralize(custom_agent.errors.count, "error") %> prohibited this custom_agent from being saved:</h2>
 
       <ul>
