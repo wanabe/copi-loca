@@ -4,10 +4,12 @@ RSpec.describe "tools/index", type: :view do
   before(:each) do
     assign(:tools, [
       Tool.create!(
+        name: "Name",
         description: "Description",
         script: "MyText"
       ),
       Tool.create!(
+        name: "Name",
         description: "Description",
         script: "MyText"
       )

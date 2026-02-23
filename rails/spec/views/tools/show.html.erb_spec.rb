@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "tools/show", type: :view do
   before(:each) do
     assign(:tool, Tool.create!(
+      name: "Tool Name",
       description: "Description",
       script: "MyText"
     ))

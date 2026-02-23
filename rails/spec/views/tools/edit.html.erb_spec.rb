@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "tools/edit", type: :view do
   let(:tool) {
     Tool.create!(
+      name: "MyString",
       description: "MyString",
       script: "MyText"
     )
