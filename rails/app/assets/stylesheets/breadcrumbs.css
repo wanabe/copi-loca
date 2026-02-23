@@ -1,15 +1,21 @@
-nav[aria-label="breadcrumb"] .breadcrumb {
+.breadcrumbs-list {
   display: flex;
+  flex: 1 1 0%;
+  min-width: 0;
+  overflow: hidden;
   flex-wrap: nowrap;
   list-style: none;
   padding: 0;
   margin: 0;
   background: none;
-  min-width: 0;
-  overflow: hidden;
   font-size: 1em;
 }
-nav[aria-label="breadcrumb"] {
+
+.breadcrumbs-nav {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
   margin: 0 !important;
   padding: 0 !important;
   line-height: 1;
@@ -18,22 +24,72 @@ nav[aria-label="breadcrumb"] {
   border: none;
   background: none;
 }
-nav[aria-label="breadcrumb"] .breadcrumb-item {
+
+.breadcrumbs-list .breadcrumb-item {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 1em;
 }
-nav[aria-label="breadcrumb"] .breadcrumb-item + .breadcrumb-item::before {
+
+.breadcrumbs-list .breadcrumb-item + .breadcrumb-item::before {
   content: "/ ";
   padding: 0 0.5em;
   color: #6c757d;
 }
-nav[aria-label="breadcrumb"] .breadcrumb-item a {
+
+.breadcrumbs-list .breadcrumb-item a {
   text-decoration: none;
   color: #007bff;
 }
-nav[aria-label="breadcrumb"] .breadcrumb-item.active {
+
+.breadcrumbs-list .breadcrumb-item.active {
+  color: #6c757d;
+}
+
+.breadcrumbs-session-model {
+  flex: 0 0 auto;
+  margin-left: 0.7em;
+  font-style: italic;
+  color: #888;
+  white-space: nowrap;
+}
+
+  border: none;
+  background: none;
+}
+.breadcrumbs-list .breadcrumb-item {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 1em;
+}
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 1em;
+}
+.breadcrumbs-list .breadcrumb-item + .breadcrumb-item::before {
+  content: "/ ";
+  padding: 0 0.5em;
+  color: #6c757d;
+}
+  content: "/ ";
+  padding: 0 0.5em;
+  color: #6c757d;
+}
+.breadcrumbs-list .breadcrumb-item a {
+  text-decoration: none;
+  color: #007bff;
+}
+  text-decoration: none;
+  color: #007bff;
+}
+.breadcrumbs-list .breadcrumb-item.active {
+  color: #6c757d;
+}
   color: #6c757d;
 }

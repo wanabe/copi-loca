@@ -1,6 +1,6 @@
 <%# locals: (session: nil) %>
-<nav aria-label="breadcrumb" class="mobile-breadcrumbs" style="display: flex; align-items: center; min-width:0; overflow:hidden;">
-  <ol class="breadcrumb" style="flex:1 1 0%; min-width:0; overflow:hidden;">
+<nav aria-label="breadcrumb" class="mobile-breadcrumbs breadcrumbs-nav">
+  <ol class="breadcrumb breadcrumbs-list">
     <% breadcrumbs.each do |crumb| %>
       <li class="breadcrumb-item">
         <% if crumb.link? && crumb != breadcrumbs.last %>
@@ -12,6 +12,6 @@
     <% end %>
   </ol>
   <% if session&.model.present? %>
-    <span class="session-model" style="flex:0 0 auto; margin-left:0.7em; font-style:italic; color:#888; white-space:nowrap;"> <%= session.model %></span>
+    <span class="session-model breadcrumbs-session-model"> <%= session.model %></span>
   <% end %>
 </nav>
