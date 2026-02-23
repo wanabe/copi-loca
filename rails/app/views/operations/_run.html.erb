@@ -1,3 +1,4 @@
+<%# locals: (operation:, status:, output:) %>
 <div id="operation-result">
   <%= turbo_frame_tag "result" do %>
     <%= button_to "Run this operation", run_operation_path(operation), method: :post %>

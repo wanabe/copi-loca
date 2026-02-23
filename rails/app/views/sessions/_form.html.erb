@@ -1,3 +1,4 @@
+<%# locals: (session:, custom_agents:, models:, tools:) %>
 <%= form_with(model: session) do |form| %>
   <% if session.errors.any? %>
     <div style="color: red">
@@ -13,7 +14,7 @@
 
   <div>
     <%= form.label :model %><br>
-    <%= form.select :model, options_for_select(@models, selected: session.model) %>
+    <%= form.select :model, options_for_select(models, selected: session.model) %>
   </div>
 
   <div data-controller="system-message-mode">
@@ -26,12 +27,12 @@
 
   <div>
     <%= form.label :custom_agent_ids, "Custom Agents" %><br>
-    <%= form.collection_check_boxes(:custom_agent_ids, @custom_agents, :id, :name) %>
+    <%= form.collection_check_boxes(:custom_agent_ids, custom_agents, :id, :name) %>
   </div>
 
   <div>
     <%= form.label :tool_ids, "Tools" %><br>
-    <%= form.collection_check_boxes(:tool_ids, @tools, :id, :name) %>
+    <%= form.collection_check_boxes(:tool_ids, tools, :id, :name) %>
   </div>
 
   <div>

@@ -1,4 +1,5 @@
-<div class="<%= @rpc_message == rpc_message ? "rpc-message" : "rpc-messages-flex-row" %>">
+<%# locals: (rpc_message:, mode:) %>
+<div class="<%= mode == :table ? "rpc-messages-flex-row" : "rpc-message" %>">
   <strong class="rpc-label">ID:</strong><div class="rpc-col-id"><%= link_to rpc_message.id, session_rpc_message_path(rpc_message.session, rpc_message) %></div>
   <strong class="rpc-label">Type:</strong><div class="rpc-col-type"><%= rpc_message.message_type %></div>
   <strong class="rpc-label">Direction:</strong><div class="rpc-col-dir"><%= rpc_message.direction %></div>

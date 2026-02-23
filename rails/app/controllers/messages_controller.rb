@@ -84,7 +84,7 @@ class MessagesController < ApplicationController
   def history
     @history_mode = true
     @messages = @session.messages.where(direction: "outgoing").order(id: :desc).page(params[:page]).per(params[:per_page] || 10)
-    render partial: "history"
+    render partial: "history", locals: { messages: @messages }
   end
 
   private

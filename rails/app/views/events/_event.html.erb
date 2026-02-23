@@ -1,4 +1,5 @@
-<div id="<%= dom_id event %>" class="<%= @event == event ? "event" : "events-flex-row" %>">
+<%# locals: (event:, mode:) %>
+<div id="<%= dom_id event %>" class="<%= mode == :table ? "events-flex-row" : "event" %>">
   <strong class="event-label">ID:</strong><div class="events-col-id"><%= link_to event.id, session_event_path(event.session, event) %></div>
   <strong class="event-label">Type:</strong><div class="events-col-type"><%= event.event_type %></div>
   <strong class="event-label">Event ID:</strong><div class="events-col-eventid"><%= event.event_id %></div>

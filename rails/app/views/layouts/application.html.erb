@@ -29,7 +29,7 @@
   </head>
 
   <body>
-    <%= render "shared/breadcrumbs" %>
+    <%= render "shared/breadcrumbs", session: @session %>
     <%= yield %>
     <%= turbo_frame_tag :remote_modal %>
   </body>

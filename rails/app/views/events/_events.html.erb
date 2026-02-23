@@ -1,3 +1,4 @@
+<%# locals: (events:, limit:) %>
 <div class="events-flex-table" id="<%= limit == 5 ? "latest_5_events" : "events" %>">
   <div class="events-flex-row events-flex-header">
     <div class="events-col-id">ID</div>
@@ -9,7 +10,7 @@
   </div>
   <div class="events-flex-body">
     <% events.each do |event| %>
-      <%= render event %>
+      <%= render event, mode: :table %>
     <% end %>
   </div>
 </div>

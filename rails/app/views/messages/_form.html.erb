@@ -1,3 +1,4 @@
+<%# locals: (session:, message:, from:, display_state:, job_status:) %>
 <%= form_with model: [ session, message ], data: { controller: "clear-form message-form" }, html: { multipart: true, id: "message-form" } do |form| %>
   <%= hidden_field_tag :from, local_assigns[:from] if local_assigns[:from] %>
   <% if message.errors.any? %>

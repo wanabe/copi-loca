@@ -28,3 +28,5 @@ dialog {
   max-width: 400px;
   margin: 0;
 }
+
+@keyframes spin { 100% { transform: rotate(360deg); } }

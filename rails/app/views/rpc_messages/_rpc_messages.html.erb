@@ -1,3 +1,4 @@
+<%# locals: (rpc_messages:, limit:) %>
 <div class="rpc-messages-flex-table" id="<%= limit == 5 ? "latest_5_rpc_messages" : "rpc_messages" %>">
   <div class="rpc-messages-flex-row rpc-messages-flex-header">
     <div class="rpc-col-id">ID</div>
@@ -11,7 +12,7 @@
   </div>
   <div class="rpc-messages-flex-body" data-controller="limit-list" data-limit-list-max-value="<%= limit %>" data-limit-list-order-value="prepend">
     <% rpc_messages.each do |rpc_message| %>
-      <%= render rpc_message %>
+      <%= render rpc_message, mode: :table %>
     <% end %>
   </div>
 </div>

@@ -1,3 +1,4 @@
+<%# locals: (session:, display_state:, job_status:) %>
 <div id="session-stream">
   <div class="mobile-messages-area">
     <div class="toggle-link" style="margin: 0.5em 0;">
@@ -26,7 +27,7 @@
     </div>
     <% if display_state[:show_messages] == "true" || display_state[:show_messages] == "open" %>
       <div data-controller="message-open" data-message-open-open-value="<%= display_state[:show_messages] == "open" %>">
-        <%= render "messages/messages", messages: session.messages.order(id: :desc).limit(5), limit: 5 %>
+        <%= render "messages/messages", messages: session.messages.order(id: :desc).limit(5), limit: 5, history_mode: false %>
       </div>
     <% end %>
   </div>
