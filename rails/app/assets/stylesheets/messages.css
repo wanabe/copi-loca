@@ -1,0 +1,25 @@
+.messages-form__errors {
+  color: red;
+}
+
+.messages-message__content {
+  white-space: pre-wrap;
+}
+
+.messages-form__content {
+  width: calc(100% - 0.5em);
+  resize: none;
+  margin-right: 0.5em;
+  box-sizing: border-box;
+}
+
+.messages-form__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+  justify-content: flex-end;
+}
+
+.messages-form__file-upload {
+  display: none;
+}
