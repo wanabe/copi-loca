@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resources :changes, only: [] do
     collection do
       get :index
-      get :uncommitted, as: :uncommitted_changes
+      get :uncommitted
       get :revert
       post :execute_revert
     end
