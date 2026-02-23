@@ -1,0 +1,12 @@
+.changes-list__item {
+  margin-bottom: 1em;
+  word-break: break-all;
+}
+
+.changes-show__diff {
+  white-space: pre;
+}
+
+.changes-uncommitted__diff {
+  white-space: pre;
+}
