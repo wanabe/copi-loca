@@ -55,6 +55,13 @@ class ChangesController < ApplicationController
     redirect_to uncommitted_changes_path
   end
 
+  def unstage
+    if params[:file_path].present?
+      Repository.unstage_file(params[:file_path])
+    end
+    redirect_to uncommitted_changes_path
+  end
+
   private
 
   def set_id

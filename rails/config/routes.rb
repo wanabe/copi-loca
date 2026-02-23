@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       get :revert
       post :execute_revert
       post :stage
+      post :unstage
     end
     member do
       get :show, constraints: { id: /[0-9a-f]{40}/ }

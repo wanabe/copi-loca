@@ -20,6 +20,11 @@
       <%= form.hidden_field :file_path, value: @unstaged_file_path %>
       <%= form.submit "Stage this change", class: "changes-stage-btn" %>
     <% end %>
+  <% elsif @staged_file_path %>
+    <%= form_with url: unstage_changes_path, method: :post, local: true do |form| %>
+      <%= form.hidden_field :file_path, value: @staged_file_path %>
+      <%= form.submit "Unstage this change", class: "changes-unstage-btn" %>
+    <% end %>
   <% end %>
   <%= render partial: "diff", locals: { file_diffs: [ @file_diff ] } %>
 <% end %>

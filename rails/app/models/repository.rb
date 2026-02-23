@@ -28,6 +28,7 @@ class Repository
       :staged_diffs,
       :commit_message,
       :stage_file,
+      :unstage_file,
       to: :instance
     )
   end
@@ -95,6 +96,10 @@ class Repository
 
   def stage_file(file_path)
     git("add -- #{file_path}")
+  end
+
+  def unstage_file(file_path)
+    git("reset HEAD -- #{file_path}")
   end
 
   private
