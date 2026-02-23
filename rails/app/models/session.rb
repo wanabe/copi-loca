@@ -69,7 +69,7 @@ class Session < ApplicationRecord
       system_messages = []
       if File.exist?("/app/AGENTS.md")
         agents = File.read("/app/AGENTS.md")
-        system_messages << "<attachments path=\"/app/AGENTS.md\">\n#{agents}\n</attachments>\n"
+        system_messages << "<attachments path=\"/app/AGENTS.md\">\n#{agents}\n</attachments>\nYou must follow the instructions in the AGENTS.md in any actions you take."
       end
       if system_message_mode_append? && system_message.present?
         system_messages << system_message
