@@ -63,8 +63,9 @@ describe Copilot::Client do
       socket = instance_double('TCPSocket', closed?: false, close: nil)
       allow(TCPSocket).to receive(:new).and_return(socket)
       client = described_class.new(cli_url: cli_url, logger: logger)
-      expect(logger).to receive(:info).with(/Connected/)
+      allow(logger).to receive(:info)
       client.start { }
+      expect(logger).to have_received(:info).with(/Connected/)
     end
   end
 
@@ -75,8 +76,9 @@ describe Copilot::Client do
       client = described_class.new(cli_url: cli_url, logger: logger)
       client.start { }
       allow(socket).to receive(:closed?).and_return(false)
-      expect(logger).to receive(:info).with(/Disconnected/)
+      allow(logger).to receive(:info)
       client.stop
+      expect(logger).to have_received(:info).at_least(:once).with(/Disconnected/)
     end
   end
 
@@ -96,17 +98,20 @@ describe Copilot::Client do
       client = described_class.new(cli_url: cli_url, logger: logger)
       socket = instance_double('TCPSocket', write: nil)
       allow(client).to receive(:io).and_return(socket)
-      expect(socket).to receive(:write)
-      expect(logger).to receive(:debug)
+      allow(socket).to receive(:write)
+      allow(logger).to receive(:debug)
       client.push({ id: 'id', method: 'm' })
+      expect(socket).to have_received(:write)
+      expect(logger).to have_received(:debug)
     end
   end
 
   describe '#respond' do
     it 'pushes response message' do
       client = described_class.new(cli_url: cli_url, logger: logger)
-      expect(client).to receive(:push).with(hash_including(id: 'id', result: 'ok'))
+      allow(client).to receive(:push)
       client.respond('id', result: 'ok')
+      expect(client).to have_received(:push).with(hash_including(id: 'id', result: 'ok'))
     end
   end
 
@@ -160,9 +165,11 @@ describe Copilot::Client do
       allow(socket).to receive(:read).and_return('{"id":"id","method":"session.create","params":{"sessionId":"sess1"}}')
       session = instance_double('Session')
       client.sessions['sess1'] = session
-      expect(session).to receive(:handle).with('id', 'session.create', { sessionId: 'sess1' })
-      expect(logger).to receive(:debug)
+      allow(session).to receive(:handle)
+      allow(logger).to receive(:debug)
       client.pop
+      expect(session).to have_received(:handle).with('id', 'session.create', { sessionId: 'sess1' })
+      expect(logger).to have_received(:debug)
     end
 
     it 'handles method not starting with session. or tool. in message' do
@@ -172,9 +179,11 @@ describe Copilot::Client do
       allow(client).to receive(:readable?).and_return(true)
       allow(socket).to receive(:gets).and_return("Content-Length: 10\r\n\r\n")
       allow(socket).to receive(:read).and_return('{"id":"id","method":"other.method","params":{"sessionId":"sess1"}}')
-      expect(logger).to receive(:warn).with(/Unknown method received/)
-      expect(logger).to receive(:debug)
+      allow(logger).to receive(:warn)
+      allow(logger).to receive(:debug)
       client.pop
+      expect(logger).to have_received(:warn).with(/Unknown method received/)
+      expect(logger).to have_received(:debug)
     end
   end
 

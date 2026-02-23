@@ -5,8 +5,9 @@ RSpec.describe "POST /operations/:id/run", type: :request do
 
   context "when execution_timing is :background" do
     it "enqueues RunOperationJob and renders partial" do
-      expect(RunOperationJob).to receive(:perform_later).with(operation.id)
+      allow(RunOperationJob).to receive(:perform_later)
       post run_operation_url(operation)
+      expect(RunOperationJob).to have_received(:perform_later).with(operation.id)
       expect(response).to be_successful
       expect(response.body).to include("run")
     end

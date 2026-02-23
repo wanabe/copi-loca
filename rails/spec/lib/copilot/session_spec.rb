@@ -110,8 +110,9 @@ RSpec.describe Copilot::Session do
       allow(client).to receive(:await).and_return({ sessionId: 'sid123' })
       handler = proc { |**args| 'tool result' }
       session = described_class.new(client, tools: [ { name: 'mytool', handler: handler } ])
-      expect(client).to receive(:respond).with('id', result: hash_including(result: hash_including(textResultForLlm: 'tool result')))
+      allow(client).to receive(:respond)
       session.handle('id', 'tool.call', { toolName: 'mytool', arguments: {} })
+      expect(client).to have_received(:respond).with('id', result: hash_including(result: hash_including(textResultForLlm: 'tool result')))
     end
 
     it 'returns tool handler result hash unchanged' do
