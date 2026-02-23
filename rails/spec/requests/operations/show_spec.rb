@@ -16,7 +16,7 @@ RSpec.describe "GET /operations/:id", type: :request do
 
     before do
       allow(Operation).to receive(:find).and_return(operation)
-      allow(operation).to receive(:run).and_return(["foo.rb\nbar.rb\n", 0])
+      allow(operation).to receive(:run).and_return([ "foo.rb\nbar.rb\n", 0 ])
     end
 
     it "renders a successful response with command result" do

@@ -19,19 +19,19 @@ RSpec.describe "GET /sessions/:session_id/rpc_messages", type: :request do
     expect(response).to have_http_status(:success)
 
     breadcrumbs = css_select("li.breadcrumb-item a, li.breadcrumb-item span").map do |breadcrumb_item|
-      [breadcrumb_item.attribute("href")&.value, breadcrumb_item.text.strip]
+      [ breadcrumb_item.attribute("href")&.value, breadcrumb_item.text.strip ]
     end
     expect(breadcrumbs).to eq([
-      [root_path, "Home"],
-      [sessions_path, "Sessions"],
-      [session_path(session), session.id.to_s],
-      [nil, "RPC Messages"]
+      [ root_path, "Home" ],
+      [ sessions_path, "Sessions" ],
+      [ session_path(session), session.id.to_s ],
+      [ nil, "RPC Messages" ]
     ])
   end
 
   it "orders rpc_messages by id desc" do
     get "/sessions/#{session.id}/rpc_messages"
-    expect(css_select(".rpc-messages-flex-body .rpc-col-method").map(&:text)).to eq(['bar', 'foo'])
+    expect(css_select(".rpc-messages-flex-body .rpc-col-method").map(&:text)).to eq([ 'bar', 'foo' ])
   end
 
   it "filters by method" do

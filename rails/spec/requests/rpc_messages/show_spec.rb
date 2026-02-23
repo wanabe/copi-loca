@@ -16,14 +16,14 @@ RSpec.describe "GET /sessions/:session_id/rpc_messages/:id", type: :request do
     expect(response).to have_http_status(:success)
 
     breadcrumbs = css_select("li.breadcrumb-item a, li.breadcrumb-item span").map do |breadcrumb_item|
-      [breadcrumb_item.attribute("href")&.value, breadcrumb_item.text.strip]
+      [ breadcrumb_item.attribute("href")&.value, breadcrumb_item.text.strip ]
     end
     expect(breadcrumbs).to eq([
-      [root_path, "Home"],
-      [sessions_path, "Sessions"],
-      [session_path(session), session.id.to_s],
-      [session_rpc_messages_path(session), "RPC Messages"],
-      [nil, rpc_message.id.to_s]
+      [ root_path, "Home" ],
+      [ sessions_path, "Sessions" ],
+      [ session_path(session), session.id.to_s ],
+      [ session_rpc_messages_path(session), "RPC Messages" ],
+      [ nil, rpc_message.id.to_s ]
     ])
   end
 
