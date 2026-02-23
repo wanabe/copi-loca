@@ -42,7 +42,7 @@ class RpcMessage < ApplicationRecord
 
   private
     def set_message_type
-      if method.present? && params.present? && result.nil? && error.nil?
+      if method.present? && !params.nil? && result.nil? && error.nil?
         if rpc_id.present?
           self.message_type = :request
         else
