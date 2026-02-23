@@ -41,6 +41,11 @@ class ChangesController < ApplicationController
   def show
     @file_diffs = Repository.tracked_diffs(@id)
     @commit_message = Repository.commit_message(@id)
+    @file_paths = @file_diffs.map { |fd| fd[0] }
+    if params[:file_path]
+      @selected_file_path = params[:file_path]
+      @file_diff = @file_diffs.find { |fd| fd[0] == params[:file_path] }
+    end
   end
 
   private
