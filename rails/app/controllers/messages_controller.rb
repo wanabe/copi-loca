@@ -2,21 +2,15 @@ class MessagesController < ApplicationController
   include SessionRelated
 
   before_action :set_session
-  before_action :set_message, only: %i[ show ]
 
   before_action :add_sessions_breadcrumb
   before_action :add_session_breadcrumb
   before_action :add_messages_breadcrumb
-  before_action :add_message_breadcrumb, only: %i[ show ]
 
   # GET /messages
   def index
     @message = @session.messages.new
     @messages = @session.messages.order(id: :desc).page(params[:page])
-  end
-
-  # GET /messages/1
-  def show
   end
 
   # POST /messages
@@ -93,11 +87,6 @@ class MessagesController < ApplicationController
       @session = Session.find(params.expect(:session_id))
     end
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_message
-      @message = @session.messages.find(params.expect(:id))
-    end
-
     # Only allow a list of trusted parameters through.
     def message_params
       params.expect(message: [ :content ])
@@ -105,9 +94,5 @@ class MessagesController < ApplicationController
 
     def add_messages_breadcrumb
       add_breadcrumb("Messages", session_messages_path(@session))
-    end
-
-    def add_message_breadcrumb
-      add_breadcrumb(@message.id, session_message_path(@session, @message))
     end
 end

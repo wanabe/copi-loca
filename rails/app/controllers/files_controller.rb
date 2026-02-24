@@ -19,7 +19,7 @@ class FilesController < ApplicationController
       @language = abs_path[/\.(\w+)$/, 1] || "txt"
       @content = File.read(abs_path)
     else
-      @content = nil
+      return render plain: "File not found", status: :not_found
     end
     render :show
   end

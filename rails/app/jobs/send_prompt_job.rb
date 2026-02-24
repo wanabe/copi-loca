@@ -24,7 +24,7 @@ class SendPromptJob < ApplicationJob
     end
   ensure
     # Delete uploaded files after Copilot response is complete
-    file_paths.each do |shared_path|
+    file_paths&.each do |shared_path|
       if shared_path.start_with?("/shared-tmp/")
         tmp_path = Rails.root.join("tmp", File.basename(shared_path))
         File.delete(tmp_path) if File.exist?(tmp_path)
