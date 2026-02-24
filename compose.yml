@@ -18,6 +18,7 @@ services:
       - .:/copi-loca:delegated
       - vendor_bundle:/copi-loca/rails/vendor/bundle
       - ${COPILOCA_APP_PATH:-.}:/app:delegated
+      - rails_home:/homedir
     working_dir: /copi-loca/rails
     environment:
       - RAILS_ENV=development
@@ -25,6 +26,7 @@ services:
       - SITE_HOSTNAME=${SITE_HOSTNAME:-localhost}
       - COPI_ADMIN_PASSWORD=${COPI_ADMIN_PASSWORD:-}
       - SKIP_PENDING_MIGRATIONS_CHECK=true
+      - HOME=/homedir
     user: "${USR:-root}"
     restart: unless-stopped
   copilot:
@@ -45,3 +47,4 @@ volumes:
   caddy_config:
   vendor_bundle:
   copilot_home:
+  rails_home:

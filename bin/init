@@ -5,11 +5,13 @@ export USR=`id -u`:`id -g`
 
 GIT_USER_NAME="$(git config --get user.name)"
 GIT_USER_EMAIL="$(git config --get user.email)"
-bin/docker compose run --build --rm -uroot copilot chown -R $USR /homedir
-bin/docker compose run --build --rm -T copilot sh -x <<EOS
-git config --global user.name "$GIT_USER_NAME"
-git config --global user.email "$GIT_USER_EMAIL"
+for container in copilot rails; do
+  bin/docker compose run --build --rm -uroot $container chown -R $USR /homedir
+  bin/docker compose run --build --rm -T $container sh -x <<EOS
+  git config --global user.name "$GIT_USER_NAME"
+  git config --global user.email "$GIT_USER_EMAIL"
 EOS
+done
 
 bin/docker compose run --build --rm -uroot rails chown -R $USR vendor
 bin/docker compose run --build --rm rails bundle install
