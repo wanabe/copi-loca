@@ -14,10 +14,8 @@ class Repository
       @instance ||= new(path: DEFAULT_PATH)
     end
 
-    def log(limit = 10)
-      instance.log(limit)
-    end
     delegate(
+      :log,
       :diff,
       :status,
       :ls_files,
@@ -33,12 +31,8 @@ class Repository
     )
   end
 
-  def self.git(cmd)
-    `git -C #{DEFAULT_PATH} #{cmd}`
-  end
-
   def git(cmd)
-    `git -C #{@path} #{cmd}`
+    `git -C #{@path} #{cmd} 2>&1`
   end
 
   def log(limit = 10)
