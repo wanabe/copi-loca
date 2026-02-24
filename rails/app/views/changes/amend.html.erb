@@ -1,11 +1,11 @@
 <h1>Amend Commit</h1>
-<p><%= link_to 'Go to Uncommitted Changes', uncommitted_changes_path, class: 'changes-link-uncommitted' %></p>
+<p><%= link_to "Go to Uncommitted Changes", uncommitted_changes_path, class: "changes-link-uncommitted" %></p>
 <h2>Unstaged Changes</h2>
 <ul>
   <% @unstaged_diffs.each do |file| %>
     <% path, _ = file %>
     <% selected = (path == @unstaged_file_path) %>
-    <li class="changes-list__item<%= ' changes-list__item--selected' if selected %>"><a href="<%= amend_changes_path(unstaged_file_path: path) %>"><%= h path %></a></li>
+    <li class="changes-list__item<%= " changes-list__item--selected" if selected %>"><a href="<%= amend_changes_path(unstaged_file_path: path) %>"><%= h path %></a></li>
   <% end %>
 </ul>
 <h2>Staged Changes</h2>
@@ -13,7 +13,7 @@
   <% @staged_diffs.each do |file| %>
     <% path, _ = file %>
     <% selected = (path == @staged_file_path) %>
-    <li class="changes-list__item<%= ' changes-list__item--selected' if selected %>"><a href="<%= amend_changes_path(staged_file_path: path) %>"><%= h path %></a></li>
+    <li class="changes-list__item<%= " changes-list__item--selected" if selected %>"><a href="<%= amend_changes_path(staged_file_path: path) %>"><%= h path %></a></li>
   <% end %>
 </ul>
 <% if @file_diff %>
@@ -22,25 +22,29 @@
     <%= form_with url: stage_changes_path, method: :post, local: true do |form| %>
       <%= form.hidden_field :file_path, value: @unstaged_file_path %>
       <%= form.hidden_field :amend, value: true %>
-      <%= form.submit 'Stage this change', class: 'changes-stage-btn' %>
+      <%= form.submit "Stage this change", class: "changes-stage-btn" %>
     <% end %>
   <% elsif @staged_file_path %>
     <%= form_with url: unstage_changes_path, method: :post, local: true do |form| %>
       <%= form.hidden_field :file_path, value: @staged_file_path %>
       <%= form.hidden_field :amend, value: true %>
-      <%= form.submit 'Unstage this change', class: 'changes-unstage-btn' %>
+      <%= form.submit "Unstage this change", class: "changes-unstage-btn" %>
     <% end %>
   <% end %>
-  <%= render partial: "diff", locals: { file_diffs: [@file_diff] } %>
+  <%= render partial: "diff", locals: { file_diffs: [ @file_diff ] } %>
 <% end %>
 <%= form_with url: amend_commit_changes_path, method: :post, local: true do |form| %>
   <div>
     <%= form.label :commit_message, "Commit message" %><br>
-    <%= form.text_area :commit_message, rows: 3, cols: 60, value: @head_commit_message, disabled: params[:no_edit] == '1' %>
+    <%= form.text_area :commit_message, rows: 3, cols: 60, value: @head_commit_message, disabled: params[:no_edit] == "1" %>
   </div>
   <div>
     <%= form.label :no_edit, "No edit" %>
-    <%= form.check_box :no_edit, { checked: params[:no_edit] == '1', onclick: 'this.form.commit_message.disabled = this.checked;' }, '1', '0' %>
+    <%= form.check_box :no_edit, { checked: params[:no_edit] == "1", onclick: "this.form.commit_message.disabled = this.checked;" }, "1", "0" %>
+  </div>
+  <div>
+    <%= form.label :reset_author, "Reset author" %>
+    <%= form.check_box :reset_author, { checked: params[:reset_author] == "1" }, "1", "0" %>
   </div>
   <%= form.submit "Amend commit", class: "changes-amend-btn" %>
 <% end %>

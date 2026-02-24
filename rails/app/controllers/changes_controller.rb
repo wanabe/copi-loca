@@ -63,7 +63,7 @@ class ChangesController < ApplicationController
   def unstage
     if params[:file_path].present?
       if params[:amend]
-        Repository.unstage_file(params[:file_path], commit: 'HEAD~1')
+        Repository.unstage_file(params[:file_path], commit: "HEAD~1")
       else
         Repository.unstage_file(params[:file_path])
       end
@@ -96,10 +96,11 @@ class ChangesController < ApplicationController
   end
 
   def amend_commit
-    if params[:no_edit] == '1'
-      Repository.amend_no_edit
+    reset_author = params[:reset_author] == "1"
+    if params[:no_edit] == "1"
+      Repository.amend_no_edit(reset_author: reset_author)
     else
-      Repository.amend_with_message(params[:commit_message])
+      Repository.amend_with_message(params[:commit_message], reset_author: reset_author)
     end
     redirect_to uncommitted_changes_path
   end

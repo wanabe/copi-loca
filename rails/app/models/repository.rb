@@ -105,7 +105,7 @@ class Repository
     git("add -- #{file_path}")
   end
 
-  def unstage_file(file_path, commit: 'HEAD')
+  def unstage_file(file_path, commit: "HEAD")
     git("reset #{commit} -- #{file_path}")
   end
 
@@ -121,12 +121,16 @@ class Repository
     git("log -1 --pretty=format:'%B' HEAD")
   end
 
-  def amend_no_edit
-    git("commit --amend --no-edit")
+  def amend_no_edit(reset_author: false)
+    cmd = "commit --amend --no-edit"
+    cmd += " --reset-author" if reset_author
+    git(cmd)
   end
 
-  def amend_with_message(message)
-    git("commit --amend -m #{message.shellescape}")
+  def amend_with_message(message, reset_author: false)
+    cmd = "commit --amend -m #{message.shellescape}"
+    cmd += " --reset-author" if reset_author
+    git(cmd)
   end
 
   private
