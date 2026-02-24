@@ -32,6 +32,7 @@ class Repository
       :head_commit_message,
       :amend_no_edit,
       :amend_with_message,
+      :commit_info,
       to: :instance
     )
   end
@@ -41,11 +42,18 @@ class Repository
   end
 
   def log(limit = 10)
+    # Commit message must be last; '|' in message breaks split.
     log = git("log --pretty=format:'%H|%an|%s' -n#{limit}")
     log.lines.map do |line|
       hash, author, message = line.chomp.split("|", 3)
       { hash: hash, author: author, message: message }
     end
+  end
+
+  def commit_info(commit)
+    log = git("log -1 --pretty=format:'%an|%ai|%ci' #{commit}")
+    author, author_date, commit_date = log.chomp.split("|", 3)
+    { author: author, author_date: author_date, commit_date: commit_date }
   end
 
   def ls_files
