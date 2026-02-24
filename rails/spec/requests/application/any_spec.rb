@@ -1,10 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe ApplicationController, type: :request do
+RSpec.describe "GET /any", type: :request do
   let(:controller_class) do
-    Class.new(described_class) do
-      before_action :authenticate
-      def index
+    Class.new(ApplicationController) do
+      def any
         render plain: 'ok'
       end
     end
@@ -15,7 +14,7 @@ RSpec.describe ApplicationController, type: :request do
     stub_const('AnonymousController', controller_class)
     Rails.application.routes_reloader.reload!
     Rails.application.routes.draw do
-      get '/dummy_action', to: 'anonymous#index'
+      get '/any', to: 'anonymous#any'
       get '/', as: :root, to: 'home#index'
       get '/auth_sessions/new', to: 'auth_sessions#new', as: :new_auth_session
       post '/auth_sessions', to: 'auth_sessions#create', as: :auth_sessions
@@ -27,20 +26,20 @@ RSpec.describe ApplicationController, type: :request do
   end
 
   describe '#authenticate', :with_auth do
-    context 'without session admin' do
+    context 'without session' do
       it 'redirects to new auth session path' do
-        get "/dummy_action"
+        get "/any"
         expect(response).to redirect_to("/auth_sessions/new")
       end
     end
 
-    context 'with session admin' do
+    context 'after login' do
       before do
         post "/auth_sessions", params: { password: 'secret' }
       end
 
       it 'does not redirect and returns ok' do
-        get "/dummy_action"
+        get "/any"
         expect(response.body).to eq('ok')
       end
     end

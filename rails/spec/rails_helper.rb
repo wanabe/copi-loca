@@ -80,7 +80,7 @@ RSpec.configure do |config|
     allow(TCPSocket).to receive(:new).and_raise("TCPSocket is disabled in tests")
   end
   config.before(:each, type: :request) do
-    allow(Client).to receive(:create_session) { _1.id = SecureRandom.uuid; nil}
+    allow(Client).to receive(:create_session) { _1.id = SecureRandom.uuid; nil }
     allow(Client).to receive(:resume_session)
   end
 end
