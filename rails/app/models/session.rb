@@ -1,6 +1,7 @@
 class Session < ApplicationRecord
   enum :system_message_mode, { default: 0, replace: 1, append: 2 }, prefix: true
 
+  validates :model, presence: true
   has_many :messages, dependent: :delete_all
   has_many :rpc_messages, dependent: :delete_all
   has_many :events, dependent: :delete_all

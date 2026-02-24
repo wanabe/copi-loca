@@ -23,9 +23,7 @@ class SessionsController < ApplicationController
   # GET /sessions/new
   def new
     @session = Session.new(skill_directory_pattern: "/app/.github/skills/*")
-    @models = Client.available_models.map do |model|
-      [ "#{model[:id]} (x#{model.dig(:billing, :multiplier)})", model[:id] ]
-    end
+    @models = available_models
     @custom_agents = CustomAgent.all
     @tools = Tool.all
   end
@@ -39,15 +37,15 @@ class SessionsController < ApplicationController
 
   # POST /sessions
   def create
-    unless session[:admin] || ENV["COPI_ADMIN_PASSWORD"].blank?
-      redirect_to new_auth_session_path, alert: "Admin only." and return
-    end
     @session = Session.new(session_params)
 
     if @session.save
       redirect_to @session, notice: "Session was successfully created."
     else
-      render :new, status: :unprocessable_entity
+      @models = available_models
+      @custom_agents = CustomAgent.all
+      @tools = Tool.all
+      render :new, status: :unprocessable_content, alert: @session.errors.full_messages.to_sentence
     end
   end
 
@@ -56,15 +54,15 @@ class SessionsController < ApplicationController
     if @session.update(session_params)
       redirect_to @session, notice: "Session was successfully updated.", status: :see_other
     else
-      render :edit, status: :unprocessable_entity
+      @models = [ @session.model ]
+      @custom_agents = CustomAgent.all
+      @tools = Tool.all
+      render :edit, status: :unprocessable_content, alert: @session.errors.full_messages.to_sentence
     end
   end
 
   # DELETE /sessions/1
   def destroy
-    unless session[:admin] || ENV["COPI_ADMIN_PASSWORD"].blank?
-      redirect_to new_auth_session_path, alert: "Admin only." and return
-    end
     @session.destroy!
     redirect_to sessions_path, notice: "Session was successfully destroyed.", status: :see_other
   end
@@ -85,5 +83,11 @@ class SessionsController < ApplicationController
         custom_agent_ids: [],
         tool_ids: [],
       )
+    end
+
+    def available_models
+      Client.available_models.map do |model|
+        [ "#{model[:id]} (x#{model.dig(:billing, :multiplier)})", model[:id] ]
+      end
     end
 end
