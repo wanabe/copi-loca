@@ -28,6 +28,10 @@ class Repository
       :stage_file,
       :unstage_file,
       :commit,
+      :amend_diffs,
+      :head_commit_message,
+      :amend_no_edit,
+      :amend_with_message,
       to: :instance
     )
   end
@@ -93,12 +97,28 @@ class Repository
     git("add -- #{file_path}")
   end
 
-  def unstage_file(file_path)
-    git("reset HEAD -- #{file_path}")
+  def unstage_file(file_path, commit: 'HEAD')
+    git("reset #{commit} -- #{file_path}")
   end
 
   def commit(message)
     git("commit -m #{message.shellescape}")
+  end
+
+  def amend_diffs
+    diff_pairs(git("diff --cached HEAD~1"))
+  end
+
+  def head_commit_message
+    git("log -1 --pretty=format:'%B' HEAD")
+  end
+
+  def amend_no_edit
+    git("commit --amend --no-edit")
+  end
+
+  def amend_with_message(message)
+    git("commit --amend -m #{message.shellescape}")
   end
 
   private

@@ -16,6 +16,8 @@ Rails.application.routes.draw do
       post :stage
       post :unstage
       post :commit
+      get :amend
+      post :amend_commit
     end
     member do
       get :show, constraints: { id: /[0-9a-f]{40}/ }

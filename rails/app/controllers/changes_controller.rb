@@ -3,7 +3,7 @@ class ChangesController < ApplicationController
 
   before_action :add_changes_breadcrumb
   before_action :add_change_breadcrumb, only: [ :show ]
-  before_action :add_action_breadcrumb, only: [ :uncommitted ]
+  before_action :add_action_breadcrumb, only: [ :uncommitted, :amend ]
 
   def index
     uncommitted = [ { hash: "uncommitted", author: "", message: "" } ]
@@ -52,19 +52,53 @@ class ChangesController < ApplicationController
     if params[:file_path].present?
       Repository.stage_file(params[:file_path])
     end
-    redirect_to uncommitted_changes_path
+    if params[:amend]
+      redirect_to amend_changes_path(staged_file_path: params[:file_path])
+    else
+      redirect_to uncommitted_changes_path(staged_file_path: params[:file_path])
+    end
   end
 
   def unstage
     if params[:file_path].present?
-      Repository.unstage_file(params[:file_path])
+      if params[:amend]
+        Repository.unstage_file(params[:file_path], commit: 'HEAD~1')
+      else
+        Repository.unstage_file(params[:file_path])
+      end
     end
-    redirect_to uncommitted_changes_path
+    if params[:amend]
+      redirect_to amend_changes_path(unstaged_file_path: params[:file_path])
+    else
+      redirect_to uncommitted_changes_path(unstaged_file_path: params[:file_path])
+    end
   end
 
   def commit
     if params[:commit_message].present?
       Repository.commit(params[:commit_message])
+    end
+    redirect_to uncommitted_changes_path
+  end
+
+  def amend
+    @staged_diffs = Repository.amend_diffs
+    @unstaged_diffs = Repository.unstaged_diffs
+    @head_commit_message = Repository.head_commit_message
+    if params[:staged_file_path]
+      @staged_file_path = params[:staged_file_path]
+      @file_diff = @staged_diffs.find { |fd| fd[0] == params[:staged_file_path] }
+    elsif params[:unstaged_file_path]
+      @unstaged_file_path = params[:unstaged_file_path]
+      @file_diff = @unstaged_diffs.find { |fd| fd[0] == params[:unstaged_file_path] }
+    end
+  end
+
+  def amend_commit
+    if params[:no_edit] == '1'
+      Repository.amend_no_edit
+    else
+      Repository.amend_with_message(params[:commit_message])
     end
     redirect_to uncommitted_changes_path
   end
