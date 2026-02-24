@@ -9,6 +9,20 @@ class Repository
     @path = path
   end
 
+  def current_branch
+    git("rev-parse --abbrev-ref HEAD").chomp
+  end
+
+  def rebasing_branch
+    %w[rebase-merge rebase-apply].each do |dir|
+      path = File.join(@path, ".git", dir, "head-name")
+      if File.exist?(path)
+        return File.read(path).chomp.sub(%r{^refs/heads/}, "")
+      end
+    end
+    nil
+  end
+
   class << self
     def instance
       @instance ||= new(path: DEFAULT_PATH)
@@ -33,6 +47,8 @@ class Repository
       :amend_no_edit,
       :amend_with_message,
       :commit_info,
+      :current_branch,
+      :rebasing_branch,
       to: :instance
     )
   end

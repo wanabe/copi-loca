@@ -1,4 +1,10 @@
 <h1>Changes</h1>
+<p>
+  Current branch: <span class="changes__branch-label"><%= @current_branch %></span>
+  <% if @rebasing_branch %>
+    (<span class="changes__branch-label"><%= @rebasing_branch %></span> rebasing)
+  <% end %>
+</p>
 <ul class="changes-list">
   <% @commits.each do |commit| %>
     <li class="changes-list__item">
