@@ -62,6 +62,13 @@ class ChangesController < ApplicationController
     redirect_to uncommitted_changes_path
   end
 
+  def commit
+    if params[:commit_message].present?
+      Repository.commit(params[:commit_message])
+    end
+    redirect_to uncommitted_changes_path
+  end
+
   private
 
   def set_id

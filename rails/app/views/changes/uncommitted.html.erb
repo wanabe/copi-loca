@@ -28,3 +28,11 @@
   <% end %>
   <%= render partial: "diff", locals: { file_diffs: [ @file_diff ] } %>
 <% end %>
+
+<%= form_with url: commit_changes_path, method: :post, local: true do |form| %>
+  <div>
+    <%= form.label :commit_message, "Commit message" %><br>
+    <%= form.text_area :commit_message, rows: 3, cols: 60 %>
+  </div>
+  <%= form.submit "Commit staged changes", class: "changes-commit-btn" %>
+<% end %>

@@ -27,6 +27,7 @@ class Repository
       :commit_message,
       :stage_file,
       :unstage_file,
+      :commit,
       to: :instance
     )
   end
@@ -94,6 +95,10 @@ class Repository
 
   def unstage_file(file_path)
     git("reset HEAD -- #{file_path}")
+  end
+
+  def commit(message)
+    git("commit -m #{message.shellescape}")
   end
 
   private
