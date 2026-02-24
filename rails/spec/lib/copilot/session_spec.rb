@@ -25,10 +25,13 @@ RSpec.describe Copilot::Session do
     it 'yields self if block is given and destroys after block' do
       allow(client).to receive(:call).and_return({ sessionId: 'sid789' })
       allow(client).to receive(:await).and_return({ sessionId: 'sid789' })
-      allow_any_instance_of(described_class).to receive(:destroy)
       yielded = nil
-      described_class.new(client) { |s| yielded = s }
+      described_class.new(client) do |s|
+        yielded = s
+        allow(yielded).to receive(:destroy)
+      end
       expect(yielded).to be_a(described_class)
+      expect(yielded).to have_received(:destroy)
     end
   end
 
@@ -69,8 +72,9 @@ RSpec.describe Copilot::Session do
       allow(client).to receive(:call).and_return({ sessionId: 'sid123' })
       allow(client).to receive(:await).and_return({ sessionId: 'sid123' })
       session = described_class.new(client)
-      expect(client).to receive(:call).with('test.method', hash_including(sessionId: 'sid123'))
+      allow(client).to receive(:call).with('test.method', hash_including(sessionId: 'sid123'))
       session.call('test.method', foo: 'bar')
+      expect(client).to have_received(:call).with('test.method', hash_including(sessionId: 'sid123'))
     end
   end
 
@@ -126,8 +130,9 @@ RSpec.describe Copilot::Session do
       }
       handler = proc { |**args| handler_result }
       session = described_class.new(client, tools: [ { name: 'mytool', handler: handler } ])
-      expect(client).to receive(:respond).with('id', result: handler_result)
+      allow(client).to receive(:respond).with('id', result: handler_result)
       session.handle('id', 'tool.call', { toolName: 'mytool', arguments: {} })
+      expect(client).to have_received(:respond).with('id', result: handler_result)
     end
 
     it 'handles tool.call when handler raises exception' do
@@ -135,24 +140,27 @@ RSpec.describe Copilot::Session do
       allow(client).to receive(:await).and_return({ sessionId: 'sid123' })
       handler = proc { |**args| raise 'tool error' }
       session = described_class.new(client, tools: [ { name: 'mytool', handler: handler } ])
-      expect(client).to receive(:respond).with('id', result: hash_including(result: hash_including(resultType: 'failure')))
+      allow(client).to receive(:respond).with('id', result: hash_including(result: hash_including(resultType: 'failure')))
       session.handle('id', 'tool.call', { toolName: 'mytool', arguments: {} })
+      expect(client).to have_received(:respond).with('id', result: hash_including(result: hash_including(resultType: 'failure')))
     end
 
     it 'handles tool.call without handler' do
       allow(client).to receive(:call).and_return({ sessionId: 'sid123' })
       allow(client).to receive(:await).and_return({ sessionId: 'sid123' })
       session = described_class.new(client, tools: [ { name: 'mytool', handler: nil } ])
-      expect(client).to receive(:respond).with('id', error: hash_including(code: -32000))
+      allow(client).to receive(:respond).with('id', error: hash_including(code: -32000))
       session.handle('id', 'tool.call', { toolName: 'mytool', arguments: {} })
+      expect(client).to have_received(:respond).with('id', error: hash_including(code: -32000))
     end
 
     it 'handles unknown method' do
       allow(client).to receive(:call).and_return({ sessionId: 'sid123' })
       allow(client).to receive(:await).and_return({ sessionId: 'sid123' })
       session = described_class.new(client)
-      expect(client.logger).to receive(:warn).with(/Unknown session method/)
+      allow(client.logger).to receive(:warn)
       session.handle('id', 'unknown.method', {})
+      expect(client.logger).to have_received(:warn).with(/Unknown session method/)
     end
   end
 

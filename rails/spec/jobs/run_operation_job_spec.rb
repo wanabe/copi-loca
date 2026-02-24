@@ -16,9 +16,8 @@ RSpec.describe RunOperationJob, type: :job do
   describe '#perform' do
     context 'when operation runs and yields output' do
       it 'broadcasts output and status' do
-        # Use a stub for run, not expect(...).to receive
-        def operation.run
-          yield StringIO.new("hello\n")
+        allow(operation).to receive(:run) do |&block|
+          block.call(StringIO.new("hello\n"))
           0
         end
         described_class.perform_now(operation.id)

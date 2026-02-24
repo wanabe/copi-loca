@@ -152,8 +152,10 @@ describe Copilot::Client do
       allow(client).to receive(:readable?).and_return(true)
       allow(socket).to receive(:gets).and_return("Content-Length: 10\r\n\r\n")
       allow(socket).to receive(:read).and_return('{"id":"id","result":"ok"}')
-      expect(logger).to receive(:debug)
+      allow(logger).to receive(:debug)
+
       expect(client.pop).to include(:id, :result)
+      expect(logger).to have_received(:debug).with(/Received/)
     end
 
     it 'handles method starting with session. or tool. in message' do
