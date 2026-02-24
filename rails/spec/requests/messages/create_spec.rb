@@ -82,8 +82,7 @@ RSpec.describe "POST /sessions/:session_id/messages", type: :request do
 
   describe "custom_agent and redirect target" do
     it "handles custom_agent_id param" do
-      agent = CustomAgent.create!(name: "test")
-      SessionCustomAgent.create!(session: session, custom_agent: agent)
+      agent = session.custom_agents.create!(name: "test")
       post "/sessions/#{session.id}/messages", params: { message: { content: "msg" }, custom_agent_id: agent.id }
       expect(response).to redirect_to(action: :index)
       expect(SendPromptJob).to have_received(:perform_later)
