@@ -11,7 +11,7 @@ end
 task :check do
   repo_dir = Rails.root.join("..").expand_path
   Dir.chdir(repo_dir) do
-    Rake::Task["check_command"].execute([ "! git grep -I '[^ -~]'", "Non-ASCII characters found." ])
+    Rake::Task["check_command"].execute([ "! git grep --no-index -I '[^ -~]' -- $( git ls-files --others --exclude-standard; git ls-files )", "Non-ASCII characters found." ])
   end
 
   rails_dir = Rails.root
