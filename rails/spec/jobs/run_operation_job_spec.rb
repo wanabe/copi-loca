@@ -7,7 +7,7 @@ RSpec.describe RunOperationJob, type: :job do
     allow(Operation).to receive(:find).with(operation.id).and_return(operation)
     now = Time.current
     allow(Time).to receive(:current) do
-      now += 0.2
+      now += 1
       now
     end
     allow(Turbo::StreamsChannel).to receive(:broadcast_replace_to)
