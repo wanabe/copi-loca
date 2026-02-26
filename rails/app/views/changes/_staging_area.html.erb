@@ -1,0 +1,47 @@
+<%# Partial for staging area (unstaged/staged lists, diff, stage/unstage actions) %>
+
+<h2>Unstaged Changes</h2>
+<ul>
+  <% unstaged_files.each do |path| %>
+    <% selected = (path == unstaged_file_path) %>
+    <li class="staging-list__item<%= " changes-list__item--selected" if selected %>">
+      <%= form_with url: stage_url, method: :post, local: true, class: "inline-form" do |form| %>
+        <%= form.hidden_field :file_path, value: path %>
+        <% if stage_amend %><%= form.hidden_field :amend, value: true %><% end %>
+        <%= form.submit "\u2193", title: "Stage this change", class: "changes-stage-btn" %>
+      <% end %>
+      <a href="<%= unstaged_link.call(path) %>"><%= h path %></a>
+    </li>
+  <% end %>
+</ul>
+<h2>Staged Changes</h2>
+<ul>
+  <% staged_files.each do |path| %>
+    <% selected = (path == staged_file_path) %>
+    <li class="staging-list__item<%= " changes-list__item--selected" if selected %>">
+      <%= form_with url: unstage_url, method: :post, local: true, class: "inline-form" do |form| %>
+        <%= form.hidden_field :file_path, value: path %>
+        <% if unstage_amend %><%= form.hidden_field :amend, value: true %><% end %>
+        <%= form.submit "\u2191", title: "Unstage this change", class: "changes-unstage-btn" %>
+      <% end %>
+      <a href="<%= staged_link.call(path) %>"><%= h path %></a>
+    </li>
+  <% end %>
+</ul>
+<% if file_diff %>
+  <hr>
+  <% if unstaged_file_path %>
+    <%= form_with url: stage_url, method: :post, local: true do |form| %>
+      <%= form.hidden_field :file_path, value: unstaged_file_path %>
+      <% if stage_amend %><%= form.hidden_field :amend, value: true %><% end %>
+      <%= form.submit stage_label, class: "changes-stage-btn" %>
+    <% end %>
+  <% elsif staged_file_path %>
+    <%= form_with url: unstage_url, method: :post, local: true do |form| %>
+      <%= form.hidden_field :file_path, value: staged_file_path %>
+      <% if unstage_amend %><%= form.hidden_field :amend, value: true %><% end %>
+      <%= form.submit unstage_label, class: "changes-unstage-btn" %>
+    <% end %>
+  <% end %>
+  <%= render partial: "diff", locals: { file_diffs: [file_diff] } %>
+<% end %>

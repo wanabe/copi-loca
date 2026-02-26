@@ -1,43 +1,25 @@
 <h1>Uncommitted</h1>
 <p><%= link_to "Go to Amend Commit", amend_changes_path, class: "changes-link-amend" %></p>
-<h2>Unstaged Changes</h2>
-<ul>
-  <% @unstaged_files.each do |file| %>
-    <% selected = (file == @unstaged_file_path) %>
-    <li class="changes-list__item<%= " changes-list__item--selected" if selected %>">
-      <a href="<%= uncommitted_changes_path(unstaged_file_path: file) %>"><%= h file %></a>
-    </li>
-  <% end %>
-</ul>
-<h2>Staged Changes</h2>
-<ul>
-  <% @staged_files.each do |file| %>
-    <% selected = (file == @staged_file_path) %>
-    <li class="changes-list__item<%= " changes-list__item--selected" if selected %>">
-      <a href="<%= uncommitted_changes_path(staged_file_path: file) %>"><%= h file %></a>
-    </li>
-  <% end %>
-</ul>
-<% if @file_diff %>
-  <hr>
-  <% if @unstaged_file_path %>
-    <%= form_with url: stage_changes_path, method: :post, local: true do |form| %>
-      <%= form.hidden_field :file_path, value: @unstaged_file_path %>
-      <%= form.submit "Stage this change", class: "changes-stage-btn" %>
-    <% end %>
-  <% elsif @staged_file_path %>
-    <%= form_with url: unstage_changes_path, method: :post, local: true do |form| %>
-      <%= form.hidden_field :file_path, value: @staged_file_path %>
-      <%= form.submit "Unstage this change", class: "changes-unstage-btn" %>
-    <% end %>
-  <% end %>
-  <%= render partial: "diff", locals: { file_diffs: [@file_diff] } %>
-<% end %>
+<%= render partial: "staging_area", locals: {
+      unstaged_files: @unstaged_files,
+      staged_files: @staged_files,
+      unstaged_file_path: @unstaged_file_path,
+      staged_file_path: @staged_file_path,
+      file_diff: @file_diff,
+      unstaged_link: ->(path) { uncommitted_changes_path(unstaged_file_path: path) },
+      staged_link: ->(path) { uncommitted_changes_path(staged_file_path: path) },
+      stage_url: stage_changes_path,
+      unstage_url: unstage_changes_path,
+      stage_label: "Stage this change",
+      unstage_label: "Unstage this change",
+      stage_amend: false,
+      unstage_amend: false
+    } %>
 
 <%= form_with url: commit_changes_path, method: :post, local: true do |form| %>
   <div>
     <%= form.label :commit_message, "Commit message" %><br>
     <%= form.text_area :commit_message, rows: 3, cols: 60 %>
   </div>
-  <%= form.submit "Commit staged changes", class: "changes-commit-btn" %>
+  <%= form.submit "Commit staged changes", class: "changes-commit-btn", disabled: @staged_files.empty? %>
 <% end %>

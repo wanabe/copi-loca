@@ -3,6 +3,24 @@
   word-break: break-all;
 }
 
+.staging-list__item {
+  display: flex;
+  align-items: center;
+  padding: 0.4em 0;
+}
+
+.inline-form {
+  display: inline;
+  margin-right: 0.5em;
+}
+
+.changes-stage-btn, .changes-unstage-btn {
+  padding: 0 0.5em;
+  font-size: 1em;
+  line-height: 1.2;
+  vertical-align: middle;
+}
+
 .changes-diff__file-path {
   overflow-wrap: anywhere;
 }
