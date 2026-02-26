@@ -216,52 +216,52 @@ RSpec.describe Repository, type: :model do
     let(:repo) { described_class.new(path: '/mockrepo') }
 
     it 'parses log output with base and limit' do
-      allow(repo).to receive(:git).with("log --reverse --format='%h %s' master..HEAD -n5").and_return("abc1234 message1\ndef4567 message2")
+      allow(repo).to receive(:git).with("log --reverse --format='%H %s' master..HEAD -n5").and_return("abc1234567890123456789012345678901234567890 message1\ndef4567890123456789012345678901234567890123456 message2")
       result = repo.log_for_rebase(base: 'master', limit: 5)
-      expect(repo).to have_received(:git).with("log --reverse --format='%h %s' master..HEAD -n5")
+      expect(repo).to have_received(:git).with("log --reverse --format='%H %s' master..HEAD -n5")
       expect(result).to eq([
-        { hash: 'abc1234', message: 'message1' },
-        { hash: 'def4567', message: 'message2' }
+        { hash: 'abc1234567890123456789012345678901234567890', message: 'message1' },
+        { hash: 'def4567890123456789012345678901234567890123456', message: 'message2' }
       ])
     end
 
     it 'parses log output with only limit' do
-      allow(repo).to receive(:git).with("log --reverse --format='%h %s' -n3").and_return("abc1234 message1\ndef4567 message2")
+      allow(repo).to receive(:git).with("log --reverse --format='%H %s' -n3").and_return("abc1234567890123456789012345678901234567890 message1\ndef4567890123456789012345678901234567890123456 message2")
       result = repo.log_for_rebase(limit: 3)
-      expect(repo).to have_received(:git).with("log --reverse --format='%h %s' -n3")
+      expect(repo).to have_received(:git).with("log --reverse --format='%H %s' -n3")
       expect(result).to eq([
-        { hash: 'abc1234', message: 'message1' },
-        { hash: 'def4567', message: 'message2' }
+        { hash: 'abc1234567890123456789012345678901234567890', message: 'message1' },
+        { hash: 'def4567890123456789012345678901234567890123456', message: 'message2' }
       ])
     end
 
     it 'parses log output with only base' do
-      allow(repo).to receive(:git).with("log --reverse --format='%h %s' develop..HEAD").and_return("abc1234 message1\ndef4567 message2")
+      allow(repo).to receive(:git).with("log --reverse --format='%H %s' develop..HEAD").and_return("abc1234567890123456789012345678901234567890 message1\ndef4567890123456789012345678901234567890123456 message2")
       result = repo.log_for_rebase(base: 'develop')
-      expect(repo).to have_received(:git).with("log --reverse --format='%h %s' develop..HEAD")
+      expect(repo).to have_received(:git).with("log --reverse --format='%H %s' develop..HEAD")
       expect(result).to eq([
-        { hash: 'abc1234', message: 'message1' },
-        { hash: 'def4567', message: 'message2' }
+        { hash: 'abc1234567890123456789012345678901234567890', message: 'message1' },
+        { hash: 'def4567890123456789012345678901234567890123456', message: 'message2' }
       ])
     end
 
     it 'parses log output with range' do
-      allow(repo).to receive(:git).with("log --reverse --format='%h %s' feature~..feature").and_return("abc1234 message1\ndef4567 message2")
+      allow(repo).to receive(:git).with("log --reverse --format='%H %s' feature~..feature").and_return("abc1234567890123456789012345678901234567890 message1\ndef4567890123456789012345678901234567890123456 message2")
       result = repo.log_for_rebase(range: 'feature~..feature')
-      expect(repo).to have_received(:git).with("log --reverse --format='%h %s' feature~..feature")
+      expect(repo).to have_received(:git).with("log --reverse --format='%H %s' feature~..feature")
       expect(result).to eq([
-        { hash: 'abc1234', message: 'message1' },
-        { hash: 'def4567', message: 'message2' }
+        { hash: 'abc1234567890123456789012345678901234567890', message: 'message1' },
+        { hash: 'def4567890123456789012345678901234567890123456', message: 'message2' }
       ])
     end
 
     it 'parses log output with no options' do
-      allow(repo).to receive(:git).with("log --reverse --format='%h %s'").and_return("abc1234 message1\ndef4567 message2")
+      allow(repo).to receive(:git).with("log --reverse --format='%H %s'").and_return("abc1234567890123456789012345678901234567890 message1\ndef4567890123456789012345678901234567890123456 message2")
       result = repo.log_for_rebase
-      expect(repo).to have_received(:git).with("log --reverse --format='%h %s'")
+      expect(repo).to have_received(:git).with("log --reverse --format='%H %s'")
       expect(result).to eq([
-        { hash: 'abc1234', message: 'message1' },
-        { hash: 'def4567', message: 'message2' }
+        { hash: 'abc1234567890123456789012345678901234567890', message: 'message1' },
+        { hash: 'def4567890123456789012345678901234567890123456', message: 'message2' }
       ])
     end
   end
@@ -340,8 +340,8 @@ RSpec.describe Repository, type: :model do
     before do
       allow(repo).to receive(:rebase_directory).and_return(git_dir)
       allow(repo).to receive(:log_for_rebase).and_return([
-        { hash: 'abc1234', message: 'msg1' },
-        { hash: 'def4567', message: 'msg2' }
+        { hash: 'abc1234567890123456789012345678901234567', message: 'msg1' },
+        { hash: 'def4567890123456789012345678901234567890', message: 'msg2' }
       ])
     end
 
@@ -349,11 +349,11 @@ RSpec.describe Repository, type: :model do
       allow(File).to receive(:exist?).and_return(true)
       allow(File).to receive(:read).with(File.join(git_dir, 'head-name')).and_return("refs/heads/feature\n")
       allow(File).to receive(:read).with(File.join(git_dir, 'onto')).and_return("basehash\n")
-      allow(File).to receive(:read).with(File.join(git_dir, 'done')).and_return("pick abc1234\n")
-      allow(File).to receive(:read).with(File.join(git_dir, 'git-rebase-todo')).and_return("squash def4567\n")
+      allow(File).to receive(:read).with(File.join(git_dir, 'done')).and_return("pick abc1234567890123456789012345678901234567\n")
+      allow(File).to receive(:read).with(File.join(git_dir, 'git-rebase-todo')).and_return("squash def4567890123456789012345678901234567890\n")
       status = repo.rebase_status
-      expect(status[:done]).to eq([ { action: 'pick', hash: 'abc1234', message: 'msg1' } ])
-      expect(status[:todo]).to eq([ { action: 'squash', hash: 'def4567', message: 'msg2' } ])
+      expect(status[:done]).to eq([ { action: 'pick', hash: 'abc1234567890123456789012345678901234567', message: 'msg1' } ])
+      expect(status[:todo]).to eq([ { action: 'squash', hash: 'def4567890123456789012345678901234567890', message: 'msg2' } ])
     end
 
     it 'raises error on unexpected line format' do
