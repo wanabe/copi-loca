@@ -25,3 +25,5 @@ linters:
     enabled: true
   NoStyleAttribute:
     enabled: true
+  StrictLocals:
+    enabled: true
