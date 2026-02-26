@@ -1,0 +1,19 @@
+.rebase__row {
+  transition: background-color 0.7s;
+}
+.rebase__row.rebase__row--moved {
+  background-color: #e0e0e0 !important;
+  transition: background-color 0s;
+}
+
+.rebase__current-row {
+  text-align: center;
+  font-weight: bold;
+  background: #f0f0f0;
+}
+
+.rebase__error {
+  color: red;
+  font-weight: bold;
+}
+

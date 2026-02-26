@@ -24,6 +24,13 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :rebase, only: [ :index ] do
+    collection do
+      post :start
+      post :continue
+    end
+  end
+
   resources :models, only: [ :index ]
 
   resources :sessions, only: [ :new, :update, :edit, :index, :show, :create, :destroy ] do

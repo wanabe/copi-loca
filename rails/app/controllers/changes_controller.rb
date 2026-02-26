@@ -10,7 +10,7 @@ class ChangesController < ApplicationController
     all_commits = uncommitted + Repository.log(10_000)
     @commits = Kaminari.paginate_array(all_commits).page(params[:page]).per(10)
     @current_branch = Repository.current_branch
-    @rebasing_branch = Repository.rebasing_branch
+    @rebase_status = Repository.rebase_status
   end
 
   def revert

@@ -9,52 +9,21 @@ class Repository
     @path = path
   end
 
-  def current_branch
-    git("rev-parse --abbrev-ref HEAD").chomp
-  end
-
-  def rebasing_branch
-    %w[rebase-merge rebase-apply].each do |dir|
-      path = File.join(@path, ".git", dir, "head-name")
-      if File.exist?(path)
-        return File.read(path).chomp.sub(%r{^refs/heads/}, "")
-      end
-    end
-    nil
-  end
-
-  class << self
-    def instance
-      @instance ||= new(path: DEFAULT_PATH)
+  def git(cmd, env: nil)
+    if env
+      r, w = IO.pipe
+      success = system(env, "git -C #{@path} #{cmd} 2>&1", out: w)
+      w.close
+      output = r.read
+      r.close
+    else
+       output = `git -C #{@path} #{cmd} 2>&1`
     end
 
-    delegate(
-      :log,
-      :diff,
-      :status,
-      :ls_files,
-      :uncommitted_diffs,
-      :untracked_files,
-      :tracked_diffs,
-      :unstaged_diffs,
-      :staged_diffs,
-      :commit_message,
-      :stage_file,
-      :unstage_file,
-      :commit,
-      :amend_diffs,
-      :head_commit_message,
-      :amend_no_edit,
-      :amend_with_message,
-      :commit_info,
-      :current_branch,
-      :rebasing_branch,
-      to: :instance
-    )
-  end
-
-  def git(cmd)
-    `git -C #{@path} #{cmd} 2>&1`
+    unless Process.last_status.success?
+      raise "Git failed: #{output}"
+    end
+    output
   end
 
   def log(limit = 10)
@@ -63,6 +32,22 @@ class Repository
     log.lines.map do |line|
       hash, author, message = line.chomp.split("|", 3)
       { hash: hash, author: author, message: message }
+    end
+  end
+
+  def log_for_rebase(range: nil, base: nil, limit: nil)
+    option = ""
+    if range
+      option << " #{range}"
+    elsif base
+      option << " #{base}..HEAD"
+    end
+    if limit
+      option << " -n#{limit}"
+    end
+    git("log --reverse --format='%H %s'#{option}").lines.map do |line|
+      hash, message = line.chomp.split(" ", 2)
+      { hash: hash, message: message }
     end
   end
 
@@ -149,6 +134,80 @@ class Repository
     git(cmd)
   end
 
+  def current_branch
+    git("rev-parse --abbrev-ref HEAD").chomp
+  end
+
+  def rebase_directory
+    %w[rebase-merge rebase-apply]
+      .map { |dir| File.join(@path, ".git", dir) }
+      .find { |dir| File.directory?(dir) }
+  end
+
+  # Returns a hash with detailed rebase status if rebasing, else nil
+  # Example keys: :head, :onto, :done, :todo, :dir
+  def rebase_status
+    git_dir = rebase_directory
+    return unless git_dir
+
+    status = {
+      dir: git_dir,
+      head: content(git_dir, "head-name").chomp,
+      onto: content(git_dir, "onto").chomp
+    }
+    commits = log_for_rebase(range: "#{status[:onto]}..#{status[:head]}")
+    commit_map = commits.to_h { |c| [ c[:hash], c[:message] ] }
+
+    {
+      done: "done",
+      todo: "git-rebase-todo"
+    }.each do |key, fname|
+      content = content(git_dir, fname)
+      next unless content
+
+      status[key] = content.lines.map do |line|
+        if line !~ /^(\w+)(?:\s+([0-9a-f]{40})|$)/
+          raise "Unexpected line in #{fname}: #{line}"
+        end
+        action = $1
+        hash = $2
+        message = commit_map[hash]
+        { action: action, hash: hash, message: message }
+      end.compact
+    end
+    status
+  end
+
+  # Performs an interactive rebase using a custom sequence file and GIT_SEQUENCE_EDITOR
+  # steps: array of {hash:, action:} hashes in order
+  # base: base commit hash (7 or 40 chars)
+  def rebase_i(steps, base)
+    sequence = ""
+    squashing = false
+    steps.each do |s|
+      if s[:action] == "s" || s[:action] == "squash"
+        squashing = true
+      elsif squashing
+        sequence << "break\n"
+        squashing = false
+      end
+      sequence << "#{s[:action]} #{s[:hash]}\n"
+    end
+    Tempfile.create([ "rebase-sequence", ".txt" ]) do |file|
+      file.write(sequence)
+      file.flush
+      env = {
+        "GIT_SEQUENCE_EDITOR" => "cat #{file.path} >",
+        "EDITOR" => ": "
+      }
+      git("rebase -i #{base}", env: env)
+    end
+  end
+
+  def rebase_continue
+    git("rebase --continue")
+  end
+
   private
     def diff_pairs(diff_raw)
       diffs = []
@@ -171,4 +230,42 @@ class Repository
       diffs.reject! { |fd| fd[0].nil? }
       diffs
     end
+
+    def content(dir, fname)
+      fpath = File.join(dir, fname)
+      return unless File.exist?(fpath)
+      File.read(fpath)
+    end
+
+  class << self
+    def instance
+      @instance ||= new(path: DEFAULT_PATH)
+    end
+
+    delegate(
+      :log,
+      :log_for_rebase,
+      :diff,
+      :status,
+      :ls_files,
+      :uncommitted_diffs,
+      :untracked_files,
+      :tracked_diffs,
+      :unstaged_diffs,
+      :staged_diffs,
+      :commit_message,
+      :stage_file,
+      :unstage_file,
+      :commit,
+      :amend_diffs,
+      :head_commit_message,
+      :amend_no_edit,
+      :amend_with_message,
+      :commit_info,
+      :current_branch,
+      :rebase_status,
+      :rebase_i,
+      to: :instance
+    )
+  end
 end

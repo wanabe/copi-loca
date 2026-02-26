@@ -1,0 +1,36 @@
+<h2>Rebase</h2>
+
+<%= form_with url: rebase_index_path, method: :get, local: true, id: "base-select-form" do %>
+  <label>Base commit:
+    <%= select_tag :base, options_for_select(@all_commits.map { |c| [ "#{c[:hash][0, 7]}: #{c[:message]}", c[:hash] ] }, @base), onchange: "this.form.submit();", disabled: @rebase_status.present? %>
+  </label>
+<% end %>
+
+<%= form_with url: start_rebase_index_path, method: :post, data: { turbo: false } do %>
+  <%= hidden_field_tag :base, @base %>
+  <table data-controller="rebase-order" data-rebase-order-disabled-value="<%= @rebase_status.present? %>">
+    <thead>
+      <tr>
+        <th>Select</th>
+        <th>Commit Hash</th>
+        <th>Message</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render partial: "rebase/log_rows", locals: { logs: @rebase_logs, disabled: false, name_prefix: "rebase_steps" } %>
+      <% if @rebase_status %>
+        <%= render partial: "rebase/log_rows", locals: { logs: @rebase_status[:done], disabled: true, name_prefix: nil } %>
+        <tr>
+          <td colspan="3" class="rebase__current-row">&lt; Current &gt;</td>
+        </tr>
+        <%= render partial: "rebase/log_rows", locals: { logs: @rebase_status[:todo], disabled: true, name_prefix: nil } %>
+      <% end %>
+    </tbody>
+  </table>
+  <% unless @rebase_status %>
+    <%= submit_tag "Start Rebase" %>
+  <% end %>
+<% end %>
+<% if @rebase_status %>
+  <%= button_to "Rebase Continue", continue_rebase_index_path, method: :post, form_class: "inline" %>
+<% end %>

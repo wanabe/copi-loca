@@ -5,11 +5,11 @@ RSpec.describe Repository, type: :model do
 
   describe '#log' do
     it 'parses git log output' do
-      allow(repo).to receive(:git).and_return("abc123|John Doe|Test message\ndef456|Jane|Another message")
+      allow(repo).to receive(:git).and_return("abc1234|John Doe|Test message\ndef4567|Jane|Another message")
       result = repo.log(2)
       expect(result).to eq([
-        { hash: 'abc123', author: 'John Doe', message: 'Test message' },
-        { hash: 'def456', author: 'Jane', message: 'Another message' }
+        { hash: 'abc1234', author: 'John Doe', message: 'Test message' },
+        { hash: 'def4567', author: 'Jane', message: 'Another message' }
       ])
     end
   end
@@ -17,7 +17,7 @@ RSpec.describe Repository, type: :model do
   describe '#commit_info' do
     it 'parses commit info' do
       allow(repo).to receive(:git).and_return("John Doe|2026-02-24 03:00:00 +0000|2026-02-24 03:01:00 +0000")
-      result = repo.commit_info('abc123')
+      result = repo.commit_info('abc1234')
       expect(result).to eq({ author: 'John Doe', author_date: '2026-02-24 03:00:00 +0000', commit_date: '2026-02-24 03:01:00 +0000' })
     end
   end
@@ -53,7 +53,25 @@ RSpec.describe Repository, type: :model do
   describe '#git' do
     it 'runs git command' do
       expect(repo).to receive(:`).with("git -C /app status 2>&1").and_return("ok")
+      expect(Process).to receive(:last_status).and_return(double(success?: true))
       expect(repo.git("status")).to eq("ok")
+    end
+
+    it 'runs git command with env' do
+      fake_r, fake_w = double('r'), double('w')
+      allow(IO).to receive(:pipe).and_return([ fake_r, fake_w ])
+      expect(repo).to receive(:system).with(hash_including('FOO' => 'bar'), "git -C /app status 2>&1", out: fake_w).and_return(true)
+      expect(fake_w).to receive(:close)
+      expect(fake_r).to receive(:read).and_return("envok")
+      expect(fake_r).to receive(:close)
+      allow(Process).to receive_message_chain(:last_status, :success?).and_return(true)
+      expect(repo.git("status", env: { 'FOO' => 'bar' })).to eq("envok")
+    end
+
+    it 'raises error on git failure' do
+      expect(repo).to receive(:`).with("git -C /app status 2>&1").and_return("error")
+      expect(Process).to receive(:last_status).and_return(double(success?: false))
+      expect { repo.git("status") }.to raise_error("Git failed: error")
     end
   end
 
@@ -98,12 +116,21 @@ RSpec.describe Repository, type: :model do
       allow(repo).to receive(:untracked_diffs).and_return([ [ "ufile1", "@@ ...\n+u" ] ])
       expect(repo.unstaged_diffs).to eq([ [ "file1", "@@ ...\n+line" ], [ "ufile1", "@@ ...\n+u" ] ])
     end
+    it 'returns only untracked if diff_pairs is empty' do
+      allow(repo).to receive(:git).with("diff").and_return("")
+      allow(repo).to receive(:untracked_diffs).and_return([ [ "ufile1", "@@ ...\n+u" ] ])
+      expect(repo.unstaged_diffs).to eq([ [ "ufile1", "@@ ...\n+u" ] ])
+    end
   end
 
   describe '#staged_diffs' do
     it 'parses staged diffs' do
       allow(repo).to receive(:git).with("diff --cached").and_return("diff --git a/file2 b/file2\n@@ ...\n+line")
       expect(repo.staged_diffs).to eq([ [ "file2", "@@ ...\n+line" ] ])
+    end
+    it 'returns [] if diff_pairs is empty' do
+      allow(repo).to receive(:git).with("diff --cached").and_return("")
+      expect(repo.staged_diffs).to eq([])
     end
   end
 
@@ -113,6 +140,12 @@ RSpec.describe Repository, type: :model do
       allow(repo).to receive(:staged_diffs).and_return([ [ "file2", "s2" ] ])
       allow(repo).to receive(:untracked_diffs).and_return([ [ "file3", "ut3" ] ])
       expect(repo.uncommitted_diffs).to eq([ [ "file1", "u1" ], [ "file2", "s2" ], [ "file3", "ut3" ] ])
+    end
+    it 'returns [] if all are empty' do
+      allow(repo).to receive(:unstaged_diffs).and_return([])
+      allow(repo).to receive(:staged_diffs).and_return([])
+      allow(repo).to receive(:untracked_diffs).and_return([])
+      expect(repo.uncommitted_diffs).to eq([])
     end
   end
 
@@ -173,6 +206,171 @@ RSpec.describe Repository, type: :model do
       diff_raw = "diff --git a/ b/\n@@ ...\n+line"
       pairs = repo.send(:diff_pairs, diff_raw)
       expect(pairs).to eq([])
+    end
+    it 'returns [] for empty string' do
+      expect(repo.send(:diff_pairs, "")).to eq([])
+    end
+  end
+
+  describe '#log_for_rebase' do
+    let(:repo) { described_class.new(path: '/mockrepo') }
+
+    it 'parses log output with base and limit' do
+      allow(repo).to receive(:git).with("log --reverse --format='%h %s' master..HEAD -n5").and_return("abc1234 message1\ndef4567 message2")
+      result = repo.log_for_rebase(base: 'master', limit: 5)
+      expect(repo).to have_received(:git).with("log --reverse --format='%h %s' master..HEAD -n5")
+      expect(result).to eq([
+        { hash: 'abc1234', message: 'message1' },
+        { hash: 'def4567', message: 'message2' }
+      ])
+    end
+
+    it 'parses log output with only limit' do
+      allow(repo).to receive(:git).with("log --reverse --format='%h %s' -n3").and_return("abc1234 message1\ndef4567 message2")
+      result = repo.log_for_rebase(limit: 3)
+      expect(repo).to have_received(:git).with("log --reverse --format='%h %s' -n3")
+      expect(result).to eq([
+        { hash: 'abc1234', message: 'message1' },
+        { hash: 'def4567', message: 'message2' }
+      ])
+    end
+
+    it 'parses log output with only base' do
+      allow(repo).to receive(:git).with("log --reverse --format='%h %s' develop..HEAD").and_return("abc1234 message1\ndef4567 message2")
+      result = repo.log_for_rebase(base: 'develop')
+      expect(repo).to have_received(:git).with("log --reverse --format='%h %s' develop..HEAD")
+      expect(result).to eq([
+        { hash: 'abc1234', message: 'message1' },
+        { hash: 'def4567', message: 'message2' }
+      ])
+    end
+
+    it 'parses log output with range' do
+      allow(repo).to receive(:git).with("log --reverse --format='%h %s' feature~..feature").and_return("abc1234 message1\ndef4567 message2")
+      result = repo.log_for_rebase(range: 'feature~..feature')
+      expect(repo).to have_received(:git).with("log --reverse --format='%h %s' feature~..feature")
+      expect(result).to eq([
+        { hash: 'abc1234', message: 'message1' },
+        { hash: 'def4567', message: 'message2' }
+      ])
+    end
+
+    it 'parses log output with no options' do
+      allow(repo).to receive(:git).with("log --reverse --format='%h %s'").and_return("abc1234 message1\ndef4567 message2")
+      result = repo.log_for_rebase
+      expect(repo).to have_received(:git).with("log --reverse --format='%h %s'")
+      expect(result).to eq([
+        { hash: 'abc1234', message: 'message1' },
+        { hash: 'def4567', message: 'message2' }
+      ])
+    end
+  end
+
+  describe '#rebase_i' do
+    it 'calls git rebase -i with correct env and sequence' do
+      steps = [ { action: 'pick', hash: 'abc1234' }, { action: 'squash', hash: 'def4567' } ]
+      allow(repo).to receive(:git)
+      fake_tempfile = double('Tempfile', write: nil, flush: nil, path: '/tmp/fake', close: nil)
+      expect(Tempfile).to receive(:create).and_yield(fake_tempfile)
+      expect(repo).to receive(:git).with(/rebase -i/, env: hash_including('GIT_SEQUENCE_EDITOR', 'EDITOR'))
+      repo.rebase_i(steps, 'basehash')
+    end
+
+    it 'inserts break after consecutive squashes' do
+      steps = [
+        { action: 'pick', hash: 'a' },
+        { action: 'squash', hash: 'b' },
+        { action: 'squash', hash: 'c' },
+        { action: 'pick', hash: 'd' }
+      ]
+      sequence = nil
+      fake_tempfile = double('Tempfile', flush: nil, path: '/tmp/fake', close: nil)
+      allow(fake_tempfile).to receive(:write) { |s| sequence = s }
+      expect(Tempfile).to receive(:create).and_yield(fake_tempfile)
+      allow(repo).to receive(:git)
+      repo.rebase_i(steps, 'basehash')
+      expect(sequence).to include("squash b\nsquash c\nbreak\npick d")
+    end
+
+    it 'does nothing if steps is empty' do
+      allow(repo).to receive(:git)
+      fake_tempfile = double('Tempfile', write: nil, flush: nil, path: '/tmp/fake', close: nil)
+      expect(Tempfile).to receive(:create).and_yield(fake_tempfile)
+      expect(fake_tempfile).to receive(:write).with("")
+      repo.rebase_i([], 'basehash')
+    end
+  end
+
+  describe '#rebase_continue' do
+    it 'calls git rebase --continue' do
+      expect(repo).to receive(:git).with('rebase --continue')
+      repo.rebase_continue
+    end
+  end
+
+  describe '#current_branch' do
+    it 'returns current branch name' do
+      allow(repo).to receive(:git).with('rev-parse --abbrev-ref HEAD').and_return("main\n")
+      expect(repo.current_branch).to eq('main')
+    end
+  end
+
+  describe '#rebase_directory' do
+    it 'returns first found rebase dir' do
+      allow(File).to receive(:directory?).and_return(false, true)
+      expect(repo.rebase_directory).to include('rebase-apply')
+    end
+    it 'returns nil if no rebase dir' do
+      allow(File).to receive(:directory?).and_return(false, false)
+      expect(repo.rebase_directory).to be_nil
+    end
+  end
+
+  describe '.instance' do
+    it 'returns a singleton instance' do
+      i1 = Repository.instance
+      i2 = Repository.instance
+      expect(i1).to be_a(Repository)
+      expect(i1).to equal(i2)
+    end
+  end
+
+  describe '#rebase_status' do
+    let(:git_dir) { '/mockrepo/.git/rebase-merge' }
+    before do
+      allow(repo).to receive(:rebase_directory).and_return(git_dir)
+      allow(repo).to receive(:log_for_rebase).and_return([
+        { hash: 'abc1234', message: 'msg1' },
+        { hash: 'def4567', message: 'msg2' }
+      ])
+    end
+
+    it 'returns status with done/todo as hashes' do
+      allow(File).to receive(:exist?).and_return(true)
+      allow(File).to receive(:read).with(File.join(git_dir, 'head-name')).and_return("refs/heads/feature\n")
+      allow(File).to receive(:read).with(File.join(git_dir, 'onto')).and_return("basehash\n")
+      allow(File).to receive(:read).with(File.join(git_dir, 'done')).and_return("pick abc1234\n")
+      allow(File).to receive(:read).with(File.join(git_dir, 'git-rebase-todo')).and_return("squash def4567\n")
+      status = repo.rebase_status
+      expect(status[:done]).to eq([ { action: 'pick', hash: 'abc1234', message: 'msg1' } ])
+      expect(status[:todo]).to eq([ { action: 'squash', hash: 'def4567', message: 'msg2' } ])
+    end
+
+    it 'raises error on unexpected line format' do
+      allow(File).to receive(:exist?).and_return(true)
+      allow(File).to receive(:read).with(File.join(git_dir, 'head-name')).and_return("refs/heads/feature\n")
+      allow(File).to receive(:read).with(File.join(git_dir, 'onto')).and_return("basehash\n")
+      allow(File).to receive(:read).with(File.join(git_dir, 'done')).and_return("invalid line\n")
+      expect { repo.rebase_status }.to raise_error("Unexpected line in done: invalid line\n")
+    end
+
+    it 'returns nil if file does not exist' do
+      allow(File).to receive(:exist?).and_return(false)
+      expect(repo.send(:content, git_dir, 'notfound')).to be_nil
+    end
+    it 'returns nil if no rebase dir' do
+      allow(repo).to receive(:rebase_directory).and_return(nil)
+      expect(repo.rebase_status).to be_nil
     end
   end
 end

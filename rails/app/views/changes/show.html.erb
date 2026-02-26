@@ -1,5 +1,8 @@
 <h1>Commit <%= h @id %> Changes</h1>
 <p>
+  <%= link_to "Rebase from this commit", rebase_index_path(base: @id), class: "btn btn-primary" %>
+</p>
+<p>
   <strong>Author:</strong> <%= h @commit_info[:author] %><br>
   <strong>Author Date:</strong> <%= h @commit_info[:author_date] %><br>
   <strong>Commit Date:</strong> <%= h @commit_info[:commit_date] %>
