@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "English"
 class Repository
   include ActiveModel::Model
 
@@ -7,19 +8,47 @@ class Repository
 
   DEFAULT_PATH = "/app"
 
+  # Returns true if rebase can be started (no unstaged/staged changes, not already rebasing)
+  def self.can_start_rebase?
+    new.can_start_rebase?
+  end
+
+  def can_start_rebase?
+    return false unless git("diff --quiet", return_status: true)
+    return false unless git("diff --cached --quiet", return_status: true)
+    return false if rebase_directory
+
+    true
+  end
+
+  # Returns true if rebase can be continued (currently rebasing and no unstaged/staged changes; ignores untracked)
+  def self.can_continue_rebase?
+    new.can_continue_rebase?
+  end
+
+  def can_continue_rebase?
+    return false unless rebase_directory
+    return false unless git("diff --quiet", return_status: true)
+    return false unless git("diff --cached --quiet", return_status: true)
+
+    true
+  end
+
   def initialize(path: DEFAULT_PATH)
     @path = path
   end
 
-  def git(cmd, env: nil)
+  def git(cmd, env: nil, return_status: false)
     if env
       r, w = IO.pipe
-      system(env, "git -C #{@path} #{cmd} 2>&1", out: w)
+      success = system(env, "git -C #{@path} #{cmd} 2>&1", out: w)
       w.close
       output = r.read
       r.close
+      return success if return_status
     else
       output = `git -C #{@path} #{cmd} 2>&1`
+      return (Process.last_status || $CHILD_STATUS)&.success? if return_status
     end
 
     raise "Git failed: #{output}" unless Process.last_status.success?

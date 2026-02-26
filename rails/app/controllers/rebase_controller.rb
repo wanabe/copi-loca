@@ -6,6 +6,8 @@ class RebaseController < ApplicationController
 
   def index
     @rebase_status = Repository.rebase_status
+    @can_start_rebase = Repository.can_start_rebase?
+    @can_continue_rebase = Repository.can_continue_rebase?
     onto = @rebase_status&.[](:onto)
     if @rebase_status && onto
       @base = onto.chomp

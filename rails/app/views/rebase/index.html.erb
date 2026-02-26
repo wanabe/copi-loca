@@ -30,9 +30,9 @@
     </tbody>
   </table>
   <% unless @rebase_status %>
-    <%= submit_tag "Start Rebase" %>
+    <%= submit_tag "Start Rebase", disabled: !@can_start_rebase %>
   <% end %>
 <% end %>
 <% if @rebase_status %>
-  <%= button_to "Rebase Continue", continue_rebase_index_path, method: :post, form_class: "inline" %>
+  <%= button_to "Rebase Continue", continue_rebase_index_path, method: :post, form_class: "inline", disabled: !@can_continue_rebase %>
 <% end %>

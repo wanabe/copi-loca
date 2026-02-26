@@ -46,6 +46,7 @@ class ChangesController < ApplicationController
     @commit_message = Repository.commit_message(@id)
     @commit_info = Repository.commit_info(@id)
     @file_paths = @file_diffs.pluck(0)
+    @can_start_rebase = Repository.can_start_rebase?
     return unless params[:file_path]
 
     @selected_file_path = params[:file_path]

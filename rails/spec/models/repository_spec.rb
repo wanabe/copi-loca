@@ -54,10 +54,63 @@ RSpec.describe Repository do
   end
 
   describe "#git" do
+    it "returns status when return_status is true (no env)" do
+      allow(repo).to receive(:`).with("git -C /app status 2>&1").and_return("output")
+      allow(Process).to receive(:last_status).and_return(double(success?: true))
+
+      expect(repo.git("status", return_status: true)).to be(true)
+      expect(repo).to have_received(:`).with("git -C /app status 2>&1")
+      expect(Process).to have_received(:last_status)
+    end
+
+    it "returns status when return_status is true (no env, failure)" do
+      allow(repo).to receive(:`).with("git -C /app status 2>&1").and_return("output")
+      allow(Process).to receive(:last_status).and_return(double(success?: false))
+
+      expect(repo.git("status", return_status: true)).to be(false)
+      expect(repo).to have_received(:`).with("git -C /app status 2>&1")
+      expect(Process).to have_received(:last_status)
+    end
+
+    it "returns status when return_status is true (with env)" do
+      fake_r = instance_double(IO)
+      fake_w = instance_double(IO)
+      allow(IO).to receive(:pipe).and_return([fake_r, fake_w])
+      allow(repo).to receive(:system).with(hash_including("FOO" => "bar"), "git -C /app status 2>&1", out: fake_w).and_return(true)
+      allow(fake_w).to receive(:close)
+      allow(fake_r).to receive(:read).and_return("envok")
+      allow(fake_r).to receive(:close)
+
+      expect(repo.git("status", env: { "FOO" => "bar" }, return_status: true)).to be(true)
+      expect(repo).to have_received(:system).with(hash_including("FOO" => "bar"), "git -C /app status 2>&1", out: fake_w)
+      expect(fake_w).to have_received(:close)
+      expect(fake_r).to have_received(:read)
+      expect(fake_r).to have_received(:close)
+    end
+
+    it "returns status when return_status is true (with env, failure)" do
+      fake_r = instance_double(IO)
+      fake_w = instance_double(IO)
+      allow(IO).to receive(:pipe).and_return([fake_r, fake_w])
+      allow(repo).to receive(:system).with(hash_including("FOO" => "bar"), "git -C /app status 2>&1", out: fake_w).and_return(false)
+      allow(fake_w).to receive(:close)
+      allow(fake_r).to receive(:read).and_return("envfail")
+      allow(fake_r).to receive(:close)
+
+      expect(repo.git("status", env: { "FOO" => "bar" }, return_status: true)).to be(false)
+      expect(repo).to have_received(:system).with(hash_including("FOO" => "bar"), "git -C /app status 2>&1", out: fake_w)
+      expect(fake_w).to have_received(:close)
+      expect(fake_r).to have_received(:read)
+      expect(fake_r).to have_received(:close)
+    end
+
     it "runs git command" do
       allow(repo).to receive(:`).with("git -C /app status 2>&1").and_return("ok")
-      allow(Process).to receive(:last_status).and_return(instance_double(Process::Status, success?: true))
+      allow(Process).to receive(:last_status).and_return(double(success?: true))
+
       expect(repo.git("status")).to eq("ok")
+      expect(repo).to have_received(:`).with("git -C /app status 2>&1")
+      expect(Process).to have_received(:last_status)
     end
 
     it "runs git command with env" do
@@ -422,6 +475,63 @@ RSpec.describe Repository do
     it "returns nil if no rebase dir" do
       allow(repo).to receive(:rebase_directory).and_return(nil)
       expect(repo.rebase_status).to be_nil
+    end
+  end
+
+  describe "#can_start_rebase?" do
+    it "returns false if unstaged changes exist" do
+      allow(repo).to receive(:git).with("diff --quiet", return_status: true).and_return(false)
+      allow(repo).to receive(:git).with("diff --cached --quiet", return_status: true).and_return(true)
+      allow(repo).to receive(:rebase_directory).and_return(nil)
+      expect(repo.can_start_rebase?).to be(false)
+    end
+
+    it "returns false if staged changes exist" do
+      allow(repo).to receive(:git).with("diff --quiet", return_status: true).and_return(true)
+      allow(repo).to receive(:git).with("diff --cached --quiet", return_status: true).and_return(false)
+      allow(repo).to receive(:rebase_directory).and_return(nil)
+      expect(repo.can_start_rebase?).to be(false)
+    end
+
+    it "returns false if already rebasing" do
+      allow(repo).to receive(:git).with("diff --quiet", return_status: true).and_return(true)
+      allow(repo).to receive(:git).with("diff --cached --quiet", return_status: true).and_return(true)
+      allow(repo).to receive(:rebase_directory).and_return("/tmp/.git/rebase-merge")
+      expect(repo.can_start_rebase?).to be(false)
+    end
+
+    it "returns true if clean and not rebasing" do
+      allow(repo).to receive(:git).with("diff --quiet", return_status: true).and_return(true)
+      allow(repo).to receive(:git).with("diff --cached --quiet", return_status: true).and_return(true)
+      allow(repo).to receive(:rebase_directory).and_return(nil)
+      expect(repo.can_start_rebase?).to be(true)
+    end
+  end
+
+  describe "#can_continue_rebase?" do
+    it "returns false if not rebasing" do
+      allow(repo).to receive(:rebase_directory).and_return(nil)
+      expect(repo.can_continue_rebase?).to be(false)
+    end
+
+    it "returns false if unstaged changes exist" do
+      allow(repo).to receive(:rebase_directory).and_return("/tmp/.git/rebase-merge")
+      allow(repo).to receive(:git).with("diff --quiet", return_status: true).and_return(false)
+      expect(repo.can_continue_rebase?).to be(false)
+    end
+
+    it "returns false if staged changes exist" do
+      allow(repo).to receive(:rebase_directory).and_return("/tmp/.git/rebase-merge")
+      allow(repo).to receive(:git).with("diff --quiet", return_status: true).and_return(true)
+      allow(repo).to receive(:git).with("diff --cached --quiet", return_status: true).and_return(false)
+      expect(repo.can_continue_rebase?).to be(false)
+    end
+
+    it "returns true if rebasing and clean" do
+      allow(repo).to receive(:rebase_directory).and_return("/tmp/.git/rebase-merge")
+      allow(repo).to receive(:git).with("diff --quiet", return_status: true).and_return(true)
+      allow(repo).to receive(:git).with("diff --cached --quiet", return_status: true).and_return(true)
+      expect(repo.can_continue_rebase?).to be(true)
     end
   end
 end
