@@ -3,19 +3,19 @@
     <td>
       <%= hidden_field_tag name_prefix ? "#{name_prefix}[][hash]" : nil, log[:hash], disabled: disabled %>
       <%= select_tag name_prefix ? "#{name_prefix}[][action]" : nil, options_for_select([
-        [ "pick", "pick" ],
-        [ "edit", "edit" ],
-        [ "squash", "squash" ],
-        [ "fixup", "fixup" ],
-        [ "reword", "reword" ],
-        [ "drop", "drop" ],
-        [ "break", "break" ]
-      ], log[:action]), disabled: disabled %>
+            %w[pick pick],
+            %w[edit edit],
+            %w[squash squash],
+            %w[fixup fixup],
+            %w[reword reword],
+            %w[drop drop],
+            %w[break break]
+          ], log[:action]), disabled: disabled %>
       <% if disabled %>
         <button type="button" disabled>&uarr;</button>
         <button type="button" disabled>&darr;</button>
       <% else %>
-        <button type="button" data-action="click->rebase-order#move" data-direction="-1" <%= "disabled" if idx == 0 %>>&uarr;</button>
+        <button type="button" data-action="click->rebase-order#move" data-direction="-1" <%= "disabled" if idx.zero? %>>&uarr;</button>
         <button type="button" data-action="click->rebase-order#move" data-direction="1" <%= "disabled" if idx == logs.size - 1 %>>&darr;</button>
       <% end %>
     </td>

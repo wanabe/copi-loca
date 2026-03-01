@@ -2,7 +2,9 @@
 
 <%= form_with url: rebase_index_path, method: :get, local: true, id: "base-select-form" do %>
   <label>Base commit:
-    <%= select_tag :base, options_for_select(@all_commits.map { |c| [ "#{c[:hash][0, 7]}: #{c[:message]}", c[:hash] ] }, @base), onchange: "this.form.submit();", disabled: @rebase_status.present? %>
+    <%= select_tag :base, options_for_select(@all_commits.map { |c|
+          ["#{c[:hash][0, 7]}: #{c[:message]}", c[:hash]]
+        }, @base), onchange: "this.form.submit();", disabled: @rebase_status.present? %>
   </label>
 <% end %>
 

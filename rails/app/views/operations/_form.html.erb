@@ -24,7 +24,7 @@
 
   <div>
     <%= form.label :execution_timing, "Execution timing", style: "display: block" %>
-    <%= form.select :execution_timing, Operation.execution_timings.keys.map { |k| [ k.humanize, k ] }, {}, {} %>
+    <%= form.select :execution_timing, Operation.execution_timings.keys.map { |k| [k.humanize, k] }, {}, {} %>
   </div>
 
   <div>

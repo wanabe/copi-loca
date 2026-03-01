@@ -19,7 +19,12 @@
 
   <div data-controller="system-message-mode">
     <%= form.label :system_message_mode, "System Message Mode" %><br>
-    <%= form.select :system_message_mode, Session.system_message_modes.keys.map { |k| [ k.titleize, k ] }, { selected: session.system_message_mode }, { data: { system_message_mode_target: "mode", action: "change->system-message-mode#toggleMessage" } } %>
+    <% system_message_modes = Session.system_message_modes.keys.map { |k| [k.titleize, k] } %>
+    <%=
+      form.select :system_message_mode, system_message_modes,
+        { selected: session.system_message_mode },
+        { data: { system_message_mode_target: "mode", action: "change->system-message-mode#toggleMessage" } }
+    %>
     <br>
     <%= form.label :system_message, "System Message", for: "system-message" %><br>
     <%= form.text_area :system_message, rows: 3, data: { system_message_mode_target: "message" } %>

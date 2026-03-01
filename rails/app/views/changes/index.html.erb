@@ -2,7 +2,7 @@
 <p>
   Current branch: <span class="changes__branch-label"><%= @current_branch %></span>
   <% if @rebase_status %>
-    (<span class="changes__branch-label"><%= @rebase_status[:head].sub(/^refs\/heads\//, "") %></span> <%= link_to "rebasing", rebase_index_path %>)
+    (<span class="changes__branch-label"><%= @rebase_status[:head].sub(%r{^refs/heads/}, "") %></span> <%= link_to "rebasing", rebase_index_path %>)
   <% end %>
 </p>
 <ul class="changes-list">

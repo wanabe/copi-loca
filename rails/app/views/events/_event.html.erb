@@ -5,5 +5,10 @@
   <strong class="event-label">Event ID:</strong><div class="events-col-eventid"><%= event.event_id %></div>
   <strong class="event-label">Data:</strong><div class="events-col-data"><%= JSON.pretty_generate(event.data) %></div>
   <strong class="event-label">Timestamp:</strong><div class="events-col-timestamp"><%= event.timestamp %></div>
-  <strong class="event-label">Parent:</strong><div class="events-col-parent"><%= event.parent_event_id ? link_to(event.parent_event_id, session_event_path(event.session, event.parent_event_id)) : "" %></div>
+  <strong class="event-label">Parent:</strong><div class="events-col-parent"><%= if event.parent_event_id
+                                                                                   link_to(event.parent_event_id,
+                                                                                     session_event_path(event.session, event.parent_event_id))
+                                                                                 else
+                                                                                   ""
+                                                                                 end %></div>
 </div>

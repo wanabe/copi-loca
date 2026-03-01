@@ -70,5 +70,6 @@
     </div>
   <% end %>
 
-  <div class="mobile-destroy-btn"><%= button_to "Destroy this session", session, method: :delete, data: { turbo_confirm: "Are you sure you want to destroy this session?" } %></div>
+  <div class="mobile-destroy-btn"><%= button_to "Destroy this session", session, method: :delete,
+                                        data: { turbo_confirm: "Are you sure you want to destroy this session?" } %></div>
 </div>
