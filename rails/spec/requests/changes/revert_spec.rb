@@ -1,4 +1,6 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 describe "GET /changes/revert", type: :request do
   it "renders the revert page (200)" do

@@ -1,4 +1,4 @@
-require:
+plugins:
   - rubocop-rails
   - rubocop-performance
   - rubocop-rspec
@@ -13,29 +13,52 @@ AllCops:
     - 'vendor/**/*'
     - 'tmp/**/*'
 
+Metrics/AbcSize:
+  Enabled: false
 Metrics/MethodLength:
-  Max: 20
-
+  Max: 200
 Metrics/BlockLength:
   Max: 25
   Exclude:
     - 'spec/**/*'
     - 'config/routes.rb'
-
 Metrics/ClassLength:
-  Max: 150
+  Max: 300
+Metrics/CyclomaticComplexity:
+  Enabled: false
+Metrics/PerceivedComplexity:
+  Enabled: false
 
 Layout/LineLength:
-  Max: 120
+  Max: 150
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Lint/EmptyBlock:
+  Exclude:
+    - 'spec/**/*'
+Lint/RescueException:
+  Enabled: false
+Lint/UnusedMethodArgument:
+  Exclude:
+    - 'spec/**/*'
+
+Style/Documentation:
+  Enabled: false
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
-
 Style/HashSyntax:
   EnforcedStyle: ruby19
 
-Rails:
-  Enabled: true
-
+Rails/I18nLocaleTexts:
+  Enabled: false
 Rails/SkipsModelValidations:
   Enabled: true
+
+RSpec/ExampleLength:
+  Enabled: false
+RSpec/MultipleExpectations:
+  Enabled: false

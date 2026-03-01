@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Operation < ApplicationRecord
   validates :command, presence: true
   validates :directory, presence: true

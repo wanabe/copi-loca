@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Repository
   include ActiveModel::Model
 
@@ -12,17 +14,16 @@ class Repository
   def git(cmd, env: nil)
     if env
       r, w = IO.pipe
-      success = system(env, "git -C #{@path} #{cmd} 2>&1", out: w)
+      system(env, "git -C #{@path} #{cmd} 2>&1", out: w)
       w.close
       output = r.read
       r.close
     else
-       output = `git -C #{@path} #{cmd} 2>&1`
+      output = `git -C #{@path} #{cmd} 2>&1`
     end
 
-    unless Process.last_status.success?
-      raise "Git failed: #{output}"
-    end
+    raise "Git failed: #{output}" unless Process.last_status.success?
+
     output
   end
 
@@ -36,15 +37,13 @@ class Repository
   end
 
   def log_for_rebase(range: nil, base: nil, limit: nil)
-    option = ""
+    option = +""
     if range
       option << " #{range}"
     elsif base
       option << " #{base}..HEAD"
     end
-    if limit
-      option << " -n#{limit}"
-    end
+    option << " -n#{limit}" if limit
     git("log --reverse --format='%H %s'#{option}").lines.map do |line|
       hash, message = line.chomp.split(" ", 2)
       { hash: hash, message: message }
@@ -69,9 +68,9 @@ class Repository
         content = File.read(abs_path)
         lines = content.lines
         diff = "@@ -0,0 +1,#{lines.size} @@\n" + lines.map { |l| "+#{l}" }.join
-        diffs << [ path, diff ]
+        diffs << [path, diff]
       else
-        diffs << [ path, "Untracked file" ]
+        diffs << [path, "Untracked file"]
       end
     end
     diffs
@@ -156,7 +155,7 @@ class Repository
       onto: content(git_dir, "onto").chomp
     }
     commits = log_for_rebase(range: "#{status[:onto]}..#{status[:head]}")
-    commit_map = commits.to_h { |c| [ c[:hash], c[:message] ] }
+    commit_map = commits.to_h { |c| [c[:hash], c[:message]] }
 
     {
       done: "done",
@@ -165,15 +164,14 @@ class Repository
       content = content(git_dir, fname)
       next unless content
 
-      status[key] = content.lines.map do |line|
-        if line !~ /^(\w+)(?:\s+([0-9a-f]{40})|$)/
-          raise "Unexpected line in #{fname}: #{line}"
-        end
-        action = $1
-        hash = $2
+      status[key] = content.lines.filter_map do |line|
+        raise "Unexpected line in #{fname}: #{line}" if line !~ /^(\w+)(?:\s+([0-9a-f]{40})|$)/
+
+        action = ::Regexp.last_match(1)
+        hash = ::Regexp.last_match(2)
         message = commit_map[hash]
         { action: action, hash: hash, message: message }
-      end.compact
+      end
     end
     status
   end
@@ -182,10 +180,11 @@ class Repository
   # steps: array of {hash:, action:} hashes in order
   # base: base commit hash (7 or 40 chars)
   def rebase_i(steps, base)
-    sequence = ""
+    sequence = +""
     squashing = false
     steps.each do |s|
-      if s[:action] == "s" || s[:action] == "squash"
+      action = s[:action]
+      if %w[squash s].include?(action)
         squashing = true
       elsif squashing
         sequence << "break\n"
@@ -193,7 +192,7 @@ class Repository
       end
       sequence << "#{s[:action]} #{s[:hash]}\n"
     end
-    Tempfile.create([ "rebase-sequence", ".txt" ]) do |file|
+    Tempfile.create(["rebase-sequence", ".txt"]) do |file|
       file.write(sequence)
       file.flush
       env = {
@@ -209,33 +208,36 @@ class Repository
   end
 
   private
-    def diff_pairs(diff_raw)
-      diffs = []
-      current = nil
-      diff_raw.each_line do |line|
-        if line.start_with?("diff --git ")
-          diffs << current if current
-          m = line.match(%r{diff --git a/(.+?) b/\1})
-          path = m ? m[1] : nil
-          current = [ path, "" ]
-        elsif current
-          next if line.start_with?("index ")
-          next if line.start_with?("+++ ")
-          next if line.start_with?("--- ")
-          next if line.start_with?("new file mode ")
-          current[1] << line
-        end
-      end
-      diffs << current if current
-      diffs.reject! { |fd| fd[0].nil? }
-      diffs
-    end
 
-    def content(dir, fname)
-      fpath = File.join(dir, fname)
-      return unless File.exist?(fpath)
-      File.read(fpath)
+  def diff_pairs(diff_raw)
+    diffs = []
+    current = nil
+    diff_raw.each_line do |line|
+      if line.start_with?("diff --git ")
+        diffs << current if current
+        m = line.match(%r{diff --git a/(.+?) b/\1})
+        path = m ? m[1] : nil
+        current = [path, +""]
+      elsif current
+        next if line.start_with?("index ")
+        next if line.start_with?("+++ ")
+        next if line.start_with?("--- ")
+        next if line.start_with?("new file mode ")
+
+        current[1] << line
+      end
     end
+    diffs << current if current
+    diffs.reject! { |fd| fd[0].nil? }
+    diffs
+  end
+
+  def content(dir, fname)
+    fpath = File.join(dir, fname)
+    return unless File.exist?(fpath)
+
+    File.read(fpath)
+  end
 
   class << self
     def instance

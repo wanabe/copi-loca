@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class CustomAgentsController < ApplicationController
-  before_action :set_custom_agent, only: %i[ show edit update destroy ]
+  before_action :set_custom_agent, only: %i[show edit update destroy]
 
   before_action :add_custom_agents_breadcrumb
-  before_action :add_custom_agent_breadcrumb, only: %i[ show edit ]
-  before_action :add_action_breadcrumb, only: %i[ edit new ]
+  before_action :add_custom_agent_breadcrumb, only: %i[show edit]
+  before_action :add_action_breadcrumb, only: %i[edit new]
 
   # GET /custom_agents
   def index
@@ -11,8 +13,7 @@ class CustomAgentsController < ApplicationController
   end
 
   # GET /custom_agents/1
-  def show
-  end
+  def show; end
 
   # GET /custom_agents/new
   def new
@@ -20,8 +21,7 @@ class CustomAgentsController < ApplicationController
   end
 
   # GET /custom_agents/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /custom_agents
   def create
@@ -50,21 +50,22 @@ class CustomAgentsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_custom_agent
-      @custom_agent = CustomAgent.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def custom_agent_params
-      params.expect(custom_agent: [ :name, :display_name, :description, :prompt ])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_custom_agent
+    @custom_agent = CustomAgent.find(params.expect(:id))
+  end
 
-    def add_custom_agents_breadcrumb
-      add_breadcrumb("Custom Agents", custom_agents_path)
-    end
+  # Only allow a list of trusted parameters through.
+  def custom_agent_params
+    params.expect(custom_agent: %i[name display_name description prompt])
+  end
 
-    def add_custom_agent_breadcrumb
-      add_breadcrumb(@custom_agent.id, custom_agent_path(@custom_agent))
-    end
+  def add_custom_agents_breadcrumb
+    add_breadcrumb("Custom Agents", custom_agents_path)
+  end
+
+  def add_custom_agent_breadcrumb
+    add_breadcrumb(@custom_agent.id, custom_agent_path(@custom_agent))
+  end
 end

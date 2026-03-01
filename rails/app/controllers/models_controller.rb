@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ModelsController < ApplicationController
   before_action :add_models_breadcrumb
 
@@ -7,7 +9,8 @@ class ModelsController < ApplicationController
   end
 
   private
-    def add_models_breadcrumb
-      add_breadcrumb("Models", models_path)
-    end
+
+  def add_models_breadcrumb
+    add_breadcrumb("Models", models_path)
+  end
 end

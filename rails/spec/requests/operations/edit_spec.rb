@@ -1,4 +1,6 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe "GET /operations/:id/edit", type: :request do
   let!(:operation) { Operation.create!(command: "echo hello", directory: "/tmp", execution_timing: :manual) }

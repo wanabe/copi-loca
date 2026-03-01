@@ -1,15 +1,18 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe "events/show", type: :view do
-  before(:each) do
+  before do
     allow(Client).to receive(:create_session)
     session = Session.create!(
       id: "Id",
-      model: "Model",
+      model: "Model"
     )
     assign(:event, Event.create!(
       session: session,
-      rpc_message: RpcMessage.create!(session: session, direction: :incoming, message_type: :notification, method: "session.event", params: {}),
+      rpc_message: RpcMessage.create!(session: session, direction: :incoming, message_type: :notification,
+        method: "session.event", params: {}),
       event_type: "Event Type",
       event_id: "Id",
       data: "",

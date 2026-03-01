@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RollbackMiddleware
   ROLLBACK_PATH = "/r"
   RESTART_PATH = "/restart"
@@ -15,9 +17,9 @@ class RollbackMiddleware
         begin
           output = `git -C /app reset --hard HEAD 2>&1; git -C /app clean -fd 2>&1`
 
-          return [ 200, { "Content-Type" => "text/plain" }, [ "Rollback successful:\n#{output}" ] ]
-        rescue => e
-          return [ 500, { "Content-Type" => "text/plain" }, [ "Rollback failed: #{e.message}" ] ]
+          return [200, { "Content-Type" => "text/plain" }, ["Rollback successful:\n#{output}"]]
+        rescue StandardError => e
+          return [500, { "Content-Type" => "text/plain" }, ["Rollback failed: #{e.message}"]]
         end
       elsif request.get?
         html = <<~HTML
@@ -27,15 +29,17 @@ class RollbackMiddleware
             <button type="submit">Yes, Rollback</button>
           </form>
         HTML
-        return [ 200, { "Content-Type" => "text/html" }, [ html ] ]
+        return [200, { "Content-Type" => "text/html" }, [html]]
       end
     when RESTART_PATH
       if request.post?
         Thread.new do
           sleep 2
+          # rubocop:disable Rails/Exit
           Kernel.exit(1)
+          # rubocop:enable Rails/Exit
         end
-        return [ 200, { "Content-Type" => "text/plain" }, [ "Restarted." ] ]
+        return [200, { "Content-Type" => "text/plain" }, ["Restarted."]]
       elsif request.get?
         html = <<~HTML
           <h1>Confirm Restart</h1>
@@ -44,7 +48,7 @@ class RollbackMiddleware
             <button type="submit">Yes, Restart</button>
           </form>
         HTML
-        return [ 200, { "Content-Type" => "text/html" }, [ html ] ]
+        return [200, { "Content-Type" => "text/html" }, [html]]
       end
     end
 
@@ -55,7 +59,7 @@ class RollbackMiddleware
       html = "<h1>System Down</h1><pre>#{error_message}</pre>"
       html += "<form action='#{ROLLBACK_PATH}' method='post'><button>Force Rollback</button></form>"
 
-      [ 500, { "Content-Type" => "text/html" }, [ html ] ]
+      [500, { "Content-Type" => "text/html" }, [html]]
     end
   end
 end

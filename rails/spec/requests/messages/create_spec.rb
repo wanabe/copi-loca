@@ -1,7 +1,10 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe "POST /sessions/:session_id/messages", type: :request do
   let(:session) { Session.create!(id: SecureRandom.uuid, model: "gpt-4.1") }
+
   before { allow(SendPromptJob).to receive(:perform_later) }
 
   it "creates a message async and redirects" do
@@ -12,7 +15,7 @@ RSpec.describe "POST /sessions/:session_id/messages", type: :request do
   end
 
   it "handles file upload (mocked)" do
-    uploaded = double("uploaded", original_filename: "mock.txt", read: "mockdata")
+    uploaded = instance_double(ActionDispatch::Http::UploadedFile, original_filename: "mock.txt", read: "mockdata")
     allow(uploaded).to receive(:respond_to?).with(:original_filename).and_return(true)
     allow(File).to receive(:open)
     post "/sessions/#{session.id}/messages", params: { file: uploaded, message: { content: "file msg" } }
@@ -21,7 +24,7 @@ RSpec.describe "POST /sessions/:session_id/messages", type: :request do
   end
 
   it "handles camera_file upload (mocked)" do
-    uploaded = double("uploaded", original_filename: "mock.txt", read: "mockdata")
+    uploaded = instance_double(ActionDispatch::Http::UploadedFile, original_filename: "mock.txt", read: "mockdata")
     allow(uploaded).to receive(:respond_to?).with(:original_filename).and_return(true)
     allow(File).to receive(:open)
     post "/sessions/#{session.id}/messages", params: { camera_file: uploaded, message: { content: "cam msg" } }
@@ -48,18 +51,21 @@ RSpec.describe "POST /sessions/:session_id/messages", type: :request do
   end
 
   it "handles display_state params" do
-    post "/sessions/#{session.id}/messages", params: { message: { content: "msg" }, show_messages: "true", show_rpc_messages: "false", show_events: "true" }
+    post "/sessions/#{session.id}/messages",
+      params: { message: { content: "msg" }, show_messages: "true", show_rpc_messages: "false", show_events: "true" }
     expect(response).to redirect_to(action: :index)
     expect(SendPromptJob).to have_received(:perform_later)
   end
 
   it "handles turbo_stream blank content" do
-    post "/sessions/#{session.id}/messages", params: { message: { content: "   " } }, headers: { "Accept" => "text/vnd.turbo-stream.html" }
+    post "/sessions/#{session.id}/messages", params: { message: { content: "   " } },
+      headers: { "Accept" => "text/vnd.turbo-stream.html" }
     expect(response).to have_http_status(:ok)
   end
 
   it "handles turbo_stream normal content" do
-    post "/sessions/#{session.id}/messages", params: { message: { content: "msg" } }, headers: { "Accept" => "text/vnd.turbo-stream.html" }
+    post "/sessions/#{session.id}/messages", params: { message: { content: "msg" } },
+      headers: { "Accept" => "text/vnd.turbo-stream.html" }
     expect(response).to have_http_status(:ok)
     expect(SendPromptJob).to have_received(:perform_later)
   end

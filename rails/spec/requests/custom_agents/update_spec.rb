@@ -1,4 +1,6 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe "PATCH /custom_agents/:id", type: :request do
   let!(:custom_agent) { CustomAgent.create!(name: "Test Agent", description: "A custom agent for testing") }

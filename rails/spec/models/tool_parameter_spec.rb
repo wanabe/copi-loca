@@ -1,4 +1,3 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
-RSpec.describe ToolParameter, type: :model do
-end
+require "rails_helper"

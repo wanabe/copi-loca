@@ -1,4 +1,6 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 describe "GET /", type: :request do
   it "returns 200 and renders the home page" do

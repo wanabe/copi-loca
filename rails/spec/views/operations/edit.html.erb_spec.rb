@@ -1,14 +1,16 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe "operations/edit", type: :view do
-  let(:operation) {
+  let(:operation) do
     Operation.create!(
       command: "MyString",
       directory: "MyString"
     )
-  }
+  end
 
-  before(:each) do
+  before do
     assign(:operation, operation)
   end
 

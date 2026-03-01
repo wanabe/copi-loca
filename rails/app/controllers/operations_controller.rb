@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class OperationsController < ApplicationController
-  before_action :set_operation, only: %i[ show edit update destroy run ]
+  before_action :set_operation, only: %i[show edit update destroy run]
   before_action :add_collection_breadcrumb
-  before_action :add_member_breadcrumb, only: %i[ show edit ]
-  before_action :add_action_breadcrumb, only: %i[ new edit ]
+  before_action :add_member_breadcrumb, only: %i[show edit]
+  before_action :add_action_breadcrumb, only: %i[new edit]
 
   # GET /operations
   def index
@@ -11,9 +13,9 @@ class OperationsController < ApplicationController
 
   # GET /operations/1
   def show
-    if @operation.immediate?
-      @output, @status = @operation.run
-    end
+    return unless @operation.immediate?
+
+    @output, @status = @operation.run
   end
 
   # GET /operations/new
@@ -22,8 +24,7 @@ class OperationsController < ApplicationController
   end
 
   # GET /operations/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /operations
   def create
@@ -61,21 +62,22 @@ class OperationsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_operation
-      @operation = Operation.find(params[:id])
-    end
 
-    def add_collection_breadcrumb
-      add_breadcrumb("Operations", operations_path)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_operation
+    @operation = Operation.find(params[:id])
+  end
 
-    def add_member_breadcrumb
-      add_breadcrumb(@operation.id, operation_path(@operation))
-    end
+  def add_collection_breadcrumb
+    add_breadcrumb("Operations", operations_path)
+  end
 
-    # Only allow a list of trusted parameters through.
-    def operation_params
-      params.require(:operation).permit(:command, :directory, :execution_timing)
-    end
+  def add_member_breadcrumb
+    add_breadcrumb(@operation.id, operation_path(@operation))
+  end
+
+  # Only allow a list of trusted parameters through.
+  def operation_params
+    params.expect(operation: %i[command directory execution_timing])
+  end
 end

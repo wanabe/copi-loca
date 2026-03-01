@@ -1,4 +1,6 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 describe "GET /auth_sessions/new", type: :request do
   it "renders the login form" do

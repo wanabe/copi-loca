@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SendPromptJob < ApplicationJob
   WAIT_INTERVAL = 0.5.seconds
   queue_as :default
@@ -13,7 +15,7 @@ class SendPromptJob < ApplicationJob
 
     if message
       wait_until = Time.current + WAIT_INTERVAL
-      session.wait_until_idle do |rpc_message|
+      session.wait_until_idle do |_rpc_message|
         if Time.current >= wait_until
           broadcast(session, display_state, :running)
           wait_until = Time.current + WAIT_INTERVAL
@@ -27,7 +29,7 @@ class SendPromptJob < ApplicationJob
     file_paths&.each do |shared_path|
       if shared_path.start_with?("/shared-tmp/")
         tmp_path = Rails.root.join("tmp", File.basename(shared_path))
-        File.delete(tmp_path) if File.exist?(tmp_path)
+        FileUtils.rm_f(tmp_path)
       end
     end
     session&.close_session
@@ -37,10 +39,10 @@ class SendPromptJob < ApplicationJob
 
   def broadcast(session, display_state, job_status)
     Turbo::StreamsChannel.broadcast_replace_to(
-      [ session, :stream ],
+      [session, :stream],
       target: "session-stream",
       partial: "sessions/session",
-      locals: {  session: session, display_state: display_state, job_status: job_status }
+      locals: { session: session, display_state: display_state, job_status: job_status }
     )
   end
 end

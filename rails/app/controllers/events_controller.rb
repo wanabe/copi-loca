@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 class EventsController < ApplicationController
   include SessionRelated
 
   before_action :set_session
-  before_action :set_event, only: %i[ show ]
+  before_action :set_event, only: %i[show]
   before_action :add_sessions_breadcrumb
   before_action :add_session_breadcrumb
   before_action :add_events_breadcrumb
-  before_action :add_event_breadcrumb, only: %i[ show ]
+  before_action :add_event_breadcrumb, only: %i[show]
 
   # GET /events
   def index
@@ -18,20 +20,20 @@ class EventsController < ApplicationController
   end
 
   # GET /events/1
-  def show
-  end
+  def show; end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_event
-      @event = Event.find(params[:id])
-    end
 
-    def add_events_breadcrumb
-      add_breadcrumb("Events", session_events_path(@session))
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_event
+    @event = Event.find(params[:id])
+  end
 
-    def add_event_breadcrumb
-      add_breadcrumb(@event.id, session_event_path(@session, @event))
-    end
+  def add_events_breadcrumb
+    add_breadcrumb("Events", session_events_path(@session))
+  end
+
+  def add_event_breadcrumb
+    add_breadcrumb(@event.id, session_event_path(@session, @event))
+  end
 end

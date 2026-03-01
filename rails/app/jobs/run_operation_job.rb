@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 class RunOperationJob < ApplicationJob
   RENDER_INTERVAL = 0.5.seconds
@@ -7,7 +8,7 @@ class RunOperationJob < ApplicationJob
 
   def perform(operation_id)
     operation = Operation.find(operation_id)
-    output = ""
+    output = +""
     @render_at = Time.current
     status = operation.run do |reader|
       loop do
@@ -27,13 +28,14 @@ class RunOperationJob < ApplicationJob
 
   def broadcast(operation, output, status)
     return if Time.current < @render_at
+
     @render_at = Time.current + RENDER_INTERVAL
     output = output.encode("UTF-8", invalid: :replace, undef: :replace, replace: "")
     Turbo::StreamsChannel.broadcast_replace_to(
       operation,
       target: "operation-result",
       partial: "operations/run",
-      locals: {  operation: operation, output: output, status: status }
+      locals: { operation: operation, output: output, status: status }
     )
   end
 end

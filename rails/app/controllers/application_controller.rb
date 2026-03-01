@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   before_action :add_home_breadcrumb
   helper_method :breadcrumbs
@@ -21,13 +23,15 @@ class ApplicationController < ActionController::Base
   skip_before_action :authenticate, if: -> { request.format.turbo_stream? }
 
   private
-    def authenticate
-      return if ENV["COPI_ADMIN_PASSWORD"].blank?
-      return if session[:admin]
-      redirect_to new_auth_session_path, alert: "Please log in."
-    end
 
-    def add_action_breadcrumb
-      add_breadcrumb(action_name)
-    end
+  def authenticate
+    return if ENV["COPI_ADMIN_PASSWORD"].blank?
+    return if session[:admin]
+
+    redirect_to new_auth_session_path, alert: "Please log in."
+  end
+
+  def add_action_breadcrumb
+    add_breadcrumb(action_name)
+  end
 end

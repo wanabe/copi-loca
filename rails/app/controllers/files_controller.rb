@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class FilesController < ApplicationController
-  before_action :set_path, only: [ :show ]
+  before_action :set_path, only: [:show]
 
   before_action :add_files_breadcrumb
-  before_action :add_filepath_breadcrumb, only: [ :show ]
+  before_action :add_filepath_breadcrumb, only: [:show]
 
   def index
     files = Repository.ls_files
@@ -15,12 +17,11 @@ class FilesController < ApplicationController
       render plain: "Invalid path", status: :bad_request
       return
     end
-    if File.file?(abs_path)
-      @language = abs_path[/\.(\w+)$/, 1] || "txt"
-      @content = File.read(abs_path)
-    else
-      return render plain: "File not found", status: :not_found
-    end
+    return render plain: "File not found", status: :not_found unless File.file?(abs_path)
+
+    @language = abs_path[/\.(\w+)$/, 1] || "txt"
+    @content = File.read(abs_path)
+
     render :show
   end
 

@@ -1,8 +1,9 @@
-class AuthSessionsController < ApplicationController
-  skip_before_action :authenticate, only: [ :new, :create ]
+# frozen_string_literal: true
 
-  def new
-  end
+class AuthSessionsController < ApplicationController
+  skip_before_action :authenticate, only: %i[new create]
+
+  def new; end
 
   def create
     if params[:password] == ENV["COPI_ADMIN_PASSWORD"]

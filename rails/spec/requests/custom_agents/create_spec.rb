@@ -1,4 +1,6 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe "POST /custom_agents", type: :request do
   let(:valid_attributes) { { name: "Test Agent", description: "A custom agent for testing" } }
@@ -6,9 +8,9 @@ RSpec.describe "POST /custom_agents", type: :request do
 
   context "with valid parameters" do
     it "creates a new CustomAgent" do
-      expect {
+      expect do
         post custom_agents_url, params: { custom_agent: valid_attributes }
-      }.to change(CustomAgent, :count).by(1)
+      end.to change(CustomAgent, :count).by(1)
     end
 
     it "redirects to the created custom_agent" do
@@ -19,9 +21,9 @@ RSpec.describe "POST /custom_agents", type: :request do
 
   context "with invalid parameters" do
     it "does not create a new CustomAgent" do
-      expect {
+      expect do
         post custom_agents_url, params: { custom_agent: invalid_attributes }
-      }.to change(CustomAgent, :count).by(0)
+      end.not_to change(CustomAgent, :count)
     end
 
     it "renders a response with 422 status (i.e. to display the 'new' template)" do

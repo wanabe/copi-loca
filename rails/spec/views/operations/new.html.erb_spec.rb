@@ -1,7 +1,9 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe "operations/new", type: :view do
-  before(:each) do
+  before do
     assign(:operation, Operation.new(
       command: "MyString",
       directory: "MyString"

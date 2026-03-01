@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Copilot
   class Session
     attr_reader :session_id, :turn_id
@@ -5,7 +7,7 @@ module Copilot
     def initialize(client, session_id: nil, tools: [], **params)
       @client = client
       @tool_handlers = tools.to_h do |tool|
-        [ tool[:name].to_sym, tool[:handler] ]
+        [tool[:name].to_sym, tool[:handler]]
       end
       tools = tools.map do |tool|
         {
@@ -28,6 +30,7 @@ module Copilot
       @turn_id = nil
       @event_handlers = {}
       return unless block_given?
+
       begin
         yield self
       ensure
@@ -41,6 +44,7 @@ module Copilot
 
     def destroy
       return unless @client.sessions[@session_id]
+
       await call("session.destroy")
       @client.logger&.info("Destroyed session #{@session_id}")
       @client.sessions.delete(@session_id)
@@ -56,9 +60,7 @@ module Copilot
       @client.call(method, params_with_session)
     end
 
-    def await(id)
-      @client.await(id)
-    end
+    delegate :await, to: :@client
 
     def handle(id, method, params)
       case method
@@ -97,7 +99,7 @@ module Copilot
     def handle_tool_call(id, name, handler, arguments)
       unless handler
         @client.logger&.warn("No handler for tool: #{name}")
-        @client.respond(id, error: { code: -32000, message: "Tool '#{name}' not found in this session" })
+        @client.respond(id, error: { code: -32_000, message: "Tool '#{name}' not found in this session" })
         return
       end
       result = call_tool_handler(handler, arguments)
@@ -110,9 +112,7 @@ module Copilot
         result = raw_result[:result] || raw_result["result"]
         if result.is_a?(Hash)
           keys = (result.keys.map(&:to_sym) - %i[error toolTelemetry]).sort
-          if keys == %i[resultType textResultForLlm]
-            return raw_result
-          end
+          return raw_result if keys == %i[resultType textResultForLlm]
         end
       end
 
@@ -123,7 +123,7 @@ module Copilot
           toolTelemetry: {}
         }
       }
-    rescue => e
+    rescue StandardError => e
       @client.logger&.warn("Error in tool handler: #{e.message}")
       {
         result: {

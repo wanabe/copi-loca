@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Copilot
   class Client
     class << self
@@ -5,9 +7,7 @@ module Copilot
         @cache ||= {}
         client = @cache[cli_url]
         return client unless client.nil?
-        if cli_url.nil?
-          raise "No default CLI URL configured"
-        end
+        raise "No default CLI URL configured" if cli_url.nil?
 
         client = Client.new(cli_url: cli_url).tap(&:start)
         @cache[nil] ||= client
@@ -24,7 +24,7 @@ module Copilot
 
     attr_reader :logger, :sessions, :messages
 
-    def initialize(cli_url:, logger: nil, &block)
+    def initialize(cli_url:, logger: nil, &)
       @cli_url = cli_url
       @sessions = {}
       @messages = {}
@@ -32,7 +32,7 @@ module Copilot
       @logger = logger
       return unless block_given?
 
-      start(&block)
+      start(&)
     end
 
     def last_session
@@ -53,13 +53,13 @@ module Copilot
     end
 
     def stop
-      if io
-        unless io.closed?
-          io.close
-          logger&.info("Disconnected from Copilot CLI at #{@cli_url}")
-        end
-        io = nil
+      return unless io
+
+      unless io.closed?
+        io.close
+        logger&.info("Disconnected from Copilot CLI at #{@cli_url}")
       end
+      nil
     end
 
     def call(method, params = {})
@@ -86,9 +86,8 @@ module Copilot
       wait { messages[id] }
       message = messages.delete(id)
       error = message[:error]
-      if error
-        raise error.inspect
-      end
+      raise error.inspect if error
+
       message[:result]
     end
 
@@ -122,18 +121,19 @@ module Copilot
     end
 
     def wait(timeout: nil)
-      timeout_at = Time.now + timeout if timeout
+      timeout_at = Time.zone.now + timeout if timeout
       loop do
-        rest = timeout_at&.-(Time.now)
+        rest = timeout_at&.-(Time.zone.now)
         return if rest && rest <= 0
+
         message = pop(timeout: rest)
         return unless message
         return message if yield(message)
       end
     end
 
-    def create_session(params = {}, &block)
-      Session.new(self, **params, &block)
+    def create_session(params = {}, &)
+      Session.new(self, **params, &)
     end
 
     def on_send(&block)

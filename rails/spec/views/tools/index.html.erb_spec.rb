@@ -1,7 +1,9 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe "tools/index", type: :view do
-  before(:each) do
+  before do
     assign(:tools, [
       Tool.create!(
         name: "Name",
@@ -18,8 +20,8 @@ RSpec.describe "tools/index", type: :view do
 
   it "renders a list of tools" do
     render
-    cell_selector = 'div#tools>div'
-    assert_select cell_selector, text: Regexp.new("Description".to_s), count: 2
-    assert_select cell_selector, text: Regexp.new("MyText".to_s), count: 2
+    cell_selector = "div#tools>div"
+    assert_select cell_selector, text: Regexp.new("Description"), count: 2
+    assert_select cell_selector, text: Regexp.new("MyText"), count: 2
   end
 end

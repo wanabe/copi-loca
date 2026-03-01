@@ -1,4 +1,6 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 describe "POST /changes/unstage", type: :request do
   it "redirects to uncommitted_changes_path after unstaging" do

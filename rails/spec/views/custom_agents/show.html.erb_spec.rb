@@ -1,7 +1,9 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe "custom_agents/show", type: :view do
-  before(:each) do
+  before do
     assign(:custom_agent, CustomAgent.create!(
       name: "Name",
       display_name: "Display Name",

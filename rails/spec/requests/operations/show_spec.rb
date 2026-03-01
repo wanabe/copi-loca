@@ -1,4 +1,6 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe "GET /operations/:id", type: :request do
   let!(:operation) { Operation.create!(command: "echo hello", directory: "/tmp", execution_timing: :manual) }
@@ -16,7 +18,7 @@ RSpec.describe "GET /operations/:id", type: :request do
 
     before do
       allow(Operation).to receive(:find).and_return(operation)
-      allow(operation).to receive(:run).and_return([ "foo.rb\nbar.rb\n", 0 ])
+      allow(operation).to receive(:run).and_return(["foo.rb\nbar.rb\n", 0])
     end
 
     it "renders a successful response with command result" do

@@ -1,15 +1,17 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe "tools/edit", type: :view do
-  let(:tool) {
+  let(:tool) do
     Tool.create!(
       name: "MyString",
       description: "MyString",
       script: "MyText"
     )
-  }
+  end
 
-  before(:each) do
+  before do
     assign(:tool, tool)
   end
 

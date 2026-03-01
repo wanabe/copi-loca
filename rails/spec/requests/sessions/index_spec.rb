@@ -1,4 +1,6 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe "GET /sessions", type: :request do
   let!(:session) { Session.create!(id: SecureRandom.uuid, model: "gpt-4.1") }

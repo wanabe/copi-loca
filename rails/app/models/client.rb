@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Client
   include ActiveModel::Model
 
@@ -14,7 +16,7 @@ class Client
   attr_reader :copilot_client
 
   def initialize
-    super()
+    super
     @copilot_client = Copilot::Client.cache(cli_url: CLI_URL)
     @waiting_map = {}
     @last_rpc_message = nil
@@ -27,7 +29,7 @@ class Client
         @waiting_map[rpc_id] = session if rpc_id
         @last_rpc_message = session.handle(:outgoing, rpc_id, data)
       end
-      Rails.logger.debug("Sent data: #{data}")
+      Rails.logger.debug { "Sent data: #{data}" }
     end
 
     @copilot_client.on_receive do |data|
@@ -35,10 +37,8 @@ class Client
       session = Session.find_by(id: session_id) if session_id
       rpc_id = data[:id]
       session ||= @waiting_map.delete(rpc_id) if rpc_id
-      if session
-        @last_rpc_message = session.handle(:incoming, rpc_id, data)
-      end
-      Rails.logger.debug("Received data: #{data}")
+      @last_rpc_message = session.handle(:incoming, rpc_id, data) if session
+      Rails.logger.debug { "Received data: #{data}" }
     end
   end
 
@@ -55,8 +55,9 @@ class Client
 
   def available_models
     return @available_models if @available_models
+
     models = copilot_client.await(copilot_client.call("models.list"))[:models]
-    @available_models = models.sort_by { |model| [ model.dig(:billing, :multiplier), model[:id] ] }
+    @available_models = models.sort_by { |model| [model.dig(:billing, :multiplier), model[:id]] }
   end
 
   def wait

@@ -1,7 +1,9 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe "custom_agents/new", type: :view do
-  before(:each) do
+  before do
     assign(:custom_agent, CustomAgent.new(
       name: "MyString",
       display_name: "MyString",

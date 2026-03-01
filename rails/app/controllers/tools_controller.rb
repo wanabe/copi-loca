@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class ToolsController < ApplicationController
-  before_action :set_tool, only: %i[ show edit update destroy ]
+  before_action :set_tool, only: %i[show edit update destroy]
   before_action :add_collection_breadcrumb
-  before_action :add_member_breadcrumb, only: %i[ show edit ]
-  before_action :add_action_breadcrumb, only: %i[ new edit ]
+  before_action :add_member_breadcrumb, only: %i[show edit]
+  before_action :add_action_breadcrumb, only: %i[new edit]
 
   # GET /tools
   def index
@@ -10,8 +12,7 @@ class ToolsController < ApplicationController
   end
 
   # GET /tools/1
-  def show
-  end
+  def show; end
 
   # GET /tools/new
   def new
@@ -19,8 +20,7 @@ class ToolsController < ApplicationController
   end
 
   # GET /tools/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /tools
   def create
@@ -49,21 +49,23 @@ class ToolsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_tool
-      @tool = Tool.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def tool_params
-      params.require(:tool).permit(:name, :description, :script, tool_parameters_attributes: [ :id, :name, :description, :_destroy ])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_tool
+    @tool = Tool.find(params.expect(:id))
+  end
 
-    def add_collection_breadcrumb
-      add_breadcrumb("Tools", tools_path)
-    end
+  # Only allow a list of trusted parameters through.
+  def tool_params
+    params.expect(tool: [:name, :description, :script,
+                         { tool_parameters_attributes: %i[id name description _destroy] }])
+  end
 
-    def add_member_breadcrumb
-      add_breadcrumb(@tool.id, tool_path(@tool))
-    end
+  def add_collection_breadcrumb
+    add_breadcrumb("Tools", tools_path)
+  end
+
+  def add_member_breadcrumb
+    add_breadcrumb(@tool.id, tool_path(@tool))
+  end
 end

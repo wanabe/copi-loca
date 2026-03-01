@@ -1,10 +1,13 @@
+# frozen_string_literal: true
+
 class SessionsController < ApplicationController
   include SessionRelated
-  before_action :set_session, only: %i[ show update edit destroy ]
+
+  before_action :set_session, only: %i[show update edit destroy]
 
   before_action :add_sessions_breadcrumb
-  before_action :add_session_breadcrumb, only: %i[ show edit ]
-  before_action :add_action_breadcrumb, only: %i[ new edit ]
+  before_action :add_session_breadcrumb, only: %i[show edit]
+  before_action :add_action_breadcrumb, only: %i[new edit]
 
   # GET /sessions
   def index
@@ -14,9 +17,9 @@ class SessionsController < ApplicationController
   # GET /sessions/1
   def show
     @display_state = {
-      show_messages: params[:show_messages].presence_in(%w[ open true false ]) || "open",
-      show_rpc_messages: params[:show_rpc_messages].presence_in(%w[ true false ]) || "true",
-      show_events: params[:show_events].presence_in(%w[ true false ]) || "true"
+      show_messages: params[:show_messages].presence_in(%w[open true false]) || "open",
+      show_rpc_messages: params[:show_rpc_messages].presence_in(%w[true false]) || "true",
+      show_events: params[:show_events].presence_in(%w[true false]) || "true"
     }
   end
 
@@ -30,7 +33,7 @@ class SessionsController < ApplicationController
 
   # GET /sessions/1/edit
   def edit
-    @models = [ @session.model ]
+    @models = [@session.model]
     @custom_agents = CustomAgent.all
     @tools = Tool.all
   end
@@ -54,7 +57,7 @@ class SessionsController < ApplicationController
     if @session.update(session_params)
       redirect_to @session, notice: "Session was successfully updated.", status: :see_other
     else
-      @models = [ @session.model ]
+      @models = [@session.model]
       @custom_agents = CustomAgent.all
       @tools = Tool.all
       render :edit, status: :unprocessable_content, alert: @session.errors.full_messages.to_sentence
@@ -68,26 +71,27 @@ class SessionsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def session_id_param
-     params.require(:id)
-    end
 
-    # Only allow a list of trusted parameters through.
-    def session_params
-      params.fetch(:session, {}).permit(
-        :model,
-        :skill_directory_pattern,
-        :system_message_mode,
-        :system_message,
-        custom_agent_ids: [],
-        tool_ids: [],
-      )
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def session_id_param
+    params.require(:id)
+  end
 
-    def available_models
-      Client.available_models.map do |model|
-        [ "#{model[:id]} (x#{model.dig(:billing, :multiplier)})", model[:id] ]
-      end
+  # Only allow a list of trusted parameters through.
+  def session_params
+    params.fetch(:session, {}).permit(
+      :model,
+      :skill_directory_pattern,
+      :system_message_mode,
+      :system_message,
+      custom_agent_ids: [],
+      tool_ids: []
+    )
+  end
+
+  def available_models
+    Client.available_models.map do |model|
+      ["#{model[:id]} (x#{model.dig(:billing, :multiplier)})", model[:id]]
     end
+  end
 end

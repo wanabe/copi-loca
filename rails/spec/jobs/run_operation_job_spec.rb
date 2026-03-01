@@ -1,7 +1,9 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe RunOperationJob, type: :job do
-  let(:operation) { Operation.create!(command: 'echo hello', directory: '/tmp', execution_timing: :background) }
+  let(:operation) { Operation.create!(command: "echo hello", directory: "/tmp", execution_timing: :background) }
 
   before do
     allow(Operation).to receive(:find).with(operation.id).and_return(operation)
@@ -13,9 +15,9 @@ RSpec.describe RunOperationJob, type: :job do
     allow(Turbo::StreamsChannel).to receive(:broadcast_replace_to)
   end
 
-  describe '#perform' do
-    context 'when operation runs and yields output' do
-      it 'broadcasts output and status' do
+  describe "#perform" do
+    context "when operation runs and yields output" do
+      it "broadcasts output and status" do
         allow(operation).to receive(:run) do |&block|
           block.call(StringIO.new("hello\n"))
           0

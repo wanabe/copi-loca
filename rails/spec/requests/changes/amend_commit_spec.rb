@@ -1,4 +1,6 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 describe "POST /changes/amend_commit", type: :request do
   it "redirects to uncommitted_changes_path after amend_commit" do

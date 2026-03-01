@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MessagesController < ApplicationController
   include SessionRelated
 
@@ -20,8 +22,9 @@ class MessagesController < ApplicationController
     if params[:file].present?
       Array(params[:file]).each do |uploaded|
         next unless uploaded.respond_to?(:original_filename)
+
         tmp_path = Rails.root.join("tmp", "upload_#{SecureRandom.hex}_#{uploaded.original_filename}")
-        File.open(tmp_path, "wb") { |f| f.write(uploaded.read) }
+        File.binwrite(tmp_path, uploaded.read)
         # Convert to copilot container path
         shared_paths << File.join("/shared-tmp", File.basename(tmp_path))
       end
@@ -29,8 +32,9 @@ class MessagesController < ApplicationController
     if params[:camera_file].present?
       Array(params[:camera_file]).each do |uploaded|
         next unless uploaded.respond_to?(:original_filename)
+
         tmp_path = Rails.root.join("tmp", "upload_#{SecureRandom.hex}_#{uploaded.original_filename}")
-        File.open(tmp_path, "wb") { |f| f.write(uploaded.read) }
+        File.binwrite(tmp_path, uploaded.read)
         shared_paths << File.join("/shared-tmp", File.basename(tmp_path))
       end
     end
@@ -39,9 +43,7 @@ class MessagesController < ApplicationController
     custom_agent_id = params[:custom_agent_id].to_s.strip
     if custom_agent_id.present?
       agent = @session.custom_agents.find_by(id: custom_agent_id)
-      if agent
-        content = "#{content} @#{agent.name}"
-      end
+      content = "#{content} @#{agent.name}" if agent
     end
     if content.blank?
       respond_to do |format|
@@ -83,16 +85,16 @@ class MessagesController < ApplicationController
 
   private
 
-    def set_session
-      @session = Session.find(params.expect(:session_id))
-    end
+  def set_session
+    @session = Session.find(params.expect(:session_id))
+  end
 
-    # Only allow a list of trusted parameters through.
-    def message_params
-      params.expect(message: [ :content ])
-    end
+  # Only allow a list of trusted parameters through.
+  def message_params
+    params.expect(message: [:content])
+  end
 
-    def add_messages_breadcrumb
-      add_breadcrumb("Messages", session_messages_path(@session))
-    end
+  def add_messages_breadcrumb
+    add_breadcrumb("Messages", session_messages_path(@session))
+  end
 end

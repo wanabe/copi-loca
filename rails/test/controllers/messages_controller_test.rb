@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class MessagesControllerTest < ActionDispatch::IntegrationTest
@@ -17,7 +19,9 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create message" do
     assert_difference("Message.count") do
-      post messages_url, params: { message: { content: @message.content, direction: @message.direction, rpc_log_id: @message.rpc_log_id, session_id: @message.session_id } }
+      post messages_url,
+        params: { message: { content: @message.content, direction: @message.direction, rpc_log_id: @message.rpc_log_id,
+                             session_id: @message.session_id } }
     end
 
     assert_redirected_to message_url(Message.last)
@@ -34,7 +38,9 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update message" do
-    patch message_url(@message), params: { message: { content: @message.content, direction: @message.direction, rpc_log_id: @message.rpc_log_id, session_id: @message.session_id } }
+    patch message_url(@message),
+      params: { message: { content: @message.content, direction: @message.direction, rpc_log_id: @message.rpc_log_id,
+                           session_id: @message.session_id } }
     assert_redirected_to message_url(@message)
   end
 

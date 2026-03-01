@@ -1,7 +1,9 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe "operations/index", type: :view do
-  before(:each) do
+  before do
     assign(:operations, [
       Operation.create!(
         command: "Command",
@@ -16,7 +18,7 @@ RSpec.describe "operations/index", type: :view do
 
   it "renders a list of operations" do
     render
-    cell_selector = 'div > strong'
+    cell_selector = "div > strong"
     assert_select cell_selector, text: /Command:/, count: 2
     assert_select cell_selector, text: /Directory:/, count: 2
   end

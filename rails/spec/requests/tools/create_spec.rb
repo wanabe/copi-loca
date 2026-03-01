@@ -1,4 +1,6 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe "POST /tools", type: :request do
   let(:valid_attributes) { { name: "Test Tool", description: "A tool for testing", parameters: "{}" } }
@@ -6,9 +8,9 @@ RSpec.describe "POST /tools", type: :request do
 
   context "with valid parameters" do
     it "creates a new Tool" do
-      expect {
+      expect do
         post tools_url, params: { tool: valid_attributes }
-      }.to change(Tool, :count).by(1)
+      end.to change(Tool, :count).by(1)
     end
 
     it "redirects to the created tool" do
@@ -19,9 +21,9 @@ RSpec.describe "POST /tools", type: :request do
 
   context "with invalid parameters" do
     it "does not create a new Tool" do
-      expect {
+      expect do
         post tools_url, params: { tool: invalid_attributes }
-      }.to change(Tool, :count).by(0)
+      end.not_to change(Tool, :count)
     end
 
     it "renders a response with 422 status (i.e. to display the 'new' template)" do

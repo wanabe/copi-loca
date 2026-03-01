@@ -1,20 +1,21 @@
+# frozen_string_literal: true
+
 class ChangesController < ApplicationController
-  before_action :set_id, only: [ :show ]
+  before_action :set_id, only: [:show]
 
   before_action :add_changes_breadcrumb
-  before_action :add_change_breadcrumb, only: [ :show ]
-  before_action :add_action_breadcrumb, only: [ :uncommitted, :amend ]
+  before_action :add_change_breadcrumb, only: [:show]
+  before_action :add_action_breadcrumb, only: %i[uncommitted amend]
 
   def index
-    uncommitted = [ { hash: "uncommitted", author: "", message: "" } ]
+    uncommitted = [{ hash: "uncommitted", author: "", message: "" }]
     all_commits = uncommitted + Repository.log(10_000)
     @commits = Kaminari.paginate_array(all_commits).page(params[:page]).per(10)
     @current_branch = Repository.current_branch
     @rebase_status = Repository.rebase_status
   end
 
-  def revert
-  end
+  def revert; end
 
   def execute_revert
     client = Client.instance.copilot_client
@@ -44,17 +45,15 @@ class ChangesController < ApplicationController
     @file_diffs = Repository.tracked_diffs(@id)
     @commit_message = Repository.commit_message(@id)
     @commit_info = Repository.commit_info(@id)
-    @file_paths = @file_diffs.map { |fd| fd[0] }
-    if params[:file_path]
-      @selected_file_path = params[:file_path]
-      @file_diff = @file_diffs.find { |fd| fd[0] == params[:file_path] }
-    end
+    @file_paths = @file_diffs.pluck(0)
+    return unless params[:file_path]
+
+    @selected_file_path = params[:file_path]
+    @file_diff = @file_diffs.find { |fd| fd[0] == params[:file_path] }
   end
 
   def stage
-    if params[:file_path].present?
-      Repository.stage_file(params[:file_path])
-    end
+    Repository.stage_file(params[:file_path]) if params[:file_path].present?
     if params[:amend]
       redirect_to amend_changes_path(staged_file_path: params[:file_path])
     else
@@ -78,9 +77,7 @@ class ChangesController < ApplicationController
   end
 
   def commit
-    if params[:commit_message].present?
-      Repository.commit(params[:commit_message])
-    end
+    Repository.commit(params[:commit_message]) if params[:commit_message].present?
     redirect_to uncommitted_changes_path
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Session < ApplicationRecord
   enum :system_message_mode, { default: 0, replace: 1, append: 2 }, prefix: true
 
@@ -20,9 +22,8 @@ class Session < ApplicationRecord
   def send_prompt(prompt, attachments: nil)
     rpc_id = copilot_session.send(prompt, attachments: attachments)
     rpc_message = rpc_messages.find_by(rpc_id: rpc_id)
-    unless rpc_message
-      raise "RPC message not found for sent prompt with RPC ID: #{rpc_id}"
-    end
+    raise "RPC message not found for sent prompt with RPC ID: #{rpc_id}" unless rpc_message
+
     messages.create!(
       rpc_message: rpc_message,
       direction: :outgoing,
@@ -55,6 +56,7 @@ class Session < ApplicationRecord
 
   def close_session
     return unless @copilot_session
+
     @copilot_session.destroy
     @copilot_session = nil
   end
@@ -70,11 +72,10 @@ class Session < ApplicationRecord
       system_messages = []
       if File.exist?("/app/AGENTS.md")
         agents = File.read("/app/AGENTS.md")
-        system_messages << "<attachments path=\"/app/AGENTS.md\">\n#{agents}\n</attachments>\nYou must follow the instructions in the AGENTS.md in any actions you take."
+        system_messages << "<attachments path=\"/app/AGENTS.md\">\n#{agents}\n</attachments>\n"
+        system_messages << "You must follow the instructions in the AGENTS.md in any actions you take."
       end
-      if system_message_mode_append? && system_message.present?
-        system_messages << system_message
-      end
+      system_messages << system_message if system_message_mode_append? && system_message.present?
 
       if system_messages.any?
         options[:systemMessage] = {
@@ -95,7 +96,7 @@ class Session < ApplicationRecord
     end
     if skill_directory_pattern.present?
       pattern = skill_directory_pattern
-      directories = Dir.glob("#{pattern}/SKILL.md").map { File.dirname(_1) }
+      directories = Dir.glob("#{pattern}/SKILL.md").map { File.dirname(it) }
       options[:skillDirectories] = directories if directories.any?
     end
     if tools.any?
@@ -124,13 +125,14 @@ class Session < ApplicationRecord
   end
 
   private
-    def create_session
-      @copilot_session = Client.create_session(self)
-    end
 
+  def create_session
+    @copilot_session = Client.create_session(self)
+  end
 
-    def copilot_session
-      return @copilot_session if @copilot_session
-      @copilot_session = Client.resume_session(self)
-    end
+  def copilot_session
+    return @copilot_session if @copilot_session
+
+    @copilot_session = Client.resume_session(self)
+  end
 end

@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 class RpcMessagesController < ApplicationController
   include SessionRelated
 
   before_action :set_session
-  before_action :set_rpc_message, only: %i[ show ]
+  before_action :set_rpc_message, only: %i[show]
 
   before_action :add_sessions_breadcrumb
   before_action :add_session_breadcrumb
   before_action :add_rpc_messages_breadcrumb
-  before_action :add_rpc_message_breadcrumb, only: %i[ show ]
+  before_action :add_rpc_message_breadcrumb, only: %i[show]
 
   # GET /rpc_messages
   def index
@@ -25,21 +27,22 @@ class RpcMessagesController < ApplicationController
 
   # GET /rpc_messages/1
   def show
-    @prev_rpc_message = @session.rpc_messages.where("id < ?", @rpc_message.id).order(id: :desc).first
+    @prev_rpc_message = @session.rpc_messages.where(id: ...@rpc_message.id).order(id: :desc).first
     @next_rpc_message = @session.rpc_messages.where("id > ?", @rpc_message.id).order(id: :asc).first
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_rpc_message
-      @rpc_message = @session.rpc_messages.find(params[:id])
-    end
 
-    def add_rpc_messages_breadcrumb
-      add_breadcrumb("RPC Messages", session_rpc_messages_path(@session))
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_rpc_message
+    @rpc_message = @session.rpc_messages.find(params[:id])
+  end
 
-    def add_rpc_message_breadcrumb
-      add_breadcrumb(@rpc_message.id, session_rpc_message_path(@session, @rpc_message))
-    end
+  def add_rpc_messages_breadcrumb
+    add_breadcrumb("RPC Messages", session_rpc_messages_path(@session))
+  end
+
+  def add_rpc_message_breadcrumb
+    add_breadcrumb(@rpc_message.id, session_rpc_message_path(@session, @rpc_message))
+  end
 end

@@ -1,4 +1,6 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe "POST /operations", type: :request do
   let(:valid_attributes) { { command: "echo hello", directory: "/tmp", execution_timing: :manual } }
@@ -6,9 +8,9 @@ RSpec.describe "POST /operations", type: :request do
 
   context "with valid parameters" do
     it "creates a new Operation" do
-      expect {
+      expect do
         post operations_url, params: { operation: valid_attributes }
-      }.to change(Operation, :count).by(1)
+      end.to change(Operation, :count).by(1)
     end
 
     it "redirects to the created operation" do
@@ -19,9 +21,9 @@ RSpec.describe "POST /operations", type: :request do
 
   context "with invalid parameters" do
     it "does not create a new Operation" do
-      expect {
+      expect do
         post operations_url, params: { operation: invalid_attributes }
-      }.to change(Operation, :count).by(0)
+      end.not_to change(Operation, :count)
     end
 
     it "renders a response with 422 status (i.e. to display the 'new' template)" do

@@ -1,4 +1,6 @@
-task :check_command do |task, args|
+# frozen_string_literal: true
+
+task check_command: :environment do |_task, args|
   command, message, alt_command = args.to_a
   puts "Running: #{command}"
   unless system(command)
@@ -8,16 +10,22 @@ task :check_command do |task, args|
   end
 end
 
-task :check do
+task check: :environment do
   repo_dir = Rails.root.join("..").expand_path
   Dir.chdir(repo_dir) do
-    Rake::Task["check_command"].execute([ "! git grep --no-index -I '[^ -~]' -- $( git ls-files --others --exclude-standard; git ls-files )", "Non-ASCII characters found." ])
+    Rake::Task["check_command"].execute([
+      "! git grep --no-index -I '[^ -~]' -- $( git ls-files --others --exclude-standard; git ls-files )",
+      "Non-ASCII characters found."
+    ])
   end
 
   rails_dir = Rails.root
   Dir.chdir(rails_dir) do
-    Rake::Task["check_command"].execute([ "bundle exec rubocop -A --fail-level=A", "RuboCop found issues." ])
-    Rake::Task["check_command"].execute([ "bundle exec rspec", "RSpec tests failed." ])
-    Rake::Task["check_command"].execute([ "bundle exec erb_lint --fail-level=I app/**/*.{html,text,js}{+*,}.erb", "ERB Lint found issues.", "bundle exec erb_lint -a app/**/*.{html,text,js}{+*,}.erb" ])
+    Rake::Task["check_command"].execute(["bundle exec rubocop -A --fail-level=A", "RuboCop found issues."])
+    Rake::Task["check_command"].execute(["bundle exec rspec", "RSpec tests failed."])
+    Rake::Task["check_command"].execute([
+      "bundle exec erb_lint --fail-level=I app/**/*.{html,text,js}{+*,}.erb",
+      "ERB Lint found issues.", "bundle exec erb_lint -a app/**/*.{html,text,js}{+*,}.erb"
+    ])
   end
 end

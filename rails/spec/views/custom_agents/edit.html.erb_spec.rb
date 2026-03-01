@@ -1,16 +1,18 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe "custom_agents/edit", type: :view do
-  let(:custom_agent) {
+  let(:custom_agent) do
     CustomAgent.create!(
       name: "MyString",
       display_name: "MyString",
       description: "MyText",
       prompt: "MyText"
     )
-  }
+  end
 
-  before(:each) do
+  before do
     assign(:custom_agent, custom_agent)
   end
 

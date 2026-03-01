@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Message < ApplicationRecord
   belongs_to :session, optional: false
   belongs_to :rpc_message, optional: false

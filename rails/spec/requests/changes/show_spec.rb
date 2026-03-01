@@ -1,4 +1,6 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 describe "GET /changes/:id", type: :request do
   it "returns 200 and renders the show page for a real commit" do

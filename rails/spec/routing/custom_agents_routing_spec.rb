@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
 RSpec.describe CustomAgentsController, type: :routing do
@@ -17,7 +19,6 @@ RSpec.describe CustomAgentsController, type: :routing do
     it "routes to #edit" do
       expect(get: "/custom_agents/1/edit").to route_to("custom_agents#edit", id: "1")
     end
-
 
     it "routes to #create" do
       expect(post: "/custom_agents").to route_to("custom_agents#create")

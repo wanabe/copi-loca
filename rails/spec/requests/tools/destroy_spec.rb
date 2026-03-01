@@ -1,12 +1,14 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe "DELETE /tools/:id", type: :request do
   let!(:tool) { Tool.create!(name: "Test Tool", description: "A tool for testing") }
 
   it "destroys the requested tool" do
-    expect {
+    expect do
       delete tool_url(tool)
-    }.to change(Tool, :count).by(-1)
+    end.to change(Tool, :count).by(-1)
   end
 
   it "redirects to the tools list" do

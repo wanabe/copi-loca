@@ -1,7 +1,9 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe "tools/show", type: :view do
-  before(:each) do
+  before do
     assign(:tool, Tool.create!(
       name: "Tool Name",
       description: "Description",

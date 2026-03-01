@@ -1,4 +1,6 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe "GET /tools", type: :request do
   let!(:tool) { Tool.create!(name: "Test Tool", description: "A tool for testing") }

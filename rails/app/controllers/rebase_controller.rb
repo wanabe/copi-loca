@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class RebaseController < ApplicationController
   before_action :add_rebase_breadcrumb
-  before_action :add_action_breadcrumb, only: [ :start, :continue ]
+  before_action :add_action_breadcrumb, only: %i[start continue]
 
   def index
     @rebase_status = Repository.rebase_status
