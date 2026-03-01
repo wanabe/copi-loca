@@ -16,16 +16,16 @@ class Repository
     attribute :header
     attribute :hunks
 
-    def represent
-      define :nested, :header, FileHeader
-      define :nested, :hunks, Hunk, quantity: "+"
+    def template
+      partial :header, FileHeader
+      partial :hunks, Hunk, quantity: "+"
     end
 
     class NoHeader < TextRepresenter::Base
       attribute :hunks
 
-      def represent
-        define :nested, :hunks, Hunk, quantity: "+"
+      def template
+        partial :hunks, Hunk, quantity: "+"
       end
 
       def diff_line_at(diff_line_num)
@@ -51,11 +51,11 @@ class Repository
       attribute :from_file_header
       attribute :to_file_header
 
-      def represent
-        define :nested, :git_file_header, GitFileHeader
-        define :nested, :extended_header, ExtendedHeader, quantity: "?"
-        define :nested, :from_file_header, FromFileHeader
-        define :nested, :to_file_header, ToFileHeader
+      def template
+        partial :git_file_header, GitFileHeader
+        partial :extended_header, ExtendedHeader, quantity: "?"
+        partial :from_file_header, FromFileHeader
+        partial :to_file_header, ToFileHeader
       end
     end
 
@@ -63,12 +63,12 @@ class Repository
       attribute :from_file_path
       attribute :to_file_path
 
-      def represent
-        define :line do
-          define :fixed, "diff --git a/"
-          define :pattern, :from_file_path, /[^\s]+/
-          define :fixed, " b/"
-          define :pattern, :to_file_path, /[^\s]+/
+      def template
+        line do
+          literal "diff --git a/"
+          token :from_file_path, /[^\s]+/
+          literal " b/"
+          token :to_file_path, /[^\s]+/
         end
       end
     end
@@ -78,14 +78,14 @@ class Repository
       attribute :to_hash
       attribute :mode
 
-      def represent
-        define :line do
-          define :fixed, "index "
-          define :pattern, :from_hash, /[0-9a-f]+/
-          define :fixed, ".."
-          define :pattern, :to_hash, /[0-9a-f]+/
-          define :fixed, " "
-          define :pattern, :mode, /\d+/
+      def template
+        line do
+          literal "index "
+          token :from_hash, /[0-9a-f]+/
+          literal ".."
+          token :to_hash, /[0-9a-f]+/
+          literal " "
+          token :mode, /\d+/
         end
       end
     end
@@ -93,10 +93,10 @@ class Repository
     class FromFileHeader < TextRepresenter::Base
       attribute :file_path
 
-      def represent
-        define :line do
-          define :fixed, "--- a/"
-          define :pattern, :file_path, /[^\s]+/
+      def template
+        line do
+          literal "--- a/"
+          token :file_path, /[^\s]+/
         end
       end
     end
@@ -104,10 +104,10 @@ class Repository
     class ToFileHeader < TextRepresenter::Base
       attribute :file_path
 
-      def represent
-        define :line do
-          define :fixed, "+++ b/"
-          define :pattern, :file_path, /[^\s]+/
+      def template
+        line do
+          literal "+++ b/"
+          token :file_path, /[^\s]+/
         end
       end
     end
@@ -116,9 +116,9 @@ class Repository
       attribute :header
       attribute :lines
 
-      def represent
-        define :nested, :header, HunkHeader
-        define :nested, :lines, HunkLine, quantity: "+", parent: :hunk, index: :index
+      def template
+        partial :header, HunkHeader
+        partial :lines, HunkLine, quantity: "+", parent: :hunk, index: :index
       end
 
       def drop_if
@@ -179,21 +179,21 @@ class Repository
       attribute :has_context
       attribute :context
 
-      def represent
-        define :line do
-          define :fixed, "@@ -"
-          define :pattern, :from_line, /\d+/, to: :to_i
-          define :fixed, ","
-          define :pattern, :from_length, /\d+/, to: :to_i
-          define :fixed, " +"
-          define :pattern, :to_line, /\d+/, to: :to_i
-          define :fixed, ","
-          define :pattern, :to_length, /\d+/, to: :to_i
-          define :fixed, " @@"
+      def template
+        line do
+          literal "@@ -"
+          token :from_line, /\d+/, to: :to_i
+          literal ","
+          token :from_length, /\d+/, to: :to_i
+          literal " +"
+          token :to_line, /\d+/, to: :to_i
+          literal ","
+          token :to_length, /\d+/, to: :to_i
+          literal " @@"
 
-          define :quantity, :has_context, "?" do
-            define :fixed, " "
-            define :pattern, :context, /.+/
+          optional :has_context do
+            literal " "
+            token :context, /.+/
           end
         end
       end
@@ -205,10 +205,10 @@ class Repository
       parent :hunk
       attribute :index
 
-      def represent
-        define :line do
-          define :pattern, :prefix, /[-+ ]/
-          define :pattern, :content, /.*/
+      def template
+        line do
+          token :prefix, /[-+ ]/
+          token :content, /.*/
         end
       end
 

@@ -65,12 +65,12 @@ RSpec.describe TextRepresenter do
       end
     end
 
-    it "allows digging into nested attributes" do
+    it "allows digging into partial attributes" do
       representer = representer_klass.new
-      nested_representer = representer_klass.new
-      nested_representer.foo = "nested"
-      representer.foo = nested_representer
-      expect(representer.dig(:foo, :foo)).to eq("nested")
+      partial_representer = representer_klass.new
+      partial_representer.foo = "partial"
+      representer.foo = partial_representer
+      expect(representer.dig(:foo, :foo)).to eq("partial")
     end
   end
 
@@ -87,7 +87,7 @@ RSpec.describe TextRepresenter do
       representer = representer_klass.new
       child = representer_klass.new
       neighbor = representer_klass.new
-      child.foo = "nested"
+      child.foo = "partial"
       representer.foo = "bar value"
       representer.children = [child]
       representer.neighbor = neighbor
@@ -95,46 +95,46 @@ RSpec.describe TextRepresenter do
         "foo" => "bar value",
         "neighbor" => {},
         "children" => [
-          { "foo" => "nested" }
+          { "foo" => "partial" }
         ]
       })
     end
   end
 
-  describe "#run" do
+  describe "#apply" do
     let(:representer_klass) do
       Class.new(TextRepresenter::Base)
     end
 
-    it "sets the runner, calls represent, and resets the runner" do
+    it "sets the context, calls represent, and resets the context" do
       representer = representer_klass.new
-      runner = instance_double(Object)
-      allow(representer).to receive(:represent) do
-        expect(representer.runner).to eq(runner)
+      context = instance_double(Object)
+      allow(representer).to receive(:template) do
+        expect(representer.context).to eq(context)
       end
-      representer.run(runner)
-      expect(representer).to have_received(:represent)
-      expect(representer.runner).to be_nil
+      representer.apply(context)
+      expect(representer).to have_received(:template)
+      expect(representer.context).to be_nil
     end
   end
 
   describe "#parse" do
-    context "with simple fixed" do
+    context "with simple literal" do
       let(:representer_klass) do
         Class.new(TextRepresenter::Base) do
-          def represent
-            define :fixed, "foo"
+          def template
+            literal "foo"
           end
         end
       end
 
-      it "parses fixed text" do
+      it "parses literal text" do
         text = "foo"
         representer = representer_klass.new
         expect { representer.parse(text) }.not_to raise_error
       end
 
-      it "raises on unmatched fixed text" do
+      it "raises on unmatched literal text" do
         text = "bar"
         representer = representer_klass.new
         expect { representer.parse(text) }.to raise_error(TextRepresenter::UnmatchedPatternError)
@@ -161,12 +161,12 @@ RSpec.describe TextRepresenter do
           attribute :has_data
           attribute :data
 
-          def represent
-            define :nested, :magic, self.class.magic_class, quantity: "?"
-            define :nested, :lines, self.class.line_class, quantity: "+"
-            define :quantity, :has_data, "?" do
-              define :fixed, "__END__\n"
-              define :pattern, :data, /.*/m
+          def template
+            partial :magic, self.class.magic_class, quantity: "?"
+            partial :lines, self.class.line_class, quantity: "+"
+            optional :has_data do
+              literal "__END__\n"
+              token :data, /.*/m
             end
           end
 
@@ -174,13 +174,13 @@ RSpec.describe TextRepresenter do
             @magic_class ||= Class.new(TextRepresenter::Base) do
               attribute :space_before
               attribute :space_after
-              def represent
-                define :line do
-                  define :fixed, "#"
-                  define :pattern, :space_before, / +/
-                  define :fixed, "frozen_string_literal:"
-                  define :pattern, :space_after, / +/
-                  define :fixed, "true"
+              def template
+                line do
+                  literal "#"
+                  token :space_before, / +/
+                  literal "frozen_string_literal:"
+                  token :space_after, / +/
+                  literal "true"
                 end
               end
             end
@@ -191,15 +191,15 @@ RSpec.describe TextRepresenter do
               attribute :comment
               attribute :expression
               attribute :string
-              def represent
-                define :denied do
-                  define :fixed, "__END__\n"
+              def template
+                absence do
+                  literal "__END__\n"
                 end
 
-                define :line do
-                  define :nested, :expression, self.class.expression_class, quantity: "?"
-                  define :nested, :string, self.class.string_class, quantity: "?"
-                  define :nested, :comment, self.class.comment_class, quantity: "?"
+                line do
+                  partial :expression, self.class.expression_class, quantity: "?"
+                  partial :string, self.class.string_class, quantity: "?"
+                  partial :comment, self.class.comment_class, quantity: "?"
                 end
               end
 
@@ -208,19 +208,19 @@ RSpec.describe TextRepresenter do
                   attribute :left
                   attribute :operator
                   attribute :right
-                  def represent
-                    define :nested, :left, self.class.number_class
-                    define :pattern, :space_before_operator, / */
-                    define :pattern, :operator, %r{[+\-*/]}
-                    define :pattern, :space_after_operator, / */
-                    define :nested, :right, self.class.number_class
+                  def template
+                    partial :left, self.class.number_class
+                    token :space_before_operator, / */
+                    token :operator, %r{[+\-*/]}
+                    token :space_after_operator, / */
+                    partial :right, self.class.number_class
                   end
 
                   def self.number_class
                     @number_class ||= Class.new(TextRepresenter::Base) do
                       attribute :value
-                      def represent
-                        define :pattern, :value, /\d+/, to: :to_i
+                      def template
+                        token :value, /\d+/, to: :to_i
                       end
                     end
                   end
@@ -230,10 +230,10 @@ RSpec.describe TextRepresenter do
               def self.string_class
                 @string_class ||= Class.new(TextRepresenter::Base) do
                   attribute :content
-                  def represent
-                    define :pattern, :quote, /['"]/
-                    define :pattern, :content, /[^'"]*/
-                    define :ref, :quote
+                  def template
+                    token :quote, /['"]/
+                    token :content, /[^'"]*/
+                    same_as :quote
                   end
                 end
               end
@@ -241,10 +241,10 @@ RSpec.describe TextRepresenter do
               def self.comment_class
                 @comment_class ||= Class.new(TextRepresenter::Base) do
                   attribute :content
-                  def represent
-                    define :pattern, :space_before, / */
-                    define :fixed, "#"
-                    define :pattern, :content, /.*/
+                  def template
+                    token :space_before, / */
+                    literal "#"
+                    token :content, /.*/
                   end
                 end
               end
@@ -253,7 +253,7 @@ RSpec.describe TextRepresenter do
         end
       end
 
-      it "parses optional nested patterns" do
+      it "parses optional partial patterns" do
         text = "# frozen_string_literal: true\n\n"
         representer = representer_klass.new
         expect { representer.parse(text) }.not_to raise_error
@@ -262,7 +262,7 @@ RSpec.describe TextRepresenter do
         expect(representer.lines.map(&:comment)).to eq([nil])
       end
 
-      it "rewinds on failed nested match for optional patterns" do
+      it "rewinds on failed partial match for optional patterns" do
         text = "# This is not frozen_string_literal\n"
         representer = representer_klass.new
         expect { representer.parse(text) }.not_to raise_error
@@ -279,7 +279,7 @@ RSpec.describe TextRepresenter do
         expect(representer.data).to eq("some data")
       end
 
-      it "accepts nested patterns without quantity" do
+      it "accepts partial patterns without quantity" do
         text = "1 + 2\n"
         representer = representer_klass.new
         expect { representer.parse(text) }.not_to raise_error
@@ -288,7 +288,7 @@ RSpec.describe TextRepresenter do
         expect(representer.lines.first.expression.right.value).to eq(2)
       end
 
-      it "accepts referenced patterns" do
+      it "accepts same_as patterns" do
         text = "'hello'\n"
         representer = representer_klass.new
         expect { representer.parse(text) }.not_to raise_error
@@ -302,48 +302,32 @@ RSpec.describe TextRepresenter do
       end
     end
 
-    context "with unsupported define types" do
+    context "with unsupported expose types" do
       let(:representer_klass) do
         Class.new(TextRepresenter::Base) do
-          def represent
-            define :foobar, :buz
+          def template
+            expose :foobar, :buz
           end
         end
       end
 
-      it "raises on unsupported define types" do
+      it "raises on unsupported expose types" do
         representer = representer_klass.new
-        expect { representer.parse("anything") }.to raise_error(TextRepresenter::FatalError, /Unknown define type: foobar/)
+        expect { representer.parse("anything") }.to raise_error(TextRepresenter::FatalError, /Unknown expose type: foobar/)
       end
     end
   end
 
-  context "with unsupported quantity for nested patterns" do
+  context "with unsupported quantity for partial patterns" do
     let(:representer_klass) do
       Class.new(TextRepresenter::Base) do
-        def represent
-          define :nested, :foo, self.class.nested_class, quantity: "*"
+        def template
+          partial :foo, self.class.partial_class, quantity: "*"
         end
 
-        def self.nested_class
-          @nested_class ||= Class.new(TextRepresenter::Base) do
-            def represent; end
-          end
-        end
-      end
-    end
-
-    it "raises on unsupported quantity" do
-      representer = representer_klass.new
-      expect { representer.parse("anything") }.to raise_error(NotImplementedError, /Unsupported quantity: \*/)
-    end
-  end
-
-  context "with unsupported quantity for quantity patterns" do
-    let(:representer_klass) do
-      Class.new(TextRepresenter::Base) do
-        def represent
-          define :quantity, :foo, "*" do
+        def self.partial_class
+          @partial_class ||= Class.new(TextRepresenter::Base) do
+            def template; end
           end
         end
       end
@@ -356,16 +340,16 @@ RSpec.describe TextRepresenter do
   end
 
   describe "#to_s" do
-    context "with simple fixed" do
+    context "with simple literal" do
       let(:representer_klass) do
         Class.new(TextRepresenter::Base) do
-          def represent
-            define :fixed, "foo"
+          def template
+            literal "foo"
           end
         end
       end
 
-      it "represents fixed text" do
+      it "represents literal text" do
         representer = representer_klass.new
         expect(representer.to_s).to eq("foo")
       end
@@ -379,34 +363,34 @@ RSpec.describe TextRepresenter do
           attribute :header
           attribute :tag
           attribute :text
-          def represent
-            define :nested, :header, self.class.header_class, quantity: "?"
-            define :line do
-              define :fixed, "<"
-              define :nested, :tag, self.class.tag_class
-              define :fixed, ">"
+          def template
+            partial :header, self.class.header_class, quantity: "?"
+            line do
+              literal "<"
+              partial :tag, self.class.tag_class
+              literal ">"
             end
-            define :line do
-              define :pattern, :text, /[^<>\n]+/
+            line do
+              token :text, /[^<>\n]+/
             end
-            define :quantity, :has_comments, "?" do
-              define :nested, :comments, self.class.comment_class, quantity: "+"
+            optional :has_comments do
+              partial :comments, self.class.comment_class, quantity: "+"
             end
-            define :line do
-              define :fixed, "</"
-              define :ref, :tag
-              define :fixed, ">"
+            line do
+              literal "</"
+              same_as :tag
+              literal ">"
             end
           end
 
           def self.header_class
             @header_class ||= Class.new(TextRepresenter::Base) do
               attribute :doctype
-              def represent
-                define :line do
-                  define :fixed, "<!DOCTYPE "
-                  define :pattern, :doctype, /\w+/
-                  define :fixed, ">"
+              def template
+                line do
+                  literal "<!DOCTYPE "
+                  token :doctype, /\w+/
+                  literal ">"
                 end
               end
             end
@@ -415,8 +399,8 @@ RSpec.describe TextRepresenter do
           def self.tag_class
             @tag_class ||= Class.new(TextRepresenter::Base) do
               attribute :name
-              def represent
-                define :pattern, :name, /\w+/
+              def template
+                token :name, /\w+/
               end
             end
           end
@@ -424,11 +408,11 @@ RSpec.describe TextRepresenter do
           def self.comment_class
             @comment_class ||= Class.new(TextRepresenter::Base) do
               attribute :content
-              def represent
-                define :line do
-                  define :fixed, "<!--"
-                  define :pattern, :content, /[^-]+/
-                  define :fixed, "-->"
+              def template
+                line do
+                  literal "<!--"
+                  token :content, /[^-]+/
+                  literal "-->"
                 end
               end
             end
@@ -467,47 +451,31 @@ RSpec.describe TextRepresenter do
       end
     end
 
-    context "with unsupported define types" do
+    context "with unsupported expose types" do
       let(:representer_klass) do
         Class.new(TextRepresenter::Base) do
-          def represent
-            define :foobar, :buz
+          def template
+            expose :foobar, :buz
           end
         end
       end
 
-      it "raises on unsupported define types" do
+      it "raises on unsupported expose types" do
         representer = representer_klass.new
-        expect { representer.to_s }.to raise_error(TextRepresenter::FatalError, /Unknown define type: foobar/)
+        expect { representer.to_s }.to raise_error(TextRepresenter::FatalError, /Unknown expose type: foobar/)
       end
     end
 
-    context "with unsupported quantity for quantity patterns" do
+    context "with unexpected partial" do
       let(:representer_klass) do
         Class.new(TextRepresenter::Base) do
-          def represent
-            define :quantity, :foo, "*" do
-            end
-          end
-        end
-      end
-
-      it "raises on unsupported quantity" do
-        representer = representer_klass.new
-        expect { representer.to_s }.to raise_error(NotImplementedError, /Unsupported quantity: \*/)
-      end
-    end
-
-    context "with unexpected nested" do
-      let(:representer_klass) do
-        Class.new(TextRepresenter::Base) do
-          def represent
-            define :nested, :missing, self.class.missing_class
+          def template
+            partial :missing, self.class.missing_class
           end
 
           def self.missing_class
             @missing_class ||= Class.new(TextRepresenter::Base) do
-              def represent; end
+              def template; end
             end
           end
         end

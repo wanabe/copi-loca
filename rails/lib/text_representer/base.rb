@@ -22,13 +22,13 @@ module TextRepresenter
       end
     end
 
-    attr_reader :attributes, :runner
+    attr_reader :attributes, :context
     attr_accessor :parent
 
     def initialize(parent: nil, **initial_attributes)
       @attributes = initial_attributes
       @parent = parent
-      @runner = nil
+      @context = nil
     end
 
     def [](key)
@@ -54,21 +54,21 @@ module TextRepresenter
       end
     end
 
-    def run(runner)
-      raise FatalError, "Already running #{@runner}" if @runner
+    def apply(context)
+      raise FatalError, "Already in context #{@context}" if @context
 
       begin
-        @runner = runner
-        represent
+        @context = context
+        template
       ensure
-        @runner = nil
+        @context = nil
       end
       self
     end
 
     def parse(string, exact: true)
       @scanner = Scanner.new(string)
-      run(@scanner)
+      apply(@scanner)
       raise UnmatchedPatternError, "Expected end of string at position #{@scanner.pos}" if exact && !@scanner.eos?
 
       self
@@ -76,38 +76,47 @@ module TextRepresenter
 
     def to_s
       renderer = Renderer.new
-      run(renderer)
+      apply(renderer)
       renderer.result
     end
 
+    # aliases
+    def partial(...) = expose(:partial, ...)
+    def literal(...) = expose(:literal, ...)
+    def token(...) = expose(:token, ...)
+    def line(...) = expose(:line, ...)
+    def optional(...) = expose(:optional, ...)
+    def absence(...) = expose(:absence, ...)
+    def same_as(...) = expose(:same_as, ...)
+
     private
 
-    def define(type, ...)
-      raise FatalError, "No runner" unless @runner
+    def expose(type, ...)
+      raise FatalError, "No context" unless @context
 
       case type
-      when :nested
-        @runner.nested(self, ...)
-      when :fixed
-        @runner.fixed(self, ...)
-      when :pattern
-        @runner.pattern(self, ...)
+      when :partial
+        @context.partial(self, ...)
+      when :literal
+        @context.literal(self, ...)
+      when :token
+        @context.token(self, ...)
       when :line
-        @runner.line(self, ...)
-      when :quantity
-        @runner.quantity(self, ...)
-      when :denied
-        @runner.denied(self, ...)
-      when :ref
-        @runner.ref(self, ...)
+        @context.line(self, ...)
+      when :optional
+        @context.optional(self, ...)
+      when :absence
+        @context.absence(self, ...)
+      when :same_as
+        @context.same_as(self, ...)
       else
-        raise FatalError, "Unknown define type: #{type}"
+        raise FatalError, "Unknown expose type: #{type}"
       end
     end
 
-    def represent
+    def template
       # :nocov:
-      raise NotImplementedError, "Subclasses must implement represent"
+      raise NotImplementedError, "Subclasses must implement template"
       # :nocov:
     end
   end

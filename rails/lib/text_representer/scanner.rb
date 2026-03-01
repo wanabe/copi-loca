@@ -12,18 +12,18 @@ module TextRepresenter
 
     delegate :pos, to: :@string_scanner
 
-    def nested(representer, name, klass, quantity: nil, parent: nil, index: nil)
+    def partial(representer, name, klass, quantity: nil, parent: nil, index: nil)
       case quantity
       when nil
         o = klass.new
-        o.run(self)
+        o.apply(self)
         o.parent = representer if parent
         representer.attributes[name] = o
       when "?"
         pos = @string_scanner.pos
         o = klass.new
         begin
-          o.run(self)
+          o.apply(self)
         rescue UnmatchedPatternError
           o = nil
           @string_scanner.pos = pos
@@ -35,7 +35,7 @@ module TextRepresenter
           pos = @string_scanner.pos
           o = klass.new
           begin
-            o.run(self)
+            o.apply(self)
             o.parent = representer if parent
             o.attributes[index] = arr.size if index
             arr << o
@@ -52,12 +52,12 @@ module TextRepresenter
       end
     end
 
-    def fixed(representer, str)
-      pattern(representer, nil, /#{Regexp.escape(str)}/)
+    def literal(representer, str)
+      token(representer, nil, /#{Regexp.escape(str)}/)
     end
 
-    def pattern(representer, name, regex, to: nil)
-      raise UnmatchedPatternError, "Expected pattern #{regex} at position #{@string_scanner.pos}" unless @string_scanner.scan(regex)
+    def token(representer, name, regex, to: nil)
+      raise UnmatchedPatternError, "Expected token #{regex} at position #{@string_scanner.pos}" unless @string_scanner.scan(regex)
 
       value = @string_scanner.matched
       value = value.public_send(to) if to
@@ -70,23 +70,16 @@ module TextRepresenter
       # do nothing, just consume the newline
     end
 
-    def quantity(representer, name, quantity)
-      case quantity
-      when "?"
-        begin
-          pos = @string_scanner.pos
-          yield
-          representer.attributes[name] = true
-        rescue UnmatchedPatternError
-          @string_scanner.pos = pos
-          representer.attributes[name] = false
-        end
-      else
-        raise NotImplementedError, "Unsupported quantity: #{quantity}"
-      end
+    def optional(representer, name)
+      pos = @string_scanner.pos
+      yield
+      representer.attributes[name] = true
+    rescue UnmatchedPatternError
+      @string_scanner.pos = pos
+      representer.attributes[name] = false
     end
 
-    def denied(_representer)
+    def absence(_representer)
       begin
         pos = @string_scanner.pos
         yield
@@ -94,15 +87,15 @@ module TextRepresenter
         @string_scanner.pos = pos
         return
       end
-      raise UnmatchedPatternError, "Expected pattern to not match"
+      raise UnmatchedPatternError, "Expected token to not match"
     end
 
-    def ref(representer, name)
+    def same_as(representer, name)
       value = representer.attributes[name]
       raise UnmatchedPatternError, "Expected reference #{name} to be set" if value.nil?
 
       regex = /#{Regexp.escape(value.to_s)}/
-      raise UnmatchedPatternError, "Expected pattern #{regex} at position #{@string_scanner.pos}" unless @string_scanner.scan(regex)
+      raise UnmatchedPatternError, "Expected token #{regex} at position #{@string_scanner.pos}" unless @string_scanner.scan(regex)
     end
   end
 end
