@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "POST /sessions/:session_id/messages", type: :request do
+RSpec.describe "POST /sessions/:session_id/messages" do
   let(:session) { Session.create!(id: SecureRandom.uuid, model: "gpt-4.1") }
 
   before { allow(SendPromptJob).to receive(:perform_later) }

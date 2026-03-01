@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "custom_agents/index", type: :view do
+RSpec.describe "custom_agents/index" do
   before do
     assign(:custom_agents, [
       CustomAgent.create!(

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "GET /events", type: :request do
+RSpec.describe "GET /events" do
   let!(:session) { Session.create!(id: "sess1", model: "test_model") }
   let!(:rpc_message) { RpcMessage.create!(session: session, params: {}, method: "test_method") }
   let!(:event) { Event.create!(session: session, event_id: "evt1", rpc_message: rpc_message, event_type: "test") }

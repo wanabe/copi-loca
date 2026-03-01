@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ToolsController, type: :routing do
+RSpec.describe ToolsController do
   describe "routing" do
     it "routes to #index" do
       expect(get: "/tools").to route_to("tools#index")

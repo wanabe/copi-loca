@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "DELETE /operations/:id", type: :request do
+RSpec.describe "DELETE /operations/:id" do
   let!(:operation) { Operation.create!(command: "echo hello", directory: "/tmp", execution_timing: :manual) }
 
   it "destroys the requested operation" do

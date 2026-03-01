@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "custom_agents/new", type: :view do
+RSpec.describe "custom_agents/new" do
   before do
     assign(:custom_agent, CustomAgent.new(
       name: "MyString",

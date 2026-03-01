@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "POST /operations/:id/run", type: :request do
+RSpec.describe "POST /operations/:id/run" do
   let(:operation) { Operation.create!(command: "echo hello", directory: "/tmp", execution_timing: :background) }
 
   context "when execution_timing is :background" do

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "operations/show", type: :view do
+RSpec.describe "operations/show" do
   before do
     assign(:operation, Operation.create!(
       command: "Command",

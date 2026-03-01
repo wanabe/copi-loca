@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe "GET /changes/uncommitted", type: :request do
+describe "GET /changes/uncommitted" do
   it "renders the uncommitted page (200)" do
     allow(Repository).to receive_messages(staged_diffs: [], unstaged_diffs: [])
     get "/changes/uncommitted"

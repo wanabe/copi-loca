@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "RebaseController#index", type: :request do
+RSpec.describe "RebaseController#index" do
   before do
     allow(Repository).to receive_messages(rebase_status: { done: [], todo: [], onto: "abc1234" }, log_for_rebase: [])
   end

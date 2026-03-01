@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "GET /any", type: :request do
+RSpec.describe "GET /any" do
   let(:controller_class) do
     Class.new(ApplicationController) do
       def any

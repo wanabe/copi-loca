@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe RunOperationJob, type: :job do
+RSpec.describe RunOperationJob do
   let(:operation) { Operation.create!(command: "echo hello", directory: "/tmp", execution_timing: :background) }
 
   before do

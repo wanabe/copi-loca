@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe "DELETE /auth_sessions/:id", type: :request do
+describe "DELETE /auth_sessions/:id" do
   it "logs out and redirects to root" do
     delete "/auth_sessions/1"
     expect(response).to redirect_to(root_path)

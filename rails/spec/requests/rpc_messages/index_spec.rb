@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "GET /sessions/:session_id/rpc_messages", type: :request do
+RSpec.describe "GET /sessions/:session_id/rpc_messages" do
   before do
     allow(Client).to receive(:create_session)
   end

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe "GET /changes", type: :request do
+describe "GET /changes" do
   it "returns 200 and renders the index page" do
     get "/changes"
     expect(response).to have_http_status(:ok)

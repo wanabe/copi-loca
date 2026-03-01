@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe EventsController, type: :routing do
+RSpec.describe EventsController do
   describe "routing" do
     it "routes to #index" do
       expect(get: "/sessions/1/events").to route_to("events#index", session_id: "1")

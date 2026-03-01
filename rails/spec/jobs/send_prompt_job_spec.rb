@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe SendPromptJob, type: :job do
+RSpec.describe SendPromptJob do
   let(:session) { instance_double(Session, id: "session1") }
   let(:prompt) { "test prompt" }
   let(:file_paths) { ["/shared-tmp/dummy.txt"] }

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "DELETE /tools/:id", type: :request do
+RSpec.describe "DELETE /tools/:id" do
   let!(:tool) { Tool.create!(name: "Test Tool", description: "A tool for testing") }
 
   it "destroys the requested tool" do

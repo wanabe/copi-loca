@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "tools/show", type: :view do
+RSpec.describe "tools/show" do
   before do
     assign(:tool, Tool.create!(
       name: "Tool Name",

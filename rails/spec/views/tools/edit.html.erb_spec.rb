@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "tools/edit", type: :view do
+RSpec.describe "tools/edit" do
   let(:tool) do
     Tool.create!(
       name: "MyString",

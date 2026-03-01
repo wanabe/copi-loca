@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "PATCH /custom_agents/:id", type: :request do
+RSpec.describe "PATCH /custom_agents/:id" do
   let!(:custom_agent) { CustomAgent.create!(name: "Test Agent", description: "A custom agent for testing") }
   let(:new_attributes) { { name: "Updated Agent", description: "Updated description" } }
   let(:invalid_attributes) { { name: nil, description: nil } }

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe "POST /changes/execute_revert", type: :request do
+describe "POST /changes/execute_revert" do
   it "redirects to root with notice" do
     session_double = double(send: nil, idle?: true)
     copilot_client = instance_double(Copilot::Client)

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe RpcMessagesController, type: :routing do
+RSpec.describe RpcMessagesController do
   describe "routing" do
     it "routes to #index" do
       expect(get: "/sessions/42/rpc_messages").to route_to("rpc_messages#index", session_id: "42")

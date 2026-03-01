@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe "POST /auth_sessions", type: :request do
+describe "POST /auth_sessions" do
   before do
     stub_const("ENV", ENV.to_hash.merge("COPI_ADMIN_PASSWORD" => "testpass"))
   end

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe "POST /changes/amend_commit", type: :request do
+describe "POST /changes/amend_commit" do
   it "redirects to uncommitted_changes_path after amend_commit" do
     allow(Repository).to receive(:amend_no_edit)
     allow(Repository).to receive(:amend_with_message)

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "events/index", type: :view do
+RSpec.describe "events/index" do
   before do
     allow(Client).to receive(:create_session)
     session = Session.create!(id: "dummy", model: "Model")

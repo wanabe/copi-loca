@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "PATCH /operations/:id", type: :request do
+RSpec.describe "PATCH /operations/:id" do
   let!(:operation) { Operation.create!(command: "echo hello", directory: "/tmp", execution_timing: :manual) }
   let(:new_attributes) { { command: "echo world", directory: "/home", execution_timing: :background } }
   let(:invalid_attributes) { { command: nil, directory: nil, execution_timing: nil } }

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe "GET /auth_sessions/new", type: :request do
+describe "GET /auth_sessions/new" do
   it "renders the login form" do
     get "/auth_sessions/new"
     expect(response).to have_http_status(:ok)

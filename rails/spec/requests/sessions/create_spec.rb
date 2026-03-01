@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe "POST /sessions", type: :request do
+describe "POST /sessions" do
   it "creates a session and redirects to show", :with_auth do
     post "/sessions", params: { session: { model: "gpt-4.1" } }
     new_session = Session.order(:created_at).last

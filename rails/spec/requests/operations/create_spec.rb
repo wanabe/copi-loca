@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "POST /operations", type: :request do
+RSpec.describe "POST /operations" do
   let(:valid_attributes) { { command: "echo hello", directory: "/tmp", execution_timing: :manual } }
   let(:invalid_attributes) { { command: nil, directory: nil, execution_timing: nil } }
 

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "events/show", type: :view do
+RSpec.describe "events/show" do
   before do
     allow(Client).to receive(:create_session)
     session = Session.create!(

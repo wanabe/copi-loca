@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe Repository, type: :model do
+RSpec.describe Repository do
   let(:repo) { described_class.new(path: "/app") }
 
   describe "#log" do

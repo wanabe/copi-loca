@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe Operation, type: :model do
+RSpec.describe Operation do
   context "when validations are checked" do
     it "is valid with command and directory" do
       operation = described_class.new(command: "ls", directory: "/tmp")

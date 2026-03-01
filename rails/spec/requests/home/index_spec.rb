@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe "GET /", type: :request do
+describe "GET /" do
   it "returns 200 and renders the home page" do
     get "/"
     expect(response).to have_http_status(:ok)

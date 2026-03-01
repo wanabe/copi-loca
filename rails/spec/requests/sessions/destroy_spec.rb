@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe "DELETE /sessions/:id", type: :request do
+describe "DELETE /sessions/:id" do
   let!(:session_obj) { Session.create!(id: SecureRandom.uuid, model: "gpt-4.1") }
 
   it "redirects to new_auth_session_path if not admin" do

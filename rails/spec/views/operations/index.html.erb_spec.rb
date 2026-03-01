@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "operations/index", type: :view do
+RSpec.describe "operations/index" do
   before do
     assign(:operations, [
       Operation.create!(

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe "POST /changes/unstage", type: :request do
+describe "POST /changes/unstage" do
   it "redirects to uncommitted_changes_path after unstaging" do
     allow(Repository).to receive(:unstage_file)
     post "/changes/unstage", params: { file_path: "foo.txt" }

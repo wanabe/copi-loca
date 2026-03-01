@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "PATCH /tools/:id", type: :request do
+RSpec.describe "PATCH /tools/:id" do
   let!(:tool) { Tool.create!(name: "Test Tool", description: "A tool for testing") }
   let(:new_attributes) { { name: "Updated Tool", description: "Updated description" } }
   let(:invalid_attributes) { { name: nil, description: nil, parameters: nil } }

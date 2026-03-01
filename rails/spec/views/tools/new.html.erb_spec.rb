@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "tools/new", type: :view do
+RSpec.describe "tools/new" do
   before do
     assign(:tool, Tool.new(
       description: "MyString",

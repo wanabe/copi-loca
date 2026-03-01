@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "custom_agents/edit", type: :view do
+RSpec.describe "custom_agents/edit" do
   let(:custom_agent) do
     CustomAgent.create!(
       name: "MyString",

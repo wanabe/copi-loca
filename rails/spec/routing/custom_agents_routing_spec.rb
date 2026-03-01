@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe CustomAgentsController, type: :routing do
+RSpec.describe CustomAgentsController do
   describe "routing" do
     it "routes to #index" do
       expect(get: "/custom_agents").to route_to("custom_agents#index")

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "operations/edit", type: :view do
+RSpec.describe "operations/edit" do
   let(:operation) do
     Operation.create!(
       command: "MyString",

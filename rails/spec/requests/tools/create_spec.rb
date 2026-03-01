@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "POST /tools", type: :request do
+RSpec.describe "POST /tools" do
   let(:valid_attributes) { { name: "Test Tool", description: "A tool for testing", parameters: "{}" } }
   let(:invalid_attributes) { { name: nil, description: nil, parameters: nil } }
 

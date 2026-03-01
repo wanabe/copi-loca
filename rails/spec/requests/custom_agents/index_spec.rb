@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "GET /custom_agents", type: :request do
+RSpec.describe "GET /custom_agents" do
   let!(:custom_agent) { CustomAgent.create!(name: "Test Agent", description: "A custom agent for testing") }
 
   it "renders a successful response" do

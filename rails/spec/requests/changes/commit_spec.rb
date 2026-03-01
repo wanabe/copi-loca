@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe "POST /changes/commit", type: :request do
+describe "POST /changes/commit" do
   it "redirects to uncommitted_changes_path after commit" do
     allow(Repository).to receive(:commit)
     post "/changes/commit", params: { commit_message: "msg" }

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "rpc_messages/index", type: :view do
+RSpec.describe "rpc_messages/index" do
   before do
     allow(Client).to receive(:create_session)
     session = Session.create!(id: "dummy", model: "gpt-4", created_at: Time.zone.now)

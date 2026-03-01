@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "GET /sessions/:session_id/messages", type: :request do
+RSpec.describe "GET /sessions/:session_id/messages" do
   let(:session) { Session.create!(id: SecureRandom.uuid, model: "gpt-4.1") }
   let(:rpc_message) do
     RpcMessage.create!(session: session, direction: 1, message_type: 1, method: "test", params: {}, rpc_id: "rpc1")

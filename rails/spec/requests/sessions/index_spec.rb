@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "GET /sessions", type: :request do
+RSpec.describe "GET /sessions" do
   let!(:session) { Session.create!(id: SecureRandom.uuid, model: "gpt-4.1") }
 
   it "returns 200 and lists sessions" do

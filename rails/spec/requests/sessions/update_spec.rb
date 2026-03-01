@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "PATCH /sessions/:id", type: :request do
+RSpec.describe "PATCH /sessions/:id" do
   let!(:session) { Session.create!(id: SecureRandom.uuid, model: "gpt-4.1") }
 
   it "updates session and redirects to show", :with_auth do

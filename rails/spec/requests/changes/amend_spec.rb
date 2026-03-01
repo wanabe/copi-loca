@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe "GET /changes/amend", type: :request do
+describe "GET /changes/amend" do
   it "renders the amend page (200)" do
     allow(Repository).to receive_messages(amend_diffs: [], unstaged_diffs: [], head_commit_message: "")
     get "/changes/amend"

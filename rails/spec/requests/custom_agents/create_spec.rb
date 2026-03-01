@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "POST /custom_agents", type: :request do
+RSpec.describe "POST /custom_agents" do
   let(:valid_attributes) { { name: "Test Agent", description: "A custom agent for testing" } }
   let(:invalid_attributes) { { name: nil, description: nil } }
 

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe Session, type: :model do
+RSpec.describe Session do
   let(:copilot_session) { instance_double(Copilot::Session) }
 
   before do

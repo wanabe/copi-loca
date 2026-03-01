@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe RpcMessage, type: :model do
+RSpec.describe RpcMessage do
   before do
     allow(Client).to receive(:create_session)
   end

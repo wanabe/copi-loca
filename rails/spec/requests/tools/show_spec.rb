@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "GET /tools/:id", type: :request do
+RSpec.describe "GET /tools/:id" do
   let!(:tool) { Tool.create!(name: "Test Tool", description: "A tool for testing") }
 
   it "renders a successful response" do

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe OperationsController, type: :routing do
+RSpec.describe OperationsController do
   describe "routing" do
     it "routes to #index" do
       expect(get: "/operations").to route_to("operations#index")

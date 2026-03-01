@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "operations/new", type: :view do
+RSpec.describe "operations/new" do
   before do
     assign(:operation, Operation.new(
       command: "MyString",
