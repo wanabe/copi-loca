@@ -38,18 +38,18 @@ class Repository
     @path = path
   end
 
-  def git(cmd, env: nil, return_status: false)
-    if env
-      r, w = IO.pipe
-      success = system(env, "git -C #{@path} #{cmd} 2>&1", out: w)
-      w.close
-      output = r.read
-      r.close
-      return success if return_status
-    else
-      output = `git -C #{@path} #{cmd} 2>&1`
-      return (Process.last_status || $CHILD_STATUS)&.success? if return_status
-    end
+  def git(cmd, env: {}, return_status: false)
+    output = if env.present? || block_given?
+               IO.popen(env, "git -C #{@path} #{cmd} 2>&1", "w+") do |io|
+                 yield io if block_given?
+                 io.close_write
+                 io.read
+               end
+             else
+               `git -C #{@path} #{cmd} 2>&1`
+             end
+
+    return Process.last_status.success? if return_status
 
     raise "Git failed: #{output}" unless Process.last_status.success?
 
@@ -114,8 +114,9 @@ class Repository
     (diff_pairs(git("diff")) + untracked_diffs).sort_by { |fd| fd[0] }
   end
 
-  def staged_diffs
-    diff_pairs(git("diff --cached"))
+  def staged_diffs(amend: false)
+    args = amend ? " HEAD~1" : ""
+    diff_pairs(git("diff --cached#{args}"))
   end
 
   def uncommitted_diffs
@@ -134,7 +135,8 @@ class Repository
     git("add -- #{file_path}")
   end
 
-  def unstage_file(file_path, commit: "HEAD")
+  def unstage_file(file_path, amend: false)
+    commit = amend ? "HEAD~1" : "HEAD"
     git("reset #{commit} -- #{file_path}")
   end
 
@@ -236,6 +238,46 @@ class Repository
     git("rebase --continue")
   end
 
+  def pick_line_patch(file_path, diffs, diff_line_num, reverse: false)
+    file_diff = diffs.to_h[file_path]
+    raise "File not found in diffs: #{file_path} (#{diffs.map(&:first).inspect})" if file_diff.nil?
+
+    patch = GitPatch::NoHeader.new
+    patch.parse(file_diff)
+
+    line = patch.diff_line_at(diff_line_num)
+    raise "Line number #{diff_line_num} out of range for file #{file_path}" if line.nil?
+
+    hunk = line.hunk
+    hunk.reverse if reverse
+    hunk.drop_if do |l|
+      l.index != line.index
+    end
+    hunk.reduce_context(3)
+
+    patch = GitPatch.new(
+      header: GitPatch::FileHeader.new(
+        git_file_header: GitPatch::GitFileHeader.new(from_file_path: file_path, to_file_path: file_path),
+        from_file_header: GitPatch::FromFileHeader.new(file_path: file_path),
+        to_file_header: GitPatch::ToFileHeader.new(file_path: file_path)
+      ),
+      hunks: [hunk]
+    )
+    patch.to_s
+  end
+
+  def stage_line(file_path, diff_line_num)
+    diffs = unstaged_diffs
+    patch = pick_line_patch(file_path, diffs, diff_line_num, reverse: false)
+    apply_patch_cached(patch)
+  end
+
+  def unstage_line(file_path, diff_line_num, amend: false)
+    diffs = staged_diffs(amend: amend)
+    patch = pick_line_patch(file_path, diffs, diff_line_num, reverse: true)
+    apply_patch_cached(patch)
+  end
+
   private
 
   def diff_pairs(diff_raw)
@@ -268,6 +310,12 @@ class Repository
     File.read(fpath)
   end
 
+  def apply_patch_cached(patch)
+    git("apply --cached -") do |io|
+      io.write(patch)
+    end
+  end
+
   class << self
     def instance
       @instance ||= new(path: DEFAULT_PATH)
@@ -287,6 +335,8 @@ class Repository
       :commit_message,
       :stage_file,
       :unstage_file,
+      :stage_line,
+      :unstage_line,
       :commit,
       :amend_diffs,
       :head_commit_message,

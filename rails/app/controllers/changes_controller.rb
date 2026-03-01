@@ -54,26 +54,58 @@ class ChangesController < ApplicationController
   end
 
   def stage
-    Repository.stage_file(params[:file_path]) if params[:file_path].present?
-    if params[:amend]
-      redirect_to amend_changes_path(staged_file_path: params[:file_path])
+    if params[:file_path].blank?
+      if params[:amend]
+        redirect_back_or_to(amend_changes_path, alert: "File path is required to stage changes.")
+      else
+        redirect_back_or_to(uncommitted_changes_path, alert: "File path is required to stage changes.")
+      end
+      return
+    end
+
+    line_number = params[:line_number]&.to_i
+    if line_number
+      Repository.stage_line(params[:file_path], line_number)
+      if params[:amend]
+        redirect_to amend_changes_path(unstaged_file_path: params[:file_path])
+      else
+        redirect_to uncommitted_changes_path(unstaged_file_path: params[:file_path])
+      end
     else
-      redirect_to uncommitted_changes_path(staged_file_path: params[:file_path])
+      Repository.stage_file(params[:file_path])
+      if params[:amend]
+        redirect_to amend_changes_path(staged_file_path: params[:file_path])
+      else
+        redirect_to uncommitted_changes_path(staged_file_path: params[:file_path])
+      end
     end
   end
 
   def unstage
-    if params[:file_path].present?
+    if params[:file_path].blank?
       if params[:amend]
-        Repository.unstage_file(params[:file_path], commit: "HEAD~1")
+        redirect_back_or_to(amend_changes_path, alert: "File path is required to unstage changes.")
       else
-        Repository.unstage_file(params[:file_path])
+        redirect_back_or_to(uncommitted_changes_path, alert: "File path is required to unstage changes.")
       end
+      return
     end
-    if params[:amend]
-      redirect_to amend_changes_path(unstaged_file_path: params[:file_path])
+
+    line_number = params[:line_number]&.to_i
+    if line_number
+      Repository.unstage_line(params[:file_path], line_number, amend: !!params[:amend])
+      if params[:amend]
+        redirect_to amend_changes_path(staged_file_path: params[:file_path])
+      else
+        redirect_to uncommitted_changes_path(staged_file_path: params[:file_path])
+      end
     else
-      redirect_to uncommitted_changes_path(unstaged_file_path: params[:file_path])
+      Repository.unstage_file(params[:file_path], amend: !!params[:amend])
+      if params[:amend]
+        redirect_to amend_changes_path(unstaged_file_path: params[:file_path])
+      else
+        redirect_to uncommitted_changes_path(unstaged_file_path: params[:file_path])
+      end
     end
   end
 

@@ -73,35 +73,31 @@ RSpec.describe Repository do
     end
 
     it "returns status when return_status is true (with env)" do
-      fake_r = instance_double(IO)
       fake_w = instance_double(IO)
-      allow(IO).to receive(:pipe).and_return([fake_r, fake_w])
-      allow(repo).to receive(:system).with(hash_including("FOO" => "bar"), "git -C /app status 2>&1", out: fake_w).and_return(true)
-      allow(fake_w).to receive(:close)
-      allow(fake_r).to receive(:read).and_return("envok")
-      allow(fake_r).to receive(:close)
+      allow(IO).to receive(:popen).with(hash_including("FOO" => "bar"), "git -C /app status 2>&1", "w+").and_yield(fake_w)
+      allow(fake_w).to receive(:close_write)
+      allow(fake_w).to receive(:read).and_return("envok")
+      allow(Process).to receive(:last_status).and_return(double(success?: true))
 
       expect(repo.git("status", env: { "FOO" => "bar" }, return_status: true)).to be(true)
-      expect(repo).to have_received(:system).with(hash_including("FOO" => "bar"), "git -C /app status 2>&1", out: fake_w)
-      expect(fake_w).to have_received(:close)
-      expect(fake_r).to have_received(:read)
-      expect(fake_r).to have_received(:close)
+      expect(IO).to have_received(:popen).with(hash_including("FOO" => "bar"), "git -C /app status 2>&1", "w+")
+      expect(fake_w).to have_received(:close_write)
+      expect(fake_w).to have_received(:read)
+      expect(Process).to have_received(:last_status)
     end
 
     it "returns status when return_status is true (with env, failure)" do
-      fake_r = instance_double(IO)
       fake_w = instance_double(IO)
-      allow(IO).to receive(:pipe).and_return([fake_r, fake_w])
-      allow(repo).to receive(:system).with(hash_including("FOO" => "bar"), "git -C /app status 2>&1", out: fake_w).and_return(false)
-      allow(fake_w).to receive(:close)
-      allow(fake_r).to receive(:read).and_return("envfail")
-      allow(fake_r).to receive(:close)
+      allow(IO).to receive(:popen).with(hash_including("FOO" => "bar"), "git -C /app status 2>&1", "w+").and_yield(fake_w)
+      allow(fake_w).to receive(:close_write)
+      allow(fake_w).to receive(:read).and_return("envfail")
+      allow(Process).to receive(:last_status).and_return(double(success?: false))
 
       expect(repo.git("status", env: { "FOO" => "bar" }, return_status: true)).to be(false)
-      expect(repo).to have_received(:system).with(hash_including("FOO" => "bar"), "git -C /app status 2>&1", out: fake_w)
-      expect(fake_w).to have_received(:close)
-      expect(fake_r).to have_received(:read)
-      expect(fake_r).to have_received(:close)
+      expect(IO).to have_received(:popen).with(hash_including("FOO" => "bar"), "git -C /app status 2>&1", "w+")
+      expect(fake_w).to have_received(:close_write)
+      expect(fake_w).to have_received(:read)
+      expect(Process).to have_received(:last_status)
     end
 
     it "runs git command" do
@@ -114,20 +110,17 @@ RSpec.describe Repository do
     end
 
     it "runs git command with env" do
-      fake_r = instance_double(IO)
       fake_w = instance_double(IO)
-      allow(IO).to receive(:pipe).and_return([fake_r, fake_w])
-      allow(repo).to receive(:system).with(hash_including("FOO" => "bar"), "git -C /app status 2>&1",
-        out: fake_w).and_return(true)
-      allow(fake_w).to receive(:close)
-      allow(fake_r).to receive(:read).and_return("envok")
-      allow(fake_r).to receive(:close)
-      allow(Process).to receive(:last_status).and_return(instance_double(Process::Status, success?: true))
-      repo.git("status", env: { "FOO" => "bar" })
-      expect(repo).to have_received(:system).with(hash_including("FOO" => "bar"), "git -C /app status 2>&1", out: fake_w)
-      expect(fake_w).to have_received(:close)
-      expect(fake_r).to have_received(:read)
-      expect(fake_r).to have_received(:close)
+      allow(IO).to receive(:popen).with(hash_including("FOO" => "bar"), "git -C /app status 2>&1", "w+").and_yield(fake_w)
+      allow(fake_w).to receive(:close_write)
+      allow(fake_w).to receive(:read).and_return("envok")
+      allow(Process).to receive(:last_status).and_return(double(success?: true))
+
+      expect(repo.git("status", env: { "FOO" => "bar" })).to eq("envok")
+      expect(IO).to have_received(:popen).with(hash_including("FOO" => "bar"), "git -C /app status 2>&1", "w+")
+      expect(fake_w).to have_received(:close_write)
+      expect(fake_w).to have_received(:read)
+      expect(Process).to have_received(:last_status)
     end
 
     it "raises error on git failure" do
@@ -235,11 +228,10 @@ RSpec.describe Repository do
       repo.unstage_file("file1")
     end
 
-    it "calls git reset with custom commit" do
+    it "calls git reset with HEAD~1 if amend is true" do
       allow(repo).to receive(:git)
-      repo.unstage_file("file1", commit: "abc")
-      expect(repo).to have_received(:git).with("reset abc -- file1")
-      repo.unstage_file("file1", commit: "abc")
+      repo.unstage_file("file1", amend: true)
+      expect(repo).to have_received(:git).with("reset HEAD~1 -- file1")
     end
   end
 
@@ -532,6 +524,209 @@ RSpec.describe Repository do
       allow(repo).to receive(:git).with("diff --quiet", return_status: true).and_return(true)
       allow(repo).to receive(:git).with("diff --cached --quiet", return_status: true).and_return(true)
       expect(repo.can_continue_rebase?).to be(true)
+    end
+  end
+
+  describe "#pick_line_patch" do
+    let(:file_path) { "foo.rb" }
+
+    context "with simple hunk" do
+      let(:hunk_text) do
+        <<~HUNK
+          @@ -1,3 +1,3 @@
+           some context line
+          -old line
+          +new line
+           other context line
+        HUNK
+      end
+
+      let(:diffs) { [[file_path, hunk_text]] }
+      let(:repo) { described_class.new }
+
+      context "when selecting the '+' line" do
+        let(:diff_line_num) { 4 } # header(1) + first content(2) + '-'(3) + '+'(4)
+
+        it "returns a patch containing the selected + line when not reversed" do
+          patch = repo.pick_line_patch(file_path, diffs, diff_line_num, reverse: false)
+
+          expect(patch).to eq(<<~PATCH)
+            diff --git a/#{file_path} b/#{file_path}
+            --- a/#{file_path}
+            +++ b/#{file_path}
+            @@ -1,3 +1,4 @@
+             some context line
+             old line
+            +new line
+             other context line
+          PATCH
+        end
+
+        it "returns a patch where the selected + line becomes - when reversed" do
+          patch = repo.pick_line_patch(file_path, diffs, diff_line_num, reverse: true)
+
+          expect(patch).to eq(<<~PATCH)
+            diff --git a/#{file_path} b/#{file_path}
+            --- a/#{file_path}
+            +++ b/#{file_path}
+            @@ -1,3 +1,2 @@
+             some context line
+            -new line
+             other context line
+          PATCH
+        end
+      end
+
+      context "when selecting the '-' line" do
+        let(:diff_line_num) { 3 }
+
+        it "returns a patch containing the selected - line when not reversed" do
+          patch = repo.pick_line_patch(file_path, diffs, diff_line_num, reverse: false)
+
+          expect(patch).to eq(<<~PATCH)
+            diff --git a/#{file_path} b/#{file_path}
+            --- a/#{file_path}
+            +++ b/#{file_path}
+            @@ -1,3 +1,2 @@
+             some context line
+            -old line
+             other context line
+          PATCH
+        end
+
+        it "returns a patch where the selected - line becomes + when reversed" do
+          patch = repo.pick_line_patch(file_path, diffs, diff_line_num, reverse: true)
+
+          expect(patch).to eq(<<~PATCH)
+            diff --git a/#{file_path} b/#{file_path}
+            --- a/#{file_path}
+            +++ b/#{file_path}
+            @@ -1,3 +1,4 @@
+             some context line
+            +old line
+             new line
+             other context line
+          PATCH
+        end
+      end
+    end
+
+    context "with long hunks" do
+      let(:hunk_text) do
+        <<~HUNK
+          @@ -1,5 +1,5 @@
+           line 1
+           line 2
+           line 3
+           line 4
+           line 5
+          @@ -10,11 +10,11 @@
+           line 10
+           line 11
+           line 12
+          +first added line
+          -first removed line
+           line 14
+          +second added line; it will be selected
+          -second removed line
+           line 16
+          +third added line
+          -third removed line
+           line 18
+           line 19
+           line 20
+        HUNK
+      end
+
+      let(:diffs) { [[file_path, hunk_text]] }
+      let(:repo) { described_class.new }
+
+      it "returns reduced hunk" do
+        patch = repo.pick_line_patch(file_path, diffs, 14, reverse: false)
+
+        expect(patch).to eq(<<~PATCH)
+          diff --git a/#{file_path} b/#{file_path}
+          --- a/#{file_path}
+          +++ b/#{file_path}
+          @@ -12,6 +12,7 @@
+           line 12
+           first removed line
+           line 14
+          +second added line; it will be selected
+           second removed line
+           line 16
+           third removed line
+        PATCH
+      end
+    end
+  end
+
+  describe "#stage_line" do
+    let(:repo) { described_class.new }
+    let(:file_path) { "foo.rb" }
+    let(:diffs) { [[file_path, "@@ -1,1 +1,1 @@\n+line\n"]] }
+
+    it "asks for unstaged diffs, builds a patch without reversing, and applies it cached" do
+      allow(repo).to receive(:unstaged_diffs).and_return(diffs)
+      allow(repo).to receive(:pick_line_patch).with(file_path, diffs, 5, reverse: false).and_return("patch-body")
+
+      fake_io = StringIO.new
+      allow(repo).to receive(:git) do |cmd, **_kwargs, &blk|
+        expect(cmd).to eq("apply --cached -")
+        blk.call(fake_io)
+        "ok"
+      end
+
+      repo.stage_line(file_path, 5)
+
+      expect(fake_io.string).to eq("patch-body")
+      expect(repo).to have_received(:unstaged_diffs)
+      expect(repo).to have_received(:pick_line_patch).with(file_path, diffs, 5, reverse: false)
+      expect(repo).to have_received(:git).with("apply --cached -", any_args)
+    end
+  end
+
+  describe "#unstage_line" do
+    let(:repo) { described_class.new }
+    let(:file_path) { "foo.rb" }
+    let(:diffs) { [[file_path, "@@ -1,1 +1,1 @@\n+line\n"]] }
+
+    it "asks for staged diffs with amend flag, builds a reversed patch, and applies it cached when amend: true" do
+      allow(repo).to receive(:staged_diffs).with(amend: true).and_return(diffs)
+      allow(repo).to receive(:pick_line_patch).with(file_path, diffs, 3, reverse: true).and_return("reversed-patch")
+
+      fake_io = StringIO.new
+      allow(repo).to receive(:git) do |cmd, **_kwargs, &blk|
+        expect(cmd).to eq("apply --cached -")
+        blk.call(fake_io)
+        "ok"
+      end
+
+      repo.unstage_line(file_path, 3, amend: true)
+
+      expect(fake_io.string).to eq("reversed-patch")
+      expect(repo).to have_received(:staged_diffs).with(amend: true)
+      expect(repo).to have_received(:pick_line_patch).with(file_path, diffs, 3, reverse: true)
+      expect(repo).to have_received(:git).with("apply --cached -", any_args)
+    end
+
+    it "asks for staged diffs with amend: false and builds a reversed patch when not amending" do
+      allow(repo).to receive(:staged_diffs).with(amend: false).and_return(diffs)
+      allow(repo).to receive(:pick_line_patch).with(file_path, diffs, 7, reverse: true).and_return("reversed-patch-2")
+
+      fake_io = StringIO.new
+      allow(repo).to receive(:git) do |cmd, **_kwargs, &blk|
+        expect(cmd).to eq("apply --cached -")
+        blk.call(fake_io)
+        "ok"
+      end
+
+      repo.unstage_line(file_path, 7, amend: false)
+
+      expect(fake_io.string).to eq("reversed-patch-2")
+      expect(repo).to have_received(:staged_diffs).with(amend: false)
+      expect(repo).to have_received(:pick_line_patch).with(file_path, diffs, 7, reverse: true)
+      expect(repo).to have_received(:git).with("apply --cached -", any_args)
     end
   end
 end

@@ -27,6 +27,22 @@ class Repository
       def represent
         define :nested, :hunks, Hunk, quantity: "+"
       end
+
+      def diff_line_at(diff_line_num)
+        # 1 origin for line number
+        cursor = 1
+
+        hunks.each do |hunk|
+          # hunk header line
+          cursor += 1
+
+          relative_line_num = diff_line_num - cursor
+          return hunk.lines[relative_line_num] if (0...hunk.lines.size).cover?(relative_line_num)
+
+          cursor += hunk.lines.size
+        end
+        nil
+      end
     end
 
     class FileHeader < TextRepresenter::Base
@@ -104,6 +120,55 @@ class Repository
         define :nested, :header, HunkHeader
         define :nested, :lines, HunkLine, quantity: "+", parent: :hunk, index: :index
       end
+
+      def drop_if
+        new_lines = []
+        lines.each do |l|
+          cond = yield l
+          unless cond
+            new_lines << l
+            next
+          end
+          if l.prefix == "+"
+            header.to_length -= 1
+            next
+          end
+          header.to_length += 1 if l.prefix == "-"
+          l.prefix = " "
+          new_lines << l
+        end
+        self.lines = new_lines
+      end
+
+      def reduce_context(context_size)
+        first_diff_index = lines.index { |l| l.prefix != " " }
+        if first_diff_index
+          extra_size = [0, first_diff_index - context_size].max
+          if extra_size.positive?
+            lines.shift(extra_size)
+            header.from_line += extra_size
+            header.from_length -= extra_size
+            header.to_line += extra_size
+            header.to_length -= extra_size
+          end
+        end
+
+        last_diff_index = lines.rindex { |l| l.prefix != " " }
+        return unless last_diff_index
+
+        extra_size = [0, lines.size - 1 - last_diff_index - context_size].max
+        return unless extra_size.positive?
+
+        lines.pop(extra_size)
+        header.from_length -= extra_size
+        header.to_length -= extra_size
+      end
+
+      def reverse
+        lines.each(&:reverse)
+        header.from_line, header.to_line = header.to_line, header.from_line
+        header.from_length, header.to_length = header.to_length, header.from_length
+      end
     end
 
     class HunkHeader < TextRepresenter::Base
@@ -144,6 +209,15 @@ class Repository
         define :line do
           define :pattern, :prefix, /[-+ ]/
           define :pattern, :content, /.*/
+        end
+      end
+
+      def reverse
+        case prefix
+        when "-"
+          self.prefix = "+"
+        when "+"
+          self.prefix = "-"
         end
       end
     end

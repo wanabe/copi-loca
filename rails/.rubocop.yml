@@ -60,8 +60,13 @@ Rails/I18nLocaleTexts:
   Enabled: false
 Rails/SkipsModelValidations:
   Enabled: true
+Rails/Exit:
+  Exclude:
+    - 'spec/**/*'
 
 RSpec/ExampleLength:
   Enabled: false
 RSpec/MultipleExpectations:
+  Enabled: false
+RSpec/NestedGroups:
   Enabled: false

@@ -20,5 +20,6 @@
 </ul>
 <% if @file_diff %>
   <hr>
-  <%= render partial: "diff", locals: { file_diffs: [@file_diff] } %>
+  <%= render partial: "diff",
+        locals: { file_diffs: [@file_diff], stage_state: nil, stage_url: nil, unstage_url: nil, stage_amend: nil, unstage_amend: nil } %>
 <% end %>

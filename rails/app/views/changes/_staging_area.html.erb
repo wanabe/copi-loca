@@ -1,4 +1,4 @@
-<%# locals: (unstaged_files:, staged_files:, unstaged_file_path:, staged_file_path:, stage_url:, unstage_url:, stage_amend:, unstage_amend:, stage_label:, unstage_label:, file_diff:, unstaged_link:, staged_link:) %>
+<%# locals: (unstaged_files:, staged_files:, unstaged_file_path:, staged_file_path:, file_diff:, unstaged_link:, staged_link:, stage_url:, unstage_url:, stage_label:, unstage_label:, stage_amend:, unstage_amend:) %>
 <%# Partial for staging area (unstaged/staged lists, diff, stage/unstage actions) %>
 
 <h2>Unstaged Changes</h2>
@@ -44,5 +44,8 @@
       <%= form.submit unstage_label, class: "changes-unstage-btn" %>
     <% end %>
   <% end %>
-  <%= render partial: "diff", locals: { file_diffs: [file_diff] } %>
+
+  <%= render partial: "diff",
+        locals: { file_diffs: [file_diff], stage_state: (unstaged_file_path ? "unstaged" : "staged"), stage_url: stage_url, unstage_url: unstage_url,
+                  stage_amend: stage_amend, unstage_amend: unstage_amend } %>
 <% end %>

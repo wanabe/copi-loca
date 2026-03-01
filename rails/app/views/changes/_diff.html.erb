@@ -1,7 +1,18 @@
-<%# locals: (file_diffs:) %>
+<%# locals: (file_diffs:, stage_state:, stage_url:, unstage_url:, stage_amend:, unstage_amend:) %>
 <% file_diffs.each do |path, diff| %>
   <h2 class="changes-diff__file-path">
     <a href="<%= file_path(path) %>"><%= h path %></a>
   </h2>
-  <pre><code class="language-diff"><%= h diff %></code></pre>
+  <% if stage_state.nil? %>
+    <pre><code class="language-diff"><%= h diff %></code></pre>
+  <% else %>
+    <pre><code class="language-diff"
+          data-controller="diff-line-click"
+          data-diff-line-click-target="code"
+          data-file-path="<%= h path %>"
+          data-stage-state="<%= stage_state %>"
+          data-stage-url="<%= stage_url %>"
+          data-unstage-url="<%= unstage_url %>"
+          data-amend="<%= stage_amend || unstage_amend ? "true" : "false" %>"><%= h diff %></code></pre>
+  <% end %>
 <% end %>
