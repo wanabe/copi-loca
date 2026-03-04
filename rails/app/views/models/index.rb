@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Models::Index < Components::Base
+class Views::Models::Index < Views::Base
   def initialize(models:, open_id: nil)
     @models = models
     @open_id = open_id

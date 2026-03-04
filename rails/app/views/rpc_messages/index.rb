@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::RpcMessages::Index < Components::Base
+class Views::RpcMessages::Index < Views::Base
   def initialize(session:, methods:, selected_methods:, selected_message_type:, selected_direction:, rpc_messages:)
     @session = session
     @methods = methods

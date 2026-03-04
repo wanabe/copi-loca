@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Messages::Index < Components::Base
+class Views::Messages::Index < Views::Base
   def initialize(messages:, limit: 10, history_mode: false)
     @messages = messages
     @limit = limit

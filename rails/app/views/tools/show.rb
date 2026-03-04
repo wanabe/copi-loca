@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Tools::Show < Components::Base
+class Views::Tools::Show < Views::Base
   def initialize(tool:)
     @tool = tool
   end

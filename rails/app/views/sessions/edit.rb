@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Sessions::Edit < Components::Base
+class Views::Sessions::Edit < Views::Base
   def initialize(session:, custom_agents:, models:, tools:)
     @session = session
     @custom_agents = custom_agents

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::RpcMessages::Show < Components::Base
+class Views::RpcMessages::Show < Views::Base
   include Phlex::Rails::Helpers::LinkTo
 
   def initialize(rpc_message:, session:, prev_rpc_message: nil, next_rpc_message: nil)

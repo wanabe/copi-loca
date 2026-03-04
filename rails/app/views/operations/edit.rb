@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Operations::Edit < Components::Base
+class Views::Operations::Edit < Views::Base
   def initialize(operation:)
     @operation = operation
   end

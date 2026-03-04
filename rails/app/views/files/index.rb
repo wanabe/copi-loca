@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Files::Index < Components::Base
+class Views::Files::Index < Views::Base
   def initialize(tree:)
     @tree = tree
   end

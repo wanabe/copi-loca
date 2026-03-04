@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::CustomAgents::Edit < Components::Base
+class Views::CustomAgents::Edit < Views::Base
   def initialize(custom_agent:)
     @custom_agent = custom_agent
   end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Events::Index < Components::Base
+class Views::Events::Index < Views::Base
   def initialize(session:, types:, selected_types:, events:, limit: 10)
     @session = session
     @types = types

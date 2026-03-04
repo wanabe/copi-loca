@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::AuthSessions::New < Components::Base
+class Views::AuthSessions::New < Views::Base
   include Phlex::Rails::Helpers::FormAuthenticityToken
 
   def view_template

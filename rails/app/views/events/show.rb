@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Events::Show < Components::Base
+class Views::Events::Show < Views::Base
   def initialize(event:)
     @event = event
   end

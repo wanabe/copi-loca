@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Changes::Revert < Components::Base
+class Views::Changes::Revert < Views::Base
   def view_template
     h1 { plain "Revert Changes" }
     p { plain "Are you sure you want to revert the latest change?" }

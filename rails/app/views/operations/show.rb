@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Operations::Show < Components::Base
+class Views::Operations::Show < Views::Base
   include Phlex::Rails::Helpers::LinkTo
   include Phlex::Rails::Helpers::TurboStreamFrom
   include Phlex::Rails::Helpers::ButtonTo

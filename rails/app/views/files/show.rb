@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Files::Show < Components::Base
+class Views::Files::Show < Views::Base
   def initialize(path:, content:, language:)
     @path = path
     @content = content

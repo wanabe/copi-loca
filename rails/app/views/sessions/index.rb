@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Sessions::Index < Components::Base
+class Views::Sessions::Index < Views::Base
   def initialize(sessions:)
     @sessions = sessions
   end

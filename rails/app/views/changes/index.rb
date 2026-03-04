@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Changes::Index < Components::Base
+class Views::Changes::Index < Views::Base
   def initialize(current_branch:, rebase_status:, commits:)
     @current_branch = current_branch
     @rebase_status = rebase_status

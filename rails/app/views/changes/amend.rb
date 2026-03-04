@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Changes::Amend < Components::Base
+class Views::Changes::Amend < Views::Base
   def initialize(unstaged_files:, staged_files:, unstaged_file_path: nil, staged_file_path: nil, file_diff: nil, head_commit_message: nil,
                  params: nil)
     @unstaged_files = unstaged_files

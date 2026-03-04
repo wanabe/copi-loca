@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Sessions::Show < Components::Base
+class Views::Sessions::Show < Views::Base
   include Phlex::Rails::Helpers::TurboStreamFrom
 
   def initialize(session:, display_state:, job_status: :idle)

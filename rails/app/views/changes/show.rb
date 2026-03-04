@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Changes::Show < Components::Base
+class Views::Changes::Show < Views::Base
   def initialize(id:, can_start_rebase:, commit_info:, commit_message:, file_paths:, selected_file_path: nil, file_diff: nil)
     @id = id
     @can_start_rebase = can_start_rebase

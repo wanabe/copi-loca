@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Tools::New < Components::Base
+class Views::Tools::New < Views::Base
   include Phlex::Rails::Helpers::LinkTo
 
   def initialize(tool:)

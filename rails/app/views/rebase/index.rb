@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Rebase::Index < Components::Base
+class Views::Rebase::Index < Views::Base
   def initialize(all_commits:, base:, rebase_status:, rebase_logs:, can_start_rebase:, can_continue_rebase:)
     @all_commits = all_commits
     @base = base
