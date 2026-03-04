@@ -6,6 +6,11 @@ class Views::Tools::Edit < Views::Base
   end
 
   def view_template
-    render Components::Tools::EditComponent.new(tool: @tool)
+    h1 { plain "Edit tool" }
+    render Components::Tools::FormComponent.new(tool: @tool)
+
+    div do
+      a(href: tools_path) { plain "Back" }
+    end
   end
 end

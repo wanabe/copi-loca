@@ -6,8 +6,15 @@ class Views::Tools::Index < Views::Base
   end
 
   def view_template
-    view_context.content_for(:title, "Tools")
+    content_for(:title, "Tools")
+    h1 { plain "Tools" }
+    div(id: "tools") do
+      @tools.each do |tool|
+        render Components::Tools::ToolComponent.new(tool: tool)
+        p { a(href: tool_path(tool)) { plain "Show this tool" } }
+      end
+    end
 
-    render Components::Tools::IndexComponent.new(tools: @tools)
+    div { a(href: new_tool_path) { plain "New tool" } }
   end
 end

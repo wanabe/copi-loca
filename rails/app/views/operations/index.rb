@@ -6,8 +6,15 @@ class Views::Operations::Index < Views::Base
   end
 
   def view_template
-    view_context.content_for(:title, "Operations")
+    content_for(:title, "Operations")
+    h1 { plain "Operations" }
+    div(id: "operations") do
+      @operations.each do |operation|
+        render Components::Operations::OperationComponent.new(operation: operation)
+        p { a(href: operation_path(operation)) { plain "Show this operation" } }
+      end
+    end
 
-    render Components::Operations::IndexComponent.new(operations: @operations)
+    div { a(href: new_operation_path) { plain "New operation" } }
   end
 end
