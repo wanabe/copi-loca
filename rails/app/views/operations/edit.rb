@@ -1,27 +1,23 @@
 # frozen_string_literal: true
 
-module Views
-  module Operations
-    class Edit < Components::Base
-      def initialize(operation:)
-        @operation = operation
-      end
+class Views::Operations::Edit < Components::Base
+  def initialize(operation:)
+    @operation = operation
+  end
 
-      def view_template
-        view_context.content_for(:title, "Editing operation")
+  def view_template
+    view_context.content_for(:title, "Editing operation")
 
-        h1 { plain "Editing operation" }
+    h1 { plain "Editing operation" }
 
-        render Components::Operations::FormComponent.new(operation: @operation)
+    render Components::Operations::FormComponent.new(operation: @operation)
 
-        br
+    br
 
-        div do
-          a(href: operation_path(@operation)) { plain "Show this operation" }
-          plain " | "
-          a(href: operations_path) { plain "Back to operations" }
-        end
-      end
+    div do
+      a(href: operation_path(@operation)) { plain "Show this operation" }
+      plain " | "
+      a(href: operations_path) { plain "Back to operations" }
     end
   end
 end

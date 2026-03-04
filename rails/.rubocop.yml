@@ -59,6 +59,10 @@ Style/StringLiterals:
   EnforcedStyle: double_quotes
 Style/HashSyntax:
   EnforcedStyle: ruby19
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact
+  Exclude:
+    - 'lib/**/*'
 
 Rails/I18nLocaleTexts:
   Enabled: false

@@ -1,27 +1,23 @@
 # frozen_string_literal: true
 
-module Views
-  module Tools
-    class New < Components::Base
-      include Phlex::Rails::Helpers::LinkTo
+class Views::Tools::New < Components::Base
+  include Phlex::Rails::Helpers::LinkTo
 
-      def initialize(tool:)
-        @tool = tool
-      end
+  def initialize(tool:)
+    @tool = tool
+  end
 
-      def view_template
-        view_context.content_for(:title, "New tool")
+  def view_template
+    view_context.content_for(:title, "New tool")
 
-        h1 { plain "New tool" }
+    h1 { plain "New tool" }
 
-        render Components::Tools::FormComponent.new(tool: @tool)
+    render Components::Tools::FormComponent.new(tool: @tool)
 
-        br
+    br
 
-        div do
-          link_to("Back to tools", tools_path)
-        end
-      end
+    div do
+      link_to("Back to tools", tools_path)
     end
   end
 end

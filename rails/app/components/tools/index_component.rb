@@ -1,23 +1,19 @@
 # frozen_string_literal: true
 
-module Components
-  module Tools
-    class IndexComponent < Components::Base
-      def initialize(tools:)
-        @tools = tools
-      end
+class Components::Tools::IndexComponent < Components::Base
+  def initialize(tools:)
+    @tools = tools
+  end
 
-      def view_template
-        h1 { plain "Tools" }
-        div(id: "tools") do
-          @tools.each do |tool|
-            render Components::Tools::ToolComponent.new(tool: tool)
-            p { a(href: tool_path(tool)) { plain "Show this tool" } }
-          end
-        end
-
-        div { a(href: new_tool_path) { plain "New tool" } }
+  def view_template
+    h1 { plain "Tools" }
+    div(id: "tools") do
+      @tools.each do |tool|
+        render Components::Tools::ToolComponent.new(tool: tool)
+        p { a(href: tool_path(tool)) { plain "Show this tool" } }
       end
     end
+
+    div { a(href: new_tool_path) { plain "New tool" } }
   end
 end
