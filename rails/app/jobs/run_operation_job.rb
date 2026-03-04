@@ -14,7 +14,7 @@ class RunOperationJob < ApplicationJob
       loop do
         broadcast(operation, output, "running")
         partial = reader.readpartial(READ_LIMIT)
-        output << partial
+        output << partial.force_encoding("UTF-8")
         output.force_encoding("UTF-8")
       rescue EOFError
         break
@@ -34,8 +34,8 @@ class RunOperationJob < ApplicationJob
     Turbo::StreamsChannel.broadcast_replace_to(
       operation,
       target: "operation-result",
-      partial: "operations/run",
-      locals: { operation: operation, output: output, status: status }
+      renderable: Components::Operations::RunComponent.new(operation: operation, output: output, status: status),
+      layout: false
     )
   end
 end

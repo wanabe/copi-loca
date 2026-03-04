@@ -25,10 +25,5 @@ task check: :environment do
     Rake::Task["check_command"].execute(["bundle exec rspec", "RSpec tests failed."])
     coverage = JSON.parse(File.read("coverage/.last_run.json")).dig("result", "line")
     raise "Test coverage is #{coverage}%, which is below 100%." if coverage != 100
-
-    Rake::Task["check_command"].execute([
-      "bundle exec erb_lint --fail-level=I app/**/*.{html,text,js}{+*,}.erb",
-      "ERB Lint found issues.", "bundle exec erb_lint -a app/**/*.{html,text,js}{+*,}.erb"
-    ])
   end
 end

@@ -23,6 +23,9 @@ class RebaseController < ApplicationController
         @rebase_logs = []
       end
     end
+
+    render Views::Rebase::Index.new(all_commits: @all_commits, base: @base, rebase_status: @rebase_status, rebase_logs: @rebase_logs,
+      can_start_rebase: @can_start_rebase, can_continue_rebase: @can_continue_rebase)
   end
 
   def start

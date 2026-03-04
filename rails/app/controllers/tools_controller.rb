@@ -9,18 +9,26 @@ class ToolsController < ApplicationController
   # GET /tools
   def index
     @tools = Tool.all
+
+    render Views::Tools::Index.new(tools: @tools)
   end
 
   # GET /tools/1
-  def show; end
+  def show
+    render Views::Tools::Show.new(tool: @tool)
+  end
 
   # GET /tools/new
   def new
     @tool = Tool.new
+
+    render Views::Tools::New.new(tool: @tool)
   end
 
   # GET /tools/1/edit
-  def edit; end
+  def edit
+    render Views::Tools::Edit.new(tool: @tool)
+  end
 
   # POST /tools
   def create
@@ -29,7 +37,7 @@ class ToolsController < ApplicationController
     if @tool.save
       redirect_to @tool, notice: "Tool was successfully created."
     else
-      render :new, status: :unprocessable_content
+      render Views::Tools::New.new(tool: @tool), status: :unprocessable_content
     end
   end
 
@@ -38,7 +46,7 @@ class ToolsController < ApplicationController
     if @tool.update(tool_params)
       redirect_to @tool, notice: "Tool was successfully updated.", status: :see_other
     else
-      render :edit, status: :unprocessable_content
+      render Views::Tools::Edit.new(tool: @tool), status: :unprocessable_content
     end
   end
 

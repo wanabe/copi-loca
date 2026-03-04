@@ -1,8 +1,0 @@
-<%# locals: (operation:, status:, output:) %>
-<div id="operation-result">
-  <%= turbo_frame_tag "result" do %>
-    <%= button_to "Run this operation", run_operation_path(operation), method: :post %>
-    <p><strong>Exit status:</strong> <%= status %></p>
-    <pre class="operations-run__output"><%= output %></pre>
-  <% end %>
-</div>

@@ -12,7 +12,9 @@ class MessagesController < ApplicationController
   # GET /messages
   def index
     @message = @session.messages.new
-    @messages = @session.messages.order(id: :desc).page(params[:page])
+    @messages = @session.messages.order(id: :desc).page(params[:page]).per(params[:per_page] || 10)
+
+    render Views::Messages::Index.new(messages: @messages, limit: 10, history_mode: false)
   end
 
   # POST /messages
@@ -80,7 +82,7 @@ class MessagesController < ApplicationController
   def history
     @history_mode = true
     @messages = @session.messages.where(direction: "outgoing").order(id: :desc).page(params[:page]).per(params[:per_page] || 10)
-    render partial: "history", locals: { messages: @messages }
+    render Components::Messages::HistoryComponent.new(messages: @messages)
   end
 
   private

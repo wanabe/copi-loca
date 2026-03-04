@@ -17,10 +17,14 @@ class EventsController < ApplicationController
     scope = @session.events
     scope = scope.where(event_type: @selected_types) if @selected_types.present?
     @events = scope.order(id: :desc).page(params[:page])
+
+    render Views::Events::Index.new(session: @session, types: @types, selected_types: @selected_types, events: @events, limit: 10)
   end
 
   # GET /events/1
-  def show; end
+  def show
+    render Views::Events::Show.new(event: @event)
+  end
 
   private
 

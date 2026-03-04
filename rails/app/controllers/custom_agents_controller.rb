@@ -10,18 +10,26 @@ class CustomAgentsController < ApplicationController
   # GET /custom_agents
   def index
     @custom_agents = CustomAgent.all
+
+    render Views::CustomAgents::Index.new(custom_agents: @custom_agents)
   end
 
   # GET /custom_agents/1
-  def show; end
+  def show
+    render Views::CustomAgents::Show.new(custom_agent: @custom_agent)
+  end
 
   # GET /custom_agents/new
   def new
     @custom_agent = CustomAgent.new
+
+    render Views::CustomAgents::New.new(custom_agent: @custom_agent)
   end
 
   # GET /custom_agents/1/edit
-  def edit; end
+  def edit
+    render Views::CustomAgents::Edit.new(custom_agent: @custom_agent)
+  end
 
   # POST /custom_agents
   def create
@@ -30,7 +38,7 @@ class CustomAgentsController < ApplicationController
     if @custom_agent.save
       redirect_to @custom_agent, notice: "Custom agent was successfully created."
     else
-      render :new, status: :unprocessable_content
+      render Views::CustomAgents::New.new(custom_agent: @custom_agent), status: :unprocessable_content
     end
   end
 
@@ -39,7 +47,7 @@ class CustomAgentsController < ApplicationController
     if @custom_agent.update(custom_agent_params)
       redirect_to @custom_agent, notice: "Custom agent was successfully updated.", status: :see_other
     else
-      render :edit, status: :unprocessable_content
+      render Views::CustomAgents::Edit.new(custom_agent: @custom_agent), status: :unprocessable_content
     end
   end
 

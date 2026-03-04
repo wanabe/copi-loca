@@ -6,6 +6,7 @@ class ModelsController < ApplicationController
   def index
     @models = Client.new.available_models
     @open_id = params[:id]
+    render Views::Models::Index.new(models: @models, open_id: @open_id)
   end
 
   private

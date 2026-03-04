@@ -10,12 +10,20 @@ class ChangesController < ApplicationController
   def index
     uncommitted = [{ hash: "uncommitted", author: "", message: "" }]
     all_commits = uncommitted + Repository.log(10_000)
-    @commits = Kaminari.paginate_array(all_commits).page(params[:page]).per(10)
-    @current_branch = Repository.current_branch
-    @rebase_status = Repository.rebase_status
+    commits = Kaminari.paginate_array(all_commits).page(params[:page]).per(10)
+    current_branch = Repository.current_branch
+    rebase_status = Repository.rebase_status
+
+    render Views::Changes::Index.new(
+      current_branch: current_branch,
+      rebase_status: rebase_status,
+      commits: commits
+    )
   end
 
-  def revert; end
+  def revert
+    render Views::Changes::Revert.new
+  end
 
   def execute_revert
     client = Client.instance.copilot_client
@@ -39,6 +47,14 @@ class ChangesController < ApplicationController
       @unstaged_file_path = params[:unstaged_file_path]
       @file_diff = unstaged_diffs.find { |fd| fd[0] == params[:unstaged_file_path] }
     end
+
+    render Views::Changes::Uncommitted.new(
+      unstaged_files: @unstaged_files,
+      staged_files: @staged_files,
+      unstaged_file_path: @unstaged_file_path,
+      staged_file_path: @staged_file_path,
+      file_diff: @file_diff
+    )
   end
 
   def show
@@ -47,10 +63,20 @@ class ChangesController < ApplicationController
     @commit_info = Repository.commit_info(@id)
     @file_paths = @file_diffs.pluck(0)
     @can_start_rebase = Repository.can_start_rebase?
-    return unless params[:file_path]
+    if params[:file_path]
+      @selected_file_path = params[:file_path]
+      @file_diff = @file_diffs.find { |fd| fd[0] == params[:file_path] }
+    end
 
-    @selected_file_path = params[:file_path]
-    @file_diff = @file_diffs.find { |fd| fd[0] == params[:file_path] }
+    render Views::Changes::Show.new(
+      id: @id,
+      can_start_rebase: @can_start_rebase,
+      commit_info: @commit_info,
+      commit_message: @commit_message,
+      file_paths: @file_paths,
+      selected_file_path: @selected_file_path,
+      file_diff: @file_diff
+    )
   end
 
   def stage
@@ -127,6 +153,17 @@ class ChangesController < ApplicationController
       @unstaged_file_path = params[:unstaged_file_path]
       @file_diff = unstaged_diffs.find { |fd| fd[0] == params[:unstaged_file_path] }
     end
+
+    # Explicitly render the Phlex view and pass params so the view can access them
+    render Views::Changes::Amend.new(
+      unstaged_files: @unstaged_files,
+      staged_files: @staged_files,
+      unstaged_file_path: @unstaged_file_path,
+      staged_file_path: @staged_file_path,
+      file_diff: @file_diff,
+      head_commit_message: @head_commit_message,
+      params: params
+    )
   end
 
   def amend_commit

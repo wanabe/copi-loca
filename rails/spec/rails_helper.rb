@@ -27,6 +27,8 @@ require "rspec/rails"
 #
 Rails.root.glob("spec/support/**/*.rb").sort_by(&:to_s).each { |f| require f }
 
+RSpec::Rails::DIRECTORY_MAPPINGS[:component] = %w[spec components]
+
 # Prepend stub authenticate for tests
 ApplicationController.prepend(StubAuthenticate)
 
@@ -87,4 +89,6 @@ RSpec.configure do |config|
     end
     allow(Client).to receive(:resume_session)
   end
+
+  config.include RSpec::Rails::ViewExampleGroup, type: :component
 end

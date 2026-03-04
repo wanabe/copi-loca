@@ -41,8 +41,8 @@ class SendPromptJob < ApplicationJob
     Turbo::StreamsChannel.broadcast_replace_to(
       [session, :stream],
       target: "session-stream",
-      partial: "sessions/session",
-      locals: { session: session, display_state: display_state, job_status: job_status }
+      renderable: Components::Sessions::SessionComponent.new(session: session, display_state: display_state, job_status: job_status),
+      layout: false
     )
   end
 end

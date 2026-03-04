@@ -16,6 +16,7 @@ describe "POST /auth_sessions" do
 
   it "shows error with wrong password" do
     post "/auth_sessions", params: { password: "wrong" }
+    follow_redirect!
     expect(response.body).to include("Invalid password.")
     expect(response.body).to include("Login")
   end

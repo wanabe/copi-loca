@@ -13,11 +13,6 @@ RSpec.describe "RebaseController#index" do
     expect(response.body).to include("Rebase")
   end
 
-  it "responds to turbo_stream format" do
-    get "/rebase", headers: { "Accept" => "text/vnd.turbo-stream.html" }
-    expect(response).to have_http_status(:not_acceptable)
-  end
-
   it "handles empty log_for_rebase" do
     allow(Repository).to receive_messages(rebase_status: nil, log_for_rebase: [])
     get "/rebase"

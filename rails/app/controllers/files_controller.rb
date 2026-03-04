@@ -8,7 +8,9 @@ class FilesController < ApplicationController
 
   def index
     files = Repository.ls_files
-    @tree = build_tree(files)
+    tree = build_tree(files)
+
+    render Views::Files::Index.new(tree: tree)
   end
 
   def show
@@ -19,10 +21,10 @@ class FilesController < ApplicationController
     end
     return render plain: "File not found", status: :not_found unless File.file?(abs_path)
 
-    @language = abs_path[/\.(\w+)$/, 1] || "txt"
-    @content = File.read(abs_path)
+    language = abs_path[/\.(\w+)$/, 1] || "txt"
+    content = File.read(abs_path)
 
-    render :show
+    render Views::Files::Show.new(path: @path, content: content, language: language)
   end
 
   private

@@ -12,6 +12,8 @@ class SessionsController < ApplicationController
   # GET /sessions
   def index
     @sessions = Session.all
+
+    render Views::Sessions::Index.new(sessions: @sessions)
   end
 
   # GET /sessions/1
@@ -21,6 +23,8 @@ class SessionsController < ApplicationController
       show_rpc_messages: params[:show_rpc_messages].presence_in(%w[true false]) || "true",
       show_events: params[:show_events].presence_in(%w[true false]) || "true"
     }
+
+    render Views::Sessions::Show.new(session: @session, display_state: @display_state, job_status: :idle)
   end
 
   # GET /sessions/new
@@ -29,6 +33,8 @@ class SessionsController < ApplicationController
     @models = available_models
     @custom_agents = CustomAgent.all
     @tools = Tool.all
+
+    render Views::Sessions::New.new(session: @session, custom_agents: @custom_agents, models: @models, tools: @tools)
   end
 
   # GET /sessions/1/edit
@@ -36,6 +42,8 @@ class SessionsController < ApplicationController
     @models = [@session.model]
     @custom_agents = CustomAgent.all
     @tools = Tool.all
+
+    render Views::Sessions::Edit.new(session: @session, custom_agents: @custom_agents, models: @models, tools: @tools)
   end
 
   # POST /sessions
@@ -48,7 +56,8 @@ class SessionsController < ApplicationController
       @models = available_models
       @custom_agents = CustomAgent.all
       @tools = Tool.all
-      render :new, status: :unprocessable_content, alert: @session.errors.full_messages.to_sentence
+      render Views::Sessions::New.new(session: @session, custom_agents: @custom_agents, models: @models, tools: @tools),
+        status: :unprocessable_content, alert: @session.errors.full_messages.to_sentence
     end
   end
 
@@ -60,7 +69,8 @@ class SessionsController < ApplicationController
       @models = [@session.model]
       @custom_agents = CustomAgent.all
       @tools = Tool.all
-      render :edit, status: :unprocessable_content, alert: @session.errors.full_messages.to_sentence
+      render Views::Sessions::Edit.new(session: @session, custom_agents: @custom_agents, models: @models, tools: @tools),
+        status: :unprocessable_content, alert: @session.errors.full_messages.to_sentence
     end
   end
 

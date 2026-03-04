@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   before_action :add_home_breadcrumb
   helper_method :breadcrumbs
 
+  layout -> { Views::Layouts::Application.new(breadcrumbs: @breadcrumbs, session: @session) }
+
   def breadcrumbs
     @breadcrumbs ||= []
   end

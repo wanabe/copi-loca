@@ -23,12 +23,18 @@ class RpcMessagesController < ApplicationController
     scope = scope.where(message_type: @selected_message_type) if @selected_message_type.present?
     @rpc_messages = scope.order(id: :desc).page(params[:page])
     @streaming = params[:page].nil? || params[:page].to_i == 1
+
+    render Views::RpcMessages::Index.new(session: @session, methods: @methods, selected_methods: @selected_methods,
+      selected_message_type: @selected_message_type, selected_direction: @selected_direction, rpc_messages: @rpc_messages)
   end
 
   # GET /rpc_messages/1
   def show
     @prev_rpc_message = @session.rpc_messages.where(id: ...@rpc_message.id).order(id: :desc).first
     @next_rpc_message = @session.rpc_messages.where("id > ?", @rpc_message.id).order(id: :asc).first
+
+    render Views::RpcMessages::Show.new(rpc_message: @rpc_message, session: @session, prev_rpc_message: @prev_rpc_message,
+      next_rpc_message: @next_rpc_message)
   end
 
   private

@@ -9,22 +9,28 @@ class OperationsController < ApplicationController
   # GET /operations
   def index
     @operations = Operation.all
+
+    render Views::Operations::Index.new(operations: @operations)
   end
 
   # GET /operations/1
   def show
-    return unless @operation.immediate?
+    @output, @status = @operation.run if @operation.immediate?
 
-    @output, @status = @operation.run
+    render Views::Operations::Show.new(operation: @operation, status: @status, output: @output)
   end
 
   # GET /operations/new
   def new
     @operation = Operation.new
+
+    render Views::Operations::New.new(operation: @operation)
   end
 
   # GET /operations/1/edit
-  def edit; end
+  def edit
+    render Views::Operations::Edit.new(operation: @operation)
+  end
 
   # POST /operations
   def create
@@ -33,7 +39,7 @@ class OperationsController < ApplicationController
     if @operation.save
       redirect_to @operation, notice: "Operation was successfully created."
     else
-      render :new, status: :unprocessable_content
+      render Views::Operations::New.new(operation: @operation), status: :unprocessable_content
     end
   end
 
@@ -42,7 +48,7 @@ class OperationsController < ApplicationController
     if @operation.update(operation_params)
       redirect_to @operation, notice: "Operation was successfully updated.", status: :see_other
     else
-      render :edit, status: :unprocessable_content
+      render Views::Operations::Edit.new(operation: @operation), status: :unprocessable_content
     end
   end
 
@@ -58,7 +64,7 @@ class OperationsController < ApplicationController
     else
       @output, @status = @operation.run
     end
-    render partial: "run", locals: { operation: @operation, output: @output, status: @status }
+    render Components::Operations::RunComponent.new(operation: @operation, output: @output, status: @status)
   end
 
   private

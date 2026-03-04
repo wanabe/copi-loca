@@ -22,20 +22,25 @@ RSpec.describe RunOperationJob do
           block.call(StringIO.new("hello\n"))
           0
         end
+        component_double = instance_double(Components::Operations::RunComponent, to_s: "")
+        args_buffer = []
+        allow(Components::Operations::RunComponent).to receive(:new) do |args|
+          args_buffer << args
+          component_double
+        end
         described_class.perform_now(operation.id)
         # Check that broadcast_replace_to was called with expected args
         expect(Turbo::StreamsChannel).to have_received(:broadcast_replace_to).with(
           operation,
           target: "operation-result",
-          partial: "operations/run",
-          locals: hash_including(operation: operation, output: "", status: "running")
-        ).once
-        expect(Turbo::StreamsChannel).to have_received(:broadcast_replace_to).with(
-          operation,
-          target: "operation-result",
-          partial: "operations/run",
-          locals: hash_including(operation: operation, output: "hello\n", status: 0)
-        ).once
+          renderable: component_double,
+          layout: false
+        ).exactly(3).times
+        expect(args_buffer).to eq([
+          { operation: operation, output: "", status: "running" },
+          { operation: operation, output: "hello\n", status: "running" },
+          { operation: operation, output: "hello\n", status: 0 }
+        ])
       end
     end
   end
