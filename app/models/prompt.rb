@@ -32,6 +32,10 @@ class Prompt
     false
   end
 
+  def persisted?
+    File.exist?(path)
+  end
+
   def run
     r, w = IO.pipe
     system({ "COPILOT_GITHUB_TOKEN" => ENV.fetch("COPILOCA_GITHUB_TOKEN", nil) }, *COMMAND, text, out: w, err: w)
