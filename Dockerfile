@@ -28,12 +28,14 @@ ENV RAILS_ENV="production" \
     LD_PRELOAD="/usr/local/lib/libjemalloc.so"
 
 # Throw-away build stage to reduce size of final image
-FROM base AS build
+FROM base AS build_base
 
 # Install packages needed to build gems
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+FROM build_base AS build
 
 # Install application gems
 COPY vendor/* ./vendor/
@@ -55,7 +57,15 @@ RUN bundle exec bootsnap precompile -j 1 app/ lib/
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
 
+FROM build_base AS dev
+ENV RAILS_ENV="development" \
+    BUNDLE_WITHOUT="production"
 
+# Install Node.js and Copilot CLI
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y nodejs npm && \
+    npm install -g @github/copilot && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Final stage for app image
 FROM base

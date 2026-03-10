@@ -1,0 +1,5 @@
+#!/bin/sh
+
+export SITE_HOSTNAME=`hostname`.local
+export USR=`id -u`:`id -g`
+docker "$@"
