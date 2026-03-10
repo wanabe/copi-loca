@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class PromptsController < ApplicationController
-  before_action :set_prompt, only: %i[ show edit update destroy run ]
+  before_action :set_prompt, only: %i[show edit update destroy run]
 
   # GET /prompts or /prompts.json
   def index
@@ -7,8 +9,7 @@ class PromptsController < ApplicationController
   end
 
   # GET /prompts/1 or /prompts/1.json
-  def show
-  end
+  def show; end
 
   # GET /prompts/new
   def new
@@ -16,8 +17,7 @@ class PromptsController < ApplicationController
   end
 
   # GET /prompts/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /prompts or /prompts.json
   def create
@@ -28,8 +28,8 @@ class PromptsController < ApplicationController
         format.html { redirect_to @prompt, notice: "Prompt was successfully created." }
         format.json { render :show, status: :created, location: @prompt }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @prompt.errors, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_content }
+        format.json { render json: @prompt.errors, status: :unprocessable_content }
       end
     end
   end
@@ -41,8 +41,8 @@ class PromptsController < ApplicationController
         format.html { redirect_to @prompt, notice: "Prompt was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @prompt }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @prompt.errors, status: :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_content }
+        format.json { render json: @prompt.errors, status: :unprocessable_content }
       end
     end
   end
@@ -66,13 +66,14 @@ class PromptsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_prompt
-      @prompt = Prompt.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def prompt_params
-      params.require(:prompt).permit(:id, :text)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_prompt
+    @prompt = Prompt.find(params.expect(:id))
+  end
+
+  # Only allow a list of trusted parameters through.
+  def prompt_params
+    params.expect(prompt: %i[id text])
+  end
 end

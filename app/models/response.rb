@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class Response
   PATH_PREFIX = Rails.root.join(".github/responses").to_s.freeze
-  PATH_SUFFIX = ".response.md".freeze
+  PATH_SUFFIX = ".response.md"
 
   include ActiveModel::Model
   include ActiveModel::Attributes
@@ -20,6 +22,7 @@ class Response
 
   def save
     return false unless valid?
+
     File.write(path, text)
     true
   rescue Errno::ENOENT => e
@@ -37,12 +40,10 @@ class Response
     end
 
     def all
-      Dir.glob(File.join(PATH_PREFIX, "*#{PATH_SUFFIX}")).map do |file_path|
+      Dir.glob(File.join(PATH_PREFIX, "*#{PATH_SUFFIX}")).filter_map do |file_path|
         id = File.basename(file_path, PATH_SUFFIX)
-        if id =~ /^\d+$/
-          new(id: id.to_i).load
-        end
-      end.compact
+        new(id: id.to_i).load if /^\d+$/.match?(id)
+      end
     end
 
     def max_id
