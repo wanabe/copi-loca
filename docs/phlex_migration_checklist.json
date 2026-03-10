@@ -9,8 +9,8 @@
     },
     {
       "view_file": "app/views/prompts/_prompt.html.erb",
-      "status": "pending",
-      "phlex_component": null
+      "status": "done",
+      "phlex_component": "app/components/prompts/prompt.rb"
     },
     {
       "view_file": "app/views/prompts/show.html.erb",

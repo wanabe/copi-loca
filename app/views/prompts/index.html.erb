@@ -6,7 +6,7 @@
 
 <div id="prompts">
   <% @prompts.each do |prompt| %>
-    <%= render prompt %>
+    <%= render Components::Prompts::Prompt.new(prompt: prompt) %>
     <p>
       <%= link_to "Show this prompt", prompt_path(prompt.id) %>
     </p>

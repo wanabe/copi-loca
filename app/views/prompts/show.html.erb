@@ -1,6 +1,6 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @prompt %>
+<%= render Components::Prompts::Prompt.new(prompt: @prompt) %>
 
 <div>
   <%= link_to "Edit this prompt", edit_prompt_path(@prompt.id) %> |
