@@ -30,6 +30,7 @@ services:
       - SKIP_PENDING_MIGRATIONS_CHECK=true
       - HOME=/homedir
       - COPILOCA_GITHUB_TOKEN=${COPILOCA_GITHUB_TOKEN:-}
+      - GIT_PAGER=cat
     user: "${USR:-root}"
     restart: unless-stopped
 
