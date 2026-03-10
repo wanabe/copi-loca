@@ -3,7 +3,7 @@
 class PsController < ApplicationController
   # GET /ps
   def index
-    @ps = `ps -ef`.split("\n")
-    render Views::Ps::Index.new(ps: @ps)
+    @lines = `ps -ef`.split("\n")
+    render Views::Ps::Index.new(lines: @lines)
   end
 end

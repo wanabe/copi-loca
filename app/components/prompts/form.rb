@@ -9,7 +9,7 @@ class Components::Prompts::Form < Components::Base
     form_with(model: @prompt) do |form|
       if @prompt.errors.any?
         div(style: "color: red") do
-          h2 { "#{pluralize(@prompt.errors.count, "error")} prohibited this prompt from being saved:" }
+          h2 { "#{pluralize(@prompt.errors.count, 'error')} prohibited this prompt from being saved:" }
           ul do
             @prompt.errors.each do |error|
               li { error.full_message }

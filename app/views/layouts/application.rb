@@ -7,7 +7,7 @@ class Views::Layouts::Application < Views::Base
     @title = title || "Copi Loca"
   end
 
-  def view_template
+  def view_template(&)
     doctype
     html do
       head do
@@ -25,9 +25,7 @@ class Views::Layouts::Application < Views::Base
         render stylesheet_link_tag(:app, "data-turbo-track": "reload")
         render javascript_importmap_tags
       end
-      body do
-        yield
-      end
+      body(&)
     end
   end
 end

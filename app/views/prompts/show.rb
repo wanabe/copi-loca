@@ -7,9 +7,7 @@ class Views::Prompts::Show < Views::Base
   end
 
   def view_template
-    if @notice
-      p(style: "color: green") { @notice }
-    end
+    p(style: "color: green") { @notice } if @notice
     render Components::Prompts::Prompt.new(prompt: @prompt)
     div do
       a(href: "/prompts/#{@prompt.id}/edit") { "Edit this prompt" }
