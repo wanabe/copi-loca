@@ -6,6 +6,7 @@ class PromptsController < ApplicationController
   # GET /prompts or /prompts.json
   def index
     @prompts = Prompt.all
+    render Views::Prompts::Index.new(prompts: @prompts, notice: flash[:notice])
   end
 
   # GET /prompts/1 or /prompts/1.json
