@@ -1,0 +1,33 @@
+# frozen_string_literal: true
+
+class Views::Layouts::Application < Views::Base
+  include Phlex::Rails::Layout
+
+  def initialize(title: nil)
+    @title = title || "Copi Loca"
+  end
+
+  def view_template
+    doctype
+    html do
+      head do
+        title { @title }
+        meta(name: "viewport", content: "width=device-width,initial-scale=1")
+        meta(name: "apple-mobile-web-app-capable", content: "yes")
+        meta(name: "application-name", content: "Copi Loca")
+        meta(name: "mobile-web-app-capable", content: "yes")
+        render csrf_meta_tags
+        render csp_meta_tag
+        yield :head
+        link(rel: "icon", href: "/icon.png", type: "image/png")
+        link(rel: "icon", href: "/icon.svg", type: "image/svg+xml")
+        link(rel: "apple-touch-icon", href: "/icon.png")
+        render stylesheet_link_tag(:app, "data-turbo-track": "reload")
+        render javascript_importmap_tags
+      end
+      body do
+        yield
+      end
+    end
+  end
+end
