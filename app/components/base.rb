@@ -6,6 +6,7 @@ class Components::Base < Phlex::HTML
   include Phlex::Rails::Helpers::FormWith
   include Phlex::Rails::Helpers::Pluralize
   include Phlex::Rails::Helpers::DOMID
+  include Phlex::Rails::Helpers::ContentFor
 
   if Rails.env.development?
     def before_template

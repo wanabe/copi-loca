@@ -21,7 +21,9 @@ class PromptsController < ApplicationController
   end
 
   # GET /prompts/1/edit
-  def edit; end
+  def edit
+    render Views::Prompts::Edit.new(prompt: @prompt)
+  end
 
   # POST /prompts or /prompts.json
   def create

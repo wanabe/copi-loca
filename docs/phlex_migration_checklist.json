@@ -29,8 +29,8 @@
     },
     {
       "view_file": "app/views/prompts/edit.html.erb",
-      "status": "pending",
-      "phlex_component": null
+      "status": "done",
+      "phlex_component": "app/views/prompts/edit.rb"
     },
     {
       "view_file": "app/views/layouts/application.html.erb",
