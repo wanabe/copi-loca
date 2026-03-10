@@ -1,8 +1,80 @@
-# Omakase Ruby styling for Rails
-inherit_gem: { rubocop-rails-omakase: rubocop.yml }
+plugins:
+  - rubocop-rails
+  - rubocop-performance
+  - rubocop-rspec
+  - rubocop-rspec_rails
 
-# Overwrite or add rules to create your own house style
-#
-# # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
-# Layout/SpaceInsideArrayLiteralBrackets:
-#   Enabled: false
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'bin/*'
+    - 'node_modules/**/*'
+    - 'vendor/**/*'
+    - 'tmp/**/*'
+
+Metrics/AbcSize:
+  Enabled: false
+Metrics/MethodLength:
+  Max: 200
+Metrics/BlockLength:
+  Max: 100
+  Exclude:
+    - 'spec/**/*'
+    - 'config/routes.rb'
+Metrics/ClassLength:
+  Max: 300
+Metrics/CyclomaticComplexity:
+  Enabled: false
+Metrics/PerceivedComplexity:
+  Enabled: false
+Metrics/ParameterLists:
+  Max: 15
+
+Layout/LineLength:
+  Max: 150
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Lint/EmptyBlock:
+  Exclude:
+    - 'spec/**/*'
+Lint/RescueException:
+  Enabled: false
+Lint/UnusedMethodArgument:
+  Exclude:
+    - 'spec/**/*'
+Lint/MissingSuper:
+  Exclude:
+    - 'app/components/**/*'
+    - 'app/views/**/*'
+
+Style/Documentation:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+Style/HashSyntax:
+  EnforcedStyle: ruby19
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact
+  Exclude:
+    - 'lib/**/*'
+
+Rails/I18nLocaleTexts:
+  Enabled: false
+Rails/SkipsModelValidations:
+  Enabled: true
+Rails/Exit:
+  Exclude:
+    - 'spec/**/*'
+
+RSpec/ExampleLength:
+  Enabled: false
+RSpec/MultipleExpectations:
+  Enabled: false
+RSpec/NestedGroups:
+  Enabled: false
