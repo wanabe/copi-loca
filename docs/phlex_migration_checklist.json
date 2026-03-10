@@ -1,0 +1,41 @@
+{
+  "title": "Phlex Migration Checklist",
+  "description": "Track migration of Rails views to Phlex components.",
+  "steps": [
+    {
+      "view_file": "app/views/prompts/_form.html.erb",
+      "status": "pending",
+      "phlex_component": null
+    },
+    {
+      "view_file": "app/views/prompts/_prompt.html.erb",
+      "status": "pending",
+      "phlex_component": null
+    },
+    {
+      "view_file": "app/views/prompts/show.html.erb",
+      "status": "pending",
+      "phlex_component": null
+    },
+    {
+      "view_file": "app/views/prompts/index.html.erb",
+      "status": "pending",
+      "phlex_component": null
+    },
+    {
+      "view_file": "app/views/prompts/new.html.erb",
+      "status": "pending",
+      "phlex_component": null
+    },
+    {
+      "view_file": "app/views/prompts/edit.html.erb",
+      "status": "pending",
+      "phlex_component": null
+    },
+    {
+      "view_file": "app/views/layouts/application.html.erb",
+      "status": "pending",
+      "phlex_component": null
+    }
+  ]
+}
