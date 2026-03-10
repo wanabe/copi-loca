@@ -11,12 +11,13 @@ class PromptsController < ApplicationController
 
   # GET /prompts/1 or /prompts/1.json
   def show
-  render Views::Prompts::Show.new(prompt: @prompt, notice: flash[:notice])
-end
+    render Views::Prompts::Show.new(prompt: @prompt, notice: flash[:notice])
+  end
 
   # GET /prompts/new
   def new
     @prompt = Prompt.new(id: Prompt.max_id + 1)
+    render Views::Prompts::New.new(prompt: @prompt)
   end
 
   # GET /prompts/1/edit
