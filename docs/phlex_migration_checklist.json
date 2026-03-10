@@ -4,8 +4,8 @@
   "steps": [
     {
       "view_file": "app/views/prompts/_form.html.erb",
-      "status": "pending",
-      "phlex_component": null
+      "status": "done",
+      "phlex_component": "app/components/prompts/form.rb"
     },
     {
       "view_file": "app/views/prompts/_prompt.html.erb",
