@@ -1,6 +1,6 @@
 [
   {"file": "app/controllers/prompts_controller.rb", "action": "index", "spec_added": true},
-  {"file": "app/controllers/prompts_controller.rb", "action": "show", "spec_added": false},
+  {"file": "app/controllers/prompts_controller.rb", "action": "show", "spec_added": true},
   {"file": "app/controllers/prompts_controller.rb", "action": "create", "spec_added": false},
   {"file": "app/controllers/prompts_controller.rb", "action": "update", "spec_added": false},
   {"file": "app/controllers/prompts_controller.rb", "action": "destroy", "spec_added": false},
