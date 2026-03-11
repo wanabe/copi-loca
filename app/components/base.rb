@@ -8,10 +8,12 @@ class Components::Base < Phlex::HTML
   include Phlex::Rails::Helpers::DOMID
   include Phlex::Rails::Helpers::ContentFor
 
+  # :nocov: - Only include the before_template in development for debugging purposes
   if Rails.env.development?
     def before_template
       comment { "Before #{self.class.name}" }
       super
     end
   end
+  # :nocov:
 end
