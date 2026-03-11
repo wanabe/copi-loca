@@ -51,6 +51,21 @@ RSpec.describe Prompt, type: :model do
     end
   end
 
+  describe '#destroy!' do
+    it 'deletes the file' do
+      allow(File).to receive(:delete).and_return(true)
+      expect { prompt.destroy! }.not_to raise_error
+    end
+
+    it 'also destroys associated response' do
+      response_double = instance_double(Response, destroy!: true)
+      allow(prompt).to receive(:response).and_return(response_double)
+      allow(File).to receive(:delete).and_return(true)
+      expect { prompt.destroy! }.not_to raise_error
+      expect(response_double).to have_received(:destroy!)
+    end
+  end
+
   describe '#persisted?' do
     it 'returns true if file exists' do
       allow(File).to receive(:exist?).and_return(true)

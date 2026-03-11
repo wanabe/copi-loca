@@ -30,6 +30,10 @@ class Response
     false
   end
 
+  def destroy!
+    File.delete(path)
+  end
+
   class << self
     def find_by(id:)
       new(id: id).load

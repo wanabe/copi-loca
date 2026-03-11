@@ -44,6 +44,13 @@ RSpec.describe Response do
     end
   end
 
+  describe '#destroy!' do
+    it 'deletes the file' do
+      allow(File).to receive(:delete).with(path).and_return(true)
+      expect { response.destroy! }.not_to raise_error
+    end
+  end
+
   describe '.find_by' do
     it 'returns loaded response if file exists' do
       allow(File).to receive(:read).with(path).and_return(text)
