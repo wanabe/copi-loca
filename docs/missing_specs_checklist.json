@@ -17,6 +17,6 @@
   {"file": "app/helpers/application_helper.rb", "spec_added": true},
   {"file": "app/helpers/prompts_helper.rb", "spec_added": true},
   {"file": "app/components/prompts/form.rb", "spec_added": true},
-  {"file": "app/components/prompts/prompt.rb", "spec_added": false},
+  {"file": "app/components/prompts/prompt.rb", "spec_added": true},
   {"file": "app/components/base.rb", "spec_added": false}
 ]
