@@ -1,0 +1,43 @@
+require 'rails_helper'
+
+RSpec.describe 'POST /prompts', type: :request do
+  let(:valid_params) { { prompt: { id: 1, text: 'Test prompt' } } }
+  let(:invalid_params) { { prompt: { id: nil, text: '' } } }
+
+  before do
+    allow(File).to receive(:write).and_return(true)
+  end
+
+  describe 'with valid params' do
+    it 'creates a new prompt and redirects to show' do
+      post '/prompts', params: valid_params
+      expect(response).to redirect_to(prompt_path(1))
+      follow_redirect!
+      expect(response.body).to include('Prompt was successfully created.')
+      expect(File).to have_received(:write).with(Rails.root.join('.github/prompts/1.prompt.md').to_s, 'Test prompt')
+    end
+
+    it 'returns JSON with created status' do
+      post '/prompts.json', params: valid_params
+      expect(response).to have_http_status(:created)
+      expect(response.body).to include('Test prompt')
+      expect(File).to have_received(:write).with(Rails.root.join('.github/prompts/1.prompt.md').to_s, 'Test prompt')
+    end
+  end
+
+  describe 'with invalid params' do
+    it 'renders new with unprocessable status' do
+      post '/prompts', params: invalid_params
+      expect(response).to have_http_status(:unprocessable_content)
+      expect(response.body).to include('error')
+      expect(File).not_to have_received(:write)
+    end
+
+    it 'returns JSON errors with unprocessable status' do
+      post '/prompts.json', params: invalid_params
+      expect(response).to have_http_status(:unprocessable_content)
+      expect(response.body).to include("can't be blank")
+      expect(File).not_to have_received(:write)
+    end
+  end
+end
