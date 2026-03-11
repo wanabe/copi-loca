@@ -42,6 +42,8 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+
+RSpec::Rails::DIRECTORY_MAPPINGS[:component] = %w[spec components]
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
@@ -72,6 +74,7 @@ RSpec.configure do |config|
   #
   # To enable this behaviour uncomment the line below.
   config.infer_spec_type_from_file_location!
+  config.include RSpec::Rails::ViewExampleGroup, type: :component
 
   # Filter lines from Rails gems in backtraces.
   config.filter_rails_from_backtrace!
