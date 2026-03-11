@@ -5,7 +5,7 @@
   {"file": "app/views/prompts/new.rb", "spec_added": true},
   {"file": "app/views/prompts/show.rb", "spec_added": true},
   {"file": "app/views/prompts/index.rb", "spec_added": true},
-  {"file": "app/views/base.rb", "spec_added": false},
+  {"file": "app/views/base.rb", "spec_added": true},
   {"file": "app/views/layouts/application.rb", "spec_added": false},
   {"file": "app/controllers/application_controller.rb", "spec_added": false},
   {"file": "app/controllers/ps_controller.rb", "spec_added": false},
