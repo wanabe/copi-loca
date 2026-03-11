@@ -80,4 +80,8 @@ Rails.application.configure do
   if site_hostname.present?
     config.hosts << site_hostname
   end
+  config.middleware.insert_before 0, Rack::Static, 
+    urls: ["/coverage"], 
+    root: Rails.root.to_s,
+    index: "index.html"
 end
