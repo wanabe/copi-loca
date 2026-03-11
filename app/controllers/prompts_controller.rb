@@ -34,7 +34,7 @@ class PromptsController < ApplicationController
         format.html { redirect_to @prompt, notice: "Prompt was successfully created." }
         format.json { render :show, status: :created, location: @prompt }
       else
-        format.html { render :new, status: :unprocessable_content }
+        format.html { render Views::Prompts::New.new(prompt: @prompt), status: :unprocessable_content }
         format.json { render json: @prompt.errors, status: :unprocessable_content }
       end
     end
@@ -48,7 +48,7 @@ class PromptsController < ApplicationController
         format.html { redirect_to @prompt, notice: "Prompt was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @prompt }
       else
-        format.html { render :edit, status: :unprocessable_content }
+        format.html { render Views::Prompts::Edit.new(prompt: @prompt), status: :unprocessable_content }
         format.json { render json: @prompt.errors, status: :unprocessable_content }
       end
     end
