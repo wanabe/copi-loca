@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Components::Base",
+    "path": "app/components/base.rb",
+    "type": "component",
+    "priority": 1,
+    "tailwind_introduced": false
+  },
+  {
+    "name": "Components::Prompts::Prompt",
+    "path": "app/components/prompts/prompt.rb",
+    "type": "component",
+    "priority": 2,
+    "tailwind_introduced": false
+  },
+  {
+    "name": "Components::Prompts::Form",
+    "path": "app/components/prompts/form.rb",
+    "type": "component",
+    "priority": 3,
+    "tailwind_introduced": false
+  },
+  {
+    "name": "Views::Base",
+    "path": "app/views/base.rb",
+    "type": "view",
+    "priority": 4,
+    "tailwind_introduced": false
+  },
+  {
+    "name": "Views::Prompts::Index",
+    "path": "app/views/prompts/index.rb",
+    "type": "view",
+    "priority": 5,
+    "tailwind_introduced": false
+  },
+  {
+    "name": "Views::Prompts::Show",
+    "path": "app/views/prompts/show.rb",
+    "type": "view",
+    "priority": 6,
+    "tailwind_introduced": false
+  },
+  {
+    "name": "Views::Prompts::New",
+    "path": "app/views/prompts/new.rb",
+    "type": "view",
+    "priority": 7,
+    "tailwind_introduced": false
+  },
+  {
+    "name": "Views::Prompts::Edit",
+    "path": "app/views/prompts/edit.rb",
+    "type": "view",
+    "priority": 8,
+    "tailwind_introduced": false
+  },
+  {
+    "name": "Views::Ps::Index",
+    "path": "app/views/ps/index.rb",
+    "type": "view",
+    "priority": 9,
+    "tailwind_introduced": false
+  },
+  {
+    "name": "Views::Layouts::Application",
+    "path": "app/views/layouts/application.rb",
+    "type": "view",
+    "priority": 10,
+    "tailwind_introduced": false
+  }
+]
