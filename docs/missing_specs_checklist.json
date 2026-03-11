@@ -1,6 +1,6 @@
 [
   {"file": "app/mailers/application_mailer.rb", "spec_added": true},
-  {"file": "app/views/ps/index.rb", "spec_added": false},
+  {"file": "app/views/ps/index.rb", "spec_added": true},
   {"file": "app/views/prompts/edit.rb", "spec_added": false},
   {"file": "app/views/prompts/new.rb", "spec_added": false},
   {"file": "app/views/prompts/show.rb", "spec_added": false},
