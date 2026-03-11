@@ -22,7 +22,7 @@ class Views::Layouts::Application < Views::Base
         link(rel: "icon", href: "/icon.png", type: "image/png")
         link(rel: "icon", href: "/icon.svg", type: "image/svg+xml")
         link(rel: "apple-touch-icon", href: "/icon.png")
-        render stylesheet_link_tag(:app, "data-turbo-track": "reload")
+        render stylesheet_link_tag("tailwind", "data-turbo-track": "reload")
         render javascript_importmap_tags
       end
       body(&)
