@@ -42,8 +42,9 @@ class PromptsController < ApplicationController
 
   # PATCH/PUT /prompts/1 or /prompts/1.json
   def update
+    @prompt.assign_attributes(prompt_params)
     respond_to do |format|
-      if @prompt.update(prompt_params)
+      if @prompt.save
         format.html { redirect_to @prompt, notice: "Prompt was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @prompt }
       else
