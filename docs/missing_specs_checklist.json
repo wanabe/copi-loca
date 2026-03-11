@@ -4,6 +4,8 @@
   {"file": "app/controllers/prompts_controller.rb", "action": "create", "spec_added": true},
   {"file": "app/controllers/prompts_controller.rb", "action": "update", "spec_added": true},
   {"file": "app/controllers/prompts_controller.rb", "action": "destroy", "spec_added": true},
+  {"file": "app/controllers/prompts_controller.rb", "action": "new", "spec_added": false},
+  {"file": "app/controllers/prompts_controller.rb", "action": "edit", "spec_added": false},
   {"file": "app/controllers/prompts_controller.rb", "action": "run", "spec_added": true},
   {"file": "app/controllers/ps_controller.rb", "action": "index", "spec_added": true}
 ]
