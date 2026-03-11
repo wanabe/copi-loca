@@ -10,7 +10,7 @@
   {"file": "app/controllers/application_controller.rb", "spec_added": false},
   {"file": "app/controllers/ps_controller.rb", "spec_added": false},
   {"file": "app/controllers/prompts_controller.rb", "spec_added": false},
-  {"file": "app/models/prompt.rb", "spec_added": false},
+  {"file": "app/models/prompt.rb", "spec_added": true},
   {"file": "app/models/response.rb", "spec_added": false},
   {"file": "app/models/application_record.rb", "spec_added": false},
   {"file": "app/jobs/application_job.rb", "spec_added": false},
