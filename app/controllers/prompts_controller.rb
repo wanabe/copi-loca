@@ -5,7 +5,7 @@ class PromptsController < ApplicationController
 
   # GET /prompts or /prompts.json
   def index
-    @prompts = Prompt.all
+    @prompts = Kaminari.paginate_array(Prompt.all).page(params[:page]).per(params[:per_page] || 5)
     render Views::Prompts::Index.new(prompts: @prompts, notice: flash[:notice])
   end
 
