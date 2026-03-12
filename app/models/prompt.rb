@@ -68,7 +68,7 @@ class Prompt
       Dir.glob(File.join(PATH_PREFIX, "*#{PATH_SUFFIX}")).filter_map do |file_path|
         id = File.basename(file_path, PATH_SUFFIX)
         new(id: id.to_i).load if /^\d+$/.match?(id)
-      end
+      end.sort_by(&:id)
     end
 
     def max_id
