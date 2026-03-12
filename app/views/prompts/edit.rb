@@ -7,13 +7,12 @@ class Views::Prompts::Edit < Views::Base
 
   def view_template
     content_for :title, "Editing prompt"
-    h1 { "Editing prompt" }
+    h1(class: "text-2xl font-bold mb-4") { "Editing prompt" }
     render Components::Prompts::Form.new(prompt: @prompt)
-    br
     div do
-      a(href: "/prompts/#{@prompt.id}") { "Show this prompt" }
+      link_to "Show this prompt", "/prompts/#{@prompt.id}", class: "text-blue-600 hover:underline" 
       plain " | "
-      a(href: "/prompts") { "Back to prompts" }
+      link_to "Back to prompts", "/prompts", class: "text-gray-600 hover:underline"
     end
   end
 end

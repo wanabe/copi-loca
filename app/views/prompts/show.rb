@@ -7,19 +7,19 @@ class Views::Prompts::Show < Views::Base
   end
 
   def view_template
-    p(style: "color: green") { @notice } if @notice
+    p(class: "text-green-600 mb-4") { @notice } if @notice
     render Components::Prompts::Prompt.new(prompt: @prompt)
-    div do
-      a(href: "/prompts/#{@prompt.id}/edit") { "Edit this prompt" }
+    div(class: "space-y-4 mt-6") do
+      a(href: "/prompts/#{@prompt.id}/edit", class: "text-blue-600 hover:underline mr-2") { "Edit this prompt" }
       plain " | "
-      a(href: "/prompts") { "Back to prompts" }
+      a(href: "/prompts", class: "text-gray-600 hover:underline ml-2") { "Back to prompts" }
       br
-      form(action: "/prompts/#{@prompt.id}", method: "post") do
+      form(action: "/prompts/#{@prompt.id}", method: "post", class: "inline") do
         input(type: "hidden", name: "_method", value: "delete")
-        button { "Destroy this prompt" }
+        button(class: "bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600") { "Destroy this prompt" }
       end
-      form(action: "/prompts/#{@prompt.id}/run", method: "post") do
-        button { "Run this prompt" }
+      form(action: "/prompts/#{@prompt.id}/run", method: "post", class: "inline ml-4") do
+        button(class: "bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600") { "Run this prompt" }
       end
     end
   end

@@ -8,7 +8,7 @@ class Components::Prompts::Form < Components::Base
   def view_template
     form_with(model: @prompt) do |form|
       if @prompt.errors.any?
-        div(style: "color: red") do
+        div(class: "text-red-600 mb-4") do
           h2 { "#{pluralize(@prompt.errors.count, 'error')} prohibited this prompt from being saved:" }
           ul do
             @prompt.errors.each do |error|
@@ -17,18 +17,16 @@ class Components::Prompts::Form < Components::Base
           end
         end
       end
-      div do
-        form.label(:id)
-        br
-        form.text_field(:id)
+      div(class: "mb-4") do
+        form.label(:id, class: "block text-gray-700 font-bold mb-2")
+        form.text_field(:id, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline")
       end
-      div do
-        form.label(:text)
-        br
-        form.text_area(:text)
+      div(class: "mb-4") do
+        form.label(:text, class: "block text-gray-700 font-bold mb-2")
+        form.text_area(:text, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline")
       end
-      div do
-        form.submit
+      div(class: "flex justify-end") do
+        form.submit(class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline")
       end
     end
   end

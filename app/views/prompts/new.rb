@@ -6,7 +6,7 @@ class Views::Prompts::New < Views::Base
   end
 
   def view_template
-    h1 { "New prompt" }
+    h1(class: "text-2xl font-bold mb-4") { "New prompt" }
     render Components::Prompts::Form.new(prompt: @prompt)
     br
     div do

@@ -6,10 +6,10 @@ class Views::Ps::Index < Views::Base
   end
 
   def view_template
-    h1 { "Ps" }
-    div(id: "ps") do
+    h1(class: "text-2xl font-bold mb-4") { "Ps" }
+    div(id: "ps", class: "space-y-2") do
       @lines.each do |line|
-        p { line }
+        p(class: "text-base text-gray-700 bg-gray-100 rounded px-3 py-2") { line }
       end
     end
   end

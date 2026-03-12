@@ -7,6 +7,7 @@ class Components::Base < Phlex::HTML
   include Phlex::Rails::Helpers::Pluralize
   include Phlex::Rails::Helpers::DOMID
   include Phlex::Rails::Helpers::ContentFor
+  include Phlex::Rails::Helpers::LinkTo
 
   # :nocov: - Only include the before_template in development for debugging purposes
   if Rails.env.development?
