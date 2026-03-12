@@ -9,13 +9,13 @@ RSpec.describe Views::Ps::Index do
 
   describe "#view_template" do
     it "renders the Ps header" do
-      expect(rendered).to include("<h1>Ps</h1>")
+      expect(rendered).to match(%r{<h1[^>]*>Ps</h1>})
     end
 
     it "renders each line inside the ps div" do
-      expect(rendered).to include('<div id="ps">')
+      expect(rendered).to match(/<div[^>]*id="ps"[^>]*>/)
       lines.each do |line|
-        expect(rendered).to include("<p>#{line}</p>")
+        expect(rendered).to match(%r{<p[^>]*>#{line}</p>})
       end
     end
   end

@@ -9,7 +9,7 @@ RSpec.describe Views::Prompts::Edit do
 
   describe "#view_template" do
     it "renders the edit prompt view with correct title and links" do
-      expect(rendered).to include("<h1>Editing prompt</h1>")
+      expect(rendered).to match(%r{<h1[^>]*>Editing prompt</h1>})
       expect(rendered).to include("action=\"/prompts/#{prompt.id}\"")
       expect(rendered).to include("Show this prompt")
       expect(rendered).to include("Back to prompts")

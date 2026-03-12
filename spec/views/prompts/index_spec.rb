@@ -3,14 +3,13 @@
 require "rails_helper"
 
 RSpec.describe Views::Prompts::Index do
-  let(:prompts) { [Prompt.new(id: 1), Prompt.new(id: 2)] }
+  let(:prompts) { Kaminari.paginate_array([Prompt.new(id: 1), Prompt.new(id: 2)]).page(1).per(10) }
 
   context "with notice" do
     subject(:rendered) { render described_class.new(prompts: prompts, notice: "Test notice") }
 
     it "renders the notice" do
-      expect(rendered).to include("Test notice")
-      expect(rendered).to include('style="color: green"')
+      expect(rendered).to include("<p class=\"text-green-600 mb-4\">Test notice</p>")
     end
   end
 
@@ -18,7 +17,7 @@ RSpec.describe Views::Prompts::Index do
     subject(:rendered) { render described_class.new(prompts: prompts) }
 
     it "renders the Prompts title" do
-      expect(rendered).to include("<h1>Prompts</h1>")
+      expect(rendered).to match(%r{<h1[^>]*>Prompts</h1>})
     end
 
     it "renders each prompt with show link" do

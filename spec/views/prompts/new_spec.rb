@@ -9,7 +9,7 @@ RSpec.describe Views::Prompts::New do
 
   describe "#view_template" do
     it "renders the new prompt view with correct title and form" do
-      expect(rendered).to include("<h1>New prompt</h1>")
+      expect(rendered).to match(%r{<h1[^>]*>New prompt</h1>})
       expect(rendered).to include("Back to prompts")
       expect(rendered).to include("form")
     end

@@ -72,6 +72,9 @@ Rails/SkipsModelValidations:
 Rails/Exit:
   Exclude:
     - 'spec/**/*'
+Rails/OutputSafety:
+  Exclude:
+    - 'spec/**/*'
 
 RSpec/ExampleLength:
   Enabled: false
