@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "json"
+
+def check_command(command, message, alt_command = nil)
+  puts "Running: #{command}"
+  return if system(command)
+
+  system(alt_command) if alt_command
+  message ||= "Command '#{command}' failed."
+  raise message
+end
+
+def check_coverage
+  coverage = JSON.parse(File.read("coverage/.last_run.json")).dig("result", "line")
+  raise "Test coverage is #{coverage}%, which is below 100%." if coverage != 100
+end
+
+app_dir = "/app"
+Dir.chdir(app_dir) do
+  check_command(
+    "! git grep --no-index -I '[^ -~]' -- $( git ls-files --others --exclude-standard; git ls-files )",
+    "Non-ASCII characters found."
+  )
+  check_command("bundle exec rubocop -A --fail-level=A", "RuboCop found issues.")
+
+  check_command("bundle exec rspec", "RSpec tests failed.")
+  check_coverage
+end
