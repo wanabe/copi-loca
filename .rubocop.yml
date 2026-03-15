@@ -53,6 +53,14 @@ Lint/MissingSuper:
     - 'app/components/**/*'
     - 'app/views/**/*'
 
+Naming/MethodParameterName:
+  AllowedNames:
+    - n
+    - x
+    - y
+    - id
+    - to
+
 Style/Documentation:
   Enabled: false
 

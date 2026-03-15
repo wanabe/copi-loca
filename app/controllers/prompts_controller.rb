@@ -66,7 +66,9 @@ class PromptsController < ApplicationController
   end
 
   def run
-    @prompt.run
+    n = params[:n].to_i
+    n = 1 if n <= 0
+    @prompt.run(n)
     respond_to do |format|
       format.html { redirect_to @prompt, notice: "Prompt was successfully run.", status: :see_other }
       format.json { render :show, status: :ok, location: @prompt }

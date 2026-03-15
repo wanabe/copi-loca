@@ -85,7 +85,7 @@ RSpec.describe Prompt do
       allow(File).to receive(:write)
       allow(io).to receive(:gets).and_return("response\n", nil)
       response = nil
-      allow(Response).to receive(:new).and_wrap_original do|m, *args|
+      allow(Response).to receive(:new).and_wrap_original do |m, *args|
         response = m.call(*args)
         allow(response).to receive(:save).and_return(true)
         response
@@ -107,6 +107,13 @@ RSpec.describe Prompt do
     it "raises if already running" do
       allow(prompt).to receive(:running?).and_return(true)
       expect { prompt.run }.to raise_error("Prompt is already running")
+    end
+
+    it "runs multiple times if n > 1" do
+      allow(File).to receive(:exist?).and_return(false)
+      allow(IO).to receive(:popen)
+      prompt.run(5)
+      expect(IO).to have_received(:popen).exactly(5).times
     end
   end
 

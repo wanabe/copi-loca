@@ -42,21 +42,24 @@ class Prompt < TextFile
     super
   end
 
-  def run
+  def run(n = 1)
     raise "Prompt is already running" if running?
 
     env = { "COPILOT_GITHUB_TOKEN" => ENV.fetch("COPILOCA_GITHUB_TOKEN", nil) }
-    IO.popen(env, [*COMMAND, text], err: [:child, :out]) do |io|
-      File.write(pid_path, io.pid.to_s)
-      response = Response.new(id: id, text: "")
-      while line = io.gets
-        response.text += line
-        response.save
+    response = Response.new(id: id, text: "")
+    n.times do
+      IO.popen(env, [*COMMAND, text], err: %i[child out]) do |io|
+        File.write(pid_path, io.pid.to_s)
+        while (line = io.gets)
+          response.text += line
+          response.save
+        end
+        response
+      ensure
+        File.delete(pid_path) if running?
       end
-      response
-    ensure
-      File.delete(pid_path) if running?
     end
+    response
   end
 
   def running?
@@ -65,6 +68,7 @@ class Prompt < TextFile
 
   def pid
     return nil unless running?
+
     File.read(pid_path).to_i
   end
 

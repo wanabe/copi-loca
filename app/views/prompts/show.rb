@@ -14,12 +14,18 @@ class Views::Prompts::Show < Views::Base
       plain " | "
       link_to "Back to prompts", prompts_path, class: "text-gray-600 hover:underline ml-2"
       br
-      form(action: "/prompts/#{@prompt.id}", method: "post", class: "inline") do
-        input(type: "hidden", name: "_method", value: "delete")
-        button(class: "bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600") { "Destroy this prompt" }
+      div(class: "mt-4") do
+        form(action: "/prompts/#{@prompt.id}", method: "post", class: "inline") do
+          input(type: "hidden", name: "_method", value: "delete")
+          button(class: "bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600") { "Destroy this prompt" }
+        end
       end
-      form(action: "/prompts/#{@prompt.id}/run", method: "post", class: "inline ml-4") do
-        button(class: "bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600") { "Run this prompt" }
+      div(class: "mt-4") do
+        form(action: "/prompts/#{@prompt.id}/run", method: "post", class: "inline ml-4") do
+          button(class: "bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600") { "Run this prompt" }
+          input(type: "text", name: "n", value: "1", class: "w-16 inline-block mr-2")
+          span { "times" }
+        end
       end
     end
   end
