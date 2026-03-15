@@ -10,7 +10,7 @@ class Views::Prompts::New < Views::Base
     render Components::Prompts::Form.new(prompt: @prompt)
     br
     div do
-      a(href: "/prompts") { "Back to prompts" }
+      link_to "Back to prompts", prompts_path
     end
   end
 end

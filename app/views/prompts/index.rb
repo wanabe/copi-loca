@@ -35,7 +35,7 @@ class Views::Prompts::Index < Views::Base
     end
     br
     render Components::Paginator.new(items: @prompts)
-    a(href: "/prompts/new", class: "inline-block mt-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded") { "New prompt" }
+    link_to "New prompt", new_prompt_path, class: "inline-block mt-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
   end
 
   private

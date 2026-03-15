@@ -10,9 +10,9 @@ class Views::Prompts::Show < Views::Base
     p(class: "text-green-600 mb-4") { @notice } if @notice
     render Components::Prompts::Prompt.new(prompt: @prompt)
     div(class: "space-y-4 mt-6") do
-      a(href: "/prompts/#{@prompt.id}/edit", class: "text-blue-600 hover:underline mr-2") { "Edit this prompt" }
+      link_to "Edit this prompt", edit_prompt_path(@prompt), class: "text-blue-600 hover:underline mr-2"
       plain " | "
-      a(href: "/prompts", class: "text-gray-600 hover:underline ml-2") { "Back to prompts" }
+      link_to "Back to prompts", prompts_path, class: "text-gray-600 hover:underline ml-2"
       br
       form(action: "/prompts/#{@prompt.id}", method: "post", class: "inline") do
         input(type: "hidden", name: "_method", value: "delete")
