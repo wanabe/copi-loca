@@ -58,7 +58,7 @@ class TextFile
 
     def all
       Dir.glob(path_pattern("*")).filter_map do |file_path|
-        from_path(file_path)&.load
+        from_path(file_path)
       end.sort_by(&:id)
     end
 

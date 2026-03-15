@@ -76,14 +76,12 @@ RSpec.describe Response do
   end
 
   describe ".all" do
-    it "returns all loaded responses for numeric filenames" do
+    it "returns all responses for numeric filenames without loading" do
       files = [File.join(Response::PATH_PREFIX, "1", "response.md"), File.join(Response::PATH_PREFIX, "2", "response.md")]
       allow(Dir).to receive(:glob).and_return(files)
-      allow(File).to receive(:read).with(files[0]).and_return("foo")
-      allow(File).to receive(:read).with(files[1]).and_return("bar")
       responses = described_class.all
       expect(responses.map(&:id)).to contain_exactly(1, 2)
-      expect(responses.map(&:text)).to contain_exactly("foo", "bar")
+      expect(responses.map(&:text)).to contain_exactly(nil, nil)
     end
 
     it "skips files with non-numeric names" do

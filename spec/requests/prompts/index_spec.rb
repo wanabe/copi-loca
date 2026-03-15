@@ -4,8 +4,8 @@ require "rails_helper"
 
 RSpec.describe "GET /prompts" do
   it "renders the index view with all prompts" do
-    prompt1 = Prompt.new(id: 1, text: "Prompt 1")
-    prompt2 = Prompt.new(id: 2, text: "Prompt 2")
+    prompt1 = instance_double(Prompt, id: 1, text: "Prompt 1", load: nil, name: nil, description: nil, response: nil)
+    prompt2 = instance_double(Prompt, id: 2, text: "Prompt 2", load: nil, name: nil, description: nil, response: nil)
     allow(Prompt).to receive(:all).and_return([prompt1, prompt2])
 
     get prompts_path

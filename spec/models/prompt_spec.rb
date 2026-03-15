@@ -122,13 +122,11 @@ RSpec.describe Prompt do
   describe ".all" do
     it "returns all prompts" do
       allow(Dir).to receive(:glob).and_return(["/fake/1/prompt.md", "/fake/ignore/prompt.md"])
-      prompt = instance_double(described_class)
+      prompt = instance_double(described_class, id: 1)
       allow(described_class).to receive(:from_path).with("/fake/1/prompt.md").and_return(prompt)
       allow(described_class).to receive(:from_path).with("/fake/ignore/prompt.md").and_return(nil)
-      allow(prompt).to receive_messages(load: prompt, id: 1)
       expect(described_class.all).to eq([prompt])
       expect(Dir).to have_received(:glob).with("#{Prompt::PATH_PREFIX}*#{Prompt::PATH_SUFFIX}")
-      expect(prompt).to have_received(:load).once
     end
   end
 
