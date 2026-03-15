@@ -6,7 +6,7 @@ RSpec.describe Response do
   let(:id) { 42 }
   let(:text) { "Sample response text" }
   let(:response) { described_class.new(id: id, text: text) }
-  let(:path) { File.join(Response::PATH_PREFIX, "#{id}/#{Response::PATH_SUFFIX}") }
+  let(:path) { "#{Response::PATH_PREFIX}#{id}#{Response::PATH_SUFFIX}" }
 
   before do
     allow(File).to receive(:read).and_call_original
@@ -40,7 +40,7 @@ RSpec.describe Response do
     it "returns false and adds error if directory does not exist" do
       allow(File).to receive(:write).and_raise(Errno::ENOENT.new("No such directory"))
       expect(response.save).to be false
-      expect(response.errors[:base]).to include(/Directory does not exist/)
+      expect(response.errors[:base]).to include(/Cannot save file/)
     end
   end
 

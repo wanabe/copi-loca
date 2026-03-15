@@ -1,44 +1,40 @@
 # frozen_string_literal: true
 
-class Prompt
-  PATH_PREFIX = Rails.root.join("docs/prompts").to_s.freeze
-  PATH_SUFFIX = "prompt.md"
+class Prompt < TextFile
+  PATH_PREFIX = Rails.root.join("docs/prompts/").to_s.freeze
+  PATH_SUFFIX = "/prompt.md"
+  ID_PATTERN = [/\A#{Regexp.escape(PATH_PREFIX)}(\d+)#{Regexp.escape(PATH_SUFFIX)}\z/, 1].freeze
 
   COMMAND = ["copilot", "-s", "--model", "gpt-4.1", "--yolo", "-p"].freeze
 
-  include ActiveModel::Model
-  include ActiveModel::Attributes
-
   attribute :id, :integer
   attribute :text, :string
+  attribute :has_metadata, :boolean, default: false
+  attribute :name, :string
+  attribute :description, :string
 
   validates :id, presence: true
   validates :text, presence: true
 
-  def load
-    self.text = File.read(path)
-    self
-  rescue Errno::ENOENT
-    nil
-  end
-
-  def save
-    return false unless valid?
-    FileUtils.mkdir_p(File.dirname(path))
-    File.write(path, text)
-    true
-  rescue Errno::ENOENT => e
-    errors.add(:base, "Directory does not exist: #{e.message}")
-    false
-  end
-
-  def persisted?
-    File.exist?(path)
+  def template
+    optional :has_metadata do
+      literal "---\n"
+      line do
+        literal "name: "
+        token :name, /.+/
+      end
+      line do
+        literal "description: "
+        token :description, /.+/
+      end
+      literal "---\n"
+    end
+    token :text, /.*/m
   end
 
   def destroy!
     response&.destroy!
-    File.delete(path)
+    super
   end
 
   def run
@@ -53,32 +49,5 @@ class Prompt
 
     @response_fetched = true
     @response = Response.find_by(id: id)
-  end
-
-  class << self
-    def find_by(id:)
-      new(id: id).load
-    end
-
-    def find(id)
-      find_by(id: id) || raise(ActiveRecord::RecordNotFound, "#{name} not found with id: #{id}")
-    end
-
-    def all
-      Dir.glob(File.join(PATH_PREFIX, "*/#{PATH_SUFFIX}")).filter_map do |file_path|
-        id = File.basename(File.dirname(file_path))
-        new(id: id.to_i).load if /^\d+$/.match?(id)
-      end.sort_by(&:id)
-    end
-
-    def max_id
-      all.map(&:id).max || 0
-    end
-  end
-
-  private
-
-  def path
-    File.join(PATH_PREFIX, "#{id}/#{PATH_SUFFIX}")
   end
 end

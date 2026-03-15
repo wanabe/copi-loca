@@ -10,7 +10,7 @@ RSpec.describe Components::Prompts::Prompt do
     it "renders prompt id and text, but not response" do
       allow(prompt).to receive(:response).and_return(nil)
       rendered = render described_class.new(prompt: prompt)
-      expect(rendered).to include("<h2>42</h2>")
+      expect(rendered).to match(%r{<h2[^>]*>42</h2>})
       expect(rendered).to match(%r{<p[^>]*>Sample prompt text</p>})
       expect(rendered).not_to include("Response")
     end
@@ -20,9 +20,9 @@ RSpec.describe Components::Prompts::Prompt do
     it "renders prompt id, text, and response" do
       allow(prompt).to receive(:response).and_return(response)
       rendered = render described_class.new(prompt: prompt)
-      expect(rendered).to include("<h2>42</h2>")
+      expect(rendered).to match(%r{<h2[^>]*>42</h2>})
       expect(rendered).to match(%r{<p[^>]*>Sample prompt text</p>})
-      expect(rendered).to include("<h3>Response</h3>")
+      expect(rendered).to match(%r{<h3[^>]*>Response</h3>})
       expect(rendered).to match(%r{<p[^>]*>Sample response text</p>})
     end
   end

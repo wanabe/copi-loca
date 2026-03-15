@@ -13,6 +13,8 @@ class Views::Prompts::Index < Views::Base
       thead do
         tr do
           th(class: "text-left font-semibold") { "ID" }
+          th(class: "text-left font-semibold") { "Name" }
+          th(class: "text-left font-semibold") { "Description" }
           th(class: "text-left font-semibold") { "Text" }
           th(class: "text-left font-semibold") { "Response" }
         end
@@ -21,6 +23,8 @@ class Views::Prompts::Index < Views::Base
         @prompts.each do |prompt|
           tr do
             td(class: "border px-4 py-2") { link_to prompt.id, prompt_path(prompt) }
+            td(class: "border px-4 py-2") { prompt.name }
+            td(class: "border px-4 py-2") { short(prompt.description) }
             td(class: "border px-4 py-2") { short(prompt.text) }
             td(class: "border px-4 py-2") { short(prompt.response&.text) }
           end
@@ -36,12 +40,11 @@ class Views::Prompts::Index < Views::Base
 
   def short(text, limit: 20)
     return if text.blank?
+
     text =~ /\A(.{,#{limit}})(\n|.)?/
-    result = $1
-    rest = $2
-    if rest
-      result += " ..."
-    end
+    result = ::Regexp.last_match(1)
+    rest = ::Regexp.last_match(2)
+    result += " ..." if rest
     result
   end
 end

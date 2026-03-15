@@ -23,6 +23,16 @@ class Components::Prompts::Form < Components::Base
           class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline")
       end
       div(class: "mb-4") do
+        form.label(:name, class: "block text-gray-700 font-bold mb-2")
+        form.text_field(:name,
+          class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline")
+      end
+      div(class: "mb-4") do
+        form.label(:description, class: "block text-gray-700 font-bold mb-2")
+        form.text_field(:description,
+          class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline")
+      end
+      div(class: "mb-4") do
         form.label(:text, class: "block text-gray-700 font-bold mb-2")
         form.text_area(:text,
           class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline")
