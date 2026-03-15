@@ -10,7 +10,6 @@ AllCops:
   Exclude:
     - 'db/**/*'
     - 'config/**/*'
-    - 'bin/*'
     - 'node_modules/**/*'
     - 'vendor/**/*'
     - 'tmp/**/*'
