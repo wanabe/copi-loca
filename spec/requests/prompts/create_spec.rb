@@ -16,14 +16,14 @@ RSpec.describe "POST /prompts" do
       expect(response).to redirect_to(prompt_path(1))
       follow_redirect!
       expect(response.body).to include("Prompt was successfully created.")
-      expect(File).to have_received(:write).with(Rails.root.join(".github/prompts/1.prompt.md").to_s, "Test prompt")
+      expect(File).to have_received(:write).with(Rails.root.join("docs/prompts/1/prompt.md").to_s, "Test prompt")
     end
 
     it "returns JSON with created status" do
       post "/prompts.json", params: valid_params
       expect(response).to have_http_status(:created)
       expect(response.body).to include("Test prompt")
-      expect(File).to have_received(:write).with(Rails.root.join(".github/prompts/1.prompt.md").to_s, "Test prompt")
+      expect(File).to have_received(:write).with(Rails.root.join("docs/prompts/1/prompt.md").to_s, "Test prompt")
     end
   end
 

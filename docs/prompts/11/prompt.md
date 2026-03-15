@@ -1,0 +1,1 @@
+The path format for both the Prompt and Response models has been changed. Please check how it was changed using git diff. Modify the model specs to match the changes.

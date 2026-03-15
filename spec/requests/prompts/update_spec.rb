@@ -21,7 +21,7 @@ RSpec.describe "PATCH /prompts/:id" do
       expect(response.body).to include("Prompt was successfully updated.")
       expect(response.body).to include("Updated text")
       expect(prompt.text).to eq("Updated text")
-      expect(File).to have_received(:write).with(Rails.root.join(".github/prompts/1.prompt.md").to_s, "Updated text")
+      expect(File).to have_received(:write).with(Rails.root.join("docs/prompts/1/prompt.md").to_s, "Updated text")
     end
 
     it "returns JSON with updated prompt" do
@@ -30,7 +30,7 @@ RSpec.describe "PATCH /prompts/:id" do
       expect(response).to have_http_status(:ok)
       expect(response.body).to include("Updated text")
       expect(prompt.text).to eq("Updated text")
-      expect(File).to have_received(:write).with(Rails.root.join(".github/prompts/1.prompt.md").to_s, "Updated text")
+      expect(File).to have_received(:write).with(Rails.root.join("docs/prompts/1/prompt.md").to_s, "Updated text")
     end
   end
 

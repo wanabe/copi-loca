@@ -23,7 +23,7 @@ RSpec.describe Prompt do
 
   describe "#load" do
     it "loads text from file" do
-      allow(File).to receive(:read).and_return("Loaded text")
+      allow(File).to receive(:read).with(File.join(Prompt::PATH_PREFIX, "1/prompt.md")).and_return("Loaded text")
       expect(prompt.load.text).to eq("Loaded text")
     end
 
@@ -121,12 +121,13 @@ RSpec.describe Prompt do
 
   describe ".all" do
     it "returns all prompts" do
-      allow(Dir).to receive(:glob).and_return(["/fake/1.prompt.md", "/fake/ignore.prompt.md"])
+      allow(Dir).to receive(:glob).and_return(["/fake/1/prompt.md", "/fake/ignore/prompt.md"])
       prompt = instance_double(described_class)
       allow(prompt).to receive(:load).and_return(prompt)
       allow(described_class).to receive(:new).and_return(prompt)
+      allow(prompt).to receive(:id).and_return(1)
       expect(described_class.all).to eq([prompt])
-      expect(Dir).to have_received(:glob).with(File.join(Prompt::PATH_PREFIX, "*#{Prompt::PATH_SUFFIX}"))
+      expect(Dir).to have_received(:glob).with(File.join(Prompt::PATH_PREFIX, "*/#{Prompt::PATH_SUFFIX}"))
       expect(described_class).to have_received(:new).with(id: 1).once
       expect(described_class).not_to have_received(:new).with(id: "ignore")
       expect(prompt).to have_received(:load).once

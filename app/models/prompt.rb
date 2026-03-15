@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Prompt
-  PATH_PREFIX = Rails.root.join(".github/prompts").to_s.freeze
-  PATH_SUFFIX = ".prompt.md"
+  PATH_PREFIX = Rails.root.join("docs/prompts").to_s.freeze
+  PATH_SUFFIX = "prompt.md"
 
   COMMAND = ["copilot", "-s", "--model", "gpt-4.1", "--yolo", "-p"].freeze
 
@@ -24,7 +24,7 @@ class Prompt
 
   def save
     return false unless valid?
-
+    FileUtils.mkdir_p(File.dirname(path))
     File.write(path, text)
     true
   rescue Errno::ENOENT => e
@@ -65,8 +65,8 @@ class Prompt
     end
 
     def all
-      Dir.glob(File.join(PATH_PREFIX, "*#{PATH_SUFFIX}")).filter_map do |file_path|
-        id = File.basename(file_path, PATH_SUFFIX)
+      Dir.glob(File.join(PATH_PREFIX, "*/#{PATH_SUFFIX}")).filter_map do |file_path|
+        id = File.basename(File.dirname(file_path))
         new(id: id.to_i).load if /^\d+$/.match?(id)
       end.sort_by(&:id)
     end
@@ -79,6 +79,6 @@ class Prompt
   private
 
   def path
-    File.join(PATH_PREFIX, "#{id}#{PATH_SUFFIX}")
+    File.join(PATH_PREFIX, "#{id}/#{PATH_SUFFIX}")
   end
 end

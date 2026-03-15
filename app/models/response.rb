@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Response
-  PATH_PREFIX = Rails.root.join(".github/responses").to_s.freeze
-  PATH_SUFFIX = ".response.md"
+  PATH_PREFIX = Rails.root.join("docs/prompts").to_s.freeze
+  PATH_SUFFIX = "response.md"
 
   include ActiveModel::Model
   include ActiveModel::Attributes
@@ -44,8 +44,8 @@ class Response
     end
 
     def all
-      Dir.glob(File.join(PATH_PREFIX, "*#{PATH_SUFFIX}")).filter_map do |file_path|
-        id = File.basename(file_path, PATH_SUFFIX)
+      Dir.glob(File.join(PATH_PREFIX, "*/#{PATH_SUFFIX}")).filter_map do |file_path|
+        id = File.basename(File.dirname(file_path))
         new(id: id.to_i).load if /^\d+$/.match?(id)
       end
     end
@@ -58,6 +58,6 @@ class Response
   private
 
   def path
-    File.join(PATH_PREFIX, "#{id}#{PATH_SUFFIX}")
+    File.join(PATH_PREFIX, "#{id}/#{PATH_SUFFIX}")
   end
 end

@@ -15,7 +15,7 @@ RSpec.describe "DELETE /prompts/:id" do
     expect(response).to redirect_to(prompts_path)
     follow_redirect!
     expect(response.body).to include("Prompt was successfully destroyed.")
-    expect(File).to have_received(:delete).with(Rails.root.join(".github/prompts/1.prompt.md").to_s)
+    expect(File).to have_received(:delete).with(Rails.root.join("docs/prompts/1/prompt.md").to_s)
   end
 
   it "returns not found for missing prompt" do

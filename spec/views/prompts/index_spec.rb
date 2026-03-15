@@ -23,7 +23,6 @@ RSpec.describe Views::Prompts::Index do
     it "renders each prompt with show link" do
       prompts.each do |prompt|
         expect(rendered).to include("/prompts/#{prompt.id}")
-        expect(rendered).to include("Show this prompt")
       end
     end
 

@@ -6,7 +6,7 @@ RSpec.describe Response do
   let(:id) { 42 }
   let(:text) { "Sample response text" }
   let(:response) { described_class.new(id: id, text: text) }
-  let(:path) { File.join(Response::PATH_PREFIX, "#{id}#{Response::PATH_SUFFIX}") }
+  let(:path) { File.join(Response::PATH_PREFIX, "#{id}/#{Response::PATH_SUFFIX}") }
 
   before do
     allow(File).to receive(:read).and_call_original
@@ -77,7 +77,7 @@ RSpec.describe Response do
 
   describe ".all" do
     it "returns all loaded responses for numeric filenames" do
-      files = [File.join(Response::PATH_PREFIX, "1.response.md"), File.join(Response::PATH_PREFIX, "2.response.md")]
+      files = [File.join(Response::PATH_PREFIX, "1", "response.md"), File.join(Response::PATH_PREFIX, "2", "response.md")]
       allow(Dir).to receive(:glob).and_return(files)
       allow(File).to receive(:read).with(files[0]).and_return("foo")
       allow(File).to receive(:read).with(files[1]).and_return("bar")

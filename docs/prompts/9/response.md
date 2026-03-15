@@ -1,4 +1,4 @@
-Here’s a prompt for sequentially reading docs/tailwind_introduction_progress.json and guiding the introduction of Tailwind. I’ll save it as .github/prompts/10.prompt.md.
+Here is a prompt for sequentially reading docs/tailwind_introduction_progress.json and guiding the introduction of Tailwind. I will save it as .github/prompts/10.prompt.md.
 
 ---
 
