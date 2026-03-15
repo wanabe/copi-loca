@@ -37,6 +37,11 @@ class Prompt < TextFile
     super
   end
 
+  def valid?
+    self.has_metadata = name.present? && description.present?
+    super
+  end
+
   def run
     r, w = IO.pipe
     system({ "COPILOT_GITHUB_TOKEN" => ENV.fetch("COPILOCA_GITHUB_TOKEN", nil) }, *COMMAND, text, out: w, err: w)

@@ -81,6 +81,6 @@ class PromptsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def prompt_params
-    params.expect(prompt: %i[id text])
+    params.expect(prompt: %i[id text name description])
   end
 end
