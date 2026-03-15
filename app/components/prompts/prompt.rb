@@ -8,6 +8,7 @@ class Components::Prompts::Prompt < Components::Base
   def view_template
     div(id: dom_id(@prompt)) do
       h2(class: "text-xl font-bold") { @prompt.id }
+      p(class: "text-gray-600 italic") { "PID: #{@prompt.pid}" }
       h3(class: "text-lg font-semibold") { @prompt.name } if @prompt.name
       p(class: "text-gray-600 italic") { @prompt.description } if @prompt.description
       p(class: "whitespace-break-spaces") { @prompt.text }

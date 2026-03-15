@@ -79,12 +79,47 @@ RSpec.describe Prompt do
   end
 
   describe "#run" do
-    it "calls system and saves response" do
-      allow(IO).to receive(:pipe).and_return([double(read: "response"), double(close: true)])
-      allow(prompt).to receive(:system).and_return(true)
-      response_double = double(save: true)
-      allow(Response).to receive(:new).and_return(response_double)
-      expect(prompt.run).to be true
+    it "calls IO.popen and saves response" do
+      io = instance_double(IO, pid: 123)
+      allow(IO).to receive(:popen).and_yield(io)
+      allow(File).to receive(:write)
+      allow(io).to receive(:gets).and_return("response\n", nil)
+      response = nil
+      allow(Response).to receive(:new).and_wrap_original do|m, *args|
+        response = m.call(*args)
+        allow(response).to receive(:save).and_return(true)
+        response
+      end
+      allow(File).to receive(:exist?).and_return(false, true)
+      allow(File).to receive(:delete).and_return(true)
+
+      expect(prompt.run).to eq(response)
+      expect(response.text).to eq("response\n")
+
+      expect(IO).to have_received(:popen)
+      expect(File).to have_received(:write).with("#{Prompt::PATH_PREFIX}1/pid", "123")
+      expect(io).to have_received(:gets).twice
+      expect(File).to have_received(:exist?).with("#{Prompt::PATH_PREFIX}1/pid").twice
+      expect(File).to have_received(:delete).with("#{Prompt::PATH_PREFIX}1/pid")
+      expect(response).to have_received(:save)
+    end
+
+    it "raises if already running" do
+      allow(prompt).to receive(:running?).and_return(true)
+      expect { prompt.run }.to raise_error("Prompt is already running")
+    end
+  end
+
+  describe "#pid" do
+    it "returns pid if running" do
+      allow(File).to receive(:exist?).and_return(true)
+      allow(File).to receive(:read).with("#{Prompt::PATH_PREFIX}1/pid").and_return("123")
+      expect(prompt.pid).to eq(123)
+    end
+
+    it "returns nil if not running" do
+      allow(File).to receive(:exist?).and_return(false)
+      expect(prompt.pid).to be_nil
     end
   end
 

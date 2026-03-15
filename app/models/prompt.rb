@@ -43,10 +43,29 @@ class Prompt < TextFile
   end
 
   def run
-    r, w = IO.pipe
-    system({ "COPILOT_GITHUB_TOKEN" => ENV.fetch("COPILOCA_GITHUB_TOKEN", nil) }, *COMMAND, text, out: w, err: w)
-    w.close
-    Response.new(id: id, text: r.read).save
+    raise "Prompt is already running" if running?
+
+    env = { "COPILOT_GITHUB_TOKEN" => ENV.fetch("COPILOCA_GITHUB_TOKEN", nil) }
+    IO.popen(env, [*COMMAND, text], err: [:child, :out]) do |io|
+      File.write(pid_path, io.pid.to_s)
+      response = Response.new(id: id, text: "")
+      while line = io.gets
+        response.text += line
+        response.save
+      end
+      response
+    ensure
+      File.delete(pid_path) if running?
+    end
+  end
+
+  def running?
+    File.exist?(pid_path)
+  end
+
+  def pid
+    return nil unless running?
+    File.read(pid_path).to_i
   end
 
   def response
@@ -54,5 +73,11 @@ class Prompt < TextFile
 
     @response_fetched = true
     @response = Response.find_by(id: id)
+  end
+
+  private
+
+  def pid_path
+    "#{Prompt::PATH_PREFIX}#{id}/pid"
   end
 end

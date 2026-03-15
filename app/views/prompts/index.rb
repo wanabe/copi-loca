@@ -13,6 +13,7 @@ class Views::Prompts::Index < Views::Base
       thead do
         tr do
           th(class: "text-left font-semibold") { "ID" }
+          th(class: "text-left font-semibold") { "PID" }
           th(class: "text-left font-semibold") { "Name" }
           th(class: "text-left font-semibold") { "Description" }
           th(class: "text-left font-semibold") { "Text" }
@@ -23,6 +24,7 @@ class Views::Prompts::Index < Views::Base
         @prompts.each do |prompt|
           tr do
             td(class: "border px-4 py-2") { link_to prompt.id, prompt_path(prompt) }
+            td(class: "border px-4 py-2") { prompt.pid }
             td(class: "border px-4 py-2") { prompt.name }
             td(class: "border px-4 py-2") { short(prompt.description) }
             td(class: "border px-4 py-2") { short(prompt.text) }
