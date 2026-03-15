@@ -1,3 +1,7 @@
+---
+name: list_missing_specs
+description: List rb files missing specs in app/lib
+---
 - List rb files that do not have corresponding spec files.
   - Target all Ruby scripts under app/ and lib/ directories.
   ^ Exclude other directories, such as config/.

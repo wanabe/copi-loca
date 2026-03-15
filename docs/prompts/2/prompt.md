@@ -1,3 +1,7 @@
+---
+name: phlex_migration_checklist
+description: Create checklist for Phlex view migration
+---
 I want to rewrite the views using Phlex. 
 Please prepare a checklist that allows tracking the migration steps and current progress.
 Please output the checklist in JSON format under the docs/ directory.

@@ -1,3 +1,7 @@
+---
+name: english
+description: Translate texts and characters to English.
+---
 - First,list files that have been changed or newly added.
   - To list changed files, you can combine the results of them:
     - `git --no-pager diff --name-only --cached`

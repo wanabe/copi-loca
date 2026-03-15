@@ -1,3 +1,7 @@
+---
+name: create_tailwind_list
+description: Track Tailwind adoption in components
+---
 I want to introduce tailwind css to components and views.
 - Please enumerate the components and views.
 - Save the enumerated results in JSON format under docs/.

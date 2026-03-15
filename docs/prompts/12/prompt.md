@@ -1,3 +1,7 @@
+---
+name: add_prompt_metainfo
+description: Add meta info and track progress
+---
 I want to add meta information to the prompt file.
 - Record progress in docs/prompts/12/progress.json.
   - If the JSON file does not exist, enumerate all existing prompt files in the JSON file.

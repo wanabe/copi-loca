@@ -1,3 +1,7 @@
+---
+name: migrate_phlex
+description: Migrate ERB views to Phlex
+---
 - Select one file from the top of docs/phlex_migration_checklist.json that has not yet been migrated.
   - Prioritize files from the top of the list.
 - For the selected file, create the corresponding Phlex component or Phlex view.
