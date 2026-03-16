@@ -1,3 +1,9 @@
 [
-  {"file": "app/components/paginator.rb", "spec_added": true}
+  {"file": "app/components/bin/bin.rb", "spec_added": true},
+  {"file": "app/components/bin/run.rb", "spec_added": true},
+  {"file": "app/views/bin/show.rb", "spec_added": true},
+  {"file": "app/views/bin/index.rb", "spec_added": true},
+  {"file": "app/controllers/bin_controller.rb", "action": "index", "spec_added": true},
+  {"file": "app/controllers/bin_controller.rb", "action": "show", "spec_added": true},
+  {"file": "app/controllers/bin_controller.rb", "action": "run", "spec_added": true}
 ]
