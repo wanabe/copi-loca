@@ -1,9 +1,6 @@
 [
   {
-    "name": "Components::Paginator",
-    "path": "app/components/paginator.rb",
-    "type": "component",
-    "priority": 1,
+    "path": "app/views/home/index.rb",
     "tailwind_introduced": true
   }
 ]
