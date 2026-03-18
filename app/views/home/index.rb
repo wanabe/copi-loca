@@ -6,6 +6,7 @@ class Views::Home::Index < Views::Base
     ul(class: "space-y-2") do
       li { link_to "Bin", "/bin", class: "text-blue-600 hover:underline" }
       li { link_to "Files", "/files", class: "text-blue-600 hover:underline" }
+      li { link_to "Memos", "/memos", class: "text-blue-600 hover:underline" }
       li { link_to "Ps", "/ps", class: "text-blue-600 hover:underline" }
       li { link_to "Prompts", "/prompts", class: "text-blue-600 hover:underline" }
     end

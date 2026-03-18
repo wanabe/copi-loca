@@ -1,5 +1,4 @@
 [
-  {"file": "app/views/files/show_directory.rb", "spec_added": true},
-  {"file": "app/views/files/show_file.rb", "spec_added": true},
-  {"file": "app/controllers/files_controller.rb", "action": "show", "spec_added": true}
+  {"file": "app/views/memos/index.rb", "spec_added": true},
+  {"file": "app/controllers/memos_controller.rb", "action": "index", "spec_added": true}
 ]

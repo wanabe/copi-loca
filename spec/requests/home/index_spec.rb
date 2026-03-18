@@ -9,7 +9,8 @@ RSpec.describe "GET /" do
     expect(response.body).to include("Home")
     expect(response.body).to include("Bin")
     expect(response.body).to include("Files")
-    expect(response.body).to include("Processes")
+    expect(response.body).to include("Memos")
+    expect(response.body).to include("Ps")
     expect(response.body).to include("Prompts")
   end
 end
