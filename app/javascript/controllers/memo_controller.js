@@ -53,4 +53,25 @@ export default class extends Controller {
 
     li.remove();
   }
+
+  async syncLocalMemos() {
+    const memos = JSON.parse(localStorage.getItem("memos") || "[]");
+    try {
+      const response = await fetch("/memos/sync_local_memos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ memos })
+      });
+      if (response.ok) {
+        alert("Local memos synced successfully!");
+      } else {
+        alert("Failed to sync memos.");
+      }
+    } catch (error) {
+      alert("Error syncing memos.");
+    }
+  }
 }

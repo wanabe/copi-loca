@@ -5,6 +5,9 @@ class Views::Memos::Index < Views::Base
     h1(class: "text-2xl font-bold mb-4") { "Memo" }
 
     div(class: "mb-4", data: { controller: "memo" }) do
+      form(data: { action: "submit->memo#syncLocalMemos" }, class: "mb-4") do
+        button(type: "submit", class: "bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600") { "Sync Local Memos" }
+      end
       form(data: { action: "submit->memo#saveMemo" }) do
         input(type: "text", id: "memo_input", maxlength: "140", placeholder: "Write a memo...", autocomplete: "off", data: { memo_target: "input" },
           class: "border px-2 py-1 mr-2")

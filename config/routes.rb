@@ -16,7 +16,11 @@ Rails.application.routes.draw do
   get "files", to: "files#show", format: false
   get 'files/*path', to: "files#show", as: :file, format: false
 
-  resources :memos, only: [:index]
+  resources :memos, only: [:index] do
+  collection do
+    post :sync_local_memos
+  end
+end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
