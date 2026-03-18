@@ -1,2 +1,2 @@
-A JSON checklist for Phlex migration has been created at docs/phlex_migration_checklist.json. It lists all detected view files, their migration status, and a placeholder for the corresponding Phlex component. You can update this file to track progress as you migrate each view.
+Migrated app/views/layouts/application.html.erb to app/views/layouts/application.rb as a Phlex view. Updated docs/phlex_migration_checklist.json to mark this migration as "done". If you need usage rewrites or controller updates, let me know.
 

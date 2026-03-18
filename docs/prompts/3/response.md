@@ -1,2 +1,2 @@
-Migrated app/views/layouts/application.html.erb to app/views/layouts/application.rb as a Phlex view. Updated docs/phlex_migration_checklist.json to mark this migration as "done". If you need usage rewrites or controller updates, let me know.
+Rubocop ran with auto-correct. 29 files inspected, 9 offenses detected, 8 corrected. One offense remains (method parameter name too short in app/views/ps/index.rb). Rubocop suggests rubocop-capybara as a helpful extension. Let me know if you want to address the remaining issue or need further actions.
 

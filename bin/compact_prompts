@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'fileutils'
+
+PROMPTS_DIR = File.expand_path('../docs/prompts', __dir__)
+
+# Step 1: Delete directories missing prompt.md
+Dir.entries(PROMPTS_DIR).select { |entry|
+  File.directory?(File.join(PROMPTS_DIR, entry)) && entry =~ /^\d+$/
+}.sort_by(&:to_i).each do |dir|
+  dir_path = File.join(PROMPTS_DIR, dir)
+  prompt_md = File.join(dir_path, 'prompt.md')
+  unless File.exist?(prompt_md)
+    FileUtils.rm_rf(dir_path)
+  end
+end
+
+# Step 2: Compact directory names
+dirs = Dir.entries(PROMPTS_DIR).select { |entry|
+  File.directory?(File.join(PROMPTS_DIR, entry)) && entry =~ /^\d+$/
+}.sort_by(&:to_i)
+
+dirs.each_with_index do |dir, idx|
+  target = (idx + 1).to_s
+  next if dir == target
+  src = File.join(PROMPTS_DIR, dir)
+  dst = File.join(PROMPTS_DIR, target)
+  FileUtils.mv(src, dst)
+end

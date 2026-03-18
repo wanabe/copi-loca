@@ -1,15 +1,18 @@
 ---
-name: phlex_migration_checklist
-description: Create checklist for Phlex view migration
+name: migrate_phlex
+description: Migrate ERB views to Phlex
 ---
-I want to rewrite the views using Phlex. 
-Please prepare a checklist that allows tracking the migration steps and current progress.
-Please output the checklist in JSON format under the docs/ directory.
-When creating the list, please note the following:
-- Only HTML templates are subject to migration.
-  - Text and JSON files are not subject to Phlex migration.
-- Please set the order carefully.
-  - Start with the simplest partials that do not include other partials.
-  - Next, if any, migrate partials that render other partials.
-  - Then migrate the views.
-  - Layouts should be migrated last.
+- Select one file from the top of docs/phlex_migration_checklist.json that has not yet been migrated.
+  - Prioritize files from the top of the list.
+- For the selected file, create the corresponding Phlex component or Phlex view.
+  - For example, the Phlex component corresponding to app/views/prompts/_form.html.erb is app/components/prompts/form.rb.
+    - Example implementation is in app/components/prompts/form.rb.
+  - For example, the Phlex view corresponding to app/views/prompts/show.html.erb is app/views/prompts/show.rb.
+    - Example implementation is in app/views/prompts/show.rb.
+- If you created a Phlex component, rewrite all places that call the original partial to call the Phlex component instead.
+  - For example, if app/views/prompts/new.html.erb calls `render "form"`, rewrite it to `render Components::Prompts::Form.new`.
+- If you created a Phlex view, rewrite all places that call the original ERB view to call the Phlex view instead.
+  - For example, if the show action in app/controllers/prompts_controller.rb calls `render :show`, rewrite it to `render Views::Prompts::Show.new`.
+  - If the action does not explicitly call render, make sure to call the Phlex view with the same name as the action.
+    - For example, if the edit action in app/controllers/prompts_controller.rb does not call render, call `render Views::Prompts::Edit.new` in the edit action.
+- After rewriting, update the status of the relevant file in docs/phlex_migration_checklist.json to "done".

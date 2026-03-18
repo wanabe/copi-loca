@@ -1,5 +1,14 @@
 ---
-name: rubocop_run
-description: Run rubocop with auto-correct
+name: write_specs
+description: Write specs
 ---
-Please run rubocop -A
+- Select one file from docs/missing_specs_checklist.json that does not yet have a spec added and make it the target file.
+  - The list is ordered by priority, so prioritize files higher up in the list.
+- Write a spec for the selected target file.
+  - Basically, store one spec per target file in a single spec file.
+    - The example spec file is spec/views/prompts/edit_spec.rb, which contains one spec for the target file app/views/prompts/edit.rb.
+  - However, controllers are an exception:
+    - Write request specs instead of controllers specs. Do not write controller specs.
+    - For request specs, write one spec file per controller action.
+      - The example request spec file is spec/requests/prompts/index_spec.rb, which is for app/controllers/prompts_controller.rb#index.
+- After writing the spec, update the relevant entry in docs/missing_specs_checklist.json to indicate that a spec has been added for the target file.

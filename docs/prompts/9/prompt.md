@@ -1,5 +1,0 @@
----
-name: prompt_for_tailwind
-description: Guide Tailwind introduction progress
----
-Create a prompt that enables AI to sequentially read docs/tailwind_introduction_progress.json and successfully guide the introduction of Tailwind. Save the created prompt as .github/prompts/10.prompt.md.
