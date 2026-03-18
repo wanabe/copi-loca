@@ -1,4 +1,3 @@
 [
-  {"file": "app/views/memos/index.rb", "spec_added": true},
-  {"file": "app/controllers/memos_controller.rb", "action": "index", "spec_added": true}
+  {"file": "app/components/breadcrumbs.rb", "spec_added": true}
 ]

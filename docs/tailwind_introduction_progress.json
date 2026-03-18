@@ -1,6 +1,6 @@
 [
   {
-    "path": "app/views/home/index.rb",
+    "path": "app/components/breadcrumbs.rb",
     "tailwind_introduced": true
   }
 ]

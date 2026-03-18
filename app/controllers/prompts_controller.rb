@@ -2,6 +2,9 @@
 
 class PromptsController < ApplicationController
   before_action :set_prompt, only: %i[show edit update destroy run]
+  before_action :add_prompts_breadcrumb
+  before_action :add_prompt_breadcrumb, only: %i[show edit run]
+  before_action :add_action_breadcrumb, only: %i[edit run]
 
   # GET /prompts or /prompts.json
   def index
@@ -85,5 +88,13 @@ class PromptsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def prompt_params
     params.expect(prompt: %i[id text name description])
+  end
+
+  def add_prompts_breadcrumb
+    add_breadcrumb("Prompts", prompts_path)
+  end
+
+  def add_prompt_breadcrumb
+    add_breadcrumb("#{@prompt.id}(#{@prompt.name})", prompt_path(@prompt))
   end
 end

@@ -1,6 +1,6 @@
 ---
-name: write_specs
-description: Write specs
+name: add_specs
+description: Add specs
 ---
 - Select one file from docs/missing_specs_checklist.json that does not yet have a spec added and make it the target file.
   - The list is ordered by priority, so prioritize files higher up in the list.

@@ -3,11 +3,12 @@
 class Views::Layouts::Application < Views::Base
   include Phlex::Rails::Layout
 
-  def initialize(title: nil)
+  def initialize(title: nil, breadcrumbs: [])
     @title = title || "Copi Loca"
+    @breadcrumbs = breadcrumbs
   end
 
-  def view_template(&)
+  def view_template
     doctype
     html do
       head do
@@ -26,7 +27,10 @@ class Views::Layouts::Application < Views::Base
         render stylesheet_link_tag("tailwind", "data-turbo-track": "reload")
         render javascript_importmap_tags
       end
-      body(&)
+      body do
+        render Components::Breadcrumbs.new(breadcrumbs: @breadcrumbs)
+        yield
+      end
     end
   end
 end

@@ -3,6 +3,9 @@
 class FilesController < ApplicationController
   skip_forgery_protection only: [:show]
 
+  before_action :add_files_breadcrumb
+  before_action :add_path_breadcrumb, only: [:show]
+
   # GET /files/*path
   def show
     path = params[:path] || "."
@@ -31,6 +34,24 @@ class FilesController < ApplicationController
       render Views::Files::ShowFile.new(content: content, path: path)
     else
       render json: { error: "Unsupported file type", path: path }, status: :unsupported_media_type
+    end
+  end
+
+  private
+
+  def add_files_breadcrumb
+    add_breadcrumb("Files", files_path)
+  end
+
+  def add_path_breadcrumb
+    return unless params[:path]
+
+    path = params[:path]
+    parts = path.split("/").reject(&:empty?)
+    accumulated_path = ""
+    parts.each do |part|
+      accumulated_path = File.join(accumulated_path, part)
+      add_breadcrumb(part, files_path(path: accumulated_path))
     end
   end
 end
