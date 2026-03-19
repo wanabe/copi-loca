@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "json"
+
+resultset = JSON.parse(File.read("coverage/.resultset.json"))
+missing_specs = JSON.parse(File.read("docs/missing_specs_checklist.json"))
+missing_specs.select! { |spec| spec["spec_added"] == false }
+resultset["RSpec"]["coverage"].each do |file, coverage|
+  missing_specs << { file: file, spec_added: false } if coverage["lines"].include?(0)
+end
+
+File.write(
+  "docs/missing_specs_checklist.json",
+  JSON.pretty_generate(missing_specs)
+)

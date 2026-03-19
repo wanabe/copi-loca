@@ -1,4 +1,4 @@
-Here’s a summary of the memos from real-world testing, focusing on feature expansion and usability for the memo feature. Unrelated notes have been omitted.
+Here's a summary of the memos from real-world testing, focusing on feature expansion and usability for the memo feature. Unrelated notes have been omitted.
 
 ---
 

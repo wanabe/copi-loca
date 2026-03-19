@@ -11,15 +11,11 @@ class MemosController < ApplicationController
   # POST /memos/sync_local_memos
   # Receives local memos as JSON and saves to docs/memos.json
   def sync_local_memos
-    begin
-      memos = JSON.parse(request.body.read)
-      File.open(Rails.root.join('docs', 'memos.json'), 'w') do |f|
-        f.write(JSON.pretty_generate(memos))
-      end
-      render json: { status: 'success' }, status: :ok
-    rescue => e
-      render json: { status: 'error', message: e.message }, status: :unprocessable_entity
-    end
+    memos = JSON.parse(request.body.read)
+    Rails.root.join("docs/memos.json").write(JSON.pretty_generate(memos))
+    render json: { status: "success" }, status: :ok
+  rescue StandardError => e
+    render json: { status: "error", message: e.message }, status: :unprocessable_content
   end
 
   private

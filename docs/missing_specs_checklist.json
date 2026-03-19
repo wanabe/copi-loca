@@ -1,3 +1,6 @@
 [
-  {"file": "app/components/breadcrumbs.rb", "spec_added": true}
+  {
+    "file": "/app/app/controllers/memos_controller.rb",
+    "spec_added": true
+  }
 ]
