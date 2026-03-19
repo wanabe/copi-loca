@@ -18,7 +18,7 @@ class Bin < TextFile
   def run
     output = +""
     status = nil
-    IO.popen(["ruby", path], err: %i[child out]) do |io|
+    IO.popen([path], err: %i[child out]) do |io|
       while (line = io.gets)
         output += line
       end

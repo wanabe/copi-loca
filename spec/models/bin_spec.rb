@@ -9,7 +9,7 @@ RSpec.describe Bin do
 
     before do
       allow(File).to receive(:exist?).with(bin_path).and_return(true)
-      allow(IO).to receive(:popen).with(["ruby", bin_path], err: %i[child out]).and_yield(StringIO.new("output\n"))
+      allow(IO).to receive(:popen).with([bin_path], err: %i[child out]).and_yield(StringIO.new("output\n"))
       allow(Process).to receive(:waitpid2).and_return([123, instance_double(Process::Status, to_i: 0)])
     end
 
