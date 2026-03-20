@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   resources :prompts do
     member do
@@ -7,14 +9,14 @@ Rails.application.routes.draw do
 
   resources :ps, only: [:index]
 
-  resources :bin, only: [:index, :show] do
+  resources :bin, only: %i[index show] do
     member do
       post :run
     end
   end
 
   get "files", to: "files#show", format: false
-  get 'files/*path', to: "files#show", as: :file, format: false
+  get "files/*path", to: "files#show", as: :file, format: false
 
   resources :memos, only: [:index] do
     collection do
@@ -23,7 +25,7 @@ Rails.application.routes.draw do
   end
 
   namespace :git do
-    root to: "dashboard#show" 
+    root to: "dashboard#show"
     resource :grep, only: [:show], controller: "grep"
   end
 
