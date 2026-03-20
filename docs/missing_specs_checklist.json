@@ -1,6 +1,6 @@
 [
   {
-    "file": "/app/app/controllers/git_controller.rb",
-    "spec_added": false
+    "file": "/app/app/models/git.rb",
+    "spec_added": true
   }
 ]

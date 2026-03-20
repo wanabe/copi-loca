@@ -8,7 +8,7 @@ class Views::Layouts::Application < Views::Base
     @breadcrumbs = breadcrumbs
   end
 
-  def view_template
+  def view_template(&)
     doctype
     html do
       head do
@@ -29,9 +29,7 @@ class Views::Layouts::Application < Views::Base
       end
       body do
         render Components::Breadcrumbs.new(breadcrumbs: @breadcrumbs)
-        div(class: "px-2") do
-          yield
-        end
+        div(class: "px-2", &)
       end
     end
   end

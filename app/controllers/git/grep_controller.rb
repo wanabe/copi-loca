@@ -7,8 +7,8 @@ class Git::GrepController < ApplicationController
   def show
     @branches = branches
     @pattern = params[:pattern]
-    @files = params[:files]
-    @branch = params[:branch]
+    @files = params[:files] || ""
+    @branch = params[:branch] || ""
     @ignore_case = params[:ignore_case] == "on"
     @grep_result = nil
 
@@ -37,7 +37,7 @@ class Git::GrepController < ApplicationController
   end
 
   def run_git_grep(pattern, files, branch, ignore_case)
-    cmd = %w[git grep]
+    cmd = %w[grep]
     cmd << "-i" if ignore_case
     cmd << pattern
     cmd << branch if branch.present?
@@ -47,6 +47,6 @@ class Git::GrepController < ApplicationController
         cmd << file.strip
       end
     end
-    IO.popen(cmd, &:read)
+    Git.call(*cmd)
   end
 end
