@@ -20,6 +20,12 @@ end
 app_dir = "/app"
 Dir.chdir(app_dir) do
   check_command(
+    "! grep -l '\u2019' docs/prompts/**/*",
+    "Found unexpected character in docs/prompts.",
+    "sed -i 's/\u2019/'\"'\"'/g' docs/prompts/**/*"
+  )
+
+  check_command(
     "! git grep --no-index -I '[^ -~]' -- $( git ls-files --others --exclude-standard; git ls-files )",
     "Non-ASCII characters found."
   )

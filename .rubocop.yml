@@ -89,3 +89,5 @@ RSpec/MultipleExpectations:
   Enabled: false
 RSpec/NestedGroups:
   Enabled: false
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false

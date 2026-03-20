@@ -1,16 +1,10 @@
-Understood. I will create a Memo controller with an index action, using Stimulus for frontend logic, storing memos in localStorage (for simplicity and offline use), and ensuring offline operation via a service worker. No server communication or DB persistence will be used. I will follow the coding style of existing controllers and views.
+Understood. I'll create two controllers: GitController and Git::GrepController, each with only an index action. Git#index will show a link to Git::Grep#index. Git::Grep#index will display a branch selector (empty, local, remote), a pattern field, a files textarea, and a <pre> for grep results. If a pattern is provided, it will run git grep and show the output; otherwise, the result is empty.
 
-**Plan:**
-1. Review controller and view styles.
-2. Create MemoController (Ruby) with index action.
-3. Create index view with a Stimulus controller for memo input/display, using localStorage.
-4. Add/modify service worker to cache necessary files for offline use.
+I'll generate the controllers, views, and update routes. I'll also ensure the branch selector populates from git branches. Next, I'll create a plan and start implementation.
 
-Proceeding to review controller and view styles.
+Controllers and views for Git and Git::Grep are created, routes are registered, and tests pass. You now have:
+- /git: shows a link to /git/grep
+- /git/grep: branch selector (empty/local/remote), pattern field, files textarea, and grep results in <pre>.
 
-The Memo controller and offline memo feature are implemented. The Stimulus controller securely handles memos in localStorage, and a service worker caches all necessary files for offline use. The Memo index view is styled and functional.
-
-Tests show errors, but these are unrelated to the Memo feature (no assertions, only errors in other controllers). The Memo feature itself is fully offline, so it does not require DB or server communication.
-
-You can now use the Memo page for offline microblogging. Let me know if you want further enhancements or fixes.
+Let me know if you want further customization or improvements!
 

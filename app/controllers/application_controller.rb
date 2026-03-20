@@ -25,6 +25,10 @@ class ApplicationController < ActionController::Base
     add_breadcrumb("Home", root_path)
   end
 
+  def add_git_breadcrumb
+    add_breadcrumb("Git", git_root_path)
+  end
+
   def add_action_breadcrumb
     add_breadcrumb(action_name)
   end

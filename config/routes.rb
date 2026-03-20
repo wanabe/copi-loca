@@ -17,10 +17,15 @@ Rails.application.routes.draw do
   get 'files/*path', to: "files#show", as: :file, format: false
 
   resources :memos, only: [:index] do
-  collection do
-    post :sync_local_memos
+    collection do
+      post :sync_local_memos
+    end
   end
-end
+
+  namespace :git do
+    root to: "dashboard#show" 
+    resource :grep, only: [:show], controller: "grep"
+  end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

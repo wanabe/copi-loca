@@ -1,6 +1,6 @@
 [
   {
-    "path": "app/components/breadcrumbs.rb",
+    "path": "app/views/git/grep.rb",
     "tailwind_introduced": true
   }
 ]
