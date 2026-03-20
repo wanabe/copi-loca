@@ -1,6 +1,6 @@
 [
   {
-    "file": "/app/app/models/git.rb",
+    "file": "/app/app/models/git/grep.rb",
     "spec_added": true
   }
 ]

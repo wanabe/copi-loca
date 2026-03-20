@@ -22,6 +22,8 @@ RSpec.describe Prompt do
   end
 
   describe "#load" do
+    let(:prompt) { described_class.new(id: 1) }
+
     it "loads text from file" do
       allow(File).to receive(:read).with("#{Prompt::PATH_PREFIX}1#{Prompt::PATH_SUFFIX}").and_return("Loaded text")
       expect(prompt.load.text).to eq("Loaded text")

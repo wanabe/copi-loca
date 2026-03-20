@@ -1,2 +1,6 @@
-A spec for app/models/git.rb has been written in spec/models/git_spec.rb. The checklist entry in docs/missing_specs_checklist.json is updated to indicate the spec has been added. Task complete.
+- Selected: app/models/git/grep.rb (highest priority, no spec).
+- Wrote spec: spec/models/git/grep_spec.rb, covering the #run method and argument handling.
+- Updated docs/missing_specs_checklist.json to mark spec as added.
+
+Let me know if you want to review or run the new spec.
 

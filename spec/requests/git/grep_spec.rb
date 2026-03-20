@@ -16,7 +16,7 @@ RSpec.describe "GET /git/grep" do
     get git_grep_path, params: { pattern: "test" }
     expect(response).to have_http_status(:ok)
     expect(response.body).to include("test")
-    expect(Git).to have_received(:call).with("grep", "test")
+    expect(Git).to have_received(:call).with("grep", "test", allow_failure: true)
   end
 
   it "renders the git grep view with a pattern and files" do
@@ -26,6 +26,6 @@ RSpec.describe "GET /git/grep" do
     expect(response.body).to include("test")
     expect(response.body).to include("file1.rb")
     expect(response.body).to include("file2.rb")
-    expect(Git).to have_received(:call).with("grep", "test", "--", "file1.rb", "file2.rb")
+    expect(Git).to have_received(:call).with("grep", "test", "--", "file1.rb", "file2.rb", allow_failure: true)
   end
 end

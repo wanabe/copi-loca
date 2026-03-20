@@ -11,7 +11,7 @@ module TextRepresenter
       @string_scanner = StringScanner.new(string)
     end
 
-    def_delegators :@string_scanner, :eos?, :pos
+    def_delegators :@string_scanner, :eos?, :pos, :rest
 
     def assign(representer, name, value)
       representer.public_send("#{name}=", value)
@@ -25,17 +25,20 @@ module TextRepresenter
       case quantity
       when nil
         o = klass.new
+        yield(:before, o) if block_given?
         o.apply(self)
-        yield o if block_given?
+        yield(:after, o) if block_given?
         assign(representer, name, o)
-      when "+"
+      when "+", "*"
         arr = []
         loop do
           pos = @string_scanner.pos
           o = klass.new
           begin
             separator.call if separator && !arr.empty?
+            yield(:before, o) if block_given?
             o.apply(self)
+            yield(:after, o) if block_given?
             arr << o
           rescue UnmatchedPatternError
             @string_scanner.pos = pos
@@ -43,7 +46,7 @@ module TextRepresenter
           end
           yield o if block_given?
         end
-        raise UnmatchedPatternError, "Expected at least one" if arr.empty?
+        raise UnmatchedPatternError, "#{name}: Expected at least one" if arr.empty? && quantity == "+"
 
         assign(representer, name, arr)
       else
@@ -56,6 +59,9 @@ module TextRepresenter
     end
 
     def token(representer, name, regex, to: nil)
+      value = value(representer, name)&.to_s if name
+      return same_as(representer, name) if value
+
       raise UnmatchedPatternError, "Expected token #{regex} at position #{@string_scanner.pos}" unless @string_scanner.scan(regex)
 
       value = @string_scanner.matched

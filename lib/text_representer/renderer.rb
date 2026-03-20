@@ -16,7 +16,7 @@ module TextRepresenter
 
     def partial(representer, name, _klass, quantity: nil, separator: nil)
       o = value(representer, name)
-      if o.is_a?(Array) && quantity == "+"
+      if o.is_a?(Array) && %w[+ *].include?(quantity)
         rest = false
         o.each do |e|
           separator.call if rest && separator

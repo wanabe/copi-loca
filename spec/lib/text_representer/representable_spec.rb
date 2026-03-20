@@ -118,13 +118,13 @@ RSpec.describe TextRepresenter::Representable do
           include TextRepresenter::Representable
 
           def template
-            expose :partial, :foo, nil, quantity: "*"
+            expose :partial, :foo, nil, quantity: "?"
           end
         end
       end
 
       it "raises an error" do
-        expect { invalid_class.new.parse("foo") }.to raise_error(NotImplementedError, /Unsupported quantity: \*/)
+        expect { invalid_class.new.parse("foo") }.to raise_error(NotImplementedError, /Unsupported quantity: \?/)
       end
     end
   end

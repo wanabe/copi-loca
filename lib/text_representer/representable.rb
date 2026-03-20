@@ -5,7 +5,7 @@ module TextRepresenter
     def parse(string, exact: true)
       scanner = Scanner.new(string)
       apply(scanner)
-      raise UnmatchedPatternError, "Expected end of string at position #{scanner.pos}" if exact && !scanner.eos?
+      raise UnmatchedPatternError, "Remaining unmatched string: #{scanner.rest}" if exact && !scanner.eos?
 
       self
     end

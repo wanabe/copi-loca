@@ -12,7 +12,14 @@ class Git::GrepController < ApplicationController
     @ignore_case = params[:ignore_case] == "on"
     @grep_result = nil
 
-    @grep_result = run_git_grep(@pattern, @files, @branch, @ignore_case) if @pattern.present?
+    if @pattern.present?
+      @grep_result = Git::Grep.new(
+        pattern: @pattern,
+        branch: @branch,
+        files: @files,
+        ignore_case: @ignore_case
+      ).run.render
+    end
 
     render Views::Git::Grep::Show.new(
       branches: @branches,
@@ -34,19 +41,5 @@ class Git::GrepController < ApplicationController
     local = `git branch --format='%(refname:short)'`.lines.map(&:strip)
     remote = `git branch -r --format='%(refname:short)'`.lines.map(&:strip)
     [*local, *remote]
-  end
-
-  def run_git_grep(pattern, files, branch, ignore_case)
-    cmd = %w[grep]
-    cmd << "-i" if ignore_case
-    cmd << pattern
-    cmd << branch if branch.present?
-    if files.present?
-      cmd << "--"
-      files.split("\n").each do |file|
-        cmd << file.strip
-      end
-    end
-    Git.call(*cmd)
   end
 end
