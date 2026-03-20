@@ -29,7 +29,9 @@ class Views::Layouts::Application < Views::Base
       end
       body do
         render Components::Breadcrumbs.new(breadcrumbs: @breadcrumbs)
-        yield
+        div(class: "px-2") do
+          yield
+        end
       end
     end
   end
