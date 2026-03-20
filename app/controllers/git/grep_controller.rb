@@ -2,7 +2,7 @@
 
 class Git::GrepController < ApplicationController
   before_action :add_git_breadcrumb
-  before_action :add_action_breadcrumb, only: [:show]
+  before_action :add_grep_breadcrumb
 
   def show
     @branches = branches
@@ -25,6 +25,10 @@ class Git::GrepController < ApplicationController
   end
 
   private
+
+  def add_grep_breadcrumb
+    add_breadcrumb "Grep", git_grep_path
+  end
 
   def branches
     local = `git branch --format='%(refname:short)'`.lines.map(&:strip)
