@@ -1,0 +1,12 @@
+# Generated from app/views/prompts/new.rb with RBS::Inline
+
+class Views::Prompts::New < Views::Base
+  @prompt: Prompt
+
+  # @rbs prompt: Prompt
+  # @rbs return: void
+  def initialize: (prompt: Prompt) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+end

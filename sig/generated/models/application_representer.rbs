@@ -1,0 +1,13 @@
+# Generated from app/models/application_representer.rb with RBS::Inline
+
+class ApplicationRepresenter
+  include ActiveModel::Model
+
+  include ActiveModel::Attributes
+
+  include TextRepresenter::Representable
+
+  extend ActiveModel::Attributes::ClassMethods
+
+  extend ActiveModel::Validations::ClassMethods
+end

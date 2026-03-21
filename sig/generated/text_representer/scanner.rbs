@@ -1,0 +1,72 @@
+# Generated from lib/text_representer/scanner.rb with RBS::Inline
+
+module TextRepresenter
+  class Scanner < Context
+    @string_scanner: StringScanner
+
+    extend Forwardable
+
+    # @rbs string: String
+    # @rbs return: void
+    def initialize: (String string) -> void
+
+    def eos?: () -> bool
+
+    def pos: () -> Integer
+
+    def rest: () -> String
+
+    # @rbs representer: TextRepresenter::Representable
+    # @rbs name: Symbol
+    # @rbs value: untyped
+    # @rbs return: void
+    def assign: (TextRepresenter::Representable representer, Symbol name, untyped value) -> void
+
+    # @rbs representer: TextRepresenter::Representable
+    # @rbs name: Symbol
+    # @rbs return: untyped
+    def value: (TextRepresenter::Representable representer, Symbol name) -> untyped
+
+    # @rbs representer: TextRepresenter::Representable
+    # @rbs name: Symbol
+    # @rbs klass: Class
+    # @rbs quantity: "+" | "*" | nil
+    # @rbs separator: Proc?
+    # @rbs &: ? (Symbol, untyped) -> void
+    # @rbs return: void
+    def partial: (TextRepresenter::Representable representer, Symbol name, Class klass, ?quantity: "+" | "*" | nil, ?separator: Proc?) ?{ (Symbol, untyped) -> void } -> void
+
+    # @rbs representer: TextRepresenter::Representable
+    # @rbs str: String
+    # @rbs return: void
+    def literal: (TextRepresenter::Representable representer, String str) -> void
+
+    # @rbs representer: TextRepresenter::Representable
+    # @rbs name: Symbol?
+    # @rbs regex: Regexp
+    # @rbs to: Symbol?
+    # @rbs return: void
+    def token: (TextRepresenter::Representable representer, Symbol? name, Regexp regex, ?to: Symbol?) -> void
+
+    # @rbs _representer: TextRepresenter::Representable
+    # @rbs &: () -> void
+    # @rbs return: void
+    def line: (untyped _representer) { () -> void } -> void
+
+    # @rbs representer: TextRepresenter::Representable
+    # @rbs name: Symbol
+    # @rbs &: ? () -> void
+    # @rbs return: void
+    def optional: (TextRepresenter::Representable representer, Symbol name) ?{ () -> void } -> void
+
+    # @rbs _representer: TextRepresenter::Representable
+    # @rbs &: ? () -> void
+    # @rbs return: void
+    def absence: (untyped _representer) ?{ () -> void } -> void
+
+    # @rbs representer: TextRepresenter::Representable
+    # @rbs name: Symbol
+    # @rbs return: void
+    def same_as: (TextRepresenter::Representable representer, Symbol name) -> void
+  end
+end

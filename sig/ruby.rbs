@@ -1,0 +1,7 @@
+class StringScanner
+  def scan: (Regexp | String) -> String?
+end
+
+class IO
+  def self.popen: (Hash?, Array[String], ?err: [Symbol, Symbol]) { (IO) -> untyped } -> untyped
+end

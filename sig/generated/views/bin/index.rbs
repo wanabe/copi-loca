@@ -1,0 +1,15 @@
+# Generated from app/views/bin/index.rb with RBS::Inline
+
+class Views::Bin::Index < Views::Base
+  @bins: Kaminari::PaginatableArray[Bin]
+
+  @notice: String?
+
+  # @rbs bins: Kaminari::PaginatableArray[Bin]
+  # @rbs notice: String?
+  # @rbs return: void
+  def initialize: (bins: Kaminari::PaginatableArray[Bin], ?notice: String?) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+end

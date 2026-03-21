@@ -1,0 +1,12 @@
+# Generated from app/views/ps/index.rb with RBS::Inline
+
+class Views::Ps::Index < Views::Base
+  @lines: Array[String]
+
+  # @rbs lines: Array[String]
+  # @rbs return: void
+  def initialize: (lines: Array[String]) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+end

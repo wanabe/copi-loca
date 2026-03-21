@@ -108,7 +108,7 @@ RSpec.describe TextRepresenter::Representable do
       end
 
       it "raises an error" do
-        expect { invalid_class.new.parse("foo") }.to raise_error(TextRepresenter::FatalError, /Unknown expose type: bar/)
+        expect { invalid_class.new.parse("foo") }.to raise_error(TextRepresenter::FatalError, /Unknown expose type: :bar/)
       end
     end
 
@@ -118,7 +118,7 @@ RSpec.describe TextRepresenter::Representable do
           include TextRepresenter::Representable
 
           def template
-            expose :partial, :foo, nil, quantity: "?"
+            expose :partial, :foo, self.class, quantity: "?"
           end
         end
       end
@@ -164,7 +164,7 @@ RSpec.describe TextRepresenter::Representable do
           end
 
           def template
-            partial :foo, nil
+            partial :foo, self.class
           end
         end
       end
@@ -174,6 +174,13 @@ RSpec.describe TextRepresenter::Representable do
           invalid_class.new.render
         end.to raise_error(TextRepresenter::FatalError, /Expected foo to be a Representable or an Array of Representable, got String/)
       end
+    end
+
+    it "raises an error if #template is not implemented" do
+      klass = Class.new do
+        include TextRepresenter::Representable
+      end
+      expect { klass.new.__send__(:template) }.to raise_error(NotImplementedError, /Including class must implement #template method/)
     end
   end
 end

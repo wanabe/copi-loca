@@ -1,0 +1,11 @@
+# Generated from app/components/bin/run.rb with RBS::Inline
+
+class Components::Bin::Run < Components::Base
+  # @rbs status: Integer?
+  # @rbs output: String?
+  # @rbs return: void
+  def initialize: (status: Integer?, output: String?) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+end

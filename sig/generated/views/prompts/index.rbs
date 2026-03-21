@@ -1,0 +1,22 @@
+# Generated from app/views/prompts/index.rb with RBS::Inline
+
+class Views::Prompts::Index < Views::Base
+  @prompts: Kaminari::PaginatableArray[Prompt]
+
+  @notice: String?
+
+  # @rbs prompts: Kaminari::PaginatableArray[Prompt]
+  # @rbs notice: String?
+  # @rbs return: void
+  def initialize: (prompts: Kaminari::PaginatableArray[Prompt], ?notice: String?) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+
+  private
+
+  # @rbs text: String?
+  # @rbs limit: Integer
+  # @rbs return: String?
+  def short: (String? text, ?limit: Integer) -> String?
+end

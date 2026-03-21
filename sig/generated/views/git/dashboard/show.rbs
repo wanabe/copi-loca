@@ -1,0 +1,6 @@
+# Generated from app/views/git/dashboard/show.rb with RBS::Inline
+
+class Views::Git::Dashboard::Show < Views::Base
+  # @rbs return: void
+  def view_template: () -> void
+end

@@ -1,11 +1,19 @@
 # frozen_string_literal: true
+# rbs_inline: enabled
 
 class Views::Bin::Index < Views::Base
+  # @rbs @bins: Kaminari::PaginatableArray[Bin]
+  # @rbs @notice: String?
+
+  # @rbs bins: Kaminari::PaginatableArray[Bin]
+  # @rbs notice: String?
+  # @rbs return: void
   def initialize(bins:, notice: nil)
     @bins = bins
     @notice = notice
   end
 
+  # @rbs return: void
   def view_template
     p(class: "text-green-600 mb-4") { @notice } if @notice
     h1(class: "text-2xl font-bold mb-4") { "Bins" }
@@ -18,7 +26,7 @@ class Views::Bin::Index < Views::Base
       tbody do
         @bins.each do |bin|
           tr do
-            td(class: "border px-4 py-2") { link_to bin.id, bin_path(bin.id) }
+            td(class: "border px-4 py-2") { link_to bin.id.to_s, bin_path(bin.id) }
           end
         end
       end

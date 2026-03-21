@@ -1,0 +1,30 @@
+# Generated from app/components/paginator.rb with RBS::Inline
+
+class Components::Paginator < Components::Base
+  @items: Kaminari::PaginatableArray[untyped]
+
+  @params: Hash[untyped, untyped]
+
+  @current_page: Integer
+
+  @total_pages: Integer
+
+  @per_page: Integer
+
+  @remote: bool
+
+  # @rbs items: Kaminari::PaginatableArray[untyped]
+  # @rbs params: Hash[untyped, untyped] # TODO: Specify type
+  # @rbs remote: bool
+  # @rbs return: void
+  def initialize: (items: Kaminari::PaginatableArray[untyped], ?params: Hash[untyped, untyped], ?remote: bool) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+
+  private
+
+  # @rbs page: Integer
+  # @rbs return: untyped # TODO: Specify type
+  def page_url: (Integer page) -> untyped
+end

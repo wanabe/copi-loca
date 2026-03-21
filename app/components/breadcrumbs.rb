@@ -1,11 +1,18 @@
 # frozen_string_literal: true
+# rbs_inline: enabled
 
 class Components::Breadcrumbs < Components::Base
-  def initialize(breadcrumbs:, session: nil)
+  # @rbs breadcrumbs: Array[Breadcrumb]
+  # @rbs return: void
+  # @rbs breadcrumbs: Array[Breadcrumb]
+  # @rbs return: void
+  def initialize(breadcrumbs:)
+    # @rbs @breadcrumbs: Array[Breadcrumb]
+
     @breadcrumbs = breadcrumbs
-    @session = session
   end
 
+  # @rbs return: void
   def view_template
     nav(aria: { label: "breadcrumb" }, class: %w[flex items-center text-sm text-gray-700 bg-white px-4 py-2 rounded shadow]) do
       ol(class: %w[flex space-x-2]) do
@@ -29,6 +36,7 @@ class Components::Breadcrumbs < Components::Base
   end
 
   class Separator < Phlex::SVG
+    # @rbs return: void
     def view_template
       svg(
         class: %w[shrink-0 mx-2 size-4 text-muted-foreground],

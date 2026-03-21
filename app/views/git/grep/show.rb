@@ -1,6 +1,21 @@
 # frozen_string_literal: true
+# rbs_inline: enabled
 
 class Views::Git::Grep::Show < Views::Base
+  # @rbs @branches: Array[String]
+  # @rbs @pattern: String?
+  # @rbs @files: String?
+  # @rbs @branch: String?
+  # @rbs @ignore_case: bool
+  # @rbs @grep_result: String?
+
+  # @rbs branches: Array[String]
+  # @rbs pattern: String?
+  # @rbs files: String?
+  # @rbs branch: String?
+  # @rbs ignore_case: bool
+  # @rbs grep_result: String?
+  # @rbs return: void
   def initialize(branches:, pattern:, files:, branch:, ignore_case:, grep_result:)
     @branches = branches
     @pattern = pattern
@@ -10,6 +25,7 @@ class Views::Git::Grep::Show < Views::Base
     @grep_result = grep_result
   end
 
+  # @rbs return: void
   def view_template
     h1(class: "text-2xl font-bold mb-4") { "Git Grep" }
 

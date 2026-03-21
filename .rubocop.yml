@@ -4,6 +4,7 @@ plugins:
   - rubocop-performance
   - rubocop-rspec
   - rubocop-rspec_rails
+  - rubocop-rbs_inline
 
 AllCops:
   NewCops: enable
@@ -37,6 +38,8 @@ Layout/FirstArrayElementIndentation:
   EnforcedStyle: consistent
 Layout/ArgumentAlignment:
   EnforcedStyle: with_fixed_indentation
+Layout/LeadingCommentSpace:
+  AllowRBSInlineAnnotation: true
 
 Lint/EmptyBlock:
   Exclude:
@@ -73,6 +76,14 @@ Style/ClassAndModuleChildren:
 Style/OneClassPerFile:
   Exclude:
     - 'config/initializers/**/*'
+Style/AccessorGrouping:
+  EnforcedStyle: separated
+Style/RbsInline/RequireRbsInlineComment:
+  Include:
+    - 'app/**/*'
+    - 'lib/**/*'
+  Exclude:
+    - 'bin/**/*'
 
 Rails/I18nLocaleTexts:
   Enabled: false

@@ -1,17 +1,30 @@
 # frozen_string_literal: true
+# rbs_inline: enabled
 
 class Views::Files::ShowDirectory < Views::Base
+  # @rbs @entries: Array[Array[String]]
+  # @rbs @path: String
+
+  # @rbs entries: Array[Array[String]]
+  # @rbs path: String
+  # @rbs return: void
   def initialize(entries:, path:)
     @entries = entries
     @path = path
   end
 
+  # @rbs return: void
   def view_template
     content_for :title, "Directory: #{@path}"
     h1(class: "text-2xl font-bold mb-4") { "Directory: #{@path}" }
+    dir = @path
+    raise "Invalid path" unless dir
+
     ul do
       @entries.each do |type, name|
-        path = File.join(@path, name)
+        raise "Invalid entry type" if !type || !name
+
+        path = File.join(dir, name)
         li do
           case type
           when "directory"

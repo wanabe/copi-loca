@@ -1,0 +1,17 @@
+# Generated from app/controllers/files_controller.rb with RBS::Inline
+
+class FilesController < ApplicationController
+  # GET /files/*path
+  # @rbs return: void
+  def show: () -> void
+
+  private
+
+  # def add_files_breadcrumb: () -> void
+  # @rbs return: void
+  def add_files_breadcrumb: () -> void
+
+  # def add_path_breadcrumb: () -> void
+  # @rbs return: void
+  def add_path_breadcrumb: () -> void
+end

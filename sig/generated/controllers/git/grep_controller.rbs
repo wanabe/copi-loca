@@ -1,0 +1,29 @@
+# Generated from app/controllers/git/grep_controller.rb with RBS::Inline
+
+class Git::GrepController < ApplicationController
+  @branches: Array[String]
+
+  @pattern: String?
+
+  @files: String
+
+  @branch: String
+
+  @ignore_case: bool
+
+  @grep_result: String?
+
+  # GET /git/grep
+  # @rbs return: void
+  def show: () -> void
+
+  private
+
+  # def add_grep_breadcrumb: () -> void
+  # @rbs return: void
+  def add_grep_breadcrumb: () -> void
+
+  # def branches: () -> Array[String]
+  # @rbs return: Array[String]
+  def branches: () -> Array[String]
+end

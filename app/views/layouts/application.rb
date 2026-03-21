@@ -1,13 +1,21 @@
 # frozen_string_literal: true
+# rbs_inline: enabled
 
 class Views::Layouts::Application < Views::Base
+  # @rbs @title: String
+  # @rbs @breadcrumbs: Array[Breadcrumb]
+
   include Phlex::Rails::Layout
 
+  # @rbs title: String?
+  # @rbs breadcrumbs: Array[Breadcrumb]
+  # @rbs return: void
   def initialize(title: nil, breadcrumbs: [])
     @title = title || "Copi Loca"
     @breadcrumbs = breadcrumbs
   end
 
+  # @rbs return: void
   def view_template(&)
     doctype
     html do

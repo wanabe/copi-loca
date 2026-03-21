@@ -1,0 +1,12 @@
+# Generated from app/components/bin/bin.rb with RBS::Inline
+
+class Components::Bin::Bin < Components::Base
+  @bin: Bin
+
+  # @rbs bin: Bin
+  # @rbs return: void
+  def initialize: (bin: Bin) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+end

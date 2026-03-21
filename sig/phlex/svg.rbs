@@ -1,0 +1,4 @@
+class Phlex::SVG
+  def svg: (**untyped) ?{ () -> void }-> void
+  def path: (**untyped) ?{ () -> void }-> void
+end

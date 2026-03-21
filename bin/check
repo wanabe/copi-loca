@@ -31,6 +31,11 @@ Dir.chdir(app_dir) do
   )
   check_command("bundle exec rubocop -A --fail-level=A", "RuboCop found issues.")
 
+  check_command(
+    "bundle exec rbs-inline --output lib app && bundle exec steep check",
+    "RBS/Steep type checking failed."
+  )
+
   check_command("bundle exec rspec", "RSpec tests failed.")
   check_coverage
 end

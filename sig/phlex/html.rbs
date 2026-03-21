@@ -1,0 +1,48 @@
+class Phlex::HTML
+  def h1: (**untyped) ?{ () -> void }-> void
+  def h2: (**untyped) ?{ () -> void }-> void
+  def h3: (**untyped) ?{ () -> void }-> void
+  def div: (**untyped) ?{ () -> void }-> void
+  def span: (**untyped) ?{ () -> void }-> void
+  def p: (**untyped) ?{ () -> void }-> void
+  def pre: (**untyped) ?{ () -> void }-> void
+  def label: (**untyped) ?{ () -> void }-> void
+  def template: (**untyped) ?{ () -> void }-> void
+
+  def form: (**untyped) ?{ () -> void }-> void
+  def input: (**untyped) ?{ () -> void }-> void
+  def select: (**untyped) ?{ () -> void }-> void
+  def option: (**untyped) ?{ () -> void }-> void
+  def textarea: (**untyped) ?{ () -> void }-> void
+  def button: (**untyped) ?{ () -> void }-> void
+
+  def table: (**untyped) ?{ () -> void }-> void
+  def tbody: (**untyped) ?{ () -> void }-> void
+  def thead: (**untyped) ?{ () -> void }-> void
+  def th: (**untyped) ?{ () -> void }-> void
+  def tr: (**untyped) ?{ () -> void }-> void
+  def td: (**untyped) ?{ () -> void }-> void
+
+  def ul: (**untyped) ?{ () -> void }-> void
+  def ol: (**untyped) ?{ () -> void }-> void
+  def li: (**untyped) ?{ () -> void }-> void
+
+  def html: (**untyped) ?{ () -> void }-> void
+  def head: (**untyped) ?{ () -> void }-> void
+  def body: (**untyped) ?{ () -> void }-> void
+  def nav: (**untyped) ?{ () -> void }-> void
+  def meta: (**untyped) -> void
+  def link: (**untyped) -> void
+  def doctype: () -> void
+  def title:() { () -> void }-> void
+  def br: () -> void
+  def csrf_meta_tags: () -> void
+  def csp_meta_tag: () -> void
+  def stylesheet_link_tag: (*String, **untyped) -> String
+  def javascript_importmap_tags: () -> void
+  def plain: () { () -> void } -> void | (String) -> void
+
+  def link_to: (String, String, **untyped) ?{ () -> void }-> void
+  
+  def render: (untyped) -> void
+end

@@ -1,0 +1,10 @@
+# Generated from app/models/git.rb with RBS::Inline
+
+module Git
+  # @rbs *args: String
+  # @rbs env: Hash[String, String]
+  # @rbs return_status: bool
+  # @rbs allow_failure: bool
+  # @rbs return: String | bool
+  def self.call: (*String args, ?env: Hash[String, String], ?return_status: bool, ?allow_failure: bool) -> (String | bool)
+end

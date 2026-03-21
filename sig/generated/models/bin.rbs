@@ -1,0 +1,30 @@
+# Generated from app/models/bin.rb with RBS::Inline
+
+class Bin < TextFile
+  PATH_PREFIX: untyped
+
+  PATH_SUFFIX: ::String
+
+  ID_PATTERN: ::Regexp
+
+  ID_PATTERN_INDEX: ::Integer
+
+  attr_accessor id(): Integer
+
+  def self.find: (untyped value) -> Bin
+
+  def self.all: () -> Array[Bin]
+
+  # @rbs return: self
+  def load: () -> self
+
+  # @rbs return: bool
+  def persisted?: () -> bool
+
+  # @rbs return: [Integer, String]
+  def run: () -> [ Integer, String ]
+
+  # @rbs value: untyped # TODO: Specify type
+  # @rbs return: Hash[Symbol, untyped]
+  def self.primary_condition: (untyped value) -> Hash[Symbol, untyped]
+end

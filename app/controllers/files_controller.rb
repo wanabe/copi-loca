@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# rbs_inline: enabled
 
 class FilesController < ApplicationController
   skip_forgery_protection only: [:show]
@@ -7,6 +8,7 @@ class FilesController < ApplicationController
   before_action :add_path_breadcrumb, only: [:show]
 
   # GET /files/*path
+  # @rbs return: void
   def show
     path = params[:path] || "."
     abs = File.absolute_path(File.join("/app", path))
@@ -39,10 +41,14 @@ class FilesController < ApplicationController
 
   private
 
+  # def add_files_breadcrumb: () -> void
+  # @rbs return: void
   def add_files_breadcrumb
     add_breadcrumb("Files", files_path)
   end
 
+  # def add_path_breadcrumb: () -> void
+  # @rbs return: void
   def add_path_breadcrumb
     return unless params[:path]
 

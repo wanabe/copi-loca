@@ -1,0 +1,67 @@
+# Generated from lib/text_representer/representable.rb with RBS::Inline
+
+module TextRepresenter
+  module Representable
+    @representation_context: TextRepresenter::Scanner | TextRepresenter::Context | nil
+
+    # @rbs string: String
+    # @rbs exact: bool
+    # @rbs return: self
+    def parse: (String string, ?exact: bool) -> self
+
+    # @rbs return: String
+    def render: () -> String
+
+    # `#apply`can't be private because it's used by Scanner and Renderer, but it shouldn't be called directly by users.
+    # @rbs context: TextRepresenter::Scanner | TextRepresenter::Context
+    # @rbs return: self
+    def apply: (TextRepresenter::Scanner | TextRepresenter::Context context) -> self
+
+    # @rbs name: Symbol
+    # @rbs klass: Class
+    # @rbs quantity: "+" | "*" | nil
+    # @rbs separator: Proc?
+    # @rbs &: (untyped) -> void
+    # @rbs return: void
+    def partial: (Symbol name, Class klass, ?quantity: "+" | "*" | nil, ?separator: Proc?) { (untyped) -> void } -> void
+
+    # @rbs str: String
+    # @rbs return: void
+    def literal: (String str) -> void
+
+    # @rbs name: Symbol?
+    # @rbs regex: Regexp
+    # @rbs to: Symbol?
+    # @rbs return: void
+    def token: (Symbol? name, Regexp regex, ?to: Symbol?) -> void
+
+    # @rbs &: (untyped) -> void
+    # @rbs return: void
+    def line: () { (untyped) -> void } -> void
+
+    # @rbs name: Symbol
+    # @rbs &: ? (untyped) -> void
+    # @rbs return: void
+    def optional: (Symbol name) ?{ (untyped) -> void } -> void
+
+    # @rbs &: ? (untyped) -> void
+    # @rbs return: void
+    def absence: () ?{ (untyped) -> void } -> void
+
+    # @rbs name: Symbol
+    # @rbs return: void
+    def same_as: (Symbol name) -> void
+
+    private
+
+    # @rbs type: Symbol
+    # @rbs *args: untyped
+    # @rbs **kwargs: untyped
+    # @rbs &block: ? (untyped) -> void
+    # @rbs return: void
+    def expose: (Symbol type, *untyped args, **untyped kwargs) ?{ (untyped) -> void } -> void
+
+    # @rbs return: void
+    def template: () -> void
+  end
+end

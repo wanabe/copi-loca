@@ -1,10 +1,16 @@
 # frozen_string_literal: true
+# rbs_inline: enabled
 
 class Components::Prompts::Form < Components::Base
+  # @rbs @prompt: Prompt
+
+  # @rbs prompt: Prompt
+  # @rbs return: void
   def initialize(prompt:)
     @prompt = prompt
   end
 
+  # @rbs return: void
   def view_template
     form_with(model: @prompt) do |form|
       if @prompt.errors.any?

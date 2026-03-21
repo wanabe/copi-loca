@@ -1,0 +1,8 @@
+# Generated from app/controllers/home_controller.rb with RBS::Inline
+
+class HomeController < ApplicationController
+  # GET /
+  # def index: () -> void
+  # @rbs return: void
+  def index: () -> void
+end

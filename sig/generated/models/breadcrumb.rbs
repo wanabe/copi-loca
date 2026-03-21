@@ -1,0 +1,15 @@
+# Generated from app/models/breadcrumb.rb with RBS::Inline
+
+class Breadcrumb
+  attr_reader name: String
+
+  attr_reader path: String?
+
+  # @rbs name: String
+  # @rbs path: String?
+  # @rbs return: void
+  def initialize: (String name, String? path) -> void
+
+  # @rbs return: bool
+  def link?: () -> bool
+end

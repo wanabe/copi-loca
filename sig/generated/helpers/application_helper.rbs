@@ -1,0 +1,6 @@
+# Generated from app/helpers/application_helper.rb with RBS::Inline
+
+# :nodoc:
+# @rbs
+module ApplicationHelper
+end

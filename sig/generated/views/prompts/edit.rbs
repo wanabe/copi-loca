@@ -1,0 +1,12 @@
+# Generated from app/views/prompts/edit.rb with RBS::Inline
+
+class Views::Prompts::Edit < Views::Base
+  @prompt: Prompt
+
+  # @rbs prompt: Prompt
+  # @rbs return: void
+  def initialize: (prompt: Prompt) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+end

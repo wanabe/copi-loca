@@ -1,11 +1,21 @@
 # frozen_string_literal: true
+# rbs_inline: enabled
 
 class Components::Bin::Run < Components::Base
+  # @rbs status: Integer?
+  # @rbs output: String?
+  # @rbs return: void
   def initialize(status:, output:)
+    # @rbs @status: Integer?
+
     @status = status
+
+    # @rbs @output: String?
+
     @output = output
   end
 
+  # @rbs return: void
   def view_template
     turbo_frame_tag("bin-run-result") do
       if @status

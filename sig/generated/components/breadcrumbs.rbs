@@ -1,0 +1,17 @@
+# Generated from app/components/breadcrumbs.rb with RBS::Inline
+
+class Components::Breadcrumbs < Components::Base
+  # @rbs breadcrumbs: Array[Breadcrumb]
+  # @rbs return: void
+  # @rbs breadcrumbs: Array[Breadcrumb]
+  # @rbs return: void
+  def initialize: (breadcrumbs: Array[Breadcrumb]) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+
+  class Separator < Phlex::SVG
+    # @rbs return: void
+    def view_template: () -> void
+  end
+end

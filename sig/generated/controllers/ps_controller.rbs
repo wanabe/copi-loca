@@ -1,0 +1,13 @@
+# Generated from app/controllers/ps_controller.rb with RBS::Inline
+
+class PsController < ApplicationController
+  # GET /ps
+  # @rbs return: void
+  def index: () -> void
+
+  private
+
+  # def add_ps_breadcrumb: () -> void
+  # @rbs return: void
+  def add_ps_breadcrumb: () -> void
+end

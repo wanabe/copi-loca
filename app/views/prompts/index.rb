@@ -1,11 +1,19 @@
 # frozen_string_literal: true
+# rbs_inline: enabled
 
 class Views::Prompts::Index < Views::Base
+  # @rbs @prompts: Kaminari::PaginatableArray[Prompt]
+  # @rbs @notice: String?
+
+  # @rbs prompts: Kaminari::PaginatableArray[Prompt]
+  # @rbs notice: String?
+  # @rbs return: void
   def initialize(prompts:, notice: nil)
     @prompts = prompts
     @notice = notice
   end
 
+  # @rbs return: void
   def view_template
     p(class: "text-green-600 mb-4") { @notice } if @notice
     h1(class: "text-2xl font-bold mb-4") { "Prompts" }
@@ -23,7 +31,7 @@ class Views::Prompts::Index < Views::Base
       tbody do
         @prompts.each do |prompt|
           tr do
-            td(class: "border px-4 py-2") { link_to prompt.id, prompt_path(prompt) }
+            td(class: "border px-4 py-2") { link_to prompt.id.to_s, prompt_path(prompt) }
             td(class: "border px-4 py-2") { prompt.pid }
             td(class: "border px-4 py-2") { prompt.name }
             td(class: "border px-4 py-2") { short(prompt.description) }
@@ -40,13 +48,16 @@ class Views::Prompts::Index < Views::Base
 
   private
 
+  # @rbs text: String?
+  # @rbs limit: Integer
+  # @rbs return: String?
   def short(text, limit: 20)
     return if text.blank?
 
     text =~ /\A(.{,#{limit}})(\n|.)?/
     result = ::Regexp.last_match(1)
     rest = ::Regexp.last_match(2)
-    result += " ..." if rest
+    result += " ..." if result && rest
     result
   end
 end

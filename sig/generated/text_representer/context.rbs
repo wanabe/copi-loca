@@ -1,0 +1,45 @@
+# Generated from lib/text_representer/context.rb with RBS::Inline
+
+module TextRepresenter
+  class Context
+    # @rbs representer: TextRepresenter::Representable
+    # @rbs name: Symbol
+    # @rbs klass: Class
+    # @rbs quantity: "+" | "*" | nil
+    # @rbs separator: Proc?
+    # @rbs &: (Symbol, untyped) -> void
+    # @rbs return: void
+    def partial: (TextRepresenter::Representable representer, Symbol name, Class klass, ?quantity: "+" | "*" | nil, ?separator: Proc?) { (Symbol, untyped) -> void } -> void
+
+    # @rbs representer: untyped # TODO: Specify type
+    # @rbs str: String
+    # @rbs return: void
+    def literal: (untyped representer, String str) -> void
+
+    # @rbs representer: untyped # TODO: Specify type
+    # @rbs name: Symbol?
+    # @rbs _regex: Regexp
+    # @rbs to: Symbol?
+    # @rbs return: void
+    def token: (untyped representer, Symbol? name, untyped _regex, ?to: Symbol?) -> void
+
+    # @rbs return: void
+    def line: () -> void
+
+    # @rbs representer: untyped # TODO: Specify type
+    # @rbs name: Symbol
+    # @rbs &: () -> void
+    # @rbs return: void
+    def optional: (untyped representer, Symbol name) { () -> void } -> void
+
+    # @rbs representer: untyped # TODO: Specify type
+    # @rbs &: () -> void
+    # @rbs return: void
+    def absence: (untyped representer) { () -> void } -> void
+
+    # @rbs representer: untyped # TODO: Specify type
+    # @rbs name: Symbol
+    # @rbs return: void
+    def same_as: (untyped representer, Symbol name) -> void
+  end
+end

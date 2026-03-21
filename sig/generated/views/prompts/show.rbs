@@ -1,0 +1,15 @@
+# Generated from app/views/prompts/show.rb with RBS::Inline
+
+class Views::Prompts::Show < Views::Base
+  @prompt: Prompt
+
+  @notice: String?
+
+  # @rbs prompt: Prompt
+  # @rbs notice: String?
+  # @rbs return: void
+  def initialize: (prompt: Prompt, ?notice: String?) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+end

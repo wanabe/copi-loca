@@ -1,0 +1,7 @@
+# Generated from app/controllers/git/dashboard_controller.rb with RBS::Inline
+
+class Git::DashboardController < ApplicationController
+  # def show: () -> void
+  # @rbs return: void
+  def show: () -> void
+end

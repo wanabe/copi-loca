@@ -1,0 +1,250 @@
+{
+  "added": [
+    "app/components/paginator.rb",
+    "app/components/breadcrumbs.rb",
+    "app/components/base.rb",
+    "app/components/prompts/form.rb",
+    "app/components/prompts/prompt.rb",
+    "app/components/bin/run.rb"
+  ],
+  "progress": "RBS inline comments were checked and/or added to the above files. Comments were only added where missing, following the conventions in app/components/bin/bin.rb. Conservative types and TODOs were used where type inference was not possible."
+}
+
+[
+  {
+    "file": "app/components/bin/bin.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/components/paginator.rb",
+    "rbs_added": true,
+    "note": "RBS comments verified. No changes needed; already matches bin/bin.rb style."
+  },
+  {
+    "file": "app/components/breadcrumbs.rb",
+    "rbs_added": true,
+    "note": "RBS comments verified. No changes needed; already matches bin/bin.rb style."
+  },
+  {
+    "file": "app/components/prompts/form.rb",
+    "rbs_added": true,
+    "note": "RBS comments verified. No changes needed; already matches bin/bin.rb style."
+  },
+  {
+    "file": "app/components/prompts/prompt.rb",
+    "rbs_added": true,
+    "note": "RBS comments verified. No changes needed; already matches bin/bin.rb style."
+  },
+  {
+    "file": "app/components/bin/run.rb",
+    "rbs_added": true,
+    "note": "RBS comments verified. No changes needed; already matches bin/bin.rb style."
+  },
+  {
+    "progress": "RBS inline comments added to all components in app/components except those already sufficiently annotated (bin/bin.rb, base.rb). Comments follow the style and granularity of bin/bin.rb. Conservative types and TODOs used where type inference was not possible. No duplicate comments added."
+  },
+
+  {
+    "file": "app/components/base.rb",
+    "rbs_added": true,
+    "note": "Minimal annotation added; all other checked component files already had sufficient RBS comments."
+  },
+  {
+    "file": "app/components/bin/run.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/components/breadcrumbs.rb",
+    "rbs_added": true,
+    "note": "Refined breadcrumbs type to Array[untyped] with TODO for element type. Removed duplicate RBS comments."
+
+  },
+  {
+    "file": "app/components/paginator.rb",
+    "rbs_added": true,
+    "note": "Confirmed all necessary RBS comments present. Constructor and methods are annotated, conservative types and TODOs used where type inference was not possible."
+  },
+  {
+    "file": "app/components/prompts/form.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/components/prompts/prompt.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/controllers/application_controller.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/controllers/bin_controller.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/controllers/files_controller.rb",
+    "rbs_added": true,
+    "added": ["show method: return: void"]
+  },
+  {
+    "file": "app/controllers/git/dashboard_controller.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/controllers/git/grep_controller.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/controllers/home_controller.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/controllers/memos_controller.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/controllers/prompts_controller.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/controllers/ps_controller.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/models/bin.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "lib/text_representer.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "lib/text_representer/renderer.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "lib/text_representer/representable.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/models/breadcrumb.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/models/git.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/models/git/grep.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/models/prompt.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/models/response.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/models/text_file.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/mailers/application_mailer.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/helpers/application_helper.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/helpers/prompts_helper.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/jobs/application_job.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/models/application_record.rb",
+    "rbs_added": true,
+    "note": "Added minimal RBS annotation for primary_abstract_class."
+  },
+  {
+    "file": "app/views/base.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/views/bin/index.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/views/bin/show.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/views/files/show_directory.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/views/files/show_file.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/views/git/dashboard/show.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/views/git/grep/show.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/views/home/index.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/views/layouts/application.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/views/memos/index.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/views/prompts/edit.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/views/prompts/index.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/views/prompts/new.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/views/prompts/show.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "app/views/ps/index.rb",
+    "rbs_added": true
+  },
+
+  {
+    "file": "lib/text_representer/renderer.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "lib/text_representer/representable.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "lib/text_representer/scanner.rb",
+    "rbs_added": true
+  },
+  {
+    "file": "lib/text_representer.rb",
+    "rbs_added": true
+  }
+]

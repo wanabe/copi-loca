@@ -1,17 +1,23 @@
 # frozen_string_literal: true
+# rbs_inline: enabled
 
 module Git
   class << self
+    # @rbs *args: String
+    # @rbs env: Hash[String, String]
+    # @rbs return_status: bool
+    # @rbs allow_failure: bool
+    # @rbs return: String | bool
     def call(*args, env: {}, return_status: false, allow_failure: false)
-      output = IO.popen(env, ["git", *args], "w+", err: %i[child out]) do |io|
+      last_status, output = IO.popen(env, ["git", *args], "w+", err: %i[child out]) do |io|
         yield io if block_given?
         io.close_write
-        io.read
+        [Process.wait2(io.pid).last, io.read]
       end
 
-      return Process.last_status.success? if return_status
+      return last_status.success? if return_status
 
-      raise "Git failed: #{output}" if !allow_failure && !Process.last_status.success?
+      raise "Git failed: #{output}" if !allow_failure && !last_status.success?
 
       output
     end

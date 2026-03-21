@@ -1,0 +1,14 @@
+module Kaminari
+  def self.paginate_array: [T](Array[T]) -> PaginatableArray[T]
+
+  class PaginatableArray[T]
+    def each: () { (T) -> void } -> self
+
+    def page: (Integer) -> PaginatableArray[T]
+    def per: (Integer) -> PaginatableArray[T]
+    def per_page: (Integer) -> PaginatableArray[T]
+    def current_page: () -> Integer
+    def total_pages: () -> Integer
+    def limit_value: () -> Integer
+  end
+end

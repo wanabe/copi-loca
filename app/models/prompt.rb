@@ -1,11 +1,23 @@
 # frozen_string_literal: true
+# rbs_inline: enabled
 
 class Prompt < TextFile
+  # @rbs @response_fetched: bool
+  # @rbs @response: Response?
+
   PATH_PREFIX = Rails.root.join("docs/prompts/").to_s.freeze
   PATH_SUFFIX = "/prompt.md"
-  ID_PATTERN = [/\A#{Regexp.escape(PATH_PREFIX)}(\d+)#{Regexp.escape(PATH_SUFFIX)}\z/, 1].freeze
+  ID_PATTERN = /\A#{Regexp.escape(PATH_PREFIX)}(\d+)#{Regexp.escape(PATH_SUFFIX)}\z/
+  ID_PATTERN_INDEX = 1
 
   COMMAND = ["copilot", "-s", "--model", "gpt-4.1", "--yolo", "-p"].freeze
+
+  # @rbs!
+  #   attr_accessor id (): Integer
+  #   attr_accessor text (): String
+  #   attr_accessor has_metadata (): bool
+  #   attr_accessor name (): String
+  #   attr_accessor description (): String
 
   attribute :id, :integer
   attribute :text, :string
@@ -16,6 +28,7 @@ class Prompt < TextFile
   validates :id, presence: true
   validates :text, presence: true
 
+  # @rbs return: void
   def template
     optional :has_metadata do
       literal "---\n"
@@ -32,16 +45,20 @@ class Prompt < TextFile
     token :text, /.*/m
   end
 
+  # @rbs return: void
   def destroy!
     response&.destroy!
     super
   end
 
+  # @rbs return: bool
   def valid?
     self.has_metadata = name.present? && description.present?
     super
   end
 
+  # @rbs n: Integer
+  # @rbs return: Response
   def run(n = 1)
     raise "Prompt is already running" if running?
 
@@ -62,16 +79,19 @@ class Prompt < TextFile
     response
   end
 
+  # @rbs return: bool
   def running?
     File.exist?(pid_path)
   end
 
+  # @rbs return: Integer?
   def pid
     return nil unless running?
 
     File.read(pid_path).to_i
   end
 
+  # @rbs return: Response?
   def response
     return @response if @response_fetched
 
@@ -81,6 +101,7 @@ class Prompt < TextFile
 
   private
 
+  # @rbs return: String
   def pid_path
     "#{Prompt::PATH_PREFIX}#{id}/pid"
   end

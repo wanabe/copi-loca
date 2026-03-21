@@ -1,0 +1,59 @@
+# Generated from lib/text_representer/renderer.rb with RBS::Inline
+
+module TextRepresenter
+  class Renderer < Context
+    @output: String
+
+    # @rbs return: void
+    def initialize: () -> void
+
+    # @rbs return: String
+    def result: () -> String
+
+    # @rbs representer: TextRepresenter::Representable
+    # @rbs name: Symbol
+    # @rbs return: untyped
+    def value: (TextRepresenter::Representable representer, Symbol name) -> untyped
+
+    # @rbs representer: TextRepresenter::Representable
+    # @rbs name: Symbol
+    # @rbs _klass: Class
+    # @rbs quantity: "+" | "*" | nil
+    # @rbs separator: Proc?
+    # @rbs &: (Symbol, untyped) -> void
+    # @rbs return: void
+    def partial: (TextRepresenter::Representable representer, Symbol name, untyped _klass, ?quantity: "+" | "*" | nil, ?separator: Proc?) { (Symbol, untyped) -> void } -> void
+
+    # @rbs _representer: TextRepresenter::Representable
+    # @rbs str: String
+    # @rbs return: void
+    def literal: (untyped _representer, String str) -> void
+
+    # @rbs representer: TextRepresenter::Representable
+    # @rbs name: Symbol?
+    # @rbs _regex: Regexp
+    # @rbs to: Symbol?
+    # @rbs return: void
+    def token: (TextRepresenter::Representable representer, Symbol? name, untyped _regex, ?to: Symbol?) -> void
+
+    # @rbs _representer: TextRepresenter::Representable
+    # @rbs &: () -> void
+    # @rbs return: void
+    def line: (untyped _representer) { () -> void } -> void
+
+    # @rbs representer: TextRepresenter::Representable
+    # @rbs name: Symbol
+    # @rbs &: () -> void
+    # @rbs return: void
+    def optional: (TextRepresenter::Representable representer, Symbol name) { () -> void } -> void
+
+    # @rbs _representer: TextRepresenter::Representable
+    # @rbs return: void
+    def absence: (untyped _representer) -> void
+
+    # @rbs representer: TextRepresenter::Representable
+    # @rbs name: Symbol
+    # @rbs return: void
+    def same_as: (TextRepresenter::Representable representer, Symbol name) -> void
+  end
+end

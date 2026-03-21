@@ -1,0 +1,10 @@
+# frozen_string_literal: true
+
+target :app do
+  signature "sig"
+
+  check "app"
+  check "lib" # Directory name
+  library "forwardable"
+  library "strscan"
+end

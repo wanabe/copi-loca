@@ -1,0 +1,28 @@
+# Generated from app/controllers/bin_controller.rb with RBS::Inline
+
+class BinController < ApplicationController
+  @bin: Bin
+
+  # GET /bin or /bin.json
+  # @rbs return: void
+  def index: () -> void
+
+  # GET /bin/:id or /bin/:id.json
+  # @rbs return: void
+  def show: () -> void
+
+  # POST /bin/:id/run or /bin/:id/run.json
+  # @rbs return: void
+  def run: () -> void
+
+  private
+
+  # @rbs return: Bin
+  def bin: () -> Bin
+
+  # @rbs return: void
+  def add_bins_breadcrumb: () -> void
+
+  # @rbs return: void
+  def add_bin_breadcrumb: () -> void
+end

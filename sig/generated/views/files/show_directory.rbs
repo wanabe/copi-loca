@@ -1,0 +1,15 @@
+# Generated from app/views/files/show_directory.rb with RBS::Inline
+
+class Views::Files::ShowDirectory < Views::Base
+  @entries: Array[Array[String]]
+
+  @path: String
+
+  # @rbs entries: Array[Array[String]]
+  # @rbs path: String
+  # @rbs return: void
+  def initialize: (entries: Array[Array[String]], path: String) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+end

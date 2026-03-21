@@ -1,0 +1,57 @@
+# Generated from app/models/text_file.rb with RBS::Inline
+
+class TextFile < ApplicationRepresenter
+  PATH_PREFIX: ::String
+
+  PATH_SUFFIX: ::String
+
+  ID_PATTERN: ::Regexp
+
+  ID_PATTERN_INDEX: ::Integer
+
+  # @rbs return: self | nil
+  def load: () -> (self | nil)
+
+  # @rbs return: bool
+  def save: () -> bool
+
+  # @rbs return: bool
+  def persisted?: () -> bool
+
+  # @rbs return: void
+  def destroy!: () -> void
+
+  # @rbs return: Integer
+  def id: () -> Integer
+
+  # @rbs value: untyped # TODO: Specify more precise type
+  # @rbs return: Hash[Symbol, Integer]
+  def self.primary_condition: (untyped value) -> Hash[Symbol, Integer]
+
+  # @rbs id: untyped # TODO: Specify more precise type
+  # @rbs return: String
+  def self.path_pattern: (untyped id) -> String
+
+  # @rbs file_path: String
+  # @rbs return: TextFile | nil
+  def self.from_path: (String file_path) -> (TextFile | nil)
+
+  # @rbs **conditions: untyped # TODO: Specify more precise type
+  # @rbs return: TextFile | nil
+  def self.find_by: (**untyped conditions) -> (TextFile | nil)
+
+  # @rbs value: untyped # TODO: Specify more precise type
+  # @rbs return: TextFile
+  def self.find: (untyped value) -> TextFile
+
+  # @rbs return: Array[TextFile]
+  def self.all: () -> Array[TextFile]
+
+  # @rbs return: Integer
+  def self.max_id: () -> Integer
+
+  private
+
+  # @rbs return: String
+  def path: () -> String
+end

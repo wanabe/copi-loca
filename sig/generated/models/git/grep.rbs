@@ -1,0 +1,48 @@
+# Generated from app/models/git/grep.rb with RBS::Inline
+
+class Git::Grep < ApplicationRepresenter
+  @pattern: String
+
+  @files: String?
+
+  @ignore_case: bool
+
+  attr_accessor chunks(): Array[Git::Grep::Chunk]
+
+  attr_accessor branch(): String?
+
+  # @rbs pattern: String
+  # @rbs branch: String?
+  # @rbs files: String?
+  # @rbs ignore_case: bool
+  # @rbs return: void
+  def initialize: (pattern: String, ?branch: String?, ?files: String?, ?ignore_case: bool) -> void
+
+  # @rbs return: self
+  def run: () -> self
+
+  # @rbs return: void
+  def template: () -> void
+
+  class Chunk < ApplicationRepresenter
+    attr_accessor branch(): String?
+
+    attr_accessor lines(): Array[Git::Grep::Line]
+
+    attr_accessor path(): String
+
+    # @rbs return: void
+    def template: () -> void
+  end
+
+  class Line < ApplicationRepresenter
+    attr_accessor branch(): String?
+
+    attr_accessor path(): String
+
+    attr_accessor content(): String
+
+    # @rbs return: void
+    def template: () -> void
+  end
+end

@@ -1,0 +1,50 @@
+# Generated from app/controllers/prompts_controller.rb with RBS::Inline
+
+class PromptsController < ApplicationController
+  # GET /prompts or /prompts.json
+  # @rbs return: void
+  def index: () -> void
+
+  # GET /prompts/1 or /prompts/1.json
+  # @rbs return: void
+  def show: () -> void
+
+  # GET /prompts/new
+  # @rbs return: void
+  def new: () -> void
+
+  # GET /prompts/1/edit
+  # @rbs return: void
+  def edit: () -> void
+
+  # POST /prompts or /prompts.json
+  # @rbs return: void
+  def create: () -> void
+
+  # PATCH/PUT /prompts/1 or /prompts/1.json
+  # @rbs return: void
+  def update: () -> void
+
+  # DELETE /prompts/1 or /prompts/1.json
+  # @rbs return: void
+  def destroy: () -> void
+
+  # @rbs return: void
+  def run: () -> void
+
+  private
+
+  # Use callbacks to share common setup or constraints between actions.
+  # @rbs return: void
+  def set_prompt: () -> void
+
+  # Only allow a list of trusted parameters through.
+  # @rbs return: untyped
+  def prompt_params: () -> untyped
+
+  # @rbs return: void
+  def add_prompts_breadcrumb: () -> void
+
+  # @rbs return: void
+  def add_prompt_breadcrumb: () -> void
+end

@@ -1,0 +1,30 @@
+module Phlex
+  module Rails
+    module Layout
+    end
+    module Helpers
+      module Routes
+        include ::_RbsRailsPathHelpers
+        def url_for: (**untyped) -> String
+      end
+      module FormWith
+        # NOTE: It's actually `Phlex::Rails::Builder[ActionView::Helpers::FormBuilder]`, but for simplicity's sake.
+        def form_with: (**untyped) ?{ (ActionView::Helpers::FormBuilder) -> void }-> void
+      end
+      module Pluralize
+        def pluralize: (Integer, String) -> String
+      end
+      module DOMID
+        def dom_id: (untyped) -> String
+      end
+      module ContentFor
+        def content_for: (Symbol, String) -> void
+      end
+      module LinkTo
+      end
+      module TurboFrameTag
+        def turbo_frame_tag: (String) ?{ () -> void }-> void
+      end
+    end
+  end
+end

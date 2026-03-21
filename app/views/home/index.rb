@@ -1,6 +1,8 @@
 # frozen_string_literal: true
+# rbs_inline: enabled
 
 class Views::Home::Index < Views::Base
+  # @rbs return: void
   def view_template
     h1(class: "text-2xl font-bold mb-4") { "Home" }
     ul(class: "space-y-2") do

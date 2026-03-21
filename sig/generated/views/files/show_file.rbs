@@ -1,0 +1,15 @@
+# Generated from app/views/files/show_file.rb with RBS::Inline
+
+class Views::Files::ShowFile < Views::Base
+  @content: String
+
+  @path: String
+
+  # @rbs content: String
+  # @rbs path: String
+  # @rbs return: void
+  def initialize: (content: String, path: String) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+end

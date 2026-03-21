@@ -1,0 +1,18 @@
+# Generated from app/controllers/memos_controller.rb with RBS::Inline
+
+class MemosController < ApplicationController
+  # GET /memos
+  # @rbs return: void
+  def index: () -> void
+
+  # POST /memos/sync_local_memos
+  # Receives local memos as JSON and saves to docs/memos.json
+  # @rbs return: void
+  def sync_local_memos: () -> void
+
+  private
+
+  # def add_memos_breadcrumb: () -> void
+  # @rbs return: void
+  def add_memos_breadcrumb: () -> void
+end

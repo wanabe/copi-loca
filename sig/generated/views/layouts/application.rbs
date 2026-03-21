@@ -1,0 +1,17 @@
+# Generated from app/views/layouts/application.rb with RBS::Inline
+
+class Views::Layouts::Application < Views::Base
+  @title: String
+
+  @breadcrumbs: Array[Breadcrumb]
+
+  include Phlex::Rails::Layout
+
+  # @rbs title: String?
+  # @rbs breadcrumbs: Array[Breadcrumb]
+  # @rbs return: void
+  def initialize: (?title: String?, ?breadcrumbs: Array[Breadcrumb]) -> void
+
+  # @rbs return: void
+  def view_template: () ?{ (?) -> untyped } -> void
+end

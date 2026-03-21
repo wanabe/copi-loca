@@ -1,15 +1,18 @@
 # frozen_string_literal: true
+# rbs_inline: enabled
 
 class MemosController < ApplicationController
   before_action :add_memos_breadcrumb
 
   # GET /memos
+  # @rbs return: void
   def index
     render Views::Memos::Index.new
   end
 
   # POST /memos/sync_local_memos
   # Receives local memos as JSON and saves to docs/memos.json
+  # @rbs return: void
   def sync_local_memos
     memos = JSON.parse(request.body.read)
     Rails.root.join("docs/memos.json").write(JSON.pretty_generate(memos))
@@ -20,6 +23,8 @@ class MemosController < ApplicationController
 
   private
 
+  # def add_memos_breadcrumb: () -> void
+  # @rbs return: void
   def add_memos_breadcrumb
     add_breadcrumb("Memos", memos_path)
   end

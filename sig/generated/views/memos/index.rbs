@@ -1,0 +1,6 @@
+# Generated from app/views/memos/index.rb with RBS::Inline
+
+class Views::Memos::Index < Views::Base
+  # @rbs return: void
+  def view_template: () -> void
+end

@@ -1,0 +1,33 @@
+# Generated from app/controllers/application_controller.rb with RBS::Inline
+
+class ApplicationController < ActionController::Base
+  @breadcrumbs: Array[Breadcrumb]
+
+  def self.stale_when_importmap_changes: () -> void
+
+  def self.phlex_layout: () -> nil
+
+  def render: (?Phlex::HTML | Symbol, **untyped) -> void
+
+  private
+
+  # @rbs return: Phlex::HTML | nil
+  def phlex_layout: () -> (Phlex::HTML | nil)
+
+  # @rbs return: Array[Breadcrumb]
+  def breadcrumbs: () -> Array[Breadcrumb]
+
+  # @rbs name: String
+  # @rbs path: String?
+  # @rbs return: void
+  def add_breadcrumb: (String name, ?String? path) -> void
+
+  # @rbs return: void
+  def add_home_breadcrumb: () -> void
+
+  # @rbs return: void
+  def add_git_breadcrumb: () -> void
+
+  # @rbs return: void
+  def add_action_breadcrumb: () -> void
+end

@@ -1,0 +1,21 @@
+# Generated from app/views/bin/show.rb with RBS::Inline
+
+class Views::Bin::Show < Views::Base
+  @bin: untyped
+
+  @status: untyped
+
+  @output: untyped
+
+  @notice: String?
+
+  # @rbs return: void
+  # @rbs bin: untyped # TODO: Specify type
+  # @rbs status: untyped # TODO: Specify type
+  # @rbs output: untyped # TODO: Specify type
+  # @rbs notice: String?
+  def initialize: (bin: untyped, ?status: untyped, ?output: untyped, ?notice: String?) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+end

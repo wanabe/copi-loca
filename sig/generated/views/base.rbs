@@ -1,0 +1,6 @@
+# Generated from app/views/base.rb with RBS::Inline
+
+class Views::Base < Components::Base
+  # @rbs return: untyped # TODO: Specify more precise type if possible
+  def cache_store: () -> untyped
+end

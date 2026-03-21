@@ -1,0 +1,54 @@
+# Generated from app/models/prompt.rb with RBS::Inline
+
+class Prompt < TextFile
+  @response: Response?
+
+  @response_fetched: bool
+
+  PATH_PREFIX: untyped
+
+  PATH_SUFFIX: ::String
+
+  ID_PATTERN: ::Regexp
+
+  ID_PATTERN_INDEX: ::Integer
+
+  COMMAND: untyped
+
+  attr_accessor id(): Integer
+
+  attr_accessor text(): String
+
+  attr_accessor has_metadata(): bool
+
+  attr_accessor name(): String
+
+  attr_accessor description(): String
+
+  # @rbs return: void
+  def template: () -> void
+
+  # @rbs return: void
+  def destroy!: () -> void
+
+  # @rbs return: bool
+  def valid?: () -> bool
+
+  # @rbs n: Integer
+  # @rbs return: Response
+  def run: (?Integer n) -> Response
+
+  # @rbs return: bool
+  def running?: () -> bool
+
+  # @rbs return: Integer?
+  def pid: () -> Integer?
+
+  # @rbs return: Response?
+  def response: () -> Response?
+
+  private
+
+  # @rbs return: String
+  def pid_path: () -> String
+end

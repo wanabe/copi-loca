@@ -1,0 +1,20 @@
+# Generated from app/models/response.rb with RBS::Inline
+
+class Response < TextFile
+  PATH_PREFIX: untyped
+
+  PATH_SUFFIX: ::String
+
+  ID_PATTERN: ::Regexp
+
+  ID_PATTERN_INDEX: ::Integer
+
+  attr_accessor id(): Integer
+
+  attr_accessor text(): String
+
+  def self.find_by: (**untyped conditions) -> (Response | nil)
+
+  # @rbs return: void
+  def template: () -> void
+end

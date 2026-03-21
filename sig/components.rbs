@@ -1,0 +1,6 @@
+module Components
+  module Bin
+  end
+  module Prompts
+  end
+end

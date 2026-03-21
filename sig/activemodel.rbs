@@ -1,0 +1,6 @@
+module ActiveModel
+  class Errors
+    include Enumerable[ActiveModel::Error]
+    def each: () { (ActiveModel::Error) -> void } -> self
+  end
+end
