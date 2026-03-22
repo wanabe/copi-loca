@@ -1,0 +1,11 @@
+# Generated from app/models/parameters/prompts/prompt.rb with RBS::Inline
+
+class Parameters::Prompts::Prompt < ApplicationParameter
+  attr_accessor id(): Integer
+
+  attr_accessor name(): String
+
+  attr_accessor description(): String
+
+  attr_accessor text(): String
+end

@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe "POST /memos/sync_local_memos" do
-  let(:memos) { [{ "id" => 1, "content" => "Memo 1" }, { "id" => 2, "content" => "Memo 2" }] }
+  let(:memos) { { "memos" => [{ "text" => "Memo 1", "ts" => 1234 }, { "text" => "Memo 2", "ts" => 5678 }] } }
 
   it "saves memos to docs/memos.json and returns success" do
     path_double = instance_double(Pathname, write: nil)

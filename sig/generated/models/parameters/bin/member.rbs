@@ -1,0 +1,5 @@
+# Generated from app/models/parameters/bin/member.rb with RBS::Inline
+
+class Parameters::Bin::Member < ApplicationParameter
+  attr_accessor id(): String
+end

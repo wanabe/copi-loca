@@ -25,6 +25,10 @@ class Prompt < TextFile
 
   attr_accessor description(): String
 
+  def self.all: () -> Array[Prompt]
+
+  def self.find: (untyped value) -> Prompt
+
   # @rbs return: void
   def template: () -> void
 

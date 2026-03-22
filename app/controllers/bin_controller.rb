@@ -11,7 +11,8 @@ class BinController < ApplicationController
   # GET /bin or /bin.json
   # @rbs return: void
   def index
-    bins = Kaminari.paginate_array(Bin.all).page(params[:page]).per(params[:per_page] || 5)
+    parameters = Parameters::Index.new(**params.permit(:page, :per_page))
+    bins = Kaminari.paginate_array(Bin.all).page(parameters.page).per(parameters.per_page)
     render Views::Bin::Index.new(bins: bins, notice: flash[:notice])
   end
 
@@ -32,7 +33,10 @@ class BinController < ApplicationController
 
   # @rbs return: Bin
   def bin
-    @bin ||= Bin.find(params.expect(:id))
+    return @bin if @bin
+
+    parameters = Parameters::Bin::Member.new(**params.permit(:id))
+    @bin = Bin.find(parameters.id)
   end
 
   # @rbs return: void

@@ -1,0 +1,12 @@
+# Generated from app/models/application_parameter.rb with RBS::Inline
+
+class ApplicationParameter
+  include ActiveModel::Model
+
+  include ActiveModel::Attributes
+
+  extend ActiveModel::Attributes::ClassMethods
+
+  # @rbs return: Hash[Symbol, untyped]
+  def as_json: () -> Hash[Symbol, untyped]
+end

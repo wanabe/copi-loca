@@ -1,6 +1,10 @@
 # Generated from app/controllers/prompts_controller.rb with RBS::Inline
 
 class PromptsController < ApplicationController
+  @prompt: Prompt
+
+  @prompt_parameters: Parameters::Prompts::Prompt
+
   # GET /prompts or /prompts.json
   # @rbs return: void
   def index: () -> void
@@ -34,13 +38,11 @@ class PromptsController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
-  # @rbs return: void
-  def set_prompt: () -> void
+  # @rbs return: Prompt
+  def prompt: () -> Prompt
 
-  # Only allow a list of trusted parameters through.
-  # @rbs return: untyped
-  def prompt_params: () -> untyped
+  # @rbs return: Parameters::Prompts::Prompt
+  def prompt_parameters: () -> Parameters::Prompts::Prompt
 
   # @rbs return: void
   def add_prompts_breadcrumb: () -> void

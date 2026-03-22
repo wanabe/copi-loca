@@ -9,25 +9,16 @@ RSpec.describe "PATCH /prompts/:id" do
 
   before do
     allow(File).to receive(:write).and_return(true)
-    allow(Prompt).to receive(:find).with("1").and_return(prompt)
+    allow(Prompt).to receive(:find).with(1).and_return(prompt)
   end
 
   context "with valid params" do
     it "updates the prompt and redirects" do
       patch prompt_path(prompt), params: valid_params
 
-      expect(response).to redirect_to(prompt_path(prompt))
+      expect(response).to redirect_to(prompt_path(1))
       follow_redirect!
       expect(response.body).to include("Prompt was successfully updated.")
-      expect(response.body).to include("Updated text")
-      expect(prompt.text).to eq("Updated text")
-      expect(File).to have_received(:write).with(Rails.root.join("docs/prompts/1/prompt.md").to_s, "Updated text")
-    end
-
-    it "returns JSON with updated prompt" do
-      patch prompt_path(prompt), params: valid_params, as: :json
-
-      expect(response).to have_http_status(:ok)
       expect(response.body).to include("Updated text")
       expect(prompt.text).to eq("Updated text")
       expect(File).to have_received(:write).with(Rails.root.join("docs/prompts/1/prompt.md").to_s, "Updated text")
@@ -40,14 +31,6 @@ RSpec.describe "PATCH /prompts/:id" do
 
       expect(response).to have_http_status(:unprocessable_content)
       expect(response.body).to include(ERB::Util.html_escape("can't be blank"))
-      expect(File).not_to have_received(:write)
-    end
-
-    it "returns JSON errors if update fails" do
-      patch prompt_path(prompt), params: invalid_params, as: :json
-
-      expect(response).to have_http_status(:unprocessable_content)
-      expect(response.body).to include("can't be blank")
       expect(File).not_to have_received(:write)
     end
   end

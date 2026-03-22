@@ -2,6 +2,8 @@
 # rbs_inline: enabled
 
 class FilesController < ApplicationController
+  # @rbs @show_parameters: Parameters::Files::Show
+
   skip_forgery_protection only: [:show]
 
   before_action :add_files_breadcrumb
@@ -10,7 +12,7 @@ class FilesController < ApplicationController
   # GET /files/*path
   # @rbs return: void
   def show
-    path = params[:path] || "."
+    path = show_parameters.path
     abs = File.absolute_path(File.join("/app", path))
     unless File.exist?(abs)
       render json: { error: "File not found", path: path }, status: :not_found
@@ -28,7 +30,7 @@ class FilesController < ApplicationController
       end.sort
       render Views::Files::ShowDirectory.new(entries: entries, path: path)
     when "file"
-      if params[:raw] != "false"
+      if show_parameters.raw
         send_file abs, filename: File.basename(abs), disposition: "inline"
         return
       end
@@ -41,18 +43,21 @@ class FilesController < ApplicationController
 
   private
 
-  # def add_files_breadcrumb: () -> void
+  # @rbs return: Parameters::Files::Show
+  def show_parameters
+    @show_parameters ||= Parameters::Files::Show.new(**params.permit(:path, :raw))
+  end
+
   # @rbs return: void
   def add_files_breadcrumb
     add_breadcrumb("Files", files_path)
   end
 
-  # def add_path_breadcrumb: () -> void
   # @rbs return: void
   def add_path_breadcrumb
-    return unless params[:path]
+    return if show_parameters.path == "."
 
-    path = params[:path]
+    path = show_parameters.path
     parts = path.split("/").reject(&:empty?)
     accumulated_path = ""
     parts.each do |part|

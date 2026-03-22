@@ -1,17 +1,20 @@
 # Generated from app/controllers/files_controller.rb with RBS::Inline
 
 class FilesController < ApplicationController
+  @show_parameters: Parameters::Files::Show
+
   # GET /files/*path
   # @rbs return: void
   def show: () -> void
 
   private
 
-  # def add_files_breadcrumb: () -> void
+  # @rbs return: Parameters::Files::Show
+  def show_parameters: () -> Parameters::Files::Show
+
   # @rbs return: void
   def add_files_breadcrumb: () -> void
 
-  # def add_path_breadcrumb: () -> void
   # @rbs return: void
   def add_path_breadcrumb: () -> void
 end

@@ -1,0 +1,13 @@
+# Generated from app/models/parameters/memos/sync_local_memos.rb with RBS::Inline
+
+class Parameters::Memos::SyncLocalMemos < ApplicationParameter
+  # @rbs array: Array[Hash[String, String]]
+  # @rbs return: void
+  def memos=: (Array[Hash[String, String]] array) -> void
+
+  class Memo < ApplicationParameter
+    attr_accessor text(): String
+
+    attr_accessor ts(): Integer
+  end
+end

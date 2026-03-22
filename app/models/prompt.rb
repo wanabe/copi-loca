@@ -18,6 +18,8 @@ class Prompt < TextFile
   #   attr_accessor has_metadata (): bool
   #   attr_accessor name (): String
   #   attr_accessor description (): String
+  #   def self.all: () -> Array[Prompt]
+  #   def self.find: (untyped value) -> Prompt
 
   attribute :id, :integer
   attribute :text, :string

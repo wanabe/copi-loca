@@ -1,0 +1,7 @@
+# Generated from app/models/parameters/index.rb with RBS::Inline
+
+class Parameters::Index < ApplicationParameter
+  attr_accessor page(): Integer
+
+  attr_accessor per_page(): Integer
+end

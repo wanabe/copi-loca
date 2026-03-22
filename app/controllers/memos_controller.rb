@@ -14,8 +14,8 @@ class MemosController < ApplicationController
   # Receives local memos as JSON and saves to docs/memos.json
   # @rbs return: void
   def sync_local_memos
-    memos = JSON.parse(request.body.read)
-    Rails.root.join("docs/memos.json").write(JSON.pretty_generate(memos))
+    memos = Parameters::Memos::SyncLocalMemos.new(**params.permit(memos: %i[text ts]))
+    Rails.root.join("docs/memos.json").write(JSON.pretty_generate(memos.as_json))
     render json: { status: "success" }, status: :ok
   rescue StandardError => e
     render json: { status: "error", message: e.message }, status: :unprocessable_content

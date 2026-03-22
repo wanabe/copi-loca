@@ -6,7 +6,7 @@ RSpec.describe "GET /prompts/:id/edit" do
   let(:prompt) { Prompt.new(id: 42, text: "Edit me") }
 
   before do
-    allow(Prompt).to receive(:find).with("42").and_return(prompt)
+    allow(Prompt).to receive(:find).with(42).and_return(prompt)
     allow(prompt).to receive(:persisted?).and_return(true)
   end
 

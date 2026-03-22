@@ -1,0 +1,7 @@
+# Generated from app/models/parameters/files/show.rb with RBS::Inline
+
+class Parameters::Files::Show < ApplicationParameter
+  attr_accessor path(): String
+
+  attr_accessor raw(): bool
+end

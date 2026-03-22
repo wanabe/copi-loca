@@ -10,7 +10,7 @@ RSpec.describe "DELETE /prompts/:id" do
   end
 
   it "deletes the prompt and redirects" do
-    allow(Prompt).to receive(:find).with("1").and_return(prompt)
+    allow(Prompt).to receive(:find).with(1).and_return(prompt)
     delete prompt_path(prompt)
     expect(response).to redirect_to(prompts_path)
     follow_redirect!
@@ -19,7 +19,7 @@ RSpec.describe "DELETE /prompts/:id" do
   end
 
   it "returns not found for missing prompt" do
-    allow(Prompt).to receive(:find).with("-1").and_raise(ActiveRecord::RecordNotFound)
+    allow(Prompt).to receive(:find).with(-1).and_raise(ActiveRecord::RecordNotFound)
     delete prompt_path(-1)
     expect(response).to have_http_status(:not_found)
     expect(File).not_to have_received(:delete)

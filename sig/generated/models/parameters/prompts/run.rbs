@@ -1,0 +1,7 @@
+# Generated from app/models/parameters/prompts/run.rb with RBS::Inline
+
+class Parameters::Prompts::Run < ApplicationParameter
+  attr_accessor id(): Integer
+
+  attr_accessor n(): Integer
+end

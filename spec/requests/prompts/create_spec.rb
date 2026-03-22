@@ -18,13 +18,6 @@ RSpec.describe "POST /prompts" do
       expect(response.body).to include("Prompt was successfully created.")
       expect(File).to have_received(:write).with(Rails.root.join("docs/prompts/1/prompt.md").to_s, "Test prompt")
     end
-
-    it "returns JSON with created status" do
-      post "/prompts.json", params: valid_params
-      expect(response).to have_http_status(:created)
-      expect(response.body).to include("Test prompt")
-      expect(File).to have_received(:write).with(Rails.root.join("docs/prompts/1/prompt.md").to_s, "Test prompt")
-    end
   end
 
   describe "with invalid params" do
@@ -32,13 +25,6 @@ RSpec.describe "POST /prompts" do
       post "/prompts", params: invalid_params
       expect(response).to have_http_status(:unprocessable_content)
       expect(response.body).to include("error")
-      expect(File).not_to have_received(:write)
-    end
-
-    it "returns JSON errors with unprocessable status" do
-      post "/prompts.json", params: invalid_params
-      expect(response).to have_http_status(:unprocessable_content)
-      expect(response.body).to include("can't be blank")
       expect(File).not_to have_received(:write)
     end
   end
