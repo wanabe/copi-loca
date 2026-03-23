@@ -10,7 +10,7 @@ class Git::GrepController < ApplicationController
   # @rbs @files: String
   # @rbs @branch: String
   # @rbs @ignore_case: bool
-  # @rbs @grep_result: String?
+  # @rbs @grep: Git::Grep?
 
   # GET /git/grep
   # @rbs return: void
@@ -20,16 +20,16 @@ class Git::GrepController < ApplicationController
     @files = params[:files] || ""
     @branch = params[:branch] || ""
     @ignore_case = params[:ignore_case] == "on"
-    @grep_result = nil
+    @grep = nil
 
     pattern = @pattern
     if pattern.present?
-      @grep_result = Git::Grep.new(
+      @grep = Git::Grep.new(
         pattern: pattern,
         branch: @branch,
         files: @files,
         ignore_case: @ignore_case
-      ).run.render
+      ).run
     end
 
     render Views::Git::Grep::Show.new(
@@ -38,7 +38,7 @@ class Git::GrepController < ApplicationController
       files: @files,
       branch: @branch,
       ignore_case: @ignore_case,
-      grep_result: @grep_result
+      grep: @grep
     )
   end
 

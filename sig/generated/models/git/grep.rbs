@@ -11,12 +11,14 @@ class Git::Grep < ApplicationRepresenter
 
   attr_accessor branch(): String?
 
+  # rubocop:disable Style/ArgumentsForwarding
   # @rbs pattern: String
   # @rbs branch: String?
   # @rbs files: String?
   # @rbs ignore_case: bool
+  # @rbs **kwargs: untyped
   # @rbs return: void
-  def initialize: (pattern: String, ?branch: String?, ?files: String?, ?ignore_case: bool) -> void
+  def initialize: (pattern: String, ?branch: String?, ?files: String?, ?ignore_case: bool, **untyped kwargs) -> void
 
   # @rbs return: self
   def run: () -> self

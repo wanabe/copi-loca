@@ -7,22 +7,22 @@ class Views::Git::Grep::Show < Views::Base
   # @rbs @files: String?
   # @rbs @branch: String?
   # @rbs @ignore_case: bool
-  # @rbs @grep_result: String?
+  # @rbs @grep: Git::Grep?
 
   # @rbs branches: Array[String]
   # @rbs pattern: String?
   # @rbs files: String?
   # @rbs branch: String?
   # @rbs ignore_case: bool
-  # @rbs grep_result: String?
+  # @rbs grep: Git::Grep?
   # @rbs return: void
-  def initialize(branches:, pattern:, files:, branch:, ignore_case:, grep_result:)
+  def initialize(branches:, pattern:, files:, branch:, ignore_case:, grep:)
     @branches = branches
     @pattern = pattern
     @files = files
     @branch = branch
     @ignore_case = ignore_case
-    @grep_result = grep_result
+    @grep = grep
   end
 
   # @rbs return: void
@@ -53,6 +53,31 @@ class Views::Git::Grep::Show < Views::Base
         button(type: "submit", class: "bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition") { "Grep" }
       end
     end
-    pre(class: "bg-gray-100 p-4 rounded mt-4 text-sm whitespace-break-spaces break-all") { @grep_result }
+
+    grep = @grep
+    return unless grep
+
+    div(class: "mt-6") do
+      h2(class: "text-xl font-bold mb-2") { "Results:" }
+      grep.chunks.each do |chunk|
+        div(class: "mb-4") do
+          div(class: "text-xs text-gray-500 mb-1") do
+            if grep.branch.present?
+              plain "#{grep.branch}:#{chunk.path}"
+            else
+              link_to chunk.path, file_path(chunk.path, raw: false), class: "text-blue-500 hover:underline"
+            end
+            plain "(#{chunk.lines.size} matches)"
+          end
+          div(class: "font-mono text-sm bg-gray-100 p-2 rounded") do
+            chunk.lines.each do |line|
+              div do
+                span { line.content }
+              end
+            end
+          end
+        end
+      end
+    end
   end
 end

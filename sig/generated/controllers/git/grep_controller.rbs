@@ -11,7 +11,7 @@ class Git::GrepController < ApplicationController
 
   @ignore_case: bool
 
-  @grep_result: String?
+  @grep: Git::Grep?
 
   # GET /git/grep
   # @rbs return: void

@@ -13,18 +13,20 @@ class Git::Grep < ApplicationRepresenter
   attribute :chunks
   attribute :branch
 
+  # rubocop:disable Style/ArgumentsForwarding
   # @rbs pattern: String
   # @rbs branch: String?
   # @rbs files: String?
   # @rbs ignore_case: bool
+  # @rbs **kwargs: untyped
   # @rbs return: void
-  def initialize(pattern:, branch: nil, files: nil, ignore_case: false)
-    super()
+  def initialize(pattern:, branch: nil, files: nil, ignore_case: false, **kwargs)
+    super(branch: branch.presence, **kwargs)
     @pattern = pattern
     @files = files
     @ignore_case = ignore_case
-    self.branch = branch.presence
   end
+  # rubocop:enable Style/ArgumentsForwarding
 
   # @rbs return: self
   def run

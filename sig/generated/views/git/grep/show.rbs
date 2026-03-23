@@ -11,16 +11,16 @@ class Views::Git::Grep::Show < Views::Base
 
   @ignore_case: bool
 
-  @grep_result: String?
+  @grep: Git::Grep?
 
   # @rbs branches: Array[String]
   # @rbs pattern: String?
   # @rbs files: String?
   # @rbs branch: String?
   # @rbs ignore_case: bool
-  # @rbs grep_result: String?
+  # @rbs grep: Git::Grep?
   # @rbs return: void
-  def initialize: (branches: Array[String], pattern: String?, files: String?, branch: String?, ignore_case: bool, grep_result: String?) -> void
+  def initialize: (branches: Array[String], pattern: String?, files: String?, branch: String?, ignore_case: bool, grep: Git::Grep?) -> void
 
   # @rbs return: void
   def view_template: () -> void
