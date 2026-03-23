@@ -1,0 +1,10 @@
+# Generated from app/models/git/command.rb with RBS::Inline
+
+class Git::Command < ApplicationRepresenter
+  # @rbs return: String
+  def command: () -> String
+
+  # @rbs *args: String
+  # @rbs return: self
+  def run: (*String args) -> self
+end

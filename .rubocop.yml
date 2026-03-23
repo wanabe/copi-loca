@@ -84,6 +84,8 @@ Style/RbsInline/RequireRbsInlineComment:
     - 'lib/**/*'
   Exclude:
     - 'bin/**/*'
+Style/ArgumentsForwarding:
+  Enabled: false
 
 Rails/I18nLocaleTexts:
   Enabled: false

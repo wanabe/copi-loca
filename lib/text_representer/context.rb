@@ -10,7 +10,7 @@ module TextRepresenter
     # @rbs klass: Class
     # @rbs quantity: "+" | "*" | nil
     # @rbs separator: Proc?
-    # @rbs &: (Symbol, untyped) -> void
+    # @rbs &: ? (Symbol, untyped) -> void
     # @rbs return: void
     def partial(representer, name, klass, quantity: nil, separator: nil, &)
       raise NotImplementedError, "Context#partial must be implemented by subclasses"

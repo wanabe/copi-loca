@@ -1,32 +1,35 @@
 # frozen_string_literal: true
 # rbs_inline: enabled
 
-class Git::Grep < ApplicationRepresenter
+class Git::Grep < Git::Command
   # @rbs @pattern: String
   # @rbs @files: String?
   # @rbs @ignore_case: bool
 
   # @rbs!
-  #   attr_accessor chunks (): Array[Git::Grep::Chunk]
+  #   attr_accessor chunks (): Array[Git::Grep::Chunk]?
   #   attr_accessor branch (): String?
 
   attribute :chunks
   attribute :branch
 
-  # rubocop:disable Style/ArgumentsForwarding
   # @rbs pattern: String
   # @rbs branch: String?
   # @rbs files: String?
   # @rbs ignore_case: bool
-  # @rbs **kwargs: untyped
+  # @rbs chunks: Array[Git::Grep::Chunk]?
   # @rbs return: void
-  def initialize(pattern:, branch: nil, files: nil, ignore_case: false, **kwargs)
-    super(branch: branch.presence, **kwargs)
+  def initialize(pattern:, branch: nil, files: nil, ignore_case: false, chunks: nil)
+    super(branch: branch.presence, chunks: chunks)
     @pattern = pattern
     @files = files
     @ignore_case = ignore_case
   end
-  # rubocop:enable Style/ArgumentsForwarding
+
+  # @rbs return: String
+  def command
+    "grep"
+  end
 
   # @rbs return: self
   def run
@@ -42,10 +45,7 @@ class Git::Grep < ApplicationRepresenter
         args << file.strip
       end
     end
-    result = Git.call("grep", *args, allow_failure: true)
-    raise "Unexpected result" unless result.is_a?(String)
-
-    parse(result)
+    super(*args)
   end
 
   # @rbs return: void

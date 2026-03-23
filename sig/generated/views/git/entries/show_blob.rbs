@@ -1,0 +1,18 @@
+# Generated from app/views/git/entries/show_blob.rb with RBS::Inline
+
+class Views::Git::Entries::ShowBlob < Views::Base
+  @ref: String
+
+  @content: String
+
+  @path: String
+
+  # @rbs ref: String
+  # @rbs content: String
+  # @rbs path: String
+  # @rbs return: void
+  def initialize: (ref: String, content: String, path: String) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+end

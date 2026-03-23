@@ -27,6 +27,10 @@ Rails.application.routes.draw do
   namespace :git do
     root to: "dashboard#show"
     resource :grep, only: [:show], controller: "grep"
+
+    get "entries", to: "entries#index"
+    get "entries/*ref/-/*path", to: "entries#show", as: :entry, format: false
+    get "entries/*ref", to: "entries#show", as: :entry_root
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

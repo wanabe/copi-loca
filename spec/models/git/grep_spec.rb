@@ -17,7 +17,7 @@ RSpec.describe Git::Grep do
         main:file2.rb:And a test line in file2.
       OUTPUT
       git_grep.run
-      expect(Git).to have_received(:call).with("grep", "-i", pattern, branch, "--", "file1.rb", "file2.rb", allow_failure: true)
+      expect(Git).to have_received(:call).with("grep", "-i", pattern, branch, "--", "file1.rb", "file2.rb")
       expect(git_grep.chunks.size).to eq(2)
       expect(git_grep.chunks[0].lines.size).to eq(2)
       expect(git_grep.chunks[0].lines[0].path).to eq("file1.rb")
@@ -37,7 +37,7 @@ RSpec.describe Git::Grep do
         file2.rb:Another test line in file2.
       OUTPUT
       git_grep.run
-      expect(Git).to have_received(:call).with("grep", "-i", pattern, "--", "file1.rb", "file2.rb", allow_failure: true)
+      expect(Git).to have_received(:call).with("grep", "-i", pattern, "--", "file1.rb", "file2.rb")
       expect(git_grep.chunks.size).to eq(2)
       expect(git_grep.chunks[0].lines.size).to eq(1)
       expect(git_grep.chunks[0].lines[0].path).to eq("file1.rb")

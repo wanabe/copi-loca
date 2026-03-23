@@ -1,0 +1,9 @@
+# Generated from app/models/parameters/git/entries/show.rb with RBS::Inline
+
+class Parameters::Git::Entries::Show < ApplicationParameter
+  attr_accessor ref(): String
+
+  attr_accessor path(): String
+
+  attr_accessor raw(): bool
+end

@@ -5,21 +5,45 @@ module Git
   class << self
     # @rbs *args: String
     # @rbs env: Hash[String, String]
-    # @rbs return_status: bool
-    # @rbs allow_failure: bool
-    # @rbs return: String | bool
-    def call(*args, env: {}, return_status: false, allow_failure: false)
-      last_status, output = IO.popen(env, ["git", *args], "w+", err: %i[child out]) do |io|
+    # @rbs &: ? (IO) -> void
+    # @rbs return: bool
+    def call?(*args, env: {}, &)
+      status, = call_status_and_output(*args, env: env, &)
+      status.success?
+    end
+
+    # @rbs *args: String
+    # @rbs env: Hash[String, String]
+    # @rbs &: ? (IO) -> void
+    # @rbs return: String
+    def call!(*args, env: {}, &)
+      status, output = call_status_and_output(*args, env: env, &)
+      raise "Git failed: #{output}" unless status.success?
+
+      output
+    end
+
+    # @rbs *args: String
+    # @rbs env: Hash[String, String]
+    # @rbs &: ? (IO) -> void
+    # @rbs return: String
+    def call(*args, env: {}, &)
+      _, output = call_status_and_output(*args, env: env, &)
+      output
+    end
+
+    private
+
+    # @rbs *args: String
+    # @rbs env: Hash[String, String]
+    # @rbs &: ? (IO) -> void
+    # @rbs return: [Process::Status, String]
+    def call_status_and_output(*args, env: {}, &)
+      IO.popen(env, ["git", *args], "w+", err: %i[child out]) do |io|
         yield io if block_given?
         io.close_write
         [Process.wait2(io.pid).last, io.read]
       end
-
-      return last_status.success? if return_status
-
-      raise "Git failed: #{output}" if !allow_failure && !last_status.success?
-
-      output
     end
   end
 end

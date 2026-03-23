@@ -1,0 +1,24 @@
+# Generated from app/models/git/show.rb with RBS::Inline
+
+class Git::Show < Git::Command
+  @ref: String
+
+  @path: String
+
+  @content: String
+
+  attr_accessor ref(): String
+
+  attr_accessor path(): String
+
+  attr_accessor content(): String
+
+  # @rbs return: String
+  def command: () -> String
+
+  # @rbs return: self
+  def run: () -> self
+
+  # @rbs return: void
+  def template: () -> void
+end

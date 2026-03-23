@@ -1,0 +1,37 @@
+# Generated from app/models/git/ls_tree.rb with RBS::Inline
+
+class Git::LsTree < Git::Command
+  @ref: String
+
+  @path: String
+
+  @entries: Array[Git::LsTree::Entry]
+
+  attr_accessor ref(): String
+
+  attr_accessor path(): String
+
+  attr_accessor entries(): Array[Git::LsTree::Entry]
+
+  # @rbs return: String
+  def command: () -> String
+
+  # @rbs return: self
+  def run: () -> self
+
+  # @rbs return: void
+  def template: () -> void
+
+  class Entry < ApplicationRepresenter
+    attr_accessor mode(): String
+
+    attr_accessor type(): String
+
+    attr_accessor hash(): String
+
+    attr_accessor path(): String
+
+    # @rbs return: void
+    def template: () -> void
+  end
+end

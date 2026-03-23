@@ -1,24 +1,26 @@
 # Generated from app/models/git/grep.rb with RBS::Inline
 
-class Git::Grep < ApplicationRepresenter
+class Git::Grep < Git::Command
   @pattern: String
 
   @files: String?
 
   @ignore_case: bool
 
-  attr_accessor chunks(): Array[Git::Grep::Chunk]
+  attr_accessor chunks(): Array[Git::Grep::Chunk]?
 
   attr_accessor branch(): String?
 
-  # rubocop:disable Style/ArgumentsForwarding
   # @rbs pattern: String
   # @rbs branch: String?
   # @rbs files: String?
   # @rbs ignore_case: bool
-  # @rbs **kwargs: untyped
+  # @rbs chunks: Array[Git::Grep::Chunk]?
   # @rbs return: void
-  def initialize: (pattern: String, ?branch: String?, ?files: String?, ?ignore_case: bool, **untyped kwargs) -> void
+  def initialize: (pattern: String, ?branch: String?, ?files: String?, ?ignore_case: bool, ?chunks: Array[Git::Grep::Chunk]?) -> void
+
+  # @rbs return: String
+  def command: () -> String
 
   # @rbs return: self
   def run: () -> self

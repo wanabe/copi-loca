@@ -21,9 +21,9 @@ module TextRepresenter
     # @rbs klass: Class
     # @rbs quantity: "+" | "*" | nil
     # @rbs separator: Proc?
-    # @rbs &: (untyped) -> void
+    # @rbs &: ? (untyped) -> void
     # @rbs return: void
-    def partial: (Symbol name, Class klass, ?quantity: "+" | "*" | nil, ?separator: Proc?) { (untyped) -> void } -> void
+    def partial: (Symbol name, Class klass, ?quantity: "+" | "*" | nil, ?separator: Proc?) ?{ (untyped) -> void } -> void
 
     # @rbs str: String
     # @rbs return: void

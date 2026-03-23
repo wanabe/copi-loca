@@ -20,9 +20,9 @@ end
 app_dir = "/app"
 Dir.chdir(app_dir) do
   check_command(
-    "! grep -l '\u2019' docs/prompts/**/*",
+    "! grep -l '[\u2019\u2014]' docs/prompts/**/*",
     "Found unexpected character in docs/prompts.",
-    "sed -i 's/\u2019/'\"'\"'/g' docs/prompts/**/*"
+    "sed -i -e 's/\u2019/'\"'\"'/g' -e 's/\u2014/--/g' docs/prompts/**/*"
   )
 
   check_command(

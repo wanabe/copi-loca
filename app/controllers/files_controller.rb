@@ -35,6 +35,7 @@ class FilesController < ApplicationController
         return
       end
       content = File.read(abs)
+      request.format = :html
       render Views::Files::ShowFile.new(content: content, path: path)
     else
       render json: { error: "Unsupported file type", path: path }, status: :unsupported_media_type
@@ -59,10 +60,10 @@ class FilesController < ApplicationController
 
     path = show_parameters.path
     parts = path.split("/").reject(&:empty?)
-    accumulated_path = ""
+    accumulated_path = nil
     parts.each do |part|
-      accumulated_path = File.join(accumulated_path, part)
-      add_breadcrumb(part, files_path(path: accumulated_path))
+      accumulated_path = accumulated_path ? File.join(accumulated_path, part) : part
+      add_breadcrumb(part, file_path(path: accumulated_path))
     end
   end
 end

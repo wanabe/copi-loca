@@ -1,0 +1,12 @@
+# Generated from app/views/git/entries/index.rb with RBS::Inline
+
+class Views::Git::Entries::Index < Views::Base
+  @branches: Array[String]
+
+  # @rbs branches: Array[String]
+  # @rbs return: void
+  def initialize: (branches: Array[String]) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+end

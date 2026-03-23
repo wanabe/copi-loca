@@ -42,7 +42,7 @@ module TextRepresenter
     # @rbs klass: Class
     # @rbs quantity: "+" | "*" | nil
     # @rbs separator: Proc?
-    # @rbs &: (untyped) -> void
+    # @rbs &: ? (untyped) -> void
     # @rbs return: void
     def partial(name, klass, quantity: nil, separator: nil, &)
       expose(:partial, name, klass, quantity: quantity, separator: separator, &)

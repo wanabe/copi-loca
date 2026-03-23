@@ -3,8 +3,25 @@
 module Git
   # @rbs *args: String
   # @rbs env: Hash[String, String]
-  # @rbs return_status: bool
-  # @rbs allow_failure: bool
-  # @rbs return: String | bool
-  def self.call: (*String args, ?env: Hash[String, String], ?return_status: bool, ?allow_failure: bool) -> (String | bool)
+  # @rbs &: ? (IO) -> void
+  # @rbs return: bool
+  def self.call?: (*String args, ?env: Hash[String, String]) ?{ (IO) -> void } -> bool
+
+  # @rbs *args: String
+  # @rbs env: Hash[String, String]
+  # @rbs &: ? (IO) -> void
+  # @rbs return: String
+  def self.call!: (*String args, ?env: Hash[String, String]) ?{ (IO) -> void } -> String
+
+  # @rbs *args: String
+  # @rbs env: Hash[String, String]
+  # @rbs &: ? (IO) -> void
+  # @rbs return: String
+  def self.call: (*String args, ?env: Hash[String, String]) ?{ (IO) -> void } -> String
+
+  # @rbs *args: String
+  # @rbs env: Hash[String, String]
+  # @rbs &: ? (IO) -> void
+  # @rbs return: [Process::Status, String]
+  private def self.call_status_and_output: (*String args, ?env: Hash[String, String]) ?{ (IO) -> void } -> [ Process::Status, String ]
 end

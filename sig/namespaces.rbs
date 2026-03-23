@@ -7,4 +7,34 @@ module Parameters
   end
   module Prompts
   end
+  module Git
+    module Entries
+    end
+  end
+end
+
+module Views
+  module Layouts
+  end
+  module Memos
+  end
+  module Files
+  end
+  module Bin
+  end
+  module Prompts
+  end
+  module Ps
+  end
+  module Home
+  end
+
+  module Git
+    module Grep
+    end
+    module Dashboard
+    end
+    module Entries
+    end
+  end
 end

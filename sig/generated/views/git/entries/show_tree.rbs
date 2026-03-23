@@ -1,0 +1,18 @@
+# Generated from app/views/git/entries/show_tree.rb with RBS::Inline
+
+class Views::Git::Entries::ShowTree < Views::Base
+  @ref: String
+
+  @path: String
+
+  @entries: Array[Git::LsTree::Entry]
+
+  # @rbs ref: String
+  # @rbs path: String
+  # @rbs entries: Array[Git::LsTree::Entry]
+  # @rbs return: void
+  def initialize: (ref: String, path: String, entries: Array[Git::LsTree::Entry]) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+end

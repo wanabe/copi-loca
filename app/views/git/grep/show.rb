@@ -55,15 +55,17 @@ class Views::Git::Grep::Show < Views::Base
     end
 
     grep = @grep
-    return unless grep
+    chunks = grep&.chunks
+    return if !grep || !chunks
 
     div(class: "mt-6") do
       h2(class: "text-xl font-bold mb-2") { "Results:" }
-      grep.chunks.each do |chunk|
+      chunks.each do |chunk|
         div(class: "mb-4") do
           div(class: "text-xs text-gray-500 mb-1") do
             if grep.branch.present?
-              plain "#{grep.branch}:#{chunk.path}"
+              link_to "#{chunk.path} (#{grep.branch})", git_entry_path(ref: grep.branch, path: chunk.path, raw: "false"),
+                class: "text-blue-500 hover:underline"
             else
               link_to chunk.path, file_path(chunk.path, raw: false), class: "text-blue-500 hover:underline"
             end

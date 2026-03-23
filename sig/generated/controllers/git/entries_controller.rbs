@@ -1,0 +1,30 @@
+# Generated from app/controllers/git/entries_controller.rb with RBS::Inline
+
+class Git::EntriesController < ApplicationController
+  @parameters: Parameters::Git::Entries::Show
+
+  # GET /git/entries
+  # @rbs return: void
+  def index: () -> void
+
+  # GET /git/entries/*ref/-/*path or /git/entries/*ref
+  # @rbs return: void
+  def show: () -> void
+
+  private
+
+  # @rbs return: Parameters::Git::Entries::Show
+  def parameters: () -> Parameters::Git::Entries::Show
+
+  # @rbs return: void
+  def add_git_entries_breadcrumb: () -> void
+
+  # @rbs return: void
+  def add_git_entry_breadcrumb: () -> void
+
+  # @rbs return: void
+  def add_git_entry_path_breadcrumb: () -> void
+
+  # @rbs return: Array[String]
+  def branches: () -> Array[String]
+end
