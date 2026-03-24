@@ -14,9 +14,6 @@ class Views::Git::Refs::Show < Views::Base
   def view_template
     h1(class: "text-2xl font-bold mb-4") { "Git Ref: #{@ref}" }
 
-    ul(class: "space-y-2") do
-      li { link_to "Grep", git_ref_grep_path(ref: @ref), class: "text-blue-600 hover:underline" }
-      li { link_to "Entries", git_ref_entries_root_path(ref: @ref), class: "text-blue-600 hover:underline" }
-    end
+    render Components::Git::RefCommands.new(ref: @ref)
   end
 end

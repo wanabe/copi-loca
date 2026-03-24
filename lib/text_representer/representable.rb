@@ -57,9 +57,10 @@ module TextRepresenter
     # @rbs name: Symbol?
     # @rbs regex: Regexp
     # @rbs to: Symbol?
+    # @rbs from: Symbol?
     # @rbs return: void
-    def token(name, regex, to: nil)
-      expose(:token, name, regex, to: to)
+    def token(name, regex, to: nil, from: nil)
+      expose(:token, name, regex, to: to, from: from)
     end
 
     # @rbs &: (untyped) -> void
@@ -104,7 +105,7 @@ module TextRepresenter
       in [:literal, [String => str], nil]
         representation_context.literal(self, str)
       in [:token, [Symbol | nil => name, Regexp => regex], nil]
-        representation_context.token(self, name, regex, to: kwargs[:to])
+        representation_context.token(self, name, regex, to: kwargs[:to], from: kwargs[:from])
       in [:line, [], Proc]
         representation_context.line(self, &block)
       in [:optional, [Symbol => name], Proc]

@@ -25,8 +25,9 @@ module TextRepresenter
     # @rbs name: Symbol?
     # @rbs _regex: Regexp
     # @rbs to: Symbol?
+    # @rbs from: Symbol?
     # @rbs return: void
-    def token(representer, name, _regex, to: nil) = raise NotImplementedError, "Context#token must be implemented by subclasses"
+    def token(representer, name, _regex, to: nil, from: nil) = raise NotImplementedError, "Context#token must be implemented by subclasses"
 
     # @rbs return: void
     def line = raise NotImplementedError, "Context#line must be implemented by subclasses"

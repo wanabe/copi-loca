@@ -22,6 +22,7 @@ interface ::_RbsRailsPathHelpers
   def git_root_path: (*untyped) -> ::String
   def git_refs_path: (*untyped) -> ::String
   def git_ref_grep_path: (*untyped) -> ::String
+  def git_ref_commits_path: (*untyped) -> ::String
   def git_ref_entry_path: (*untyped) -> ::String
   def git_ref_entries_root_path: (*untyped) -> ::String
   def git_ref_path: (*untyped) -> ::String
@@ -77,6 +78,7 @@ interface ::_RbsRailsPathHelpers
   def git_root_url: (*untyped) -> ::String
   def git_refs_url: (*untyped) -> ::String
   def git_ref_grep_url: (*untyped) -> ::String
+  def git_ref_commits_url: (*untyped) -> ::String
   def git_ref_entry_url: (*untyped) -> ::String
   def git_ref_entries_root_url: (*untyped) -> ::String
   def git_ref_url: (*untyped) -> ::String

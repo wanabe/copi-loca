@@ -1,0 +1,16 @@
+# Generated from app/controllers/git/commits_controller.rb with RBS::Inline
+
+class Git::CommitsController < ApplicationController
+  # GET /git/refs/:ref/-/commits
+  # @rbs return: void
+  def index: () -> void
+
+  module Breadcrumbs
+    include Git::RefsController::Breadcrumbs
+
+    # @rbs return: void
+    def add_commits_breadcrumb: () -> void
+  end
+
+  include Breadcrumbs
+end

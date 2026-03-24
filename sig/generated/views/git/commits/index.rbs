@@ -1,0 +1,15 @@
+# Generated from app/views/git/commits/index.rb with RBS::Inline
+
+class Views::Git::Commits::Index < Views::Base
+  @ref: String
+
+  @commits: Kaminari::PaginatableArray[Git::Log::Commit]
+
+  # @rbs ref: String
+  # @rbs commits: Kaminari::PaginatableArray[Git::Log::Commit]
+  # @rbs return: void
+  def initialize: (ref: String, commits: Kaminari::PaginatableArray[Git::Log::Commit]) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+end

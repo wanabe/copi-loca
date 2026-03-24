@@ -20,8 +20,9 @@ module TextRepresenter
     # @rbs name: Symbol?
     # @rbs _regex: Regexp
     # @rbs to: Symbol?
+    # @rbs from: Symbol?
     # @rbs return: void
-    def token: (untyped representer, Symbol? name, untyped _regex, ?to: Symbol?) -> void
+    def token: (untyped representer, Symbol? name, untyped _regex, ?to: Symbol?, ?from: Symbol?) -> void
 
     # @rbs return: void
     def line: () -> void

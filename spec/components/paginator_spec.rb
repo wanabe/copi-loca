@@ -19,9 +19,9 @@ RSpec.describe Components::Paginator, type: :component do
       it "renders navigation with correct links and current page" do
         expect(rendered).to include("navigation")
         expect(rendered).to include(ERB::Util.html_escape("<First"))
-        expect(rendered).to include(ERB::Util.html_escape("<Previous"))
+        expect(rendered).to include(ERB::Util.html_escape("<Prev"))
         expect(rendered).to include(ERB::Util.html_escape("Next>"))
-        expect(rendered).to include(ERB::Util.html_escape("Last>"))
+        expect(rendered).to include(ERB::Util.html_escape("Last(5)>"))
         expect(rendered).to include("px-2 py-1 bg-blue-500 text-white rounded") # current page styling
         expect(rendered).to include("/dummy?page=1&per_page=10")
         expect(rendered).not_to include("/dummy?page=2&per_page=10")

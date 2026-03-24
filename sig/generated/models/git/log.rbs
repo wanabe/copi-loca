@@ -1,0 +1,41 @@
+# Generated from app/models/git/log.rb with RBS::Inline
+
+class Git::Log < Git::Command
+  @ref: String
+
+  @commits: Array[Git::Log::Commit]
+
+  attr_accessor ref(): String
+
+  attr_accessor commits(): Array[Git::Log::Commit]
+
+  # @rbs return: String
+  def command: () -> String
+
+  # @rbs return: self
+  def run: () -> self
+
+  # @rbs result: String
+  # @rbs return: self
+  def parse: (String result) -> self
+
+  # @rbs return: void
+  def template: () -> void
+
+  class Commit < ApplicationRepresenter
+    attr_accessor commit_hash(): String
+
+    attr_accessor author_name(): String
+
+    attr_accessor author_email(): String
+
+    attr_accessor author_date(): DateTime
+
+    attr_accessor committer_date(): DateTime
+
+    attr_accessor message(): String
+
+    # @rbs return: void
+    def template: () -> void
+  end
+end

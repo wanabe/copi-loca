@@ -1,28 +1,15 @@
 [
   {
-    "file": "/app/app/views/git/grep/show.rb",
-    "spec_added": true
-  },
-  {
-    "file": "/app/app/controllers/git/entries_controller.rb",
-    "spec_added": true
-  },
-  {
-    "file": "/app/app/controllers/git/refs_controller.rb",
+    "file": "/app/app/controllers/git/commits_controller.rb",
     "action": "index",
     "spec_added": true
   },
   {
-    "file": "/app/app/controllers/git/refs_controller.rb",
-    "action": "show",
+    "file": "/app/app/models/git/log.rb",
     "spec_added": true
   },
   {
-    "file": "/app/app/views/git/refs/index.rb",
-    "spec_added": true
-  },
-  {
-    "file": "/app/app/views/git/refs/show.rb",
+    "file": "/app/app/views/git/commits/index.rb",
     "spec_added": true
   }
 ]

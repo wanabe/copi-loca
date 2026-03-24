@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     resources :refs, only: [:index]
     scope "refs/*ref/-", as: :ref do
       get "grep", to: "grep#show"
+      get "commits", to: "commits#index"
       get "entries/*path", to: "entries#show", as: :entry, format: false
       get "entries", to: "entries#show", as: :entries_root
     end

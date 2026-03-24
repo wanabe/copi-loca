@@ -40,5 +40,16 @@ module Views
     end
     module Refs
     end
+    module Commits
+    end
+  end
+end
+
+module Components
+  module Bin
+  end
+  module Prompts
+  end
+  module Git
   end
 end

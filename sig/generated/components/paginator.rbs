@@ -11,6 +11,8 @@ class Components::Paginator < Components::Base
 
   @per_page: Integer
 
+  @window: Integer
+
   @remote: bool
 
   # @rbs items: Kaminari::PaginatableArray[untyped]

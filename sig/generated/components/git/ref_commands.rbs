@@ -1,0 +1,12 @@
+# Generated from app/components/git/ref_commands.rb with RBS::Inline
+
+class Components::Git::RefCommands < Components::Base
+  @ref: String
+
+  # @rbs ref: String
+  # @rbs return: void
+  def initialize: (ref: String) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+end

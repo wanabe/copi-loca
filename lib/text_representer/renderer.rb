@@ -57,12 +57,15 @@ module TextRepresenter
     # @rbs name: Symbol?
     # @rbs _regex: Regexp
     # @rbs to: Symbol?
+    # @rbs from: Symbol?
     # @rbs return: void
-    def token(representer, name, _regex, to: nil)
+    def token(representer, name, _regex, to: nil, from: nil)
       raise "Unexpected to: #{to}" if to && !to.is_a?(Symbol)
+      raise "Unexpected from: #{from}" if from && !from.is_a?(Symbol)
       raise "Need name for token" unless name
 
       value = value(representer, name)
+      value = value.public_send(from) if from
       @output << value.to_s
     end
 
