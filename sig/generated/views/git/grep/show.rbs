@@ -1,26 +1,23 @@
 # Generated from app/views/git/grep/show.rb with RBS::Inline
 
 class Views::Git::Grep::Show < Views::Base
-  @branches: Array[String]
-
   @pattern: String?
 
   @files: String?
 
-  @branch: String?
+  @ref: String
 
   @ignore_case: bool
 
   @grep: Git::Grep?
 
-  # @rbs branches: Array[String]
   # @rbs pattern: String?
   # @rbs files: String?
-  # @rbs branch: String?
+  # @rbs ref: String
   # @rbs ignore_case: bool
   # @rbs grep: Git::Grep?
   # @rbs return: void
-  def initialize: (branches: Array[String], pattern: String?, files: String?, branch: String?, ignore_case: bool, grep: Git::Grep?) -> void
+  def initialize: (pattern: String?, files: String?, ref: String, ignore_case: bool, grep: Git::Grep?) -> void
 
   # @rbs return: void
   def view_template: () -> void

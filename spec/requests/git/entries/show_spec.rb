@@ -12,7 +12,7 @@ RSpec.describe "GET /git/entries/:ref/-/:path or /git/entries/:ref" do
         100644 blob abcdef1234567890abcdef1234567890abcdef12\tREADME.md
         40000 tree 1234567890abcdef1234567890abcdef12345678\tlib
       OUTPUT
-      get git_entry_root_path(ref: ref)
+      get git_ref_entries_root_path(ref: ref)
       expect(response).to have_http_status(:ok)
       expect(response.body).to include("Tree #{ref}:.")
       expect(Git).to have_received(:call).with("ls-tree", ref, "--", "./")
@@ -29,7 +29,7 @@ RSpec.describe "GET /git/entries/:ref/-/:path or /git/entries/:ref" do
         100644 blob abcdef1234567890abcdef1234567890abcdef12\tlib/file1.rb
         100644 blob abcdef1234567890abcdef1234567890abcdef34\tlib/file2.rb
       ENTRIES
-      get git_entry_path(ref: ref, path: path)
+      get git_ref_entry_path(ref: ref, path: path)
       expect(response).to have_http_status(:ok)
       expect(response.body).to include("Tree #{ref}:#{path}")
       expect(Git).to have_received(:call).with("ls-tree", ref, "--", path.to_s)
@@ -44,7 +44,7 @@ RSpec.describe "GET /git/entries/:ref/-/:path or /git/entries/:ref" do
       allow(Git).to receive(:call).and_return(<<~SELF, "Hello, world!")
         100644 blob abcdef1234567890abcdef1234567890abcdef12\tREADME.md
       SELF
-      get git_entry_path(ref: ref, path: path, raw: false)
+      get git_ref_entry_path(ref: ref, path: path, raw: false)
       expect(response).to have_http_status(:ok)
       expect(response.body).to include("Blob #{ref}:#{path}")
       expect(response.body).to include("Hello, world!")
@@ -56,7 +56,7 @@ RSpec.describe "GET /git/entries/:ref/-/:path or /git/entries/:ref" do
       allow(Git).to receive(:call).and_return(<<~SELF, "Hello, world!")
         100644 blob abcdef1234567890abcdef1234567890abcdef12\tREADME.md
       SELF
-      get git_entry_path(ref: ref, path: path, raw: true)
+      get git_ref_entry_path(ref: ref, path: path, raw: true)
       expect(response).to have_http_status(:ok)
       expect(response.header["Content-Disposition"]).to include("inline")
       expect(response.body).to eq("Hello, world!")
@@ -68,7 +68,7 @@ RSpec.describe "GET /git/entries/:ref/-/:path or /git/entries/:ref" do
   context "when path does not exist" do
     it "returns not found" do
       allow(Git).to receive(:call).and_return("")
-      get git_entry_path(ref: ref, path: path)
+      get git_ref_entry_path(ref: ref, path: path)
       expect(response).to have_http_status(:not_found)
       expect(response.parsed_body["error"]).to eq("Not found")
       expect(Git).to have_received(:call).with("ls-tree", ref, "--", path.to_s)
@@ -81,7 +81,7 @@ RSpec.describe "GET /git/entries/:ref/-/:path or /git/entries/:ref" do
         100644 blob abcdef1234567890abcdef1234567890abcdef12\tREADME.md
         100644 blob abcdef1234567890abcdef1234567890abcdef34\tREADME.md
       OUTPUT
-      get git_entry_path(ref: ref, path: path)
+      get git_ref_entry_path(ref: ref, path: path)
       expect(response).to have_http_status(:unprocessable_content)
       expect(response.parsed_body["error"]).to eq("Multiple entries found")
       expect(Git).to have_received(:call).with("ls-tree", ref, "--", path.to_s)
@@ -93,7 +93,7 @@ RSpec.describe "GET /git/entries/:ref/-/:path or /git/entries/:ref" do
       allow(Git).to receive(:call).and_return(<<~OUTPUT)
         100644 commit abcdef1234567890abcdef1234567890abcdef34\tREADME.md
       OUTPUT
-      get git_entry_path(ref: ref, path: path)
+      get git_ref_entry_path(ref: ref, path: path)
       expect(response).to have_http_status(:unsupported_media_type)
       expect(response.parsed_body["error"]).to eq("Unsupported entry type")
       expect(Git).to have_received(:call).with("ls-tree", ref, "--", path.to_s)

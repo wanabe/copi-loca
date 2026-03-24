@@ -1,8 +1,6 @@
 # Generated from app/controllers/git/grep_controller.rb with RBS::Inline
 
 class Git::GrepController < ApplicationController
-  @branches: Array[String]
-
   @pattern: String?
 
   @files: String
@@ -17,13 +15,12 @@ class Git::GrepController < ApplicationController
   # @rbs return: void
   def show: () -> void
 
-  private
+  module Breadcrumbs
+    include Git::RefsController::Breadcrumbs
 
-  # def add_grep_breadcrumb: () -> void
-  # @rbs return: void
-  def add_grep_breadcrumb: () -> void
+    # @rbs return: void
+    def add_grep_breadcrumb: () -> void
+  end
 
-  # def branches: () -> Array[String]
-  # @rbs return: Array[String]
-  def branches: () -> Array[String]
+  include Breadcrumbs
 end

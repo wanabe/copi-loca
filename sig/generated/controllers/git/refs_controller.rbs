@@ -1,0 +1,30 @@
+# Generated from app/controllers/git/refs_controller.rb with RBS::Inline
+
+class Git::RefsController < ApplicationController
+  # GET /git/refs
+  # @rbs return: void
+  def index: () -> void
+
+  # GET /git/refs/*ref
+  # @rbs return: void
+  def show: () -> void
+
+  private
+
+  # @rbs return: Array[String]
+  def refs: () -> Array[String]
+
+  module Breadcrumbs
+    include Git::DashboardController::Breadcrumbs
+
+    private
+
+    # @rbs return: void
+    def add_git_refs_breadcrumb: () -> void
+
+    # @rbs return: void
+    def add_git_ref_breadcrumb: () -> void
+  end
+
+  include Breadcrumbs
+end

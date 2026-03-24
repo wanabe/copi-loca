@@ -20,10 +20,11 @@ interface ::_RbsRailsPathHelpers
   def sync_local_memos_memos_path: (*untyped) -> ::String
   def memos_path: (*untyped) -> ::String
   def git_root_path: (*untyped) -> ::String
-  def git_grep_path: (*untyped) -> ::String
-  def git_entries_path: (*untyped) -> ::String
-  def git_entry_path: (*untyped) -> ::String
-  def git_entry_root_path: (*untyped) -> ::String
+  def git_refs_path: (*untyped) -> ::String
+  def git_ref_grep_path: (*untyped) -> ::String
+  def git_ref_entry_path: (*untyped) -> ::String
+  def git_ref_entries_root_path: (*untyped) -> ::String
+  def git_ref_path: (*untyped) -> ::String
   def rails_health_check_path: (*untyped) -> ::String
   def pwa_manifest_path: (*untyped) -> ::String
   def pwa_service_worker_path: (*untyped) -> ::String
@@ -74,10 +75,11 @@ interface ::_RbsRailsPathHelpers
   def sync_local_memos_memos_url: (*untyped) -> ::String
   def memos_url: (*untyped) -> ::String
   def git_root_url: (*untyped) -> ::String
-  def git_grep_url: (*untyped) -> ::String
-  def git_entries_url: (*untyped) -> ::String
-  def git_entry_url: (*untyped) -> ::String
-  def git_entry_root_url: (*untyped) -> ::String
+  def git_refs_url: (*untyped) -> ::String
+  def git_ref_grep_url: (*untyped) -> ::String
+  def git_ref_entry_url: (*untyped) -> ::String
+  def git_ref_entries_root_url: (*untyped) -> ::String
+  def git_ref_url: (*untyped) -> ::String
   def rails_health_check_url: (*untyped) -> ::String
   def pwa_manifest_url: (*untyped) -> ::String
   def pwa_service_worker_url: (*untyped) -> ::String

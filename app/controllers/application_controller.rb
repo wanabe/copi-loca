@@ -2,8 +2,6 @@
 # rbs_inline: enabled
 
 class ApplicationController < ActionController::Base
-  # @rbs @breadcrumbs: Array[Breadcrumb]
-
   # Dummy
   # @rbs!
   #   def self.stale_when_importmap_changes: () -> void
@@ -27,30 +25,34 @@ class ApplicationController < ActionController::Base
     request.format.html? ? Views::Layouts::Application.new(breadcrumbs: breadcrumbs) : nil
   end
 
-  # @rbs return: Array[Breadcrumb]
-  def breadcrumbs
-    @breadcrumbs ||= []
-  end
+  module Breadcrumbs
+    # @rbs!
+    #  def action_name: () -> String
+    #  def root_path: () -> String
 
-  # @rbs name: String
-  # @rbs path: String?
-  # @rbs return: void
-  def add_breadcrumb(name, path = nil)
-    breadcrumbs << Breadcrumb.new(name, path)
-  end
+    # @rbs @breadcrumbs: Array[Breadcrumb]
 
-  # @rbs return: void
-  def add_home_breadcrumb
-    add_breadcrumb("Home", root_path)
-  end
+    # @rbs return: Array[Breadcrumb]
+    def breadcrumbs
+      @breadcrumbs ||= []
+    end
 
-  # @rbs return: void
-  def add_git_breadcrumb
-    add_breadcrumb("Git", git_root_path)
-  end
+    # @rbs name: String
+    # @rbs path: String?
+    # @rbs return: void
+    def add_breadcrumb(name, path = nil)
+      breadcrumbs << Breadcrumb.new(name, path)
+    end
 
-  # @rbs return: void
-  def add_action_breadcrumb
-    add_breadcrumb(action_name)
+    # @rbs return: void
+    def add_action_breadcrumb
+      add_breadcrumb(action_name)
+    end
+
+    # @rbs return: void
+    def add_home_breadcrumb
+      add_breadcrumb("Home", root_path)
+    end
   end
+  include Breadcrumbs
 end

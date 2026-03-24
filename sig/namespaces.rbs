@@ -10,6 +10,8 @@ module Parameters
   module Git
     module Entries
     end
+    module Refs
+    end
   end
 end
 
@@ -35,6 +37,8 @@ module Views
     module Dashboard
     end
     module Entries
+    end
+    module Refs
     end
   end
 end

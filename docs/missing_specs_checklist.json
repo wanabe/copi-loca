@@ -1,44 +1,28 @@
 [
   {
-    "file": "/app/lib/text_representer/context.rb",
-    "spec_added": true
-  },
-  {
-    "file": "/app/app/models/git/command.rb",
+    "file": "/app/app/views/git/grep/show.rb",
     "spec_added": true
   },
   {
     "file": "/app/app/controllers/git/entries_controller.rb",
+    "spec_added": true
+  },
+  {
+    "file": "/app/app/controllers/git/refs_controller.rb",
     "action": "index",
     "spec_added": true
   },
   {
-    "file": "/app/app/controllers/git/entries_controller.rb",
+    "file": "/app/app/controllers/git/refs_controller.rb",
     "action": "show",
     "spec_added": true
   },
   {
-    "file": "/app/app/models/git/ls_tree.rb",
+    "file": "/app/app/views/git/refs/index.rb",
     "spec_added": true
   },
   {
-    "file": "/app/app/models/git/show.rb",
-    "spec_added": true
-  },
-  {
-    "file": "/app/app/models/parameters/git/entries/show.rb",
-    "spec_added": true
-  },
-  {
-    "file": "/app/app/views/git/entries/index.rb",
-    "spec_added": true
-  },
-  {
-    "file": "/app/app/views/git/entries/show_blob.rb",
-    "spec_added": true
-  },
-  {
-    "file": "/app/app/views/git/entries/show_tree.rb",
+    "file": "/app/app/views/git/refs/show.rb",
     "spec_added": true
   }
 ]

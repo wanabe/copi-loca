@@ -3,9 +3,10 @@
 
 class Git::GrepController < ApplicationController
   before_action :add_git_breadcrumb
+  before_action :add_git_refs_breadcrumb
+  before_action :add_git_ref_breadcrumb
   before_action :add_grep_breadcrumb
 
-  # @rbs @branches: Array[String]
   # @rbs @pattern: String?
   # @rbs @files: String
   # @rbs @branch: String
@@ -15,46 +16,37 @@ class Git::GrepController < ApplicationController
   # GET /git/grep
   # @rbs return: void
   def show
-    @branches = branches
-    @pattern = params[:pattern]
-    @files = params[:files] || ""
-    @branch = params[:branch] || ""
-    @ignore_case = params[:ignore_case] == "on"
-    @grep = nil
+    pattern = params[:pattern]
+    files = params[:files] || ""
+    ref = params[:ref] || ""
+    ignore_case = params[:ignore_case] == "on"
+    grep = nil
 
-    pattern = @pattern
     if pattern.present?
-      @grep = Git::Grep.new(
+      grep = Git::Grep.new(
         pattern: pattern,
-        branch: @branch,
-        files: @files,
-        ignore_case: @ignore_case
+        ref: ref,
+        files: files,
+        ignore_case: ignore_case
       ).run
     end
 
     render Views::Git::Grep::Show.new(
-      branches: @branches,
-      pattern: @pattern,
-      files: @files,
-      branch: @branch,
-      ignore_case: @ignore_case,
-      grep: @grep
+      pattern: pattern,
+      files: files,
+      ref: ref,
+      ignore_case: ignore_case,
+      grep: grep
     )
   end
 
-  private
+  module Breadcrumbs
+    include Git::RefsController::Breadcrumbs
 
-  # def add_grep_breadcrumb: () -> void
-  # @rbs return: void
-  def add_grep_breadcrumb
-    add_breadcrumb "Grep", git_grep_path
+    # @rbs return: void
+    def add_grep_breadcrumb
+      add_breadcrumb "Grep", git_ref_grep_path(ref: params[:ref])
+    end
   end
-
-  # def branches: () -> Array[String]
-  # @rbs return: Array[String]
-  def branches
-    local = `git branch --format='%(refname:short)'`.lines.map(&:strip)
-    remote = `git branch -r --format='%(refname:short)'`.lines.map(&:strip)
-    [*local, *remote]
-  end
+  include Breadcrumbs
 end

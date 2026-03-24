@@ -9,15 +9,15 @@ class Git::Grep < Git::Command
 
   attr_accessor chunks(): Array[Git::Grep::Chunk]?
 
-  attr_accessor branch(): String?
+  attr_accessor ref(): String?
 
   # @rbs pattern: String
-  # @rbs branch: String?
+  # @rbs ref: String?
   # @rbs files: String?
   # @rbs ignore_case: bool
   # @rbs chunks: Array[Git::Grep::Chunk]?
   # @rbs return: void
-  def initialize: (pattern: String, ?branch: String?, ?files: String?, ?ignore_case: bool, ?chunks: Array[Git::Grep::Chunk]?) -> void
+  def initialize: (pattern: String, ?ref: String?, ?files: String?, ?ignore_case: bool, ?chunks: Array[Git::Grep::Chunk]?) -> void
 
   # @rbs return: String
   def command: () -> String
@@ -29,7 +29,7 @@ class Git::Grep < Git::Command
   def template: () -> void
 
   class Chunk < ApplicationRepresenter
-    attr_accessor branch(): String?
+    attr_accessor ref(): String?
 
     attr_accessor lines(): Array[Git::Grep::Line]
 
@@ -40,7 +40,7 @@ class Git::Grep < Git::Command
   end
 
   class Line < ApplicationRepresenter
-    attr_accessor branch(): String?
+    attr_accessor ref(): String?
 
     attr_accessor path(): String
 

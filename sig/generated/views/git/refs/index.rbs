@@ -1,0 +1,12 @@
+# Generated from app/views/git/refs/index.rb with RBS::Inline
+
+class Views::Git::Refs::Index < Views::Base
+  @refs: Array[String]
+
+  # @rbs refs: Array[String]
+  # @rbs return: void
+  def initialize: (refs: Array[String]) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+end

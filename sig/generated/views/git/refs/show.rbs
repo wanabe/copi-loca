@@ -1,0 +1,12 @@
+# Generated from app/views/git/refs/show.rb with RBS::Inline
+
+class Views::Git::Refs::Show < Views::Base
+  @ref: String
+
+  # @rbs ref: String
+  # @rbs return: void
+  def initialize: (ref: String) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+end

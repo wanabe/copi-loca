@@ -36,13 +36,13 @@ class Views::Git::Entries::ShowTree < Views::Base
             span(class: "mr-1") do
               "\u{1F4C1} "
             end
-            link_to name, git_entry_path(ref: @ref, path: path), class: "text-blue-600 hover:underline"
+            link_to name, git_ref_entry_path(ref: @ref, path: path), class: "text-blue-600 hover:underline"
           when "blob"
             span(class: "mr-1") do
               "\u{1F4C4} "
             end
-            link_to name, git_entry_path(ref: @ref, path: path, raw: "false"), class: "text-gray-600 hover:underline"
-            link_to " (raw)", git_entry_path(ref: @ref, path: path), class: "text-gray-400 hover:underline"
+            link_to name, git_ref_entry_path(ref: @ref, path: path, raw: "false"), class: "text-gray-600 hover:underline"
+            link_to " (raw)", git_ref_entry_path(ref: @ref, path: path), class: "text-gray-400 hover:underline"
           else
             span(class: "mr-1") do
               "\u{2753} "

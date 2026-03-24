@@ -4,4 +4,15 @@ class Git::DashboardController < ApplicationController
   # def show: () -> void
   # @rbs return: void
   def show: () -> void
+
+  module Breadcrumbs
+    include ApplicationController::Breadcrumbs
+
+    private
+
+    # @rbs return: void
+    def add_git_breadcrumb: () -> void
+  end
+
+  include Breadcrumbs
 end

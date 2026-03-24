@@ -8,19 +8,19 @@ class Git::Grep < Git::Command
 
   # @rbs!
   #   attr_accessor chunks (): Array[Git::Grep::Chunk]?
-  #   attr_accessor branch (): String?
+  #   attr_accessor ref (): String?
 
   attribute :chunks
-  attribute :branch
+  attribute :ref
 
   # @rbs pattern: String
-  # @rbs branch: String?
+  # @rbs ref: String?
   # @rbs files: String?
   # @rbs ignore_case: bool
   # @rbs chunks: Array[Git::Grep::Chunk]?
   # @rbs return: void
-  def initialize(pattern:, branch: nil, files: nil, ignore_case: false, chunks: nil)
-    super(branch: branch.presence, chunks: chunks)
+  def initialize(pattern:, ref: nil, files: nil, ignore_case: false, chunks: nil)
+    super(ref: ref.presence, chunks: chunks)
     @pattern = pattern
     @files = files
     @ignore_case = ignore_case
@@ -36,7 +36,7 @@ class Git::Grep < Git::Command
     args = [
       @ignore_case ? "-i" : nil,
       @pattern,
-      branch.presence
+      ref.presence
     ].compact
     files = @files
     if files.present?
@@ -51,18 +51,18 @@ class Git::Grep < Git::Command
   # @rbs return: void
   def template
     partial :chunks, Chunk, quantity: "*" do |event, chunk|
-      chunk.branch = branch if event == :before
+      chunk.ref = ref if event == :before
     end
   end
 
   class Chunk < ApplicationRepresenter
     # @rbs!
-    #   attr_accessor branch (): String?
+    #   attr_accessor ref (): String?
     #   attr_accessor lines (): Array[Git::Grep::Line]
     #   attr_accessor path (): String
 
     attribute :lines
-    attribute :branch
+    attribute :ref
     attribute :path
 
     # @rbs return: void
@@ -70,7 +70,7 @@ class Git::Grep < Git::Command
       partial :lines, Line, quantity: "+" do |event, line|
         case event
         when :before
-          line.branch = branch if branch
+          line.ref = ref if ref
           line.path = path if path
         when :after
           self.path ||= line.path
@@ -81,19 +81,19 @@ class Git::Grep < Git::Command
 
   class Line < ApplicationRepresenter
     # @rbs!
-    #   attr_accessor branch (): String?
+    #   attr_accessor ref (): String?
     #   attr_accessor path (): String
     #   attr_accessor content (): String
 
-    attribute :branch
+    attribute :ref
     attribute :path
     attribute :content
 
     # @rbs return: void
     def template
       line do
-        if branch.present?
-          same_as :branch
+        if ref.present?
+          same_as :ref
           literal ":"
         end
         token :path, /[^:]+/

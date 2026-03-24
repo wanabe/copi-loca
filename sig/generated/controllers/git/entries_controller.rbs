@@ -3,10 +3,6 @@
 class Git::EntriesController < ApplicationController
   @parameters: Parameters::Git::Entries::Show
 
-  # GET /git/entries
-  # @rbs return: void
-  def index: () -> void
-
   # GET /git/entries/*ref/-/*path or /git/entries/*ref
   # @rbs return: void
   def show: () -> void
@@ -16,15 +12,15 @@ class Git::EntriesController < ApplicationController
   # @rbs return: Parameters::Git::Entries::Show
   def parameters: () -> Parameters::Git::Entries::Show
 
-  # @rbs return: void
-  def add_git_entries_breadcrumb: () -> void
+  module Breadcrumbs
+    include Git::RefsController::Breadcrumbs
 
-  # @rbs return: void
-  def add_git_entry_breadcrumb: () -> void
+    # @rbs return: void
+    def add_git_ref_entries_breadcrumb: () -> void
 
-  # @rbs return: void
-  def add_git_entry_path_breadcrumb: () -> void
+    # @rbs return: void
+    def add_git_ref_entry_path_breadcrumb: () -> void
+  end
 
-  # @rbs return: Array[String]
-  def branches: () -> Array[String]
+  include Breadcrumbs
 end

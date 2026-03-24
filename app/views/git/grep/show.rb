@@ -2,43 +2,31 @@
 # rbs_inline: enabled
 
 class Views::Git::Grep::Show < Views::Base
-  # @rbs @branches: Array[String]
   # @rbs @pattern: String?
   # @rbs @files: String?
-  # @rbs @branch: String?
+  # @rbs @ref: String
   # @rbs @ignore_case: bool
   # @rbs @grep: Git::Grep?
 
-  # @rbs branches: Array[String]
   # @rbs pattern: String?
   # @rbs files: String?
-  # @rbs branch: String?
+  # @rbs ref: String
   # @rbs ignore_case: bool
   # @rbs grep: Git::Grep?
   # @rbs return: void
-  def initialize(branches:, pattern:, files:, branch:, ignore_case:, grep:)
-    @branches = branches
+  def initialize(pattern:, files:, ref:, ignore_case:, grep:)
     @pattern = pattern
     @files = files
-    @branch = branch
+    @ref = ref
     @ignore_case = ignore_case
     @grep = grep
   end
 
   # @rbs return: void
   def view_template
-    h1(class: "text-2xl font-bold mb-4") { "Git Grep" }
+    h1(class: "text-2xl font-bold mb-4") { "Git Grep on #{@ref}" }
 
-    form_with url: git_grep_path, method: :get, local: true do |_f|
-      div(class: "space-y-2 mb-4") do
-        label(for: "branch", class: "block text-sm font-semibold mb-1") { "Branch:" }
-        select(name: "branch", id: "branch", class: "border rounded p-2 w-full") do
-          option(value: "", selected: @branch.blank?) { "(local)" }
-          @branches.each do |b|
-            option(value: b, selected: b == @branch) { b }
-          end
-        end
-      end
+    form_with url: git_ref_grep_path(ref: @ref), method: :get, local: true do |_f|
       div(class: "space-y-2 mb-4") do
         label(for: "pattern", class: "block text-sm font-semibold mb-1") { "Pattern:" }
         input(type: "text", name: "pattern", id: "pattern", value: @pattern, class: "border rounded p-2 w-full")
@@ -63,12 +51,8 @@ class Views::Git::Grep::Show < Views::Base
       chunks.each do |chunk|
         div(class: "mb-4") do
           div(class: "text-xs text-gray-500 mb-1") do
-            if grep.branch.present?
-              link_to "#{chunk.path} (#{grep.branch})", git_entry_path(ref: grep.branch, path: chunk.path, raw: "false"),
-                class: "text-blue-500 hover:underline"
-            else
-              link_to chunk.path, file_path(chunk.path, raw: false), class: "text-blue-500 hover:underline"
-            end
+            link_to "#{chunk.path} (#{grep.ref})", git_ref_entry_path(ref: grep.ref, path: chunk.path, raw: "false"),
+              class: "text-blue-500 hover:underline"
             plain "(#{chunk.lines.size} matches)"
           end
           div(class: "font-mono text-sm bg-gray-100 p-2 rounded") do

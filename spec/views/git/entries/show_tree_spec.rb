@@ -21,13 +21,12 @@ RSpec.describe Views::Git::Entries::ShowTree do
 
   it "renders directory entries as folders with links" do
     expect(rendered).to include("\u{1F4C1}")
-    expect(rendered).to include('href="/git/entries/main/-/src/lib"')
+    expect(rendered).to include("href=\"#{git_ref_entry_path(entries[0].path, ref: ref)}\"")
   end
 
   it "renders blob entries as files with links and raw links" do
     expect(rendered).to include("\u{1F4C4}")
-    expect(rendered).to include('href="/git/entries/main/-/src/file.txt?raw=false"')
-    expect(rendered).to include('href="/git/entries/main/-/src/file.txt"')
+    expect(rendered).to include("href=\"#{git_ref_entry_path(entries[1].path, ref: ref, raw: false)}\"")
     expect(rendered).to include(" (raw)")
   end
 
