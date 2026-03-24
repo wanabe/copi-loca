@@ -7,7 +7,7 @@ RSpec.describe "POST /prompts/:id/run" do
 
   before do
     allow(Prompt).to receive(:find).with(1).and_return(prompt)
-    allow(prompt).to receive(:run).and_return(true)
+    allow(prompt).to receive_messages(run: true, persisted?: true)
   end
 
   it "runs the prompt and redirects to show with notice" do

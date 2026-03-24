@@ -8,6 +8,7 @@ RSpec.describe "PATCH /prompts/:id" do
   let(:invalid_params) { { prompt: { text: "" } } }
 
   before do
+    allow(prompt).to receive(:persisted?).and_return(true)
     allow(File).to receive(:write).and_return(true)
     allow(Prompt).to receive(:find).with(1).and_return(prompt)
   end
@@ -21,7 +22,7 @@ RSpec.describe "PATCH /prompts/:id" do
       expect(response.body).to include("Prompt was successfully updated.")
       expect(response.body).to include("Updated text")
       expect(prompt.text).to eq("Updated text")
-      expect(File).to have_received(:write).with(Rails.root.join("docs/prompts/1/prompt.md").to_s, "Updated text")
+      expect(File).to have_received(:write).with("/app/docs/prompts/1/prompt.md", "Updated text")
     end
   end
 

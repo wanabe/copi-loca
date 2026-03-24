@@ -9,6 +9,7 @@ RSpec.describe Views::Prompts::Show do
 
   describe "#view_template" do
     it "renders the show prompt view with correct title and content" do
+      allow(prompt).to receive(:persisted?).and_return(true)
       expect(rendered).to include(prompt.text)
       expect(rendered).to include("Edit this prompt")
       expect(rendered).to include("Back to prompts")

@@ -26,4 +26,10 @@ RSpec.describe Bin do
       expect(bin.load).to eq(bin)
     end
   end
+
+  describe ".primary_condition" do
+    it "returns a hash with id key" do
+      expect(described_class.primary_condition("test")).to eq({ id: "test" })
+    end
+  end
 end

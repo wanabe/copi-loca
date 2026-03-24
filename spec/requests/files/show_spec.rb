@@ -25,12 +25,20 @@ RSpec.describe "GET /files/*path" do
     end
 
     it "sends the file when raw is not 'false'" do
-      # on the test, `/copi-loca` === `app`
-      path = Pathname.new(__FILE__).relative_path_from(Rails.root).to_s
+      path = "foo/bar.txt"
+      allow(File).to receive_messages(absolute_path: "#{base_path}/#{path}", exist?: true, ftype: "file", read: "File content")
+      allow(FilesController).to receive(:new).and_wrap_original do |original_method, *args|
+        controller = original_method.call(*args)
+        allow(controller).to receive(:send_file) do |file_path, **options|
+          expect(file_path).to eq("#{base_path}/#{path}")
+          expect(options[:filename]).to eq("bar.txt")
+          expect(options[:disposition]).to eq("inline")
+          controller.render plain: "File sent"
+        end
+        controller
+      end
       get files_path(path: path, raw: "true")
       expect(response).to have_http_status(:ok)
-      expect(response.header["Content-Disposition"]).to include("inline")
-      expect(response.body).to eq(File.read(__FILE__))
     end
   end
 

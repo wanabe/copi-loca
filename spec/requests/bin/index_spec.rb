@@ -5,6 +5,10 @@ require "rails_helper"
 RSpec.describe "GET /bin" do
   let!(:bins) { %w[brakeman bundler-audit check].map { |id| Bin.new(id: id) } }
 
+  before do
+    allow(Bin).to receive(:all).and_return(bins)
+  end
+
   it "returns a successful response" do
     get "/bin"
     expect(response).to have_http_status(:ok)

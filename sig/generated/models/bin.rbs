@@ -1,7 +1,7 @@
 # Generated from app/models/bin.rb with RBS::Inline
 
 class Bin < TextFile
-  PATH_PREFIX: untyped
+  PATH_PREFIX: ::String
 
   PATH_SUFFIX: ::String
 

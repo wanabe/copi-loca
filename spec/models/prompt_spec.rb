@@ -140,6 +140,25 @@ RSpec.describe Prompt do
     end
   end
 
+  describe "#parse" do
+    it "parses prompt from file" do
+      content = "Test content"
+      expect(described_class.new.parse(content)).to have_attributes(text: "Test content")
+    end
+
+    it "parses header and body" do
+      content = <<~PROMPT
+        ---
+        name: Test Prompt
+        description: This is a test prompt.
+        ---
+        This is the body of the prompt.
+      PROMPT
+      expect(described_class.new.parse(content)).to have_attributes(text: "This is the body of the prompt.\n", name: "Test Prompt",
+        description: "This is a test prompt.")
+    end
+  end
+
   describe ".find_by" do
     it "loads prompt by id" do
       prompt = instance_double(described_class)

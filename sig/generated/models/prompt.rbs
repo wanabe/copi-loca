@@ -5,7 +5,7 @@ class Prompt < TextFile
 
   @response_fetched: bool
 
-  PATH_PREFIX: untyped
+  PATH_PREFIX: ::String
 
   PATH_SUFFIX: ::String
 

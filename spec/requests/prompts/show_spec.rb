@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe "GET /prompts/:id" do
   it "renders the show view for the prompt" do
     prompt = Prompt.new(id: 1, text: "Test prompt")
-    allow(prompt).to receive(:response).and_return(nil)
+    allow(prompt).to receive_messages(response: nil, persisted?: true)
     allow(Prompt).to receive(:find).with(1).and_return(prompt)
 
     get prompt_path(1)

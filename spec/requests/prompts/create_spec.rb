@@ -12,11 +12,16 @@ RSpec.describe "POST /prompts" do
 
   describe "with valid params" do
     it "creates a new prompt and redirects to show" do
+      allow(Prompt).to receive(:new).and_wrap_original do |original_method, *args|
+        prompt = original_method.call(*args)
+        allow(prompt).to receive(:persisted?).and_return(true)
+        prompt
+      end
       post "/prompts", params: valid_params
       expect(response).to redirect_to(prompt_path(1))
       follow_redirect!
       expect(response.body).to include("Prompt was successfully created.")
-      expect(File).to have_received(:write).with(Rails.root.join("docs/prompts/1/prompt.md").to_s, "Test prompt")
+      expect(File).to have_received(:write).with("/app/docs/prompts/1/prompt.md", "Test prompt")
     end
   end
 

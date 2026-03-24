@@ -5,7 +5,7 @@ class Prompt < TextFile
   # @rbs @response_fetched: bool
   # @rbs @response: Response?
 
-  PATH_PREFIX = Rails.root.join("docs/prompts/").to_s.freeze
+  PATH_PREFIX = "/app/docs/prompts/"
   PATH_SUFFIX = "/prompt.md"
   ID_PATTERN = /\A#{Regexp.escape(PATH_PREFIX)}(\d+)#{Regexp.escape(PATH_SUFFIX)}\z/
   ID_PATTERN_INDEX = 1

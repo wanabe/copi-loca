@@ -2,7 +2,7 @@
 # rbs_inline: enabled
 
 class Bin < TextFile
-  PATH_PREFIX = Rails.root.join("bin/").to_s.freeze
+  PATH_PREFIX = "/app/bin/"
   PATH_SUFFIX = ""
   ID_PATTERN = /\A#{Regexp.escape(PATH_PREFIX)}(.*)\z/
   ID_PATTERN_INDEX = 1

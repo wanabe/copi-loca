@@ -5,6 +5,10 @@ require "rails_helper"
 RSpec.describe Views::Prompts::Index do
   let(:prompts) { Kaminari.paginate_array([Prompt.new(id: 1), Prompt.new(id: 2)]).page(1).per(10) }
 
+  before do
+    prompts.each { |prompt| allow(prompt).to receive(:persisted?).and_return(true) }
+  end
+
   context "with notice" do
     subject(:rendered) { render described_class.new(prompts: prompts, notice: "Test notice") }
 
