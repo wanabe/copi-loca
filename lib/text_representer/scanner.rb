@@ -153,7 +153,7 @@ module TextRepresenter
       raise UnmatchedPatternError, "Expected reference #{name} to be set" if value.nil?
 
       regex = /#{Regexp.escape(value.to_s)}/
-      raise UnmatchedPatternError, "Expected token #{regex} at position #{@string_scanner.pos}" unless @string_scanner.scan(regex)
+      raise UnmatchedPatternError, "Expected reference #{name} at position #{@string_scanner.pos}" unless @string_scanner.scan(regex)
     end
   end
 end

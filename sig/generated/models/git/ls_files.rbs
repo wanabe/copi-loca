@@ -1,0 +1,29 @@
+# Generated from app/models/git/ls_files.rb with RBS::Inline
+
+class Git::LsFiles < Git::Command
+  @entries: Array[Git::LsTree::Entry]
+
+  @others: bool
+
+  @exclude_standard: bool
+
+  attr_accessor entries(): Array[Git::LsTree::Entry]
+
+  attr_accessor others(): bool
+
+  attr_accessor exclude_standard(): bool
+
+  # @rbs return: String
+  def command: () -> String
+
+  # @rbs return: self
+  def run: () -> self
+
+  # @rbs return: void
+  def template: () -> void
+
+  class Entry < ApplicationRepresenter
+    # @rbs return: void
+    def template: () -> void
+  end
+end

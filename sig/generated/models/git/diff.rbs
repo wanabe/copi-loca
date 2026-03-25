@@ -1,0 +1,111 @@
+# Generated from app/models/git/diff.rb with RBS::Inline
+
+class Git::Diff < Git::Command
+  attr_accessor src_ref(): String?
+
+  attr_accessor dst_ref(): String?
+
+  attr_accessor cached(): bool
+
+  attr_accessor patches(): Array[Git::Diff::Patch]
+
+  attr_accessor paths(): Array[String]
+
+  # @rbs return: String
+  def command: () -> String
+
+  # @rbs return: self
+  def run: () -> self
+
+  # @rbs return: void
+  def template: () -> void
+
+  class Patch < ApplicationRepresenter
+    attr_accessor header(): Git::Diff::Header
+
+    attr_accessor hunks(): Array[Git::Diff::Hunk]
+
+    # @rbs return: void
+    def template: () -> void
+
+    # @rbs return: Symbol
+    def type: () -> Symbol
+  end
+
+  class Header < ApplicationRepresenter
+    attr_accessor path(): String
+
+    attr_accessor has_old_mode(): bool
+
+    attr_accessor old_mode(): String
+
+    attr_accessor has_new_mode(): bool
+
+    attr_accessor new_mode(): String
+
+    attr_accessor has_new_file(): bool
+
+    attr_accessor has_deleted_mode(): bool
+
+    attr_accessor deleted_mode(): String
+
+    attr_accessor has_index(): bool
+
+    attr_accessor index_src(): String
+
+    attr_accessor index_dst(): String
+
+    attr_accessor has_index_mode(): bool
+
+    attr_accessor index_mode(): String
+
+    attr_accessor has_file_header(): bool
+
+    attr_accessor src_file(): String
+
+    attr_accessor dst_file(): String
+
+    # @rbs return: void
+    def template: () -> void
+  end
+
+  class Hunk < ApplicationRepresenter
+    attr_accessor src_range_start(): Integer
+
+    attr_accessor has_src_range_end(): bool
+
+    attr_reader src_range_end(): Integer
+
+    attr_accessor dst_range_start(): Integer
+
+    attr_accessor has_dst_range_end(): bool
+
+    attr_reader dst_range_end(): Integer
+
+    attr_accessor has_context(): bool
+
+    attr_accessor context(): String
+
+    attr_accessor lines(): Array[Git::Diff::Hunk::Line]
+
+    # @rbs value: Integer
+    # @rbs return: void
+    def src_range_end=: (Integer value) -> void
+
+    # @rbs value: Integer
+    # @rbs return: void
+    def dst_range_end=: (Integer value) -> void
+
+    # @rbs return: void
+    def template: () -> void
+
+    class Line < ApplicationRepresenter
+      attr_accessor type(): Symbol
+
+      attr_accessor content(): String
+
+      # @rbs return: void
+      def template: () -> void
+    end
+  end
+end

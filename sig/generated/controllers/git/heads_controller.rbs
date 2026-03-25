@@ -1,0 +1,20 @@
+# Generated from app/controllers/git/heads_controller.rb with RBS::Inline
+
+class Git::HeadsController < ApplicationController
+  # @rbs return: void
+  def new: () -> void
+
+  module Breadcrumbs
+    include Git::RefsController::Breadcrumbs
+
+    private
+
+    # @rbs return: void
+    def add_git_head_breadcrumb: () -> void
+
+    # @rbs return: void
+    def add_status_breadcrumb: () -> void
+  end
+
+  include Breadcrumbs
+end

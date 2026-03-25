@@ -5,9 +5,13 @@ class Phlex::HTML
   def div: (**untyped) ?{ () -> void }-> void
   def span: (**untyped) ?{ () -> void }-> void
   def p: (**untyped) ?{ () -> void }-> void
+  def code: (**untyped) ?{ () -> void }-> void
   def pre: (**untyped) ?{ () -> void }-> void
   def label: (**untyped) ?{ () -> void }-> void
   def template: (**untyped) ?{ () -> void }-> void
+  def details: (**untyped) ?{ () -> void }-> void
+  def summary: (**untyped) ?{ () -> void }-> void
+  def hr: (**untyped) ?{ () -> void }-> void
 
   def form: (**untyped) ?{ () -> void }-> void
   def input: (**untyped) ?{ () -> void }-> void

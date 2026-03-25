@@ -1,0 +1,31 @@
+# Generated from app/views/git/heads/new.rb with RBS::Inline
+
+class Views::Git::Heads::New < Views::Base
+  ICON_MAP: untyped
+
+  @unstaged_files: Array[String]
+
+  @unstaged_diff_map: Hash[String, Git::Diff::Patch]
+
+  @staged_diff_map: Hash[String, Git::Diff::Patch]
+
+  @untracked_file_map: Hash[String, String]
+
+  # @rbs unstaged_files: Array[String]
+  # @rbs unstaged_diff_map: Hash[String, Git::Diff::Patch]
+  # @rbs staged_diff_map: Hash[String, Git::Diff::Patch]
+  # @rbs untracked_file_map: Hash[String, String]
+  # @rbs return: void
+  def initialize: (unstaged_files: Array[String], untracked_file_map: Hash[String, String], unstaged_diff_map: Hash[String, Git::Diff::Patch], staged_diff_map: Hash[String, Git::Diff::Patch]) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+
+  private
+
+  # @rbs type: Symbol
+  # @rbs path: String
+  # @rbs content: String
+  # @rbs return: void
+  def render_chunk: (Symbol type, String path, String content) -> void
+end

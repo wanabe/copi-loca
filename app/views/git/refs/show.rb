@@ -13,7 +13,6 @@ class Views::Git::Refs::Show < Views::Base
   # @rbs return: void
   def view_template
     h1(class: "text-2xl font-bold mb-4") { "Git Ref: #{@ref}" }
-
     render Components::Git::RefCommands.new(ref: @ref)
   end
 end

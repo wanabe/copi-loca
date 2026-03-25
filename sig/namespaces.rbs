@@ -42,6 +42,8 @@ module Views
     end
     module Commits
     end
+    module Heads
+    end
   end
 end
 

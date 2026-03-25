@@ -8,9 +8,9 @@ class Views::Git::Dashboard::Show < Views::Base
     ul(class: "space-y-2") do
       li { link_to "Refs", git_refs_path, class: "text-blue-600 hover:underline" }
       li do
-        ul(class: "space-y-1") do
+        ul(class: "space-y-1 ml-4") do
           li { "for HEAD" }
-          li(class: "ml-4") do
+          li do
             render Components::Git::RefCommands.new(ref: "HEAD")
           end
         end

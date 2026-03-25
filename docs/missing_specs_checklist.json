@@ -1,15 +1,6 @@
 [
   {
-    "file": "/app/app/controllers/git/commits_controller.rb",
-    "action": "index",
-    "spec_added": true
-  },
-  {
-    "file": "/app/app/models/git/log.rb",
-    "spec_added": true
-  },
-  {
-    "file": "/app/app/views/git/commits/index.rb",
+    "file": "/app/app/models/git/diff.rb",
     "spec_added": true
   }
 ]

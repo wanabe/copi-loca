@@ -28,6 +28,8 @@ Rails.application.routes.draw do
     root to: "dashboard#show"
 
     resources :refs, only: [:index]
+
+    resource :head, path: "refs/HEAD/-", only: [:new]
     scope "refs/*ref/-", as: :ref do
       get "grep", to: "grep#show"
       get "commits", to: "commits#index"
@@ -35,8 +37,6 @@ Rails.application.routes.draw do
       get "entries", to: "entries#show", as: :entries_root
     end
     get "refs/*ref", to: "refs#show", as: :ref
-
-    # resource :head, only: [] # commit/amend
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
