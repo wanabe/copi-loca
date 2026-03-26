@@ -1,41 +1,33 @@
 # frozen_string_literal: true
 # rbs_inline: enabled
 
-class Views::Git::Heads::New < Views::Base
-  ICON_MAP = {
-    new: "\u{2795}\u{FE0F}",
-    modify: "\u{270D}\u{FE0F}",
-    delete: "\u{274C}\u{FE0F}"
-  }.freeze
+class Views::Git::Heads::Edit < Views::Base
+  ICON_MAP = Views::Git::Heads::New::ICON_MAP
 
   # @rbs @unstaged_files: Array[String]
   # @rbs @unstaged_diff_map: Hash[String, Git::Diff::Patch]
   # @rbs @staged_diff_map: Hash[String, Git::Diff::Patch]
   # @rbs @untracked_file_map: Hash[String, String]
+  # @rbs @commit_message: String
 
-  # @rbs unstaged_files: Array[String]
-  # @rbs unstaged_diff_map: Hash[String, Git::Diff::Patch]
-  # @rbs staged_diff_map: Hash[String, Git::Diff::Patch]
-  # @rbs untracked_file_map: Hash[String, String]
-  # @rbs return: void
-  def initialize(unstaged_files:, untracked_file_map:, unstaged_diff_map:, staged_diff_map:)
+  def initialize(unstaged_files:, untracked_file_map:, unstaged_diff_map:, staged_diff_map:, commit_message:)
     @unstaged_files = unstaged_files
     @untracked_file_map = untracked_file_map
     @unstaged_diff_map = unstaged_diff_map
     @staged_diff_map = staged_diff_map
+    @commit_message = commit_message
   end
 
-  # @rbs return: void
   def view_template
     h1(class: "text-2xl font-bold mb-4 flex items-center") do
-      span { "Git HEAD status" }
-      a(href: "/git/refs/HEAD/-/edit", class: "ml-2 text-xs text-blue-600 hover:underline") { "Amend" }
+      span { "Git HEAD amend" }
+      a(href: "/git/refs/HEAD/-/new", class: "ml-2 text-xs text-blue-600 hover:underline") { "HEAD" }
     end
 
-    form(method: :post, action: "/git/refs/HEAD") do
-      textarea(name: "commit_message", rows: 3, class: "w-full p-2 border rounded mb-2", placeholder: "Commit message...")
+    form(method: :patch, action: git_head_path) do
+      textarea(name: "commit_message", rows: 3, class: "w-full p-2 border rounded mb-2", placeholder: "Commit message...", value: @commit_message) { @commit_message }
       br
-      button(type: "submit", class: "bg-blue-600 text-white px-4 py-2 rounded") { "Commit" }
+      button(type: "submit", class: "bg-blue-600 text-white px-4 py-2 rounded") { "Amend Commit" }
     end
 
     h3(class: "text-xl font-semibold") { "Unstaged" }
@@ -61,15 +53,11 @@ class Views::Git::Heads::New < Views::Base
 
   private
 
-  # @rbs section: Symbol (:unstaged or :staged)
-  # @rbs type: Symbol
-  # @rbs path: String
-  # @rbs content: String
-  # @rbs return: void
   def render_chunk_with_stage(section, type, path, content)
     div(class: "flex items-start space-x-2") do
       form(method: :post, action: "/git/refs/HEAD/-/#{section == :unstaged ? 'stage' : 'unstage'}") do
         input(type: "hidden", name: "file_path", value: path)
+        input(type: "hidden", name: "amend", value: "true")
         button(type: "submit", class: "text-blue-600 hover:underline") { ICON_MAP[type] || "\u{2753}\u{FE0F}" }
       end
       details do

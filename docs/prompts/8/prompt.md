@@ -2,9 +2,5 @@
 name: add_new_action
 description: Add new action
 ---
-I would like you to create the Git::HeadsController#create action.
-
-This action is called from the Git::HeadsController#new page.
-The action performs a `git commit` operation via `Git.call!`.
-On the screen, there should be a textarea for entering the commit message and a button for committing. When the button is pressed, the commit is performed.
-After the operation is complete, please redirect to the Git::HeadsController#new page.
+I want links for both the Git::HeadsController#edit and #new screens.
+Please add small links immediately to the right of the title section so that they do not get in the way.

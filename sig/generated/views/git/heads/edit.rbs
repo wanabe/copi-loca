@@ -1,0 +1,16 @@
+# Generated from app/views/git/heads/edit.rb with RBS::Inline
+
+class Views::Git::Heads::Edit < Views::Base
+  ICON_MAP: untyped
+
+  @unstaged_files: Array[String]
+  @unstaged_diff_map: Hash[String, Git::Diff::Patch]
+  @staged_diff_map: Hash[String, Git::Diff::Patch]
+  @untracked_file_map: Hash[String, String]
+  @commit_message: String
+
+  def initialize: (unstaged_files: Array[String], untracked_file_map: Hash[String, String], unstaged_diff_map: Hash[String, Git::Diff::Patch], staged_diff_map: Hash[String, Git::Diff::Patch], commit_message: String) -> void
+  def view_template: () -> void
+  private
+  def render_chunk_with_stage: (Symbol section, Symbol type, String path, String content) -> void
+end
