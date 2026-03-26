@@ -4,6 +4,16 @@ class Git::HeadsController < ApplicationController
   # @rbs return: void
   def new: () -> void
 
+  # POST /git/refs/HEAD/-/stage
+  # Params: file_path
+  # @rbs return: void
+  def stage: () -> void
+
+  # POST /git/refs/HEAD/-/unstage
+  # Params: file_path
+  # @rbs return: void
+  def unstage: () -> void
+
   module Breadcrumbs
     include Git::RefsController::Breadcrumbs
 

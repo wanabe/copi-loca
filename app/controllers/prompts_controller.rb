@@ -15,13 +15,13 @@ class PromptsController < ApplicationController
     parameters = Parameters::Index.new(**params.permit(:page, :per_page))
     prompts = Kaminari.paginate_array(Prompt.all).page(parameters.page).per(parameters.per_page || 5)
     prompts.each(&:load)
-    render Views::Prompts::Index.new(prompts: prompts, notice: flash[:notice])
+    render Views::Prompts::Index.new(prompts: prompts)
   end
 
   # GET /prompts/1 or /prompts/1.json
   # @rbs return: void
   def show
-    render Views::Prompts::Show.new(prompt: prompt, notice: flash[:notice])
+    render Views::Prompts::Show.new(prompt: prompt)
   end
 
   # GET /prompts/new

@@ -4,15 +4,18 @@
 class Views::Layouts::Application < Views::Base
   # @rbs @title: String
   # @rbs @breadcrumbs: Array[Breadcrumb]
+  # @rbs @flash: Hash[Symbol, String]
 
   include Phlex::Rails::Layout
 
   # @rbs title: String?
   # @rbs breadcrumbs: Array[Breadcrumb]
+  # @rbs flash: Hash[Symbol, String]
   # @rbs return: void
-  def initialize(title: nil, breadcrumbs: [])
+  def initialize(title: nil, breadcrumbs: [], flash: {})
     @title = title || "Copi Loca"
     @breadcrumbs = breadcrumbs
+    @flash = flash
   end
 
   # @rbs return: void
@@ -37,6 +40,7 @@ class Views::Layouts::Application < Views::Base
       end
       body do
         render Components::Breadcrumbs.new(breadcrumbs: @breadcrumbs)
+        render(@flash.map { |type, message| Components::Flash.new(type: type, message: message) })
         div(class: "px-2", &)
       end
     end

@@ -29,7 +29,10 @@ Rails.application.routes.draw do
 
     resources :refs, only: [:index]
 
-    resource :head, path: "refs/HEAD/-", only: [:new]
+    resource :head, path: "refs/HEAD/-", only: [:new] do
+      post :stage
+      post :unstage
+    end
     scope "refs/*ref/-", as: :ref do
       get "grep", to: "grep#show"
       get "commits", to: "commits#index"

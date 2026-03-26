@@ -3,12 +3,9 @@
 class Views::Prompts::Index < Views::Base
   @prompts: Kaminari::PaginatableArray[Prompt]
 
-  @notice: String?
-
   # @rbs prompts: Kaminari::PaginatableArray[Prompt]
-  # @rbs notice: String?
   # @rbs return: void
-  def initialize: (prompts: Kaminari::PaginatableArray[Prompt], ?notice: String?) -> void
+  def initialize: (prompts: Kaminari::PaginatableArray[Prompt]) -> void
 
   # @rbs return: void
   def view_template: () -> void

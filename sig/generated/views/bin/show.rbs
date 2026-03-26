@@ -7,14 +7,11 @@ class Views::Bin::Show < Views::Base
 
   @output: untyped
 
-  @notice: String?
-
   # @rbs return: void
   # @rbs bin: untyped # TODO: Specify type
   # @rbs status: untyped # TODO: Specify type
   # @rbs output: untyped # TODO: Specify type
-  # @rbs notice: String?
-  def initialize: (bin: untyped, ?status: untyped, ?output: untyped, ?notice: String?) -> void
+  def initialize: (bin: untyped, ?status: untyped, ?output: untyped) -> void
 
   # @rbs return: void
   def view_template: () -> void

@@ -3,12 +3,9 @@
 class Views::Bin::Index < Views::Base
   @bins: Kaminari::PaginatableArray[Bin]
 
-  @notice: String?
-
   # @rbs bins: Kaminari::PaginatableArray[Bin]
-  # @rbs notice: String?
   # @rbs return: void
-  def initialize: (bins: Kaminari::PaginatableArray[Bin], ?notice: String?) -> void
+  def initialize: (bins: Kaminari::PaginatableArray[Bin]) -> void
 
   # @rbs return: void
   def view_template: () -> void

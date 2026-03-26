@@ -35,9 +35,9 @@ class Views::Git::Heads::New < Views::Base
         patch = @unstaged_diff_map[path]
         file_content = @untracked_file_map[path]
         if patch
-          render_chunk(patch.type, path, patch.render)
+          render_chunk_with_stage(:unstaged, patch.type, path, patch.render)
         elsif file_content
-          render_chunk(:new, path, file_content)
+          render_chunk_with_stage(:unstaged, :new, path, file_content)
         end
       end
     end
@@ -45,26 +45,28 @@ class Views::Git::Heads::New < Views::Base
     h3(class: "text-xl font-semibold") { "Staged" }
     @staged_diff_map.each do |path, patch|
       div do
-        render_chunk(patch.type, path, patch.render)
+        render_chunk_with_stage(:staged, patch.type, path, patch.render)
       end
     end
   end
 
   private
 
+  # @rbs section: Symbol (:unstaged or :staged)
   # @rbs type: Symbol
   # @rbs path: String
   # @rbs content: String
   # @rbs return: void
-  def render_chunk(type, path, content)
+  def render_chunk_with_stage(section, type, path, content)
     div(class: "flex items-start space-x-2") do
-      span { ICON_MAP[type] || "\u{2753}\u{FE0F}" }
-
+      form(method: :post, action: "/git/refs/HEAD/-/#{section == :unstaged ? 'stage' : 'unstage'}") do
+        input(type: "hidden", name: "file_path", value: path)
+        button(type: "submit", class: "text-blue-600 hover:underline") { ICON_MAP[type] || "\u{2753}\u{FE0F}" }
+      end
       details do
         summary(class: "list-none") do
           span(class: "text-sm text-gray-600") { path }
         end
-
         pre(class: "bg-gray-100 p-2 overflow-x-auto") do
           code do
             content

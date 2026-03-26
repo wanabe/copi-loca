@@ -23,9 +23,10 @@ class Views::Git::Heads::New < Views::Base
 
   private
 
+  # @rbs section: Symbol (:unstaged or :staged)
   # @rbs type: Symbol
   # @rbs path: String
   # @rbs content: String
   # @rbs return: void
-  def render_chunk: (Symbol type, String path, String content) -> void
+  def render_chunk_with_stage: (Symbol section, Symbol type, String path, String content) -> void
 end

@@ -5,12 +5,15 @@ class Views::Layouts::Application < Views::Base
 
   @breadcrumbs: Array[Breadcrumb]
 
+  @flash: Hash[Symbol, String]
+
   include Phlex::Rails::Layout
 
   # @rbs title: String?
   # @rbs breadcrumbs: Array[Breadcrumb]
+  # @rbs flash: Hash[Symbol, String]
   # @rbs return: void
-  def initialize: (?title: String?, ?breadcrumbs: Array[Breadcrumb]) -> void
+  def initialize: (?title: String?, ?breadcrumbs: Array[Breadcrumb], ?flash: Hash[Symbol, String]) -> void
 
   # @rbs return: void
   def view_template: () ?{ (?) -> untyped } -> void

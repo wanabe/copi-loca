@@ -5,23 +5,19 @@ class Views::Bin::Show < Views::Base
   # @rbs @bin: untyped # TODO: Specify type
   # @rbs @status: untyped # TODO: Specify type
   # @rbs @output: untyped # TODO: Specify type
-  # @rbs @notice: String?
 
   # @rbs return: void
   # @rbs bin: untyped # TODO: Specify type
   # @rbs status: untyped # TODO: Specify type
   # @rbs output: untyped # TODO: Specify type
-  # @rbs notice: String?
-  def initialize(bin:, status: nil, output: nil, notice: nil)
+  def initialize(bin:, status: nil, output: nil)
     @bin = bin
     @status = status
     @output = output
-    @notice = notice
   end
 
   # @rbs return: void
   def view_template
-    p(class: "text-green-600 mb-4") { @notice } if @notice
     render Components::Bin::Bin.new(bin: @bin)
     form(action: run_bin_path(@bin), method: "post", class: "inline mt-4", data: { turbo_frame: "bin-run-result" }) do
       button(class: "bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600", data: { turbo_action: "replace" }) { "Run this bin" }

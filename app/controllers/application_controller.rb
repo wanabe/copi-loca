@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
 
   # @rbs return: Phlex::HTML | nil
   def phlex_layout
-    request.format.html? ? Views::Layouts::Application.new(breadcrumbs: breadcrumbs) : nil
+    request.format.html? ? Views::Layouts::Application.new(breadcrumbs: breadcrumbs, flash: flash) : nil
   end
 
   module Breadcrumbs

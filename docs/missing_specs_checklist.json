@@ -1,6 +1,10 @@
 [
   {
-    "file": "/app/app/models/git/diff.rb",
-    "spec_added": true
+    "file": "/app/app/controllers/git/heads_controller.rb",
+    "spec_added": false
+  },
+  {
+    "file": "/app/app/components/flash.rb",
+    "spec_added": false
   }
 ]

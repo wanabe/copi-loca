@@ -3,19 +3,15 @@
 
 class Views::Prompts::Show < Views::Base
   # @rbs @prompt: Prompt
-  # @rbs @notice: String?
 
   # @rbs prompt: Prompt
-  # @rbs notice: String?
   # @rbs return: void
-  def initialize(prompt:, notice: nil)
+  def initialize(prompt:)
     @prompt = prompt
-    @notice = notice
   end
 
   # @rbs return: void
   def view_template
-    p(class: "text-green-600 mb-4") { @notice } if @notice
     render Components::Prompts::Prompt.new(prompt: @prompt)
     div(class: "space-y-4 mt-6") do
       link_to "Edit this prompt", edit_prompt_path(@prompt), class: "text-blue-600 hover:underline mr-2"

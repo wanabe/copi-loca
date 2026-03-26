@@ -1,0 +1,21 @@
+# Generated from app/components/flash.rb with RBS::Inline
+
+class Components::Flash < Components::Base
+  @type: Symbol
+
+  @message: String
+
+  # @rbs type: Symbol
+  # @rbs message: String
+  # @rbs return: void
+  def initialize: (type: Symbol, message: String) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+
+  private
+
+  # @rbs type: Symbol
+  # @rbs return: String
+  def alert_class: (Symbol type) -> String
+end

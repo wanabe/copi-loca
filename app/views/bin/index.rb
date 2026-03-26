@@ -3,19 +3,15 @@
 
 class Views::Bin::Index < Views::Base
   # @rbs @bins: Kaminari::PaginatableArray[Bin]
-  # @rbs @notice: String?
 
   # @rbs bins: Kaminari::PaginatableArray[Bin]
-  # @rbs notice: String?
   # @rbs return: void
-  def initialize(bins:, notice: nil)
+  def initialize(bins:)
     @bins = bins
-    @notice = notice
   end
 
   # @rbs return: void
   def view_template
-    p(class: "text-green-600 mb-4") { @notice } if @notice
     h1(class: "text-2xl font-bold mb-4") { "Bins" }
     table(id: "bins", class: "space-y-4") do
       thead do

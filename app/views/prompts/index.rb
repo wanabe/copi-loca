@@ -3,19 +3,15 @@
 
 class Views::Prompts::Index < Views::Base
   # @rbs @prompts: Kaminari::PaginatableArray[Prompt]
-  # @rbs @notice: String?
 
   # @rbs prompts: Kaminari::PaginatableArray[Prompt]
-  # @rbs notice: String?
   # @rbs return: void
-  def initialize(prompts:, notice: nil)
+  def initialize(prompts:)
     @prompts = prompts
-    @notice = notice
   end
 
   # @rbs return: void
   def view_template
-    p(class: "text-green-600 mb-4") { @notice } if @notice
     h1(class: "text-2xl font-bold mb-4") { "Prompts" }
     table(id: "prompts", class: "space-y-4") do
       thead do

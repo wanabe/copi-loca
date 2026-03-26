@@ -26,6 +26,24 @@ class Git::HeadsController < ApplicationController
     )
   end
 
+  # POST /git/refs/HEAD/-/stage
+  # Params: file_path
+  # @rbs return: void
+  def stage
+    file_path = params[:file_path]
+    Git.call!("add", "--", file_path)
+    redirect_to new_git_head_path, notice: "#{file_path} has been staged."
+  end
+
+  # POST /git/refs/HEAD/-/unstage
+  # Params: file_path
+  # @rbs return: void
+  def unstage
+    file_path = params[:file_path]
+    Git.call!("reset", "HEAD", "--", file_path)
+    redirect_to new_git_head_path, notice: "#{file_path} has been unstaged."
+  end
+
   module Breadcrumbs
     include Git::RefsController::Breadcrumbs
 
