@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "file": "/app/app/controllers/git/heads_controller.rb",
+    "uncovered_lines": [
+      33,
+      35,
+      36,
+      38
+    ]
+  }
+]

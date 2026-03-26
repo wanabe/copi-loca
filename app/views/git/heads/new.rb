@@ -29,6 +29,12 @@ class Views::Git::Heads::New < Views::Base
   def view_template
     h1(class: "text-2xl font-bold mb-4") { "Git HEAD status" }
 
+    form(method: :post, action: "/git/refs/HEAD") do
+      textarea(name: "commit_message", rows: 3, class: "w-full p-2 border rounded mb-2", placeholder: "Commit message...")
+      br
+      button(type: "submit", class: "bg-blue-600 text-white px-4 py-2 rounded") { "Commit" }
+    end
+
     h3(class: "text-xl font-semibold") { "Unstaged" }
     @unstaged_files.each do |path|
       div do

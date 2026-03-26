@@ -4,6 +4,11 @@ class Git::HeadsController < ApplicationController
   # @rbs return: void
   def new: () -> void
 
+  # POST /git/refs/HEAD
+  # Params: commit_message
+  # @rbs return: void
+  def create: () -> void
+
   # POST /git/refs/HEAD/-/stage
   # Params: file_path
   # @rbs return: void

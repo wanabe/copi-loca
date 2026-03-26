@@ -21,6 +21,7 @@ interface ::_RbsRailsPathHelpers
   def memos_path: (*untyped) -> ::String
   def git_root_path: (*untyped) -> ::String
   def git_refs_path: (*untyped) -> ::String
+  def git_head_path: (*untyped) -> ::String
   def stage_git_head_path: (*untyped) -> ::String
   def unstage_git_head_path: (*untyped) -> ::String
   def new_git_head_path: (*untyped) -> ::String
@@ -80,6 +81,7 @@ interface ::_RbsRailsPathHelpers
   def memos_url: (*untyped) -> ::String
   def git_root_url: (*untyped) -> ::String
   def git_refs_url: (*untyped) -> ::String
+  def git_head_url: (*untyped) -> ::String
   def stage_git_head_url: (*untyped) -> ::String
   def unstage_git_head_url: (*untyped) -> ::String
   def new_git_head_url: (*untyped) -> ::String

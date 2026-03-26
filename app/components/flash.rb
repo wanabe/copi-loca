@@ -15,7 +15,7 @@ class Components::Flash < Components::Base
 
   # @rbs return: void
   def view_template
-    div(class: "mb-4 px-4 py-3 rounded #{alert_class(@type)}", role: "alert") do
+    div(class: "mb-4 px-4 py-3 rounded whitespace-pre-line #{alert_class(@type)}", role: "alert") do
       @message
     end
   end

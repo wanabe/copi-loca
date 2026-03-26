@@ -26,6 +26,19 @@ class Git::HeadsController < ApplicationController
     )
   end
 
+  # POST /git/refs/HEAD
+  # Params: commit_message
+  # @rbs return: void
+  def create
+    commit_message = params[:commit_message]
+    begin
+      Git.call!("commit", "-m", commit_message)
+      redirect_to new_git_head_path, notice: "Committed successfully."
+    rescue StandardError => e
+      redirect_to new_git_head_path, alert: "Failed to commit: #{e.message}"
+    end
+  end
+
   # POST /git/refs/HEAD/-/stage
   # Params: file_path
   # @rbs return: void
