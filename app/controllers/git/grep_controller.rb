@@ -32,6 +32,7 @@ class Git::GrepController < ApplicationController
     end
 
     render Views::Git::Grep::Show.new(
+      breadcrumbs: breadcrumbs, flash: flash,
       pattern: pattern,
       files: files,
       ref: ref,

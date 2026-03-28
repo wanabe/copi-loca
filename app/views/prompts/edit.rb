@@ -3,15 +3,20 @@
 
 class Views::Prompts::Edit < Views::Base
   # @rbs @prompt: Prompt
+  # @rbs @flash: Hash[Symbol, String]
+  # @rbs @breadcrumbs: Array[Breadcrumb]
 
   # @rbs prompt: Prompt
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
   # @rbs return: void
-  def initialize(prompt:)
+  def initialize(prompt:, flash: {}, breadcrumbs: [])
+    super(flash: flash, breadcrumbs: breadcrumbs)
     @prompt = prompt
   end
 
   # @rbs return: void
-  def view_template
+  def body_template
     content_for :title, "Editing prompt"
     h1(class: "text-2xl font-bold mb-4") { "Editing prompt" }
     render Components::Prompts::Form.new(prompt: @prompt)

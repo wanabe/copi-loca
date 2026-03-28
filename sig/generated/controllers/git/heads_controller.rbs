@@ -19,12 +19,12 @@ class Git::HeadsController < ApplicationController
   def update: () -> void
 
   # POST /git/refs/HEAD/-/stage
-  # Params: file_path
+  # Params: file_path, amend (optional)
   # @rbs return: void
   def stage: () -> void
 
   # POST /git/refs/HEAD/-/unstage
-  # Params: file_path
+  # Params: file_path, amend (optional)
   # @rbs return: void
   def unstage: () -> void
 
@@ -37,7 +37,10 @@ class Git::HeadsController < ApplicationController
     def add_git_head_breadcrumb: () -> void
 
     # @rbs return: void
-    def add_status_breadcrumb: () -> void
+    def add_new_status_breadcrumb: () -> void
+
+    # @rbs return: void
+    def add_edit_breadcrumb: () -> void
   end
 
   include Breadcrumbs

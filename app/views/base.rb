@@ -2,14 +2,29 @@
 # rbs_inline: enabled
 
 class Views::Base < Components::Base
-  # The `Views::Base` is an abstract class for all your views.
+  # @rbs @flash: Hash[Symbol, String]
+  # @rbs @breadcrumbs: Array[Breadcrumb]
 
-  # By default, it inherits from `Components::Base`, but you
-  # can change that to `Phlex::HTML` if you want to keep views and
-  # components independent.
-
-  # More caching options at https://www.phlex.fun/components/caching
-
-  # @rbs return: untyped # TODO: Specify more precise type if possible
+  # @rbs return: ActiveSupport::Cache::Store
   def cache_store = Rails.cache
+
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
+  # @rbs return: void
+  def initialize(flash: {}, breadcrumbs: [])
+    @flash = flash
+    @breadcrumbs = breadcrumbs
+  end
+
+  # @rbs return: void
+  def view_template
+    render Components::Layout.new(flash: @flash, breadcrumbs: @breadcrumbs, view: self) do
+      body_template
+    end
+  end
+
+  # @rbs return: void
+  def body_template
+    raise NotImplementedError, "Subclasses must implement body_template"
+  end
 end

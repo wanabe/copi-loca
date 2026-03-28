@@ -3,15 +3,20 @@
 
 class Views::Prompts::Index < Views::Base
   # @rbs @prompts: Kaminari::PaginatableArray[Prompt]
+  # @rbs @flash: Hash[Symbol, String]
+  # @rbs @breadcrumbs: Array[Breadcrumb]
 
   # @rbs prompts: Kaminari::PaginatableArray[Prompt]
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
   # @rbs return: void
-  def initialize(prompts:)
+  def initialize(prompts:, flash: {}, breadcrumbs: [])
+    super(flash: flash, breadcrumbs: breadcrumbs)
     @prompts = prompts
   end
 
   # @rbs return: void
-  def view_template
+  def body_template
     h1(class: "text-2xl font-bold mb-4") { "Prompts" }
     table(id: "prompts", class: "space-y-4") do
       thead do

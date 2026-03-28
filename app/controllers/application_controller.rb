@@ -16,14 +16,7 @@ class ApplicationController < ActionController::Base
 
   before_action :add_home_breadcrumb
 
-  layout -> { phlex_layout }
-
-  private
-
-  # @rbs return: Phlex::HTML | nil
-  def phlex_layout
-    request.format.html? ? Views::Layouts::Application.new(breadcrumbs: breadcrumbs, flash: flash) : nil
-  end
+  layout false
 
   module Breadcrumbs
     # @rbs!

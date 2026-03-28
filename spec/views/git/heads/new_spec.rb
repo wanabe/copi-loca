@@ -20,7 +20,7 @@ RSpec.describe Views::Git::Heads::New do
   let(:staged_diff_map) { { "file3.txt" => staged_patch_double } }
 
   it "renders the Git dashboard with correct sections and file chunks" do
-    expect(rendered).to include("<h1 class=\"text-2xl font-bold mb-4\">Git HEAD status</h1>")
+    expect(rendered).to include("<h1 class=\"text-2xl font-bold mb-4 flex items-center\"><span>Git HEAD status</span>")
     expect(rendered).to include("Unstaged")
     expect(rendered).to include("Staged")
     expect(rendered).to include("file1.txt")

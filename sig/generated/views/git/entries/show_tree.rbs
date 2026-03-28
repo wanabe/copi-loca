@@ -7,12 +7,18 @@ class Views::Git::Entries::ShowTree < Views::Base
 
   @entries: Array[Git::LsTree::Entry]
 
+  @flash: Hash[Symbol, String]
+
+  @breadcrumbs: Array[Breadcrumb]
+
   # @rbs ref: String
   # @rbs path: String
   # @rbs entries: Array[Git::LsTree::Entry]
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
   # @rbs return: void
-  def initialize: (ref: String, path: String, entries: Array[Git::LsTree::Entry]) -> void
+  def initialize: (ref: String, path: String, entries: Array[Git::LsTree::Entry], ?flash: Hash[Symbol, String], ?breadcrumbs: Array[Breadcrumb]) -> void
 
   # @rbs return: void
-  def view_template: () -> void
+  def body_template: () -> void
 end

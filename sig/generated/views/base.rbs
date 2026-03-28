@@ -1,6 +1,21 @@
 # Generated from app/views/base.rb with RBS::Inline
 
 class Views::Base < Components::Base
-  # @rbs return: untyped # TODO: Specify more precise type if possible
-  def cache_store: () -> untyped
+  @flash: Hash[Symbol, String]
+
+  @breadcrumbs: Array[Breadcrumb]
+
+  # @rbs return: ActiveSupport::Cache::Store
+  def cache_store: () -> ActiveSupport::Cache::Store
+
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
+  # @rbs return: void
+  def initialize: (?flash: Hash[Symbol, String], ?breadcrumbs: Array[Breadcrumb]) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+
+  # @rbs return: void
+  def body_template: () -> void
 end

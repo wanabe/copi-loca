@@ -7,7 +7,7 @@ class MemosController < ApplicationController
   # GET /memos
   # @rbs return: void
   def index
-    render Views::Memos::Index.new
+    render Views::Memos::Index.new(breadcrumbs: breadcrumbs, flash: flash)
   end
 
   # POST /memos/sync_local_memos

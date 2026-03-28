@@ -12,13 +12,18 @@ class Views::Git::Heads::New < Views::Base
   # @rbs @unstaged_diff_map: Hash[String, Git::Diff::Patch]
   # @rbs @staged_diff_map: Hash[String, Git::Diff::Patch]
   # @rbs @untracked_file_map: Hash[String, String]
+  # @rbs @flash: Hash[Symbol, String]
+  # @rbs @breadcrumbs: Array[Breadcrumb]
 
   # @rbs unstaged_files: Array[String]
   # @rbs unstaged_diff_map: Hash[String, Git::Diff::Patch]
   # @rbs staged_diff_map: Hash[String, Git::Diff::Patch]
   # @rbs untracked_file_map: Hash[String, String]
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
   # @rbs return: void
-  def initialize(unstaged_files:, untracked_file_map:, unstaged_diff_map:, staged_diff_map:)
+  def initialize(unstaged_files:, untracked_file_map:, unstaged_diff_map:, staged_diff_map:, flash: {}, breadcrumbs: [])
+    super(flash: flash, breadcrumbs: breadcrumbs)
     @unstaged_files = unstaged_files
     @untracked_file_map = untracked_file_map
     @unstaged_diff_map = unstaged_diff_map
@@ -26,10 +31,10 @@ class Views::Git::Heads::New < Views::Base
   end
 
   # @rbs return: void
-  def view_template
+  def body_template
     h1(class: "text-2xl font-bold mb-4 flex items-center") do
       span { "Git HEAD status" }
-      a(href: "/git/refs/HEAD/-/edit", class: "ml-2 text-xs text-blue-600 hover:underline") { "Amend" }
+      link_to("amend", edit_git_head_path, class: "ml-2 text-xs text-blue-600 hover:underline")
     end
 
     form(method: :post, action: "/git/refs/HEAD") do

@@ -4,17 +4,22 @@
 class Views::Git::Commits::Index < Views::Base
   # @rbs @ref: String
   # @rbs @commits: Kaminari::PaginatableArray[Git::Log::Commit]
+  # @rbs @flash: Hash[Symbol, String]
+  # @rbs @breadcrumbs: Array[Breadcrumb]
 
   # @rbs ref: String
   # @rbs commits: Kaminari::PaginatableArray[Git::Log::Commit]
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
   # @rbs return: void
-  def initialize(ref:, commits:)
+  def initialize(ref:, commits:, flash: {}, breadcrumbs: [])
+    super(flash: flash, breadcrumbs: breadcrumbs)
     @ref = ref
     @commits = commits
   end
 
   # @rbs return: void
-  def view_template
+  def body_template
     h1(class: "text-2xl font-bold mb-4") { "Git Commits on #{@ref}" }
     ul(class: "space-y-2") do
       @commits.each do |commit|

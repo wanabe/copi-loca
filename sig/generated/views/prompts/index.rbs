@@ -3,12 +3,18 @@
 class Views::Prompts::Index < Views::Base
   @prompts: Kaminari::PaginatableArray[Prompt]
 
+  @flash: Hash[Symbol, String]
+
+  @breadcrumbs: Array[Breadcrumb]
+
   # @rbs prompts: Kaminari::PaginatableArray[Prompt]
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
   # @rbs return: void
-  def initialize: (prompts: Kaminari::PaginatableArray[Prompt]) -> void
+  def initialize: (prompts: Kaminari::PaginatableArray[Prompt], ?flash: Hash[Symbol, String], ?breadcrumbs: Array[Breadcrumb]) -> void
 
   # @rbs return: void
-  def view_template: () -> void
+  def body_template: () -> void
 
   private
 

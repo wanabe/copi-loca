@@ -9,8 +9,19 @@ class Views::Git::Heads::Edit < Views::Base
   # @rbs @staged_diff_map: Hash[String, Git::Diff::Patch]
   # @rbs @untracked_file_map: Hash[String, String]
   # @rbs @commit_message: String
+  # @rbs @flash: Hash[Symbol, String]
+  # @rbs @breadcrumbs: Array[Breadcrumb]
 
-  def initialize(unstaged_files:, untracked_file_map:, unstaged_diff_map:, staged_diff_map:, commit_message:)
+  # @rbs unstaged_files: Array[String]
+  # @rbs untracked_file_map: Hash[String, String]
+  # @rbs unstaged_diff_map: Hash[String, Git::Diff::Patch]
+  # @rbs staged_diff_map: Hash[String, Git::Diff::Patch]
+  # @rbs commit_message: String
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
+  # @rbs return: void
+  def initialize(unstaged_files:, untracked_file_map:, unstaged_diff_map:, staged_diff_map:, commit_message:, flash: {}, breadcrumbs: [])
+    super(flash: flash, breadcrumbs: breadcrumbs)
     @unstaged_files = unstaged_files
     @untracked_file_map = untracked_file_map
     @unstaged_diff_map = unstaged_diff_map
@@ -18,14 +29,17 @@ class Views::Git::Heads::Edit < Views::Base
     @commit_message = commit_message
   end
 
-  def view_template
+  # @rbs return: void
+  def body_template
     h1(class: "text-2xl font-bold mb-4 flex items-center") do
       span { "Git HEAD amend" }
-      a(href: "/git/refs/HEAD/-/new", class: "ml-2 text-xs text-blue-600 hover:underline") { "HEAD" }
+      link_to("HEAD", new_git_head_path, class: "ml-2 text-xs text-blue-600 hover:underline")
     end
 
     form(method: :patch, action: git_head_path) do
-      textarea(name: "commit_message", rows: 3, class: "w-full p-2 border rounded mb-2", placeholder: "Commit message...", value: @commit_message) { @commit_message }
+      textarea(name: "commit_message", rows: 3, class: "w-full p-2 border rounded mb-2", placeholder: "Commit message...", value: @commit_message) do
+        @commit_message
+      end
       br
       button(type: "submit", class: "bg-blue-600 text-white px-4 py-2 rounded") { "Amend Commit" }
     end
@@ -53,6 +67,11 @@ class Views::Git::Heads::Edit < Views::Base
 
   private
 
+  # @rbs section: :unstaged | :staged
+  # @rbs type: Symbol
+  # @rbs path: String
+  # @rbs content: String
+  # @rbs return: void
   def render_chunk_with_stage(section, type, path, content)
     div(class: "flex items-start space-x-2") do
       form(method: :post, action: "/git/refs/HEAD/-/#{section == :unstaged ? 'stage' : 'unstage'}") do

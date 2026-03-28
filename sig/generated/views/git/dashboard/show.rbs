@@ -2,5 +2,5 @@
 
 class Views::Git::Dashboard::Show < Views::Base
   # @rbs return: void
-  def view_template: () -> void
+  def body_template: () -> void
 end

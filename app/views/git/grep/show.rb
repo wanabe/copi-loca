@@ -7,14 +7,19 @@ class Views::Git::Grep::Show < Views::Base
   # @rbs @ref: String
   # @rbs @ignore_case: bool
   # @rbs @grep: Git::Grep?
+  # @rbs @flash: Hash[Symbol, String]
+  # @rbs @breadcrumbs: Array[Breadcrumb]
 
   # @rbs pattern: String?
   # @rbs files: String?
   # @rbs ref: String
   # @rbs ignore_case: bool
   # @rbs grep: Git::Grep?
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
   # @rbs return: void
-  def initialize(pattern:, files:, ref:, ignore_case:, grep:)
+  def initialize(pattern:, files:, ref:, ignore_case:, grep:, flash: {}, breadcrumbs: [])
+    super(flash: flash, breadcrumbs: breadcrumbs)
     @pattern = pattern
     @files = files
     @ref = ref
@@ -23,7 +28,7 @@ class Views::Git::Grep::Show < Views::Base
   end
 
   # @rbs return: void
-  def view_template
+  def body_template
     h1(class: "text-2xl font-bold mb-4") { "Git Grep on #{@ref}" }
 
     form_with url: git_ref_grep_path(ref: @ref), method: :get, local: true do |_f|

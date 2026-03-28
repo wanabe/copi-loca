@@ -2,22 +2,21 @@
 # rbs_inline: enabled
 
 class Views::Bin::Show < Views::Base
-  # @rbs @bin: untyped # TODO: Specify type
-  # @rbs @status: untyped # TODO: Specify type
-  # @rbs @output: untyped # TODO: Specify type
+  # @rbs @bin: Bin
+  # @rbs @flash: Hash[Symbol, String]
+  # @rbs @breadcrumbs: Array[Breadcrumb]
 
+  # @rbs bin: Bin
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
   # @rbs return: void
-  # @rbs bin: untyped # TODO: Specify type
-  # @rbs status: untyped # TODO: Specify type
-  # @rbs output: untyped # TODO: Specify type
-  def initialize(bin:, status: nil, output: nil)
+  def initialize(bin:, flash: {}, breadcrumbs: [])
+    super(flash: flash, breadcrumbs: breadcrumbs)
     @bin = bin
-    @status = status
-    @output = output
   end
 
   # @rbs return: void
-  def view_template
+  def body_template
     render Components::Bin::Bin.new(bin: @bin)
     form(action: run_bin_path(@bin), method: "post", class: "inline mt-4", data: { turbo_frame: "bin-run-result" }) do
       button(class: "bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600", data: { turbo_action: "replace" }) { "Run this bin" }

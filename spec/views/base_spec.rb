@@ -14,4 +14,10 @@ RSpec.describe Views::Base do
       expect(described_class.new.cache_store).to eq(Rails.cache)
     end
   end
+
+  describe "#body_template" do
+    it "raises NotImplementedError with correct message" do
+      expect { described_class.new.body_template }.to raise_error(NotImplementedError, "Subclasses must implement body_template")
+    end
+  end
 end

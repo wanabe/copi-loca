@@ -28,8 +28,8 @@ Rails.application.routes.draw do
     root to: "dashboard#show"
 
     resources :refs, only: [:index]
-    resource :head, path: "refs/HEAD", only: [:create, :update]
-    resource :head, path: "refs/HEAD/-", only: [:new, :edit] do
+    resource :head, path: "refs/HEAD", only: %i[create update]
+    resource :head, path: "refs/HEAD/-", only: %i[new edit] do
       post :stage
       post :unstage
     end

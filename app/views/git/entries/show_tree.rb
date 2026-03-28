@@ -5,19 +5,24 @@ class Views::Git::Entries::ShowTree < Views::Base
   # @rbs @ref: String
   # @rbs @path: String
   # @rbs @entries: Array[Git::LsTree::Entry]
+  # @rbs @flash: Hash[Symbol, String]
+  # @rbs @breadcrumbs: Array[Breadcrumb]
 
   # @rbs ref: String
   # @rbs path: String
   # @rbs entries: Array[Git::LsTree::Entry]
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
   # @rbs return: void
-  def initialize(ref:, path:, entries:)
+  def initialize(ref:, path:, entries:, flash: {}, breadcrumbs: [])
+    super(flash: flash, breadcrumbs: breadcrumbs)
     @ref = ref
     @path = path
     @entries = entries
   end
 
   # @rbs return: void
-  def view_template
+  def body_template
     content_for :title, "Git Entry: #{@path}"
     h1(class: "text-2xl font-bold mb-4") { "Tree #{@ref}:#{@path}" }
     dir = @path

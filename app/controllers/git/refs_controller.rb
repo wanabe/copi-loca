@@ -9,14 +9,14 @@ class Git::RefsController < ApplicationController
   # GET /git/refs
   # @rbs return: void
   def index
-    render Views::Git::Refs::Index.new(refs: refs)
+    render Views::Git::Refs::Index.new(breadcrumbs: breadcrumbs, flash: flash, refs: refs)
   end
 
   # GET /git/refs/*ref
   # @rbs return: void
   def show
     ref = params[:ref]
-    render Views::Git::Refs::Show.new(ref: ref)
+    render Views::Git::Refs::Show.new(breadcrumbs: breadcrumbs, flash: flash, ref: ref)
   end
 
   private

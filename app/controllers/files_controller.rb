@@ -28,7 +28,7 @@ class FilesController < ApplicationController
         entry_path = File.join(abs, entry)
         [File.ftype(entry_path), entry]
       end.sort
-      render Views::Files::ShowDirectory.new(entries: entries, path: path)
+      render Views::Files::ShowDirectory.new(breadcrumbs: breadcrumbs, flash: flash, entries: entries, path: path)
     when "file"
       if show_parameters.raw
         send_file abs, filename: File.basename(abs), disposition: "inline"
@@ -36,7 +36,7 @@ class FilesController < ApplicationController
       end
       content = File.read(abs)
       request.format = :html
-      render Views::Files::ShowFile.new(content: content, path: path)
+      render Views::Files::ShowFile.new(breadcrumbs: breadcrumbs, flash: flash, content: content, path: path)
     else
       render json: { error: "Unsupported file type", path: path }, status: :unsupported_media_type
     end

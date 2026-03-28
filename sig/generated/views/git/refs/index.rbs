@@ -3,10 +3,16 @@
 class Views::Git::Refs::Index < Views::Base
   @refs: Array[String]
 
+  @flash: Hash[Symbol, String]
+
+  @breadcrumbs: Array[Breadcrumb]
+
   # @rbs refs: Array[String]
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
   # @rbs return: void
-  def initialize: (refs: Array[String]) -> void
+  def initialize: (refs: Array[String], ?flash: Hash[Symbol, String], ?breadcrumbs: Array[Breadcrumb]) -> void
 
   # @rbs return: void
-  def view_template: () -> void
+  def body_template: () -> void
 end

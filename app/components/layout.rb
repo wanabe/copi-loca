@@ -1,21 +1,24 @@
 # frozen_string_literal: true
 # rbs_inline: enabled
 
-class Views::Layouts::Application < Views::Base
+class Components::Layout < Components::Base
+  # @rbs @view: Views::Base
   # @rbs @title: String
   # @rbs @breadcrumbs: Array[Breadcrumb]
   # @rbs @flash: Hash[Symbol, String]
 
   include Phlex::Rails::Layout
 
+  # @rbs view: Views::Base
   # @rbs title: String?
   # @rbs breadcrumbs: Array[Breadcrumb]
   # @rbs flash: Hash[Symbol, String]
   # @rbs return: void
-  def initialize(title: nil, breadcrumbs: [], flash: {})
+  def initialize(view:, title: nil, breadcrumbs: [], flash: {})
     @title = title || "Copi Loca"
     @breadcrumbs = breadcrumbs
     @flash = flash
+    @view = view
   end
 
   # @rbs return: void
@@ -30,7 +33,6 @@ class Views::Layouts::Application < Views::Base
         meta(name: "mobile-web-app-capable", content: "yes")
         render csrf_meta_tags
         render csp_meta_tag
-        yield :head
         link(rel: "icon", href: "/icon.png", type: "image/png")
         link(rel: "icon", href: "/icon.svg", type: "image/svg+xml")
         link(rel: "apple-touch-icon", href: "/icon.png")

@@ -11,14 +11,20 @@ class Views::Git::Grep::Show < Views::Base
 
   @grep: Git::Grep?
 
+  @flash: Hash[Symbol, String]
+
+  @breadcrumbs: Array[Breadcrumb]
+
   # @rbs pattern: String?
   # @rbs files: String?
   # @rbs ref: String
   # @rbs ignore_case: bool
   # @rbs grep: Git::Grep?
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
   # @rbs return: void
-  def initialize: (pattern: String?, files: String?, ref: String, ignore_case: bool, grep: Git::Grep?) -> void
+  def initialize: (pattern: String?, files: String?, ref: String, ignore_case: bool, grep: Git::Grep?, ?flash: Hash[Symbol, String], ?breadcrumbs: Array[Breadcrumb]) -> void
 
   # @rbs return: void
-  def view_template: () -> void
+  def body_template: () -> void
 end

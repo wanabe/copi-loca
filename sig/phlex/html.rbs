@@ -48,5 +48,5 @@ class Phlex::HTML
 
   def link_to: (String, String, **untyped) ?{ () -> void }-> void
   
-  def render: (untyped) -> void
+  def render: (untyped) ?{ () -> void }-> void
 end

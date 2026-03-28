@@ -3,7 +3,7 @@
 
 class Views::Git::Dashboard::Show < Views::Base
   # @rbs return: void
-  def view_template
+  def body_template
     h1(class: "text-2xl font-bold mb-4") { "Git" }
     ul(class: "space-y-2") do
       li { link_to "Refs", git_refs_path, class: "text-blue-600 hover:underline" }

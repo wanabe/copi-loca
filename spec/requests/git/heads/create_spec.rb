@@ -22,4 +22,13 @@ RSpec.describe "POST /git/refs/HEAD" do
       expect(flash[:alert]).to eq("Failed to commit: some error")
     end
   end
+
+  context "when commit_message param is missing" do
+    it "raises and redirects with alert" do
+      allow(Git).to receive(:call!).with("commit", "-m", nil).and_raise(StandardError.new("missing param"))
+      post "/git/refs/HEAD"
+      expect(response).to redirect_to(new_git_head_path)
+      expect(flash[:alert]).to eq("Failed to commit: missing param")
+    end
+  end
 end

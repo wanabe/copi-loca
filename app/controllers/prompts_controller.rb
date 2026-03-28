@@ -15,26 +15,26 @@ class PromptsController < ApplicationController
     parameters = Parameters::Index.new(**params.permit(:page, :per_page))
     prompts = Kaminari.paginate_array(Prompt.all).page(parameters.page).per(parameters.per_page || 5)
     prompts.each(&:load)
-    render Views::Prompts::Index.new(prompts: prompts)
+    render Views::Prompts::Index.new(breadcrumbs: breadcrumbs, flash: flash, prompts: prompts)
   end
 
   # GET /prompts/1 or /prompts/1.json
   # @rbs return: void
   def show
-    render Views::Prompts::Show.new(prompt: prompt)
+    render Views::Prompts::Show.new(breadcrumbs: breadcrumbs, flash: flash, prompt: prompt)
   end
 
   # GET /prompts/new
   # @rbs return: void
   def new
     prompt = Prompt.new(id: Prompt.max_id + 1)
-    render Views::Prompts::New.new(prompt: prompt)
+    render Views::Prompts::New.new(breadcrumbs: breadcrumbs, flash: flash, prompt: prompt)
   end
 
   # GET /prompts/1/edit
   # @rbs return: void
   def edit
-    render Views::Prompts::Edit.new(prompt: prompt)
+    render Views::Prompts::Edit.new(breadcrumbs: breadcrumbs, flash: flash, prompt: prompt)
   end
 
   # POST /prompts or /prompts.json
@@ -45,7 +45,7 @@ class PromptsController < ApplicationController
     if prompt.save
       redirect_to prompt, notice: "Prompt was successfully created."
     else
-      render Views::Prompts::New.new(prompt: prompt), status: :unprocessable_content
+      render Views::Prompts::New.new(breadcrumbs: breadcrumbs, flash: flash, prompt: prompt), status: :unprocessable_content
     end
   end
 
@@ -56,7 +56,7 @@ class PromptsController < ApplicationController
     if prompt.save
       redirect_to prompt, notice: "Prompt was successfully updated.", status: :see_other
     else
-      render Views::Prompts::Edit.new(prompt: prompt), status: :unprocessable_content
+      render Views::Prompts::Edit.new(breadcrumbs: breadcrumbs, flash: flash, prompt: prompt), status: :unprocessable_content
     end
   end
 

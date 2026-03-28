@@ -5,11 +5,17 @@ class Views::Git::Commits::Index < Views::Base
 
   @commits: Kaminari::PaginatableArray[Git::Log::Commit]
 
+  @flash: Hash[Symbol, String]
+
+  @breadcrumbs: Array[Breadcrumb]
+
   # @rbs ref: String
   # @rbs commits: Kaminari::PaginatableArray[Git::Log::Commit]
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
   # @rbs return: void
-  def initialize: (ref: String, commits: Kaminari::PaginatableArray[Git::Log::Commit]) -> void
+  def initialize: (ref: String, commits: Kaminari::PaginatableArray[Git::Log::Commit], ?flash: Hash[Symbol, String], ?breadcrumbs: Array[Breadcrumb]) -> void
 
   # @rbs return: void
-  def view_template: () -> void
+  def body_template: () -> void
 end

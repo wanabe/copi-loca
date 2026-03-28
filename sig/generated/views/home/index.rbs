@@ -2,5 +2,5 @@
 
 class Views::Home::Index < Views::Base
   # @rbs return: void
-  def view_template: () -> void
+  def body_template: () -> void
 end

@@ -3,7 +3,7 @@
 
 class Views::Memos::Index < Views::Base
   # @rbs return: void
-  def view_template
+  def body_template
     h1(class: "text-2xl font-bold mb-4") { "Memo" }
 
     div(class: "mb-4", data: { controller: "memo" }) do

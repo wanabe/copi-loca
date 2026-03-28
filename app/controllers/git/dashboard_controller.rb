@@ -7,7 +7,7 @@ class Git::DashboardController < ApplicationController
   # def show: () -> void
   # @rbs return: void
   def show
-    render Views::Git::Dashboard::Show.new
+    render Views::Git::Dashboard::Show.new(breadcrumbs: breadcrumbs, flash: flash)
   end
 
   module Breadcrumbs

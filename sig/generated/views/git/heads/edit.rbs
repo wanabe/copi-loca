@@ -4,13 +4,38 @@ class Views::Git::Heads::Edit < Views::Base
   ICON_MAP: untyped
 
   @unstaged_files: Array[String]
+
   @unstaged_diff_map: Hash[String, Git::Diff::Patch]
+
   @staged_diff_map: Hash[String, Git::Diff::Patch]
+
   @untracked_file_map: Hash[String, String]
+
   @commit_message: String
 
-  def initialize: (unstaged_files: Array[String], untracked_file_map: Hash[String, String], unstaged_diff_map: Hash[String, Git::Diff::Patch], staged_diff_map: Hash[String, Git::Diff::Patch], commit_message: String) -> void
-  def view_template: () -> void
+  @flash: Hash[Symbol, String]
+
+  @breadcrumbs: Array[Breadcrumb]
+
+  # @rbs unstaged_files: Array[String]
+  # @rbs untracked_file_map: Hash[String, String]
+  # @rbs unstaged_diff_map: Hash[String, Git::Diff::Patch]
+  # @rbs staged_diff_map: Hash[String, Git::Diff::Patch]
+  # @rbs commit_message: String
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
+  # @rbs return: void
+  def initialize: (unstaged_files: Array[String], untracked_file_map: Hash[String, String], unstaged_diff_map: Hash[String, Git::Diff::Patch], staged_diff_map: Hash[String, Git::Diff::Patch], commit_message: String, ?flash: Hash[Symbol, String], ?breadcrumbs: Array[Breadcrumb]) -> void
+
+  # @rbs return: void
+  def body_template: () -> void
+
   private
-  def render_chunk_with_stage: (Symbol section, Symbol type, String path, String content) -> void
+
+  # @rbs section: :unstaged | :staged
+  # @rbs type: Symbol
+  # @rbs path: String
+  # @rbs content: String
+  # @rbs return: void
+  def render_chunk_with_stage: (:unstaged | :staged section, Symbol type, String path, String content) -> void
 end

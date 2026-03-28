@@ -3,11 +3,9 @@
 require "rails_helper"
 
 RSpec.describe Views::Bin::Show do
-  subject(:rendered) { render described_class.new(bin: bin, status: status, output: output) }
+  subject(:rendered) { render described_class.new(bin: bin) }
 
   let(:bin) { Bin.new(id: "some_tool") }
-  let(:status) { "success" }
-  let(:output) { "Sample output" }
 
   describe "#view_template" do
     it "renders the bin component" do

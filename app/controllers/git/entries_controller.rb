@@ -31,7 +31,8 @@ class Git::EntriesController < ApplicationController
     case entry.type
     when "tree"
       entries = Git::LsTree.new(ref: parameters.ref, path: "#{entry.path}/").run.entries
-      render Views::Git::Entries::ShowTree.new(ref: parameters.ref, path: entry.path, entries: entries), format: :html
+      render Views::Git::Entries::ShowTree.new(breadcrumbs: breadcrumbs, flash: flash, ref: parameters.ref, path: entry.path, entries: entries),
+        format: :html
     when "blob"
       content = Git::Show.new(ref: parameters.ref, path: entry.path).run.content
       if parameters.raw
@@ -39,7 +40,7 @@ class Git::EntriesController < ApplicationController
         return
       end
       request.format = :html
-      render Views::Git::Entries::ShowBlob.new(ref: parameters.ref, path: entry.path, content: content)
+      render Views::Git::Entries::ShowBlob.new(breadcrumbs: breadcrumbs, flash: flash, ref: parameters.ref, path: entry.path, content: content)
     else
       render json: { error: "Unsupported entry type", ref: parameters.ref, path: parameters.path, type: entry.type }, status: :unsupported_media_type
     end

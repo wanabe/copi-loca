@@ -3,10 +3,16 @@
 class Views::Bin::Index < Views::Base
   @bins: Kaminari::PaginatableArray[Bin]
 
+  @flash: Hash[Symbol, String]
+
+  @breadcrumbs: Array[Breadcrumb]
+
   # @rbs bins: Kaminari::PaginatableArray[Bin]
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
   # @rbs return: void
-  def initialize: (bins: Kaminari::PaginatableArray[Bin]) -> void
+  def initialize: (bins: Kaminari::PaginatableArray[Bin], ?flash: Hash[Symbol, String], ?breadcrumbs: Array[Breadcrumb]) -> void
 
   # @rbs return: void
-  def view_template: () -> void
+  def body_template: () -> void
 end

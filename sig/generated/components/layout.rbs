@@ -1,0 +1,23 @@
+# Generated from app/components/layout.rb with RBS::Inline
+
+class Components::Layout < Components::Base
+  @view: Views::Base
+
+  @title: String
+
+  @breadcrumbs: Array[Breadcrumb]
+
+  @flash: Hash[Symbol, String]
+
+  include Phlex::Rails::Layout
+
+  # @rbs view: Views::Base
+  # @rbs title: String?
+  # @rbs breadcrumbs: Array[Breadcrumb]
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs return: void
+  def initialize: (view: Views::Base, ?title: String?, ?breadcrumbs: Array[Breadcrumb], ?flash: Hash[Symbol, String]) -> void
+
+  # @rbs return: void
+  def view_template: () ?{ (?) -> untyped } -> void
+end

@@ -42,7 +42,9 @@ module Git
       IO.popen(env, ["git", *args], "w+", err: %i[child out]) do |io|
         yield io if block_given?
         io.close_write
-        [Process.wait2(io.pid).last, io.read]
+        output = io.read
+        status = Process.wait2(io.pid).last
+        [status, output]
       end
     end
   end

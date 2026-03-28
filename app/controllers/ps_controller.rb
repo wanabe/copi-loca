@@ -10,7 +10,7 @@ class PsController < ApplicationController
     # @rbs @lines: Array[String]
 
     @lines = `ps -ef`.split("\n")
-    render Views::Ps::Index.new(lines: @lines)
+    render Views::Ps::Index.new(breadcrumbs: breadcrumbs, flash: flash, lines: @lines)
   end
 
   private

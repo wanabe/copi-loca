@@ -2,8 +2,8 @@
 
 require "rails_helper"
 
-RSpec.describe Views::Layouts::Application do
-  subject(:rendered) { render described_class.new(title: title) {} }
+RSpec.describe Components::Layout do
+  subject(:rendered) { render described_class.new(title: title, view: Views::Base.new) {} }
 
   context "with title" do
     let(:title) { "Test Title" }

@@ -4,17 +4,22 @@
 class Views::Files::ShowDirectory < Views::Base
   # @rbs @entries: Array[Array[String]]
   # @rbs @path: String
+  # @rbs @flash: Hash[Symbol, String]
+  # @rbs @breadcrumbs: Array[Breadcrumb]
 
   # @rbs entries: Array[Array[String]]
   # @rbs path: String
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
   # @rbs return: void
-  def initialize(entries:, path:)
+  def initialize(entries:, path:, flash: {}, breadcrumbs: [])
+    super(flash: flash, breadcrumbs: breadcrumbs)
     @entries = entries
     @path = path
   end
 
   # @rbs return: void
-  def view_template
+  def body_template
     content_for :title, "Directory: #{@path}"
     h1(class: "text-2xl font-bold mb-4") { "Directory: #{@path}" }
     dir = @path

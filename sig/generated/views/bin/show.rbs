@@ -1,18 +1,18 @@
 # Generated from app/views/bin/show.rb with RBS::Inline
 
 class Views::Bin::Show < Views::Base
-  @bin: untyped
+  @bin: Bin
 
-  @status: untyped
+  @flash: Hash[Symbol, String]
 
-  @output: untyped
+  @breadcrumbs: Array[Breadcrumb]
+
+  # @rbs bin: Bin
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
+  # @rbs return: void
+  def initialize: (bin: Bin, ?flash: Hash[Symbol, String], ?breadcrumbs: Array[Breadcrumb]) -> void
 
   # @rbs return: void
-  # @rbs bin: untyped # TODO: Specify type
-  # @rbs status: untyped # TODO: Specify type
-  # @rbs output: untyped # TODO: Specify type
-  def initialize: (bin: untyped, ?status: untyped, ?output: untyped) -> void
-
-  # @rbs return: void
-  def view_template: () -> void
+  def body_template: () -> void
 end

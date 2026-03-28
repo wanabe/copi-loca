@@ -6,6 +6,6 @@ class HomeController < ApplicationController
   # def index: () -> void
   # @rbs return: void
   def index
-    render Views::Home::Index.new
+    render Views::Home::Index.new(breadcrumbs: breadcrumbs, flash: flash)
   end
 end

@@ -3,15 +3,20 @@
 
 class Views::Prompts::Show < Views::Base
   # @rbs @prompt: Prompt
+  # @rbs @flash: Hash[Symbol, String]
+  # @rbs @breadcrumbs: Array[Breadcrumb]
 
   # @rbs prompt: Prompt
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
   # @rbs return: void
-  def initialize(prompt:)
+  def initialize(prompt:, flash: {}, breadcrumbs: [])
+    super(flash: flash, breadcrumbs: breadcrumbs)
     @prompt = prompt
   end
 
   # @rbs return: void
-  def view_template
+  def body_template
     render Components::Prompts::Prompt.new(prompt: @prompt)
     div(class: "space-y-4 mt-6") do
       link_to "Edit this prompt", edit_prompt_path(@prompt), class: "text-blue-600 hover:underline mr-2"

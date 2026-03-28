@@ -5,11 +5,17 @@ class Views::Files::ShowDirectory < Views::Base
 
   @path: String
 
+  @flash: Hash[Symbol, String]
+
+  @breadcrumbs: Array[Breadcrumb]
+
   # @rbs entries: Array[Array[String]]
   # @rbs path: String
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
   # @rbs return: void
-  def initialize: (entries: Array[Array[String]], path: String) -> void
+  def initialize: (entries: Array[Array[String]], path: String, ?flash: Hash[Symbol, String], ?breadcrumbs: Array[Breadcrumb]) -> void
 
   # @rbs return: void
-  def view_template: () -> void
+  def body_template: () -> void
 end

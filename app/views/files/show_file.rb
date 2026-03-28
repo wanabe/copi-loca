@@ -4,17 +4,22 @@
 class Views::Files::ShowFile < Views::Base
   # @rbs @content: String
   # @rbs @path: String
+  # @rbs @flash: Hash[Symbol, String]
+  # @rbs @breadcrumbs: Array[Breadcrumb]
 
   # @rbs content: String
   # @rbs path: String
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
   # @rbs return: void
-  def initialize(content:, path:)
+  def initialize(content:, path:, flash: {}, breadcrumbs: [])
+    super(flash: flash, breadcrumbs: breadcrumbs)
     @content = content
     @path = path
   end
 
   # @rbs return: void
-  def view_template
+  def body_template
     content_for :title, "File: #{@path}"
     h1(class: "text-2xl font-bold mb-4") { "File: #{@path}" }
     if @content.valid_encoding? && @content.encoding.name == "UTF-8"

@@ -13,13 +13,13 @@ class BinController < ApplicationController
   def index
     parameters = Parameters::Index.new(**params.permit(:page, :per_page))
     bins = Kaminari.paginate_array(Bin.all).page(parameters.page).per(parameters.per_page)
-    render Views::Bin::Index.new(bins: bins)
+    render Views::Bin::Index.new(breadcrumbs: breadcrumbs, flash: flash, bins: bins)
   end
 
   # GET /bin/:id or /bin/:id.json
   # @rbs return: void
   def show
-    render Views::Bin::Show.new(bin: bin)
+    render Views::Bin::Show.new(breadcrumbs: breadcrumbs, flash: flash, bin: bin)
   end
 
   # POST /bin/:id/run or /bin/:id/run.json

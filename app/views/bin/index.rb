@@ -3,15 +3,20 @@
 
 class Views::Bin::Index < Views::Base
   # @rbs @bins: Kaminari::PaginatableArray[Bin]
+  # @rbs @flash: Hash[Symbol, String]
+  # @rbs @breadcrumbs: Array[Breadcrumb]
 
   # @rbs bins: Kaminari::PaginatableArray[Bin]
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
   # @rbs return: void
-  def initialize(bins:)
+  def initialize(bins:, flash: {}, breadcrumbs: [])
+    super(flash: flash, breadcrumbs: breadcrumbs)
     @bins = bins
   end
 
   # @rbs return: void
-  def view_template
+  def body_template
     h1(class: "text-2xl font-bold mb-4") { "Bins" }
     table(id: "bins", class: "space-y-4") do
       thead do

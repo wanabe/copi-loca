@@ -12,7 +12,7 @@ class Git::CommitsController < ApplicationController
   def index
     ref = params[:ref] || ""
     commits = Kaminari.paginate_array(Git::Log.new(ref: ref).run.commits).page(params[:page]).per(params[:per_page] || 5)
-    render Views::Git::Commits::Index.new(ref: ref, commits: commits)
+    render Views::Git::Commits::Index.new(breadcrumbs: breadcrumbs, flash: flash, ref: ref, commits: commits)
   end
 
   module Breadcrumbs

@@ -7,11 +7,6 @@ class ApplicationController < ActionController::Base
 
   def render: (?Phlex::HTML | Symbol, **untyped) -> void
 
-  private
-
-  # @rbs return: Phlex::HTML | nil
-  def phlex_layout: () -> (Phlex::HTML | nil)
-
   module Breadcrumbs
     def action_name: () -> String
 
