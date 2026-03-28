@@ -14,11 +14,13 @@ class Components::Breadcrumbs < Components::Base
 
   # @rbs return: void
   def view_template
-    nav(aria: { label: "breadcrumb" }, class: %w[flex items-center text-sm text-gray-700 bg-white px-4 py-2 rounded shadow]) do
+    nav(aria: { label: "breadcrumb" },
+      class: %w[flex items-center text-sm text-gray-700 bg-white px-4 py-2 rounded shadow overflow-x-auto whitespace-nowrap scrollbar-thin
+                scrollbar-thumb-gray-300 scrollbar-track-gray-100]) do
       ol(class: %w[flex space-x-2]) do
         current_crumb = @breadcrumbs.last
         @breadcrumbs.each do |crumb|
-          li(class: %w[flex items-center]) do
+          li(class: %w[flex items-center flex-shrink-0]) do
             if crumb == current_crumb
               span(class: %w[font-semibold underline text-black-600], aria: { current: "page" }) { crumb.name }
             else
