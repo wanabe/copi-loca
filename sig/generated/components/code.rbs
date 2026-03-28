@@ -1,0 +1,24 @@
+# Generated from app/components/code.rb with RBS::Inline
+
+class Components::Code < Components::Base
+  @code: String
+
+  @path: String?
+
+  @language: Symbol?
+
+  # @rbs code: String
+  # @rbs path: String?
+  # @rbs language: Symbol?
+  # @rbs return: void
+  def initialize: (code: String, ?path: String?, ?language: Symbol?) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+
+  private
+
+  # @rbs path: String?
+  # @rbs return: Symbol?
+  def detect_language: (String? path) -> Symbol?
+end

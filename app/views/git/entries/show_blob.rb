@@ -26,9 +26,7 @@ class Views::Git::Entries::ShowBlob < Views::Base
     content_for :title, "Blob #{@ref}:#{@path}"
     h1(class: "text-2xl font-bold mb-4") { "Blob #{@ref}:#{@path}" }
     if @content.valid_encoding? && @content.encoding.name == "UTF-8"
-      pre do
-        @content
-      end
+      render Components::Code.new(code: @content, path: @path, language: :detect)
     else
       div(class: "text-red-600") do
         "Binary file (cannot display content)"

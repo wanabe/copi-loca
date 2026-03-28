@@ -1,15 +1,13 @@
 # Generated from app/views/git/heads/edit.rb with RBS::Inline
 
 class Views::Git::Heads::Edit < Views::Base
-  ICON_MAP: untyped
-
   @unstaged_files: Array[String]
+
+  @untracked_file_map: Hash[String, String]
 
   @unstaged_diff_map: Hash[String, Git::Diff::Patch]
 
   @staged_diff_map: Hash[String, Git::Diff::Patch]
-
-  @untracked_file_map: Hash[String, String]
 
   @commit_message: String
 
@@ -29,13 +27,4 @@ class Views::Git::Heads::Edit < Views::Base
 
   # @rbs return: void
   def body_template: () -> void
-
-  private
-
-  # @rbs section: :unstaged | :staged
-  # @rbs type: Symbol
-  # @rbs path: String
-  # @rbs content: String
-  # @rbs return: void
-  def render_chunk_with_stage: (:unstaged | :staged section, Symbol type, String path, String content) -> void
 end

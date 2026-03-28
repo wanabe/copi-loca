@@ -1,0 +1,51 @@
+# Generated from app/components/git/head_form.rb with RBS::Inline
+
+class Components::Git::HeadForm < Components::Base
+  @unstaged_files: Array[String]
+
+  @untracked_file_map: Hash[String, String]
+
+  @unstaged_diff_map: Hash[String, Git::Diff::Patch]
+
+  @staged_diff_map: Hash[String, Git::Diff::Patch]
+
+  @commit_message: String?
+
+  @form_action: String
+
+  @form_method: Symbol
+
+  @submit_label: String
+
+  @flash: Hash[Symbol, String]
+
+  @breadcrumbs: Array[Breadcrumb]
+
+  ICON_MAP: untyped
+
+  # @rbs unstaged_files: Array[String]
+  # @rbs untracked_file_map: Hash[String, String]
+  # @rbs unstaged_diff_map: Hash[String, Git::Diff::Patch]
+  # @rbs staged_diff_map: Hash[String, Git::Diff::Patch]
+  # @rbs commit_message: String?
+  # @rbs form_action: String
+  # @rbs form_method: Symbol
+  # @rbs submit_label: String
+  # @rbs flash: Hash[Symbol, String]
+  # @rbs breadcrumbs: Array[Breadcrumb]
+  # @rbs return: void
+  def initialize: (unstaged_files: Array[String], untracked_file_map: Hash[String, String], unstaged_diff_map: Hash[String, Git::Diff::Patch], staged_diff_map: Hash[String, Git::Diff::Patch], form_action: String, form_method: Symbol, submit_label: String, ?commit_message: String?, ?flash: Hash[Symbol, String], ?breadcrumbs: Array[Breadcrumb]) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+
+  private
+
+  # @rbs section: :staged | :unstaged
+  # @rbs type: Symbol
+  # @rbs path: String
+  # @rbs content: String
+  # @rbs diff: bool
+  # @rbs return: void
+  def render_chunk: (:staged | :unstaged section, Symbol type, String path, String content, ?diff: bool) -> void
+end

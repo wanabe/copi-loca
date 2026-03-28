@@ -37,6 +37,10 @@ class Components::Layout < Components::Base
         link(rel: "icon", href: "/icon.svg", type: "image/svg+xml")
         link(rel: "apple-touch-icon", href: "/icon.png")
         link(rel: "manifest", href: pwa_manifest_path(format: :json))
+        # Prism.js
+        link(rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css")
+        script(src: "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js")
+        script(src: "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js")
         render stylesheet_link_tag("tailwind", "data-turbo-track": "reload")
         render javascript_importmap_tags
       end

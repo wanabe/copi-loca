@@ -37,6 +37,7 @@ class Phlex::HTML
   def nav: (**untyped) ?{ () -> void }-> void
   def meta: (**untyped) -> void
   def link: (**untyped) -> void
+  def script: (**untyped) -> void
   def doctype: () -> void
   def title:() { () -> void }-> void
   def br: () -> void

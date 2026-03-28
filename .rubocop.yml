@@ -40,6 +40,10 @@ Layout/ArgumentAlignment:
   EnforcedStyle: with_fixed_indentation
 Layout/LeadingCommentSpace:
   AllowRBSInlineAnnotation: true
+Layout/AssignmentIndentation:
+  Enabled: true
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: variable
 
 Lint/EmptyBlock:
   Exclude:
