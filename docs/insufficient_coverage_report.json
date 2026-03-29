@@ -1,19 +1,31 @@
 [
   {
+    "file": "/app/app/components/code.rb",
+    "uncovered_lines": [
+      20
+    ]
+  },
+  {
     "file": "/app/app/controllers/git/heads_controller.rb",
     "uncovered_lines": [
-      35,
-      36,
-      38,
-      39,
-      40,
-      42,
-      43,
-      44,
-      45,
-      46,
-      48,
-      124
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      124,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139,
+      141
     ]
   }
 ]

@@ -1,0 +1,21 @@
+# Generated from app/components/git/patch.rb with RBS::Inline
+
+class Components::Git::Patch < Components::Base
+  @path: String
+
+  @patch: Git::Diff::Patch
+
+  @action: String
+
+  @for_param: String
+
+  # @rbs path: String
+  # @rbs patch: Git::Diff::Patch
+  # @rbs action: String
+  # @rbs for_param: String
+  # @rbs return: void
+  def initialize: (path: String, patch: Git::Diff::Patch, action: String, ?for_param: String) -> void
+
+  # @rbs return: void
+  def view_template: () -> void
+end

@@ -15,6 +15,8 @@ class Views::Git::Heads::Edit < Views::Base
 
   @breadcrumbs: Array[Breadcrumb]
 
+  @open: String?
+
   # @rbs unstaged_files: Array[String]
   # @rbs untracked_file_map: Hash[String, String]
   # @rbs unstaged_diff_map: Hash[String, Git::Diff::Patch]
@@ -22,8 +24,9 @@ class Views::Git::Heads::Edit < Views::Base
   # @rbs commit_message: String
   # @rbs flash: Hash[Symbol, String]
   # @rbs breadcrumbs: Array[Breadcrumb]
+  # @rbs open: String?
   # @rbs return: void
-  def initialize: (unstaged_files: Array[String], untracked_file_map: Hash[String, String], unstaged_diff_map: Hash[String, Git::Diff::Patch], staged_diff_map: Hash[String, Git::Diff::Patch], commit_message: String, ?flash: Hash[Symbol, String], ?breadcrumbs: Array[Breadcrumb]) -> void
+  def initialize: (unstaged_files: Array[String], untracked_file_map: Hash[String, String], unstaged_diff_map: Hash[String, Git::Diff::Patch], staged_diff_map: Hash[String, Git::Diff::Patch], commit_message: String, ?flash: Hash[Symbol, String], ?breadcrumbs: Array[Breadcrumb], ?open: String?) -> void
 
   # @rbs return: void
   def body_template: () -> void

@@ -18,13 +18,15 @@ class Git::HeadsController < ApplicationController
     unstaged_files.sort!
     unstaged_diff_map = unstaged_diff.patches.index_by { |patch| patch.header.src_path }
     staged_diff_map = staged_diff.patches.index_by { |patch| patch.header.dst_path }
+    open = params[:open]
 
     render Views::Git::Heads::New.new(
       breadcrumbs: breadcrumbs, flash: flash,
       unstaged_files: unstaged_files,
       untracked_file_map: untracked_file_map,
       unstaged_diff_map: unstaged_diff_map,
-      staged_diff_map: staged_diff_map
+      staged_diff_map: staged_diff_map,
+      open: open
     )
   end
 
@@ -44,6 +46,7 @@ class Git::HeadsController < ApplicationController
     unstaged_files.sort!
     unstaged_diff_map = unstaged_diff.patches.index_by { |patch| patch.header.src_path }
     staged_diff_map = staged_diff.patches.index_by { |patch| patch.header.dst_path }
+    open = params[:open]
 
     render Views::Git::Heads::Edit.new(
       breadcrumbs: breadcrumbs, flash: flash,
@@ -51,7 +54,8 @@ class Git::HeadsController < ApplicationController
       untracked_file_map: untracked_file_map,
       unstaged_diff_map: unstaged_diff_map,
       staged_diff_map: staged_diff_map,
-      commit_message: commit_message
+      commit_message: commit_message,
+      open: open
     )
   end
 
@@ -102,6 +106,40 @@ class Git::HeadsController < ApplicationController
     Git.call!("reset", target_ref, "--", file_path)
     redirect_path = amend ? edit_git_head_path : new_git_head_path
     redirect_to redirect_path, notice: "#{file_path} has been unstaged."
+  end
+
+  # POST /git/refs/HEAD/-/stage_line
+  # Params: path, hunk, lineno, for
+  # @rbs return: void
+  def stage_line
+    path = params[:path]
+    hunk = params[:hunk]
+    lineno = params[:lineno]
+    for_param = params[:for]
+    for_param = "new" unless for_param == "edit"
+    Rails.logger.info("[stage_line] path=#{path.inspect} hunk=#{hunk.inspect} lineno=#{lineno.inspect}")
+    if for_param == "edit"
+      redirect_to edit_git_head_path(open: path)
+    else
+      redirect_to new_git_head_path(open: path)
+    end
+  end
+
+  # POST /git/refs/HEAD/-/unstage_line
+  # Params: path, hunk, lineno, for
+  # @rbs return: void
+  def unstage_line
+    path = params[:path]
+    hunk = params[:hunk]
+    lineno = params[:lineno]
+    for_param = params[:for]
+    for_param = "new" unless for_param == "edit"
+    Rails.logger.info("[unstage_line] path=#{path.inspect} hunk=#{hunk.inspect} lineno=#{lineno.inspect}")
+    if for_param == "edit"
+      redirect_to edit_git_head_path(open: path)
+    else
+      redirect_to new_git_head_path(open: path)
+    end
   end
 
   module Breadcrumbs

@@ -21,6 +21,8 @@ class Components::Git::HeadForm < Components::Base
 
   @breadcrumbs: Array[Breadcrumb]
 
+  @open: String?
+
   ICON_MAP: untyped
 
   # @rbs unstaged_files: Array[String]
@@ -33,8 +35,9 @@ class Components::Git::HeadForm < Components::Base
   # @rbs submit_label: String
   # @rbs flash: Hash[Symbol, String]
   # @rbs breadcrumbs: Array[Breadcrumb]
+  # @rbs open: String?
   # @rbs return: void
-  def initialize: (unstaged_files: Array[String], untracked_file_map: Hash[String, String], unstaged_diff_map: Hash[String, Git::Diff::Patch], staged_diff_map: Hash[String, Git::Diff::Patch], form_action: String, form_method: Symbol, submit_label: String, ?commit_message: String?, ?flash: Hash[Symbol, String], ?breadcrumbs: Array[Breadcrumb]) -> void
+  def initialize: (unstaged_files: Array[String], untracked_file_map: Hash[String, String], unstaged_diff_map: Hash[String, Git::Diff::Patch], staged_diff_map: Hash[String, Git::Diff::Patch], form_action: String, form_method: Symbol, submit_label: String, ?commit_message: String?, ?flash: Hash[Symbol, String], ?breadcrumbs: Array[Breadcrumb], ?open: String?) -> void
 
   # @rbs return: void
   def view_template: () -> void
@@ -44,8 +47,6 @@ class Components::Git::HeadForm < Components::Base
   # @rbs section: :staged | :unstaged
   # @rbs type: Symbol
   # @rbs path: String
-  # @rbs content: String
-  # @rbs diff: bool
   # @rbs return: void
-  def render_chunk: (:staged | :unstaged section, Symbol type, String path, String content, ?diff: bool) -> void
+  def render_chunk: (:staged | :unstaged section, Symbol type, String path) ?{ (?) -> untyped } -> void
 end

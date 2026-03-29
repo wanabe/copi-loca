@@ -32,6 +32,8 @@ Rails.application.routes.draw do
     resource :head, path: "refs/HEAD/-", only: %i[new edit] do
       post :stage
       post :unstage
+      post :stage_line
+      post :unstage_line
     end
     scope "refs/*ref/-", as: :ref do
       get "grep", to: "grep#show"

@@ -9,6 +9,7 @@ class Views::Git::Heads::Edit < Views::Base
   # @rbs @commit_message: String
   # @rbs @flash: Hash[Symbol, String]
   # @rbs @breadcrumbs: Array[Breadcrumb]
+  # @rbs @open: String?
 
   # @rbs unstaged_files: Array[String]
   # @rbs untracked_file_map: Hash[String, String]
@@ -17,14 +18,16 @@ class Views::Git::Heads::Edit < Views::Base
   # @rbs commit_message: String
   # @rbs flash: Hash[Symbol, String]
   # @rbs breadcrumbs: Array[Breadcrumb]
+  # @rbs open: String?
   # @rbs return: void
-  def initialize(unstaged_files:, untracked_file_map:, unstaged_diff_map:, staged_diff_map:, commit_message:, flash: {}, breadcrumbs: [])
+  def initialize(unstaged_files:, untracked_file_map:, unstaged_diff_map:, staged_diff_map:, commit_message:, flash: {}, breadcrumbs: [], open: nil)
     super(flash: flash, breadcrumbs: breadcrumbs)
     @unstaged_files = unstaged_files
     @untracked_file_map = untracked_file_map
     @unstaged_diff_map = unstaged_diff_map
     @staged_diff_map = staged_diff_map
     @commit_message = commit_message
+    @open = open
   end
 
   # @rbs return: void
@@ -41,7 +44,8 @@ class Views::Git::Heads::Edit < Views::Base
       commit_message: @commit_message,
       form_action: git_head_path,
       form_method: :patch,
-      submit_label: "Amend Commit"
+      submit_label: "Amend Commit",
+      open: @open
     )
   end
 end

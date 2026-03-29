@@ -12,6 +12,7 @@ class Components::Git::HeadForm < Components::Base
   # @rbs @submit_label: String
   # @rbs @flash: Hash[Symbol, String]
   # @rbs @breadcrumbs: Array[Breadcrumb]
+  # @rbs @open: String?
 
   ICON_MAP = {
     new: "\u{2795}\u{FE0F}",
@@ -29,9 +30,10 @@ class Components::Git::HeadForm < Components::Base
   # @rbs submit_label: String
   # @rbs flash: Hash[Symbol, String]
   # @rbs breadcrumbs: Array[Breadcrumb]
+  # @rbs open: String?
   # @rbs return: void
   def initialize(unstaged_files:, untracked_file_map:, unstaged_diff_map:, staged_diff_map:, form_action:, form_method:, submit_label:,
-                 commit_message: nil, flash: {}, breadcrumbs: [])
+                 commit_message: nil, flash: {}, breadcrumbs: [], open: nil)
     @unstaged_files = unstaged_files
     @untracked_file_map = untracked_file_map
     @unstaged_diff_map = unstaged_diff_map
@@ -42,6 +44,7 @@ class Components::Git::HeadForm < Components::Base
     @submit_label = submit_label
     @flash = flash
     @breadcrumbs = breadcrumbs
+    @open = open
   end
 
   # @rbs return: void
@@ -61,9 +64,13 @@ class Components::Git::HeadForm < Components::Base
         patch = @unstaged_diff_map[path]
         file_content = @untracked_file_map[path]
         if patch
-          render_chunk(:unstaged, patch.type, path, patch.render, diff: true)
+          render_chunk(:unstaged, patch.type, path) do
+            render Components::Git::Patch.new(path: path, patch: patch, action: "stage_line", for_param: @form_method == :patch ? "edit" : "new")
+          end
         elsif file_content
-          render_chunk(:unstaged, :new, path, file_content)
+          render_chunk(:unstaged, :new, path) do
+            render Components::Code.new(code: file_content, path: path, language: :detect)
+          end
         end
       end
     end
@@ -71,7 +78,9 @@ class Components::Git::HeadForm < Components::Base
     h3(class: "text-xl font-semibold") { "Staged" }
     @staged_diff_map.each do |path, patch|
       div do
-        render_chunk(:staged, patch.type, path, patch.render, diff: true)
+        render_chunk(:staged, patch.type, path) do
+          render Components::Git::Patch.new(path: path, patch: patch, action: "unstage_line", for_param: @form_method == :patch ? "edit" : "new")
+        end
       end
     end
   end
@@ -81,21 +90,19 @@ class Components::Git::HeadForm < Components::Base
   # @rbs section: :staged | :unstaged
   # @rbs type: Symbol
   # @rbs path: String
-  # @rbs content: String
-  # @rbs diff: bool
   # @rbs return: void
-  def render_chunk(section, type, path, content, diff: false)
+  def render_chunk(section, type, path, &)
     div(class: "flex items-start space-x-2") do
       form(method: :post, action: "/git/refs/HEAD/-/#{section == :unstaged ? 'stage' : 'unstage'}") do
         input(type: "hidden", name: "file_path", value: path)
         input(type: "hidden", name: "amend", value: "true") if @form_method == :patch
         button(type: "submit", class: "text-blue-600 hover:underline") { ICON_MAP[type] || "\u{2753}\u{FE0F}" }
       end
-      details do
+      details(open: @open == path) do
         summary(class: "list-none") do
           span(class: "text-sm text-gray-600") { path }
         end
-        render Components::Code.new(code: content, path: path, language: diff ? :diff : :detect)
+        yield
       end
     end
   end

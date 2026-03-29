@@ -24,6 +24,8 @@ interface ::_RbsRailsPathHelpers
   def git_head_path: (*untyped) -> ::String
   def stage_git_head_path: (*untyped) -> ::String
   def unstage_git_head_path: (*untyped) -> ::String
+  def stage_line_git_head_path: (*untyped) -> ::String
+  def unstage_line_git_head_path: (*untyped) -> ::String
   def new_git_head_path: (*untyped) -> ::String
   def edit_git_head_path: (*untyped) -> ::String
   def git_ref_grep_path: (*untyped) -> ::String
@@ -85,6 +87,8 @@ interface ::_RbsRailsPathHelpers
   def git_head_url: (*untyped) -> ::String
   def stage_git_head_url: (*untyped) -> ::String
   def unstage_git_head_url: (*untyped) -> ::String
+  def stage_line_git_head_url: (*untyped) -> ::String
+  def unstage_line_git_head_url: (*untyped) -> ::String
   def new_git_head_url: (*untyped) -> ::String
   def edit_git_head_url: (*untyped) -> ::String
   def git_ref_grep_url: (*untyped) -> ::String

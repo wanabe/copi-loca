@@ -28,8 +28,14 @@ RSpec.describe "GET /git/refs/HEAD/-/edit" do
   it "renders with untracked and unstaged files and diffs" do
     log = double(commits: [double(message: "Commit msg")])
     untracked_entries = [double(path: "untracked.txt")]
-    unstaged_patch = double(header: double(src_path: "unstaged.txt"), type: :modify, render: "diff content")
-    staged_patch = double(header: double(dst_path: "staged.txt"), type: :modify, render: "diff content")
+    unstaged_header = double(src_path: "unstaged.txt", dst_path: "unstaged.txt",
+      render: "diff --git a/unstaged.txt b/unstaged.txt\n--- a/unstaged.txt\n+++ b/unstaged.txt\n")
+    unstaged_hunk = double(render: "diff content")
+    unstaged_patch = double(type: :modify, header: unstaged_header, hunks: [unstaged_hunk])
+    staged_header = double(src_path: "staged.txt", dst_path: "staged.txt",
+      render: "diff --git a/staged.txt b/staged.txt\n--- a/staged.txt\n+++ b/staged.txt\n")
+    staged_hunk = double(render: "diff content")
+    staged_patch = double(type: :modify, header: staged_header, hunks: [staged_hunk])
     allow(Git::Log).to receive(:new).with(ref: "HEAD").and_return(double(run: log))
     allow(Git::LsFiles).to receive(:new).and_return(double(run: double(entries: untracked_entries)))
     allow(File).to receive(:read).with("untracked.txt").and_return("untracked content")

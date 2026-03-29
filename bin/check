@@ -14,7 +14,11 @@ end
 
 def check_coverage
   coverage = JSON.parse(File.read("coverage/.last_run.json")).dig("result", "line")
-  raise "Test coverage is #{coverage}%, which is below 100%." if coverage != 100
+
+  return if coverage == 100
+
+  system("bin/coverage_insufficient_report")
+  raise "Test coverage is #{coverage}%, which is below 100%."
 end
 
 app_dir = "/app"

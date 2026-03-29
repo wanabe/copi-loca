@@ -17,8 +17,14 @@ RSpec.describe Views::Git::Heads::Edit do
 
   let(:unstaged_files) { ["file1.txt", "file2.txt"] }
   let(:untracked_file_map) { { "file2.txt" => "new content" } }
-  let(:unstaged_diff_map) { { "file1.txt" => instance_double(Git::Diff::Patch, type: :modified, render: "diff content") } }
-  let(:staged_diff_map) { { "file3.txt" => instance_double(Git::Diff::Patch, type: :added, render: "staged diff") } }
+  let(:header_double) { instance_double(Git::Diff::Header, src_path: "file1.txt", dst_path: "file1.txt", render: "diff --git a/file1.txt b/file1.txt\n--- a/file1.txt\n+++ b/file1.txt\n") }
+  let(:hunk_double) { instance_double(Git::Diff::Hunk, render: "diff content") }
+  let(:patch_double) { instance_double(Git::Diff::Patch, type: :modify, header: header_double, hunks: [hunk_double]) }
+  let(:unstaged_diff_map) { { "file1.txt" => patch_double } }
+  let(:staged_header_double) { instance_double(Git::Diff::Header, src_path: "file3.txt", dst_path: "file3.txt", render: "diff --git a/file3.txt b/file3.txt\n--- a/file3.txt\n+++ b/file3.txt\n") }
+  let(:staged_hunk_double) { instance_double(Git::Diff::Hunk, render: "staged diff") }
+  let(:staged_patch_double) { instance_double(Git::Diff::Patch, type: :delete, header: staged_header_double, hunks: [staged_hunk_double]) }
+  let(:staged_diff_map) { { "file3.txt" => staged_patch_double } }
   let(:commit_message) { "Initial commit" }
   let(:flash) { { notice: "Test notice" } }
   let(:breadcrumbs) { [instance_double(Breadcrumb, name: "Crumb", link?: false, path: nil)] }
