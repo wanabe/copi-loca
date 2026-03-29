@@ -1,5 +1,0 @@
-inherit_from: ../.rubocop.yml
-Rails:
-  Enabled: false
-Style/RbsInline:
-  Enabled: false

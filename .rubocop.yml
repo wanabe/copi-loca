@@ -82,15 +82,19 @@ Style/OneClassPerFile:
     - 'config/initializers/**/*'
 Style/AccessorGrouping:
   EnforcedStyle: separated
-Style/RbsInline/RequireRbsInlineComment:
+Style/RbsInline:
   Include:
     - 'app/**/*'
     - 'lib/**/*'
   Exclude:
     - 'bin/**/*'
+    - 'spec/**/*'
 Style/ArgumentsForwarding:
   Enabled: false
 
+Rails:
+  Exclude:
+    - 'bin/*'
 Rails/I18nLocaleTexts:
   Enabled: false
 Rails/SkipsModelValidations:
