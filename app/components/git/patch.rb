@@ -22,7 +22,8 @@ class Components::Git::Patch < Components::Base
   # @rbs return: void
   def view_template
     pre(class: "bg-gray-100 p-2 overflow-x-auto",
-      data: { controller: "pick-patch-line", patch_path: @path, patch_for: @for_param, action: @action }) do
+      data: { controller: "pick-patch-line", action: "click->pick-patch-line#handleClick", patch_path: @path, patch_for: @for_param,
+              action_name: @action }) do
       code(class: "language-diff") do
         @patch.header.render
       end

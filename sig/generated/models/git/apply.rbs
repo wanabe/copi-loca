@@ -1,0 +1,25 @@
+# Generated from app/models/git/apply.rb with RBS::Inline
+
+class Git::Apply < Git::Command
+  attr_accessor patch(): Git::Diff::Patch
+
+  attr_accessor output(): String
+
+  # @rbs return: String
+  def command: () -> String
+
+  # @rbs output: String
+  # @rbs return: self
+  def parse: (String output) -> self
+
+  # @rbs *args: String
+  # @rbs return: self
+  def run: (*String args) ?{ (?) -> untyped } -> self
+
+  # @rbs path: String
+  # @rbs hunk_str: String
+  # @rbs lineno: Integer
+  # @rbs reverse: bool
+  # @rbs return: Git::Apply
+  def self.pick_line: (String path, String hunk_str, Integer lineno, ?reverse: bool) -> Git::Apply
+end

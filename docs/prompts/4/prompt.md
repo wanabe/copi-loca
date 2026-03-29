@@ -10,5 +10,4 @@ description: Add more specs and improve coerage
     - Write request specs instead of controllers specs. Do not write controller specs.
     - For request specs, write one spec file per controller action.
       - The example request spec file is spec/requests/prompts/index_spec.rb, which is for app/controllers/prompts_controller.rb#index.
-  - Some files listed in docs/missing_specs_checklist.json may already have specs, but their coverage might be insufficient.
-    - If a spec exists, refer to the coverage information output in the coverage/ directory and add specs for uncovered areas.
+  - However, directly calling private methods using send or similar techniques is prohibited. To increase coverage for private methods, write tests for the public methods that invoke those private methods.

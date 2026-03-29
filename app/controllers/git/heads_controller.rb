@@ -113,15 +113,17 @@ class Git::HeadsController < ApplicationController
   # @rbs return: void
   def stage_line
     path = params[:path]
-    hunk = params[:hunk]
-    lineno = params[:lineno]
+    lineno = params[:lineno]&.to_i
     for_param = params[:for]
     for_param = "new" unless for_param == "edit"
-    Rails.logger.info("[stage_line] path=#{path.inspect} hunk=#{hunk.inspect} lineno=#{lineno.inspect}")
+    hunk_str = params[:hunk]
+    raise "Missing hunk parameter" if hunk_str.blank?
+
+    Git::Apply.pick_line(path, hunk_str, lineno)
     if for_param == "edit"
-      redirect_to edit_git_head_path(open: path)
+      redirect_to edit_git_head_path(open: path), notice: "Line has been staged"
     else
-      redirect_to new_git_head_path(open: path)
+      redirect_to new_git_head_path(open: path), notice: "Line has been staged"
     end
   end
 
@@ -130,15 +132,18 @@ class Git::HeadsController < ApplicationController
   # @rbs return: void
   def unstage_line
     path = params[:path]
-    hunk = params[:hunk]
-    lineno = params[:lineno]
+    params[:hunk]
+    lineno = params[:lineno]&.to_i
     for_param = params[:for]
     for_param = "new" unless for_param == "edit"
-    Rails.logger.info("[unstage_line] path=#{path.inspect} hunk=#{hunk.inspect} lineno=#{lineno.inspect}")
+    hunk_str = params[:hunk]
+    raise "Missing hunk parameter" if hunk_str.blank?
+
+    Git::Apply.pick_line(path, hunk_str, lineno, reverse: true)
     if for_param == "edit"
-      redirect_to edit_git_head_path(open: path)
+      redirect_to edit_git_head_path(open: path), notice: "Line has been unstaged"
     else
-      redirect_to new_git_head_path(open: path)
+      redirect_to new_git_head_path(open: path), notice: "Line has been unstaged"
     end
   end
 

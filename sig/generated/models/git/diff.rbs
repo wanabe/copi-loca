@@ -61,12 +61,24 @@ class Git::Diff < Git::Command
 
     attr_accessor has_file_header(): bool
 
-    attr_accessor src_file(): String
+    attr_accessor has_src_file(): bool
 
-    attr_accessor dst_file(): String
+    attr_reader src_file(): String
+
+    attr_accessor has_dst_file(): bool
+
+    attr_reader dst_file(): String
 
     # @rbs return: void
     def template: () -> void
+
+    # @rbs value: String?
+    # @rbs return: void
+    def src_file=: (String? value) -> void
+
+    # @rbs value: String?
+    # @rbs return: void
+    def dst_file=: (String? value) -> void
   end
 
   class Hunk < ApplicationRepresenter
@@ -99,8 +111,24 @@ class Git::Diff < Git::Command
     # @rbs return: void
     def template: () -> void
 
+    # @rbs return: void
+    def drop_if: () ?{ (?) -> untyped } -> void
+
+    # @rbs return: self
+    def reverse: () -> self
+
+    private
+
+    # @rbs n: Integer
+    # @rbs return: void
+    def reduce_first_context: (Integer n) -> void
+
+    # @rbs n: Integer
+    # @rbs return: void
+    def reduce_last_context: (Integer n) -> void
+
     class Line < ApplicationRepresenter
-      attr_accessor type(): Symbol
+      attr_accessor type(): :- | :+ | :" "
 
       attr_accessor content(): String
 

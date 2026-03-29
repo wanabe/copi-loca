@@ -52,9 +52,19 @@ describe Git::Diff do
         diff --git a/file1.txt b/file1.txt
         new file mode 100644
         index 0000000..e69de29 100644
+        --- /dev/null
+        +++ b/file1.txt
+        @@ -0,0 +1,2 @@
+        +line 1
+        +line 2
         diff --git a/file2.txt b/file2.txt
         deleted file mode 100644
         index e69de29..0000000
+        --- a/file2.txt
+        +++ /dev/null
+        @@ -1,2 +0,0 @@
+        -line 1
+        -line 2
         diff --git a/file3.txt b/file3.txt
         index e69de29..e69de29
         --- a/file3.txt
@@ -120,6 +130,28 @@ describe Git::Diff do
     end
   end
 
+  describe Git::Diff::Header do
+    describe "src_file= and dst_file=" do
+      it "sets and unsets has_src_file and has_file_header correctly" do
+        header = described_class.new
+        header.src_file = "foo.txt"
+        expect(header.has_src_file).to be true
+        expect(header.has_file_header).to be true
+        header.src_file = nil
+        expect(header.has_src_file).to be false
+      end
+
+      it "sets and unsets has_dst_file and has_file_header correctly" do
+        header = described_class.new
+        header.dst_file = "bar.txt"
+        expect(header.has_dst_file).to be true
+        expect(header.has_file_header).to be true
+        header.dst_file = nil
+        expect(header.has_dst_file).to be false
+      end
+    end
+  end
+
   describe Git::Diff::Hunk do
     describe "#initialize" do
       it "sets default values" do
@@ -143,6 +175,41 @@ describe Git::Diff do
         hunk = described_class.new
         hunk.dst_range_end = 10
         expect(hunk.has_dst_range_end).to be true
+      end
+    end
+
+    describe "#drop_if" do
+      it "drops lines that match the condition and adjusts the hunk header accordingly" do
+        hunk = described_class.new
+        hunk.parse <<~HUNK
+          @@ -1,11 +1,11 @@
+           context 1
+           context 2
+           context 3
+          +added 1-1
+          +added 1-2
+          -removed 1-1
+          -pick
+           middle
+          +added 2-1
+          +added 2-2
+          -removed 2-1
+          -removed 2-2
+           context 4
+           context 5
+           context 6
+        HUNK
+        hunk.drop_if { |line| line.content != "pick" }
+        expect(hunk.render).to eq(<<~HUNK)
+          @@ -2,7 +2,6 @@
+           context 2
+           context 3
+           removed 1-1
+          -pick
+           middle
+           removed 2-1
+           removed 2-2
+        HUNK
       end
     end
   end

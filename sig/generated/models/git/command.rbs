@@ -6,5 +6,5 @@ class Git::Command < ApplicationRepresenter
 
   # @rbs *args: String
   # @rbs return: self
-  def run: (*String args) -> self
+  def run: (*String args) ?{ (?) -> untyped } -> self
 end

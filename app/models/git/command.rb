@@ -9,8 +9,8 @@ class Git::Command < ApplicationRepresenter
 
   # @rbs *args: String
   # @rbs return: self
-  def run(*args)
-    result = Git.call(command, *args)
+  def run(*args, &)
+    result = Git.call(command, *args, &)
     raise "Unexpected result" unless result.is_a?(String)
 
     parse(result)

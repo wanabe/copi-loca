@@ -86,8 +86,10 @@ class Git::Diff < Git::Command
     #   attr_accessor has_index_mode (): bool
     #   attr_accessor index_mode (): String
     #   attr_accessor has_file_header (): bool
-    #   attr_accessor src_file (): String
-    #   attr_accessor dst_file (): String
+    #   attr_accessor has_src_file (): bool
+    #   attr_reader src_file (): String
+    #   attr_accessor has_dst_file (): bool
+    #   attr_reader dst_file (): String
 
     attribute :src_path, :string
     attribute :dst_path, :string
@@ -104,7 +106,9 @@ class Git::Diff < Git::Command
     attribute :has_index_mode, :boolean, default: false
     attribute :index_mode, :string
     attribute :has_file_header, :boolean, default: false
+    attribute :has_src_file, :boolean
     attribute :src_file, :string
+    attribute :has_dst_file, :boolean
     attribute :dst_file, :string
     attribute :has_similarity, :boolean, default: false
     attribute :similarity_index, :integer
@@ -175,15 +179,54 @@ class Git::Diff < Git::Command
       end
 
       optional :has_file_header do
-        line do
-          literal "--- "
-          token :src_file, /.+/
+        optional :has_src_file do
+          line do
+            literal "--- a/"
+            token :src_file, /.+/
+          end
         end
-        line do
-          literal "+++ "
-          token :dst_file, /.+/
+        unless has_src_file
+          line do
+            literal "--- /dev/null"
+          end
+        end
+
+        optional :has_dst_file do
+          line do
+            literal "+++ b/"
+            token :dst_file, /.+/
+          end
+        end
+        unless has_dst_file
+          line do
+            literal "+++ /dev/null"
+          end
         end
       end
+    end
+
+    # @rbs value: String?
+    # @rbs return: void
+    def src_file=(value)
+      if value.present?
+        self.has_src_file = true
+        self.has_file_header = true
+      else
+        self.has_src_file = false
+      end
+      super
+    end
+
+    # @rbs value: String?
+    # @rbs return: void
+    def dst_file=(value)
+      if value.present?
+        self.has_dst_file = true
+        self.has_file_header = true
+      else
+        self.has_dst_file = false
+      end
+      super
     end
   end
 
@@ -247,17 +290,93 @@ class Git::Diff < Git::Command
         end
       end
 
-      partial :lines, Line, quantity: "*"
+      lineno = 0
+      partial :lines, Line, quantity: "*" do |event, line|
+        next unless event == :after
+
+        lineno += 1
+        line.lineno = lineno
+      end
+    end
+
+    # @rbs return: void
+    def drop_if(&)
+      self.dst_range_start = src_range_start
+      lines.delete_if do |line|
+        next if line.type == :" "
+        next unless yield(line)
+
+        case line.type
+        when :-
+          line.type = :" "
+          self.dst_range_end += 1 if has_dst_range_end
+          next
+        when :+
+          self.dst_range_end -= 1 if has_dst_range_end
+          next true
+        end
+      end
+      reduce_first_context(3)
+      reduce_last_context(3)
+    end
+
+    # @rbs return: self
+    def reverse
+      self.src_range_start, self.dst_range_start = dst_range_start, src_range_start
+      if has_src_range_end || has_dst_range_end
+        self.src_range_end, self.dst_range_end = dst_range_end, src_range_end
+        self.has_src_range_end, self.has_dst_range_end = has_dst_range_end, has_src_range_end
+      end
+      lines.each do |line|
+        line.type = case line.type
+                    when :-
+                      :+
+                    when :+
+                      :-
+                    else
+                      :" "
+        end
+      end
+      self
+    end
+
+    private
+
+    # @rbs n: Integer
+    # @rbs return: void
+    def reduce_first_context(n)
+      first_diff_index = lines.index { |l| l.type != :" " } || lines.size
+      extra_size = first_diff_index - n
+      return if extra_size <= 0
+
+      self.src_range_start += extra_size
+      self.dst_range_start += extra_size
+      self.src_range_end -= extra_size if has_src_range_end
+      self.dst_range_end -= extra_size if has_dst_range_end
+      lines.shift(extra_size)
+    end
+
+    # @rbs n: Integer
+    # @rbs return: void
+    def reduce_last_context(n)
+      last_diff_index = lines.rindex { |l| l.type != :" " } || -1
+      extra_size = lines.size - last_diff_index - 1 - n
+      return if extra_size <= 0
+
+      self.src_range_end -= extra_size if has_src_range_end
+      self.dst_range_end -= extra_size if has_dst_range_end
+      lines.pop(extra_size)
     end
 
     class Line < ApplicationRepresenter
       # @rbs!
-      #   attr_accessor type (): Symbol
+      #   attr_accessor type (): :"-" | :"+" | :" "
       #   attr_accessor content (): String
 
       attribute :type
       attribute :content, :string
       attribute :no_newline, :boolean, default: false
+      attribute :lineno, :integer, default: 0
 
       # @rbs return: void
       def template
