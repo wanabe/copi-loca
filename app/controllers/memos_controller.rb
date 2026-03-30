@@ -2,7 +2,12 @@
 # rbs_inline: enabled
 
 class MemosController < ApplicationController
-  # @rbs @sync_local_memos_parameters: Parameters::Memos::SyncLocalMemos
+  # @rbs @sync_local_memos_parameters: Parameters::Memos::SyncLocalMemos?
+
+  # @rbs!
+  #   def sync_local_memos_parameters: () -> Parameters::Memos::SyncLocalMemos?
+
+  parameters :sync_local_memos
 
   before_action :add_memos_breadcrumb
 
@@ -23,14 +28,6 @@ class MemosController < ApplicationController
   end
 
   private
-
-  # @rbs return: Parameters::Memos::SyncLocalMemos?
-  def sync_local_memos_parameters
-    return @sync_local_memos_parameters if @sync_local_memos_parameters
-    return unless params[:action] == "sync_local_memos"
-
-    @sync_local_memos_parameters = Parameters::Memos::SyncLocalMemos.new(params)
-  end
 
   # def add_memos_breadcrumb: () -> void
   # @rbs return: void

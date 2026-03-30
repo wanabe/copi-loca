@@ -13,4 +13,11 @@ class ApplicationParameter
   # @rbs params: ActionController::Parameters
   # @rbs return: void
   def initialize: (ActionController::Parameters params) -> void
+
+  # @rbs return: String
+  def self.action_name: () -> String
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: ApplicationParameter?
+  def self.from: (ActionController::Parameters params) -> ApplicationParameter?
 end

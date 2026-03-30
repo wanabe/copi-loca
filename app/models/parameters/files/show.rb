@@ -5,6 +5,7 @@ class Parameters::Files::Show < ApplicationParameter
   # @rbs!
   #   attr_accessor path(): String
   #   attr_accessor raw(): bool
+  #   def self.from: (ActionController::Parameters) -> Parameters::Files::Show?
 
   attribute :path, :string, default: "."
   attribute :raw, :boolean, default: true

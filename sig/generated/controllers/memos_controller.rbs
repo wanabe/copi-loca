@@ -1,7 +1,9 @@
 # Generated from app/controllers/memos_controller.rb with RBS::Inline
 
 class MemosController < ApplicationController
-  @sync_local_memos_parameters: Parameters::Memos::SyncLocalMemos
+  @sync_local_memos_parameters: Parameters::Memos::SyncLocalMemos?
+
+  def sync_local_memos_parameters: () -> Parameters::Memos::SyncLocalMemos?
 
   # GET /memos
   # @rbs return: void
@@ -13,9 +15,6 @@ class MemosController < ApplicationController
   def sync_local_memos: () -> void
 
   private
-
-  # @rbs return: Parameters::Memos::SyncLocalMemos?
-  def sync_local_memos_parameters: () -> Parameters::Memos::SyncLocalMemos?
 
   # def add_memos_breadcrumb: () -> void
   # @rbs return: void

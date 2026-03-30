@@ -1,4 +1,5 @@
 # Generated from app/models/parameters/bin/index.rb with RBS::Inline
 
 class Parameters::Bin::Index < Parameters::Index
+  def self.from: (ActionController::Parameters) -> Parameters::Bin::Index?
 end

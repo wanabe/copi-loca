@@ -3,6 +3,8 @@
 class Parameters::Bin::Show < ApplicationParameter
   attr_accessor id(): String
 
+  def self.from: (ActionController::Parameters) -> Parameters::Bin::Show?
+
   # @rbs params: ActionController::Parameters
   # @rbs return: void
   def initialize: (ActionController::Parameters params) -> void

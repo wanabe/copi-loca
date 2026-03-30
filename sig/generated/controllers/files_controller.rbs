@@ -3,14 +3,13 @@
 class FilesController < ApplicationController
   @show_parameters: Parameters::Files::Show
 
+  def show_parameters: () -> Parameters::Files::Show?
+
   # GET /files/*path
   # @rbs return: void
   def show: () -> void
 
   private
-
-  # @rbs return: Parameters::Files::Show
-  def show_parameters: () -> Parameters::Files::Show
 
   # @rbs return: void
   def add_files_breadcrumb: () -> void

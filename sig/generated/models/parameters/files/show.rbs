@@ -5,6 +5,8 @@ class Parameters::Files::Show < ApplicationParameter
 
   attr_accessor raw(): bool
 
+  def self.from: (ActionController::Parameters) -> Parameters::Files::Show?
+
   # @rbs params: ActionController::Parameters
   # @rbs return: void
   def initialize: (ActionController::Parameters params) -> void

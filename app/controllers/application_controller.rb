@@ -18,6 +18,23 @@ class ApplicationController < ActionController::Base
 
   layout false
 
+  class << self
+    # @rbs *base_names: Symbol
+    # @rbs return: void
+    def parameters(*base_names)
+      namespace = "Parameters::#{name.sub('Controller', '')}"
+      base_names.each do |base_name|
+        parameter_class = "#{namespace}::#{base_name.to_s.camelize}"
+        parameter_name = "#{base_name}_parameters"
+        class_eval(<<~RUBY, __FILE__, __LINE__ + 1)
+          private def #{parameter_name}                            # private def index_parameters
+            @#{parameter_name} ||= #{parameter_class}.from(params) #   @index_parameters ||= Parameters::Git::Commits::Index.from(params)
+          end                                                      # end
+        RUBY
+      end
+    end
+  end
+
   module Breadcrumbs
     # @rbs!
     #  def action_name: () -> String

@@ -4,6 +4,7 @@
 class Parameters::Bin::Show < ApplicationParameter
   # @rbs!
   #   attr_accessor id(): String
+  #   def self.from: (ActionController::Parameters) -> Parameters::Bin::Show?
 
   attribute :id, :string
 

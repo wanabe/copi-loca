@@ -5,6 +5,8 @@ class Git::RefsController < ApplicationController
 
   @git_ref: String?
 
+  def show_parameters: () -> Parameters::Git::Refs::Show?
+
   # GET /git/refs
   # @rbs return: void
   def index: () -> void
@@ -17,9 +19,6 @@ class Git::RefsController < ApplicationController
 
   # @rbs return: Array[String]
   def refs: () -> Array[String]
-
-  # @rbs return: Parameters::Git::Refs::Show?
-  def show_parameters: () -> Parameters::Git::Refs::Show?
 
   # @rbs return: String?
   def git_ref: () -> String?

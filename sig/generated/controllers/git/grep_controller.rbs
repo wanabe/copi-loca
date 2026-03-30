@@ -5,14 +5,13 @@ class Git::GrepController < ApplicationController
 
   @show_parameters: Parameters::Git::Grep::Show
 
+  def show_parameters: () -> Parameters::Git::Grep::Show?
+
   # GET /git/grep
   # @rbs return: void
   def show: () -> void
 
   private
-
-  # @rbs return: Parameters::Git::Grep::Show?
-  def show_parameters: () -> Parameters::Git::Grep::Show?
 
   # @rbs return: String
   def git_ref: () -> String

@@ -18,4 +18,19 @@ class ApplicationParameter
   def initialize(params)
     super(**params)
   end
+
+  class << self
+    # @rbs return: String
+    def action_name
+      name.demodulize.underscore
+    end
+
+    # @rbs params: ActionController::Parameters
+    # @rbs return: ApplicationParameter?
+    def from(params)
+      return if params[:action] != action_name
+
+      new(params)
+    end
+  end
 end

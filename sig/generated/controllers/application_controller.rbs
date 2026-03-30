@@ -7,6 +7,10 @@ class ApplicationController < ActionController::Base
 
   def render: (?Phlex::HTML | Symbol, **untyped) -> void
 
+  # @rbs *base_names: Symbol
+  # @rbs return: void
+  def self.parameters: (*Symbol base_names) -> void
+
   module Breadcrumbs
     def action_name: () -> String
 

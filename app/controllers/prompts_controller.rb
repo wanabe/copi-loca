@@ -11,6 +11,17 @@ class PromptsController < ApplicationController
   # @rbs @destroy_parameters: Parameters::Prompts::Destroy
   # @rbs @run_parameters: Parameters::Prompts::Run
 
+  # @rbs!
+  #   def index_parameters: () -> Parameters::Prompts::Index?
+  #   def show_parameters: () -> Parameters::Prompts::Show?
+  #   def edit_parameters: () -> Parameters::Prompts::Edit?
+  #   def create_parameters: () -> Parameters::Prompts::Create?
+  #   def update_parameters: () -> Parameters::Prompts::Update?
+  #   def destroy_parameters: () -> Parameters::Prompts::Destroy?
+  #   def run_parameters: () -> Parameters::Prompts::Run?
+
+  parameters :index, :show, :edit, :create, :update, :destroy, :run
+
   before_action :add_prompts_breadcrumb
   before_action :add_prompt_breadcrumb, only: %i[show edit run]
   before_action :add_action_breadcrumb, only: %i[edit run]
@@ -93,62 +104,6 @@ class PromptsController < ApplicationController
     raise(ArgumentError, "Invalid parameters") unless member_parameters
 
     @prompt = Prompt.find(member_parameters.id)
-  end
-
-  # @rbs return: Parameters::Prompts::Index?
-  def index_parameters
-    return @index_parameters if @index_parameters
-    return unless params[:action] == "index"
-
-    @index_parameters = Parameters::Prompts::Index.new(params)
-  end
-
-  # @rbs return: Parameters::Prompts::Show?
-  def show_parameters
-    return @show_parameters if @show_parameters
-    return unless params[:action] == "show"
-
-    @show_parameters = Parameters::Prompts::Show.new(params)
-  end
-
-  # @rbs return: Parameters::Prompts::Edit?
-  def edit_parameters
-    return @edit_parameters if @edit_parameters
-    return unless params[:action] == "edit"
-
-    @edit_parameters = Parameters::Prompts::Edit.new(params)
-  end
-
-  # @rbs return: Parameters::Prompts::Create?
-  def create_parameters
-    return @create_parameters if @create_parameters
-    return unless params[:action] == "create"
-
-    @create_parameters = Parameters::Prompts::Create.new(params)
-  end
-
-  # @rbs return: Parameters::Prompts::Update?
-  def update_parameters
-    return @update_parameters if @update_parameters
-    return unless params[:action] == "update"
-
-    @update_parameters = Parameters::Prompts::Update.new(params)
-  end
-
-  # @rbs return: Parameters::Prompts::Destroy?
-  def destroy_parameters
-    return @destroy_parameters if @destroy_parameters
-    return unless params[:action] == "destroy"
-
-    @destroy_parameters = Parameters::Prompts::Destroy.new(params)
-  end
-
-  # @rbs return: Parameters::Prompts::Run?
-  def run_parameters
-    return @run_parameters if @run_parameters
-    return unless params[:action] == "run"
-
-    @run_parameters = Parameters::Prompts::Run.new(params)
   end
 
   # @rbs return: void

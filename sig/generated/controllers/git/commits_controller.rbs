@@ -1,16 +1,13 @@
 # Generated from app/controllers/git/commits_controller.rb with RBS::Inline
 
 class Git::CommitsController < ApplicationController
-  @index_parameters: Parameters::Git::Commits::Index
+  @index_parameters: Parameters::Git::Commits::Index?
+
+  def index_parameters: () -> Parameters::Git::Commits::Index?
 
   # GET /git/refs/:ref/-/commits
   # @rbs return: void
   def index: () -> void
-
-  private
-
-  # @rbs return: Parameters::Git::Commits::Index?
-  def index_parameters: () -> Parameters::Git::Commits::Index?
 
   module Breadcrumbs
     include Git::RefsController::Breadcrumbs

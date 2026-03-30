@@ -5,6 +5,11 @@ class Git::RefsController < ApplicationController
   # @rbs @show_parameters: Parameters::Git::Refs::Show
   # @rbs @git_ref: String?
 
+  # @rbs!
+  #   def show_parameters: () -> Parameters::Git::Refs::Show?
+
+  parameters :show
+
   before_action :add_git_breadcrumb
   before_action :add_git_refs_breadcrumb
   before_action :add_git_ref_breadcrumb, only: [:show]
@@ -28,14 +33,6 @@ class Git::RefsController < ApplicationController
     local = Git.call("branch", "--format=%(refname:short)").lines.map(&:strip)
     remote = Git.call("branch", "-r", "--format=%(refname:short)").lines.map(&:strip)
     ["HEAD", *local, *remote]
-  end
-
-  # @rbs return: Parameters::Git::Refs::Show?
-  def show_parameters
-    return @show_parameters if @show_parameters
-    return unless params[:action] == "show"
-
-    @show_parameters = Parameters::Git::Refs::Show.new(params)
   end
 
   # @rbs return: String?

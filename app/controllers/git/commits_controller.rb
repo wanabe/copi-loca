@@ -2,29 +2,25 @@
 # rbs_inline: enabled
 
 class Git::CommitsController < ApplicationController
-  # @rbs @index_parameters: Parameters::Git::Commits::Index
+  # @rbs @index_parameters: Parameters::Git::Commits::Index?
 
   before_action :add_git_breadcrumb
   before_action :add_git_refs_breadcrumb
   before_action :add_git_ref_breadcrumb
   before_action :add_commits_breadcrumb
 
+  # @rbs!
+  #   def index_parameters: () -> Parameters::Git::Commits::Index?
+
+  parameters :index
+
   # GET /git/refs/:ref/-/commits
   # @rbs return: void
   def index
-    ref = index_parameters.ref || ""
-    commits = Kaminari.paginate_array(Git::Log.new(ref: ref).run.commits).page(index_parameters.page).per(index_parameters.per_page || 5)
+    parameters = index_parameters || raise(ArgumentError, "Invalid parameters")
+    ref = parameters.ref || ""
+    commits = Kaminari.paginate_array(Git::Log.new(ref: ref).run.commits).page(parameters.page).per(parameters.per_page || 5)
     render Views::Git::Commits::Index.new(breadcrumbs: breadcrumbs, flash: flash, ref: ref, commits: commits)
-  end
-
-  private
-
-  # @rbs return: Parameters::Git::Commits::Index?
-  def index_parameters
-    return @index_parameters if @index_parameters
-    return unless params[:action] == "index"
-
-    @index_parameters = Parameters::Git::Commits::Index.new(params)
   end
 
   module Breadcrumbs

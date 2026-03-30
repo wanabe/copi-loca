@@ -4,6 +4,11 @@
 class FilesController < ApplicationController
   # @rbs @show_parameters: Parameters::Files::Show
 
+  # @rbs!
+  #   def show_parameters: () -> Parameters::Files::Show?
+
+  parameters :show
+
   skip_forgery_protection only: [:show]
 
   before_action :add_files_breadcrumb
@@ -12,7 +17,8 @@ class FilesController < ApplicationController
   # GET /files/*path
   # @rbs return: void
   def show
-    path = show_parameters.path
+    parameters = show_parameters || raise(ArgumentError, "Invalid parameters")
+    path = parameters.path
     abs = File.absolute_path(File.join("/app", path))
     unless File.exist?(abs)
       render json: { error: "File not found", path: path }, status: :not_found
@@ -30,7 +36,7 @@ class FilesController < ApplicationController
       end.sort
       render Views::Files::ShowDirectory.new(breadcrumbs: breadcrumbs, flash: flash, entries: entries, path: path)
     when "file"
-      if show_parameters.raw
+      if parameters.raw
         send_file abs, filename: File.basename(abs), disposition: "inline"
         return
       end
@@ -44,11 +50,6 @@ class FilesController < ApplicationController
 
   private
 
-  # @rbs return: Parameters::Files::Show
-  def show_parameters
-    @show_parameters ||= Parameters::Files::Show.new(params)
-  end
-
   # @rbs return: void
   def add_files_breadcrumb
     add_breadcrumb("Files", files_path)
@@ -56,9 +57,10 @@ class FilesController < ApplicationController
 
   # @rbs return: void
   def add_path_breadcrumb
-    return if show_parameters.path == "."
+    parameters = show_parameters || raise(ArgumentError, "Invalid parameters")
+    return if parameters.path == "."
 
-    path = show_parameters.path
+    path = parameters.path
     parts = path.split("/").reject(&:empty?)
     accumulated_path = nil
     parts.each do |part|

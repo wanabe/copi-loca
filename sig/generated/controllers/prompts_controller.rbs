@@ -17,6 +17,20 @@ class PromptsController < ApplicationController
 
   @prompt: Prompt
 
+  def index_parameters: () -> Parameters::Prompts::Index?
+
+  def show_parameters: () -> Parameters::Prompts::Show?
+
+  def edit_parameters: () -> Parameters::Prompts::Edit?
+
+  def create_parameters: () -> Parameters::Prompts::Create?
+
+  def update_parameters: () -> Parameters::Prompts::Update?
+
+  def destroy_parameters: () -> Parameters::Prompts::Destroy?
+
+  def run_parameters: () -> Parameters::Prompts::Run?
+
   # GET /prompts or /prompts.json
   # @rbs return: void
   def index: () -> void
@@ -52,27 +66,6 @@ class PromptsController < ApplicationController
 
   # @rbs return: Prompt
   def prompt: () -> Prompt
-
-  # @rbs return: Parameters::Prompts::Index?
-  def index_parameters: () -> Parameters::Prompts::Index?
-
-  # @rbs return: Parameters::Prompts::Show?
-  def show_parameters: () -> Parameters::Prompts::Show?
-
-  # @rbs return: Parameters::Prompts::Edit?
-  def edit_parameters: () -> Parameters::Prompts::Edit?
-
-  # @rbs return: Parameters::Prompts::Create?
-  def create_parameters: () -> Parameters::Prompts::Create?
-
-  # @rbs return: Parameters::Prompts::Update?
-  def update_parameters: () -> Parameters::Prompts::Update?
-
-  # @rbs return: Parameters::Prompts::Destroy?
-  def destroy_parameters: () -> Parameters::Prompts::Destroy?
-
-  # @rbs return: Parameters::Prompts::Run?
-  def run_parameters: () -> Parameters::Prompts::Run?
 
   # @rbs return: void
   def add_prompts_breadcrumb: () -> void

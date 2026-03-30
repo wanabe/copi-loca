@@ -3,9 +3,16 @@
 
 class BinController < ApplicationController
   # @rbs @bin: Bin
-  # @rbs @index_parameters: Parameters::Bin::Index
-  # @rbs @show_parameters: Parameters::Bin::Show
-  # @rbs @run_parameters: Parameters::Bin::Run
+  # @rbs @index_parameters: Parameters::Bin::Index?
+  # @rbs @show_parameters: Parameters::Bin::Show?
+  # @rbs @run_parameters: Parameters::Bin::Run?
+
+  # @rbs!
+  #   def index_parameters: () -> Parameters::Bin::Index?
+  #   def show_parameters: () -> Parameters::Bin::Show?
+  #   def run_parameters: () -> Parameters::Bin::Run?
+
+  parameters :index, :show, :run
 
   before_action :add_bins_breadcrumb
   before_action :add_bin_breadcrumb, only: %i[show run]
@@ -42,30 +49,6 @@ class BinController < ApplicationController
     raise(ArgumentError, "Invalid parameters") unless member_parameters
 
     @bin = Bin.find(member_parameters.id)
-  end
-
-  # @rbs return: Parameters::Bin::Index?
-  def index_parameters
-    return @index_parameters if @index_parameters
-    return unless params[:action] == "index"
-
-    @index_parameters = Parameters::Bin::Index.new(params)
-  end
-
-  # @rbs return: Parameters::Bin::Show | nil
-  def show_parameters
-    return @show_parameters if @show_parameters
-    return unless params[:action] == "show"
-
-    @show_parameters = Parameters::Bin::Show.new(params)
-  end
-
-  # @rbs return: Parameters::Bin::Run | nil
-  def run_parameters
-    return @run_parameters if @run_parameters
-    return unless params[:action] == "run"
-
-    @run_parameters = Parameters::Bin::Run.new(params)
   end
 
   # @rbs return: void

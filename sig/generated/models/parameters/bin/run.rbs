@@ -1,4 +1,5 @@
 # Generated from app/models/parameters/bin/run.rb with RBS::Inline
 
 class Parameters::Bin::Run < Parameters::Bin::Show
+  def self.from: (ActionController::Parameters) -> Parameters::Bin::Run?
 end

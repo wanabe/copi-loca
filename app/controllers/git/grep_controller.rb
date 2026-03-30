@@ -5,6 +5,11 @@ class Git::GrepController < ApplicationController
   # @rbs @git_ref: String
   # @rbs @show_parameters: Parameters::Git::Grep::Show
 
+  # @rbs!
+  #   def show_parameters: () -> Parameters::Git::Grep::Show?
+
+  parameters :show
+
   before_action :add_git_breadcrumb
   before_action :add_git_refs_breadcrumb
   before_action :add_git_ref_breadcrumb
@@ -39,14 +44,6 @@ class Git::GrepController < ApplicationController
   end
 
   private
-
-  # @rbs return: Parameters::Git::Grep::Show?
-  def show_parameters
-    return @show_parameters if @show_parameters
-    return unless params[:action] == "show"
-
-    @show_parameters = Parameters::Git::Grep::Show.new(params)
-  end
 
   # @rbs return: String
   def git_ref
