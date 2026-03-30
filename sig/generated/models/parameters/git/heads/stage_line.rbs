@@ -1,0 +1,25 @@
+# Generated from app/models/parameters/git/heads/stage_line.rb with RBS::Inline
+
+class Parameters::Git::Heads::StageLine < ApplicationParameter
+  attr_accessor path(): String
+
+  attr_accessor lineno(): Integer
+
+  attr_reader for(): String
+
+  attr_accessor hunk(): String
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: void
+  def initialize: (ActionController::Parameters params) -> void
+
+  # @rbs value: String
+  # @rbs return: void
+  def for=: (String value) -> void
+
+  private
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: ActionController::Parameters
+  def permitted_params: (ActionController::Parameters params) -> ActionController::Parameters
+end

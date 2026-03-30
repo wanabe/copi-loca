@@ -1,0 +1,17 @@
+# Generated from app/models/parameters/git/heads/update.rb with RBS::Inline
+
+class Parameters::Git::Heads::Update < ApplicationParameter
+  attr_accessor ref(): String
+
+  attr_accessor commit_message(): String
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: void
+  def initialize: (ActionController::Parameters params) -> void
+
+  private
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: ActionController::Parameters
+  def permitted_params: (ActionController::Parameters params) -> ActionController::Parameters
+end

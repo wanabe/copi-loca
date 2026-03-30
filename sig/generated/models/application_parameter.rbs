@@ -9,4 +9,8 @@ class ApplicationParameter
 
   # @rbs return: Hash[Symbol, untyped]
   def as_json: () -> Hash[Symbol, untyped]
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: void
+  def initialize: (ActionController::Parameters params) -> void
 end

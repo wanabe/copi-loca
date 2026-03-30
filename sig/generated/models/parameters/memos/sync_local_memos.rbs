@@ -1,6 +1,10 @@
 # Generated from app/models/parameters/memos/sync_local_memos.rb with RBS::Inline
 
 class Parameters::Memos::SyncLocalMemos < ApplicationParameter
+  # @rbs params: ActionController::Parameters
+  # @rbs return: void
+  def initialize: (ActionController::Parameters params) -> void
+
   # @rbs array: Array[Hash[String, String]]
   # @rbs return: void
   def memos=: (Array[Hash[String, String]] array) -> void
@@ -10,4 +14,10 @@ class Parameters::Memos::SyncLocalMemos < ApplicationParameter
 
     attr_accessor ts(): Integer
   end
+
+  private
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: ActionController::Parameters
+  def permitted_params: (ActionController::Parameters params) -> ActionController::Parameters
 end

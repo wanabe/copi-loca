@@ -14,6 +14,14 @@ AllCops:
     - 'vendor/**/*'
     - 'tmp/**/*'
 
+require:
+  - ./lib/rubocop/cop/custom/restrict_params_access.rb
+
+Custom/RestrictParamsAccess:
+  Enabled: true
+  Include:
+    - 'app/controllers/**/*.rb'
+
 Metrics/AbcSize:
   Enabled: false
 Metrics/MethodLength:

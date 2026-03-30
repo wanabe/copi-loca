@@ -1,0 +1,25 @@
+# Generated from app/models/parameters/git/grep/show.rb with RBS::Inline
+
+class Parameters::Git::Grep::Show < ApplicationParameter
+  attr_accessor pattern(): String?
+
+  attr_accessor files(): String
+
+  attr_accessor ref(): String
+
+  attr_reader ignore_case(): bool
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: void
+  def initialize: (ActionController::Parameters params) -> void
+
+  # @rbs value: String
+  # @rbs return: bool
+  def ignore_case=: (String value) -> bool
+
+  private
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: ActionController::Parameters
+  def permitted_params: (ActionController::Parameters params) -> ActionController::Parameters
+end

@@ -3,6 +3,12 @@
 class BinController < ApplicationController
   @bin: Bin
 
+  @index_parameters: Parameters::Bin::Index
+
+  @show_parameters: Parameters::Bin::Show
+
+  @run_parameters: Parameters::Bin::Run
+
   # GET /bin or /bin.json
   # @rbs return: void
   def index: () -> void
@@ -19,6 +25,15 @@ class BinController < ApplicationController
 
   # @rbs return: Bin
   def bin: () -> Bin
+
+  # @rbs return: Parameters::Bin::Index?
+  def index_parameters: () -> Parameters::Bin::Index?
+
+  # @rbs return: Parameters::Bin::Show | nil
+  def show_parameters: () -> (Parameters::Bin::Show | nil)
+
+  # @rbs return: Parameters::Bin::Run | nil
+  def run_parameters: () -> (Parameters::Bin::Run | nil)
 
   # @rbs return: void
   def add_bins_breadcrumb: () -> void

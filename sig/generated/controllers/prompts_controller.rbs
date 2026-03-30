@@ -1,9 +1,21 @@
 # Generated from app/controllers/prompts_controller.rb with RBS::Inline
 
 class PromptsController < ApplicationController
-  @prompt: Prompt
+  @run_parameters: Parameters::Prompts::Run
 
-  @prompt_parameters: Parameters::Prompts::Prompt
+  @destroy_parameters: Parameters::Prompts::Destroy
+
+  @update_parameters: Parameters::Prompts::Update
+
+  @create_parameters: Parameters::Prompts::Create
+
+  @edit_parameters: Parameters::Prompts::Edit
+
+  @show_parameters: Parameters::Prompts::Show
+
+  @index_parameters: Parameters::Prompts::Index
+
+  @prompt: Prompt
 
   # GET /prompts or /prompts.json
   # @rbs return: void
@@ -41,8 +53,26 @@ class PromptsController < ApplicationController
   # @rbs return: Prompt
   def prompt: () -> Prompt
 
-  # @rbs return: Parameters::Prompts::Prompt
-  def prompt_parameters: () -> Parameters::Prompts::Prompt
+  # @rbs return: Parameters::Prompts::Index?
+  def index_parameters: () -> Parameters::Prompts::Index?
+
+  # @rbs return: Parameters::Prompts::Show?
+  def show_parameters: () -> Parameters::Prompts::Show?
+
+  # @rbs return: Parameters::Prompts::Edit?
+  def edit_parameters: () -> Parameters::Prompts::Edit?
+
+  # @rbs return: Parameters::Prompts::Create?
+  def create_parameters: () -> Parameters::Prompts::Create?
+
+  # @rbs return: Parameters::Prompts::Update?
+  def update_parameters: () -> Parameters::Prompts::Update?
+
+  # @rbs return: Parameters::Prompts::Destroy?
+  def destroy_parameters: () -> Parameters::Prompts::Destroy?
+
+  # @rbs return: Parameters::Prompts::Run?
+  def run_parameters: () -> Parameters::Prompts::Run?
 
   # @rbs return: void
   def add_prompts_breadcrumb: () -> void

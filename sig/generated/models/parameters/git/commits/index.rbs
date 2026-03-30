@@ -1,0 +1,11 @@
+# Generated from app/models/parameters/git/commits/index.rb with RBS::Inline
+
+class Parameters::Git::Commits::Index < Parameters::Index
+  attr_accessor ref(): String
+
+  private
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: ActionController::Parameters
+  def permitted_params: (ActionController::Parameters params) -> ActionController::Parameters
+end

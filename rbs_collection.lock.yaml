@@ -89,6 +89,14 @@ gems:
     revision: e5d31a3a4ee0a15ce74ccc3f6733f3622ce05d71
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
+- name: ast
+  version: '2.4'
+  source:
+    type: git
+    name: ruby/gem_rbs_collection
+    revision: ecdc16fbc015cc667476120bdc2bd20735882f3a
+    remote: https://github.com/ruby/gem_rbs_collection.git
+    repo_dir: gems
 - name: base64
   version: 0.3.0
   source:
@@ -126,6 +134,10 @@ gems:
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
 - name: date
+  version: '0'
+  source:
+    type: stdlib
+- name: dbm
   version: '0'
   source:
     type: stdlib
@@ -205,6 +217,14 @@ gems:
     revision: e5d31a3a4ee0a15ce74ccc3f6733f3622ce05d71
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
+- name: lint_roller
+  version: '1.1'
+  source:
+    type: git
+    name: ruby/gem_rbs_collection
+    revision: ecdc16fbc015cc667476120bdc2bd20735882f3a
+    remote: https://github.com/ruby/gem_rbs_collection.git
+    repo_dir: gems
 - name: logger
   version: '0'
   source:
@@ -277,6 +297,22 @@ gems:
   version: '0'
   source:
     type: stdlib
+- name: parallel
+  version: '1.20'
+  source:
+    type: git
+    name: ruby/gem_rbs_collection
+    revision: ecdc16fbc015cc667476120bdc2bd20735882f3a
+    remote: https://github.com/ruby/gem_rbs_collection.git
+    repo_dir: gems
+- name: parser
+  version: '3.2'
+  source:
+    type: git
+    name: ruby/gem_rbs_collection
+    revision: ecdc16fbc015cc667476120bdc2bd20735882f3a
+    remote: https://github.com/ruby/gem_rbs_collection.git
+    repo_dir: gems
 - name: pp
   version: '0'
   source:
@@ -289,6 +325,14 @@ gems:
   version: 1.9.0
   source:
     type: rubygems
+- name: pstore
+  version: '0'
+  source:
+    type: stdlib
+- name: psych
+  version: '0'
+  source:
+    type: stdlib
 - name: rack
   version: '2.2'
   source:
@@ -321,6 +365,14 @@ gems:
     revision: e5d31a3a4ee0a15ce74ccc3f6733f3622ce05d71
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
+- name: rainbow
+  version: '3.0'
+  source:
+    type: git
+    name: ruby/gem_rbs_collection
+    revision: ecdc16fbc015cc667476120bdc2bd20735882f3a
+    remote: https://github.com/ruby/gem_rbs_collection.git
+    repo_dir: gems
 - name: rake
   version: '13.0'
   source:
@@ -339,6 +391,22 @@ gems:
     type: git
     name: ruby/gem_rbs_collection
     revision: e5d31a3a4ee0a15ce74ccc3f6733f3622ce05d71
+    remote: https://github.com/ruby/gem_rbs_collection.git
+    repo_dir: gems
+- name: rubocop
+  version: '1.57'
+  source:
+    type: git
+    name: ruby/gem_rbs_collection
+    revision: ecdc16fbc015cc667476120bdc2bd20735882f3a
+    remote: https://github.com/ruby/gem_rbs_collection.git
+    repo_dir: gems
+- name: rubocop-ast
+  version: '1.46'
+  source:
+    type: git
+    name: ruby/gem_rbs_collection
+    revision: ecdc16fbc015cc667476120bdc2bd20735882f3a
     remote: https://github.com/ruby/gem_rbs_collection.git
     repo_dir: gems
 - name: rubyzip

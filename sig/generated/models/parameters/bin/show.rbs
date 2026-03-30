@@ -1,0 +1,9 @@
+# Generated from app/models/parameters/bin/show.rb with RBS::Inline
+
+class Parameters::Bin::Show < ApplicationParameter
+  attr_accessor id(): String
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: void
+  def initialize: (ActionController::Parameters params) -> void
+end

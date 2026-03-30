@@ -1,0 +1,15 @@
+# Generated from app/models/parameters/prompts/update.rb with RBS::Inline
+
+class Parameters::Prompts::Update < Parameters::Prompts::Show
+  attr_accessor name(): String
+
+  attr_accessor description(): String
+
+  attr_accessor text(): String
+
+  private
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: ActionController::Parameters
+  def permitted_params: (ActionController::Parameters params) -> ActionController::Parameters
+end

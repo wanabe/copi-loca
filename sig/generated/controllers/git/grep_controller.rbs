@@ -1,19 +1,21 @@
 # Generated from app/controllers/git/grep_controller.rb with RBS::Inline
 
 class Git::GrepController < ApplicationController
-  @pattern: String?
+  @git_ref: String
 
-  @files: String
-
-  @branch: String
-
-  @ignore_case: bool
-
-  @grep: Git::Grep?
+  @show_parameters: Parameters::Git::Grep::Show
 
   # GET /git/grep
   # @rbs return: void
   def show: () -> void
+
+  private
+
+  # @rbs return: Parameters::Git::Grep::Show?
+  def show_parameters: () -> Parameters::Git::Grep::Show?
+
+  # @rbs return: String
+  def git_ref: () -> String
 
   module Breadcrumbs
     include Git::RefsController::Breadcrumbs

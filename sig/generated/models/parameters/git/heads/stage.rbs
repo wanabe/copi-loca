@@ -1,0 +1,23 @@
+# Generated from app/models/parameters/git/heads/stage.rb with RBS::Inline
+
+class Parameters::Git::Heads::Stage < ApplicationParameter
+  attr_accessor ref(): String
+
+  attr_accessor file_path(): String
+
+  attr_reader amend(): bool
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: void
+  def initialize: (ActionController::Parameters params) -> void
+
+  # @rbs value: String | bool
+  # @rbs return: void
+  def amend=: (String | bool value) -> void
+
+  private
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: ActionController::Parameters
+  def permitted_params: (ActionController::Parameters params) -> ActionController::Parameters
+end

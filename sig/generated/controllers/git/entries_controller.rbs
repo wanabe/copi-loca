@@ -12,6 +12,9 @@ class Git::EntriesController < ApplicationController
   # @rbs return: Parameters::Git::Entries::Show
   def parameters: () -> Parameters::Git::Entries::Show
 
+  # @rbs return: String
+  def git_ref: () -> String
+
   module Breadcrumbs
     include Git::RefsController::Breadcrumbs
 

@@ -1,7 +1,11 @@
 # Generated from app/models/parameters/prompts/run.rb with RBS::Inline
 
-class Parameters::Prompts::Run < ApplicationParameter
-  attr_accessor id(): Integer
-
+class Parameters::Prompts::Run < Parameters::Prompts::Show
   attr_accessor n(): Integer
+
+  private
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: ActionController::Parameters
+  def permitted_params: (ActionController::Parameters params) -> ActionController::Parameters
 end

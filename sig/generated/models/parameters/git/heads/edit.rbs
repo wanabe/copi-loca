@@ -1,0 +1,4 @@
+# Generated from app/models/parameters/git/heads/edit.rb with RBS::Inline
+
+class Parameters::Git::Heads::Edit < Parameters::Git::Heads::New
+end

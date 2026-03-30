@@ -53,12 +53,17 @@ class Git::EntriesController < ApplicationController
     @parameters ||= Parameters::Git::Entries::Show.new(**params.permit(:path, :ref, :raw))
   end
 
+  # @rbs return: String
+  def git_ref
+    parameters.ref
+  end
+
   module Breadcrumbs
     include Git::RefsController::Breadcrumbs
 
     # @rbs return: void
     def add_git_ref_entries_breadcrumb
-      add_breadcrumb "Entries", git_ref_entries_root_path(ref: parameters.ref)
+      add_breadcrumb "Entries", git_ref_entries_root_path(ref: git_ref)
     end
 
     # @rbs return: void
@@ -70,7 +75,7 @@ class Git::EntriesController < ApplicationController
       accumulated_path = nil
       parts.each do |part|
         accumulated_path = accumulated_path ? File.join(accumulated_path, part) : part
-        add_breadcrumb(part, git_ref_entry_path(ref: parameters.ref, path: accumulated_path))
+        add_breadcrumb(part, git_ref_entry_path(ref: git_ref, path: accumulated_path))
       end
     end
   end

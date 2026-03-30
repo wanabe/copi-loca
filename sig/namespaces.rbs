@@ -12,6 +12,12 @@ module Parameters
     end
     module Refs
     end
+    module Heads
+    end
+    module Commits
+    end
+    module Grep
+    end
   end
 end
 
@@ -53,5 +59,14 @@ module Components
   module Prompts
   end
   module Git
+  end
+end
+
+module Rubocop
+  module Cop
+    module Custom
+      class RestrictParamsAccess 
+      end
+    end
   end
 end

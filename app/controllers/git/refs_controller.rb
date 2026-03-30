@@ -2,6 +2,9 @@
 # rbs_inline: enabled
 
 class Git::RefsController < ApplicationController
+  # @rbs @show_parameters: Parameters::Git::Refs::Show
+  # @rbs @git_ref: String?
+
   before_action :add_git_breadcrumb
   before_action :add_git_refs_breadcrumb
   before_action :add_git_ref_breadcrumb, only: [:show]
@@ -15,8 +18,7 @@ class Git::RefsController < ApplicationController
   # GET /git/refs/*ref
   # @rbs return: void
   def show
-    ref = params[:ref]
-    render Views::Git::Refs::Show.new(breadcrumbs: breadcrumbs, flash: flash, ref: ref)
+    render Views::Git::Refs::Show.new(breadcrumbs: breadcrumbs, flash: flash, ref: show_parameters.ref)
   end
 
   private
@@ -26,6 +28,19 @@ class Git::RefsController < ApplicationController
     local = Git.call("branch", "--format=%(refname:short)").lines.map(&:strip)
     remote = Git.call("branch", "-r", "--format=%(refname:short)").lines.map(&:strip)
     ["HEAD", *local, *remote]
+  end
+
+  # @rbs return: Parameters::Git::Refs::Show?
+  def show_parameters
+    return @show_parameters if @show_parameters
+    return unless params[:action] == "show"
+
+    @show_parameters = Parameters::Git::Refs::Show.new(params)
+  end
+
+  # @rbs return: String?
+  def git_ref
+    @git_ref ||= show_parameters&.ref
   end
 
   module Breadcrumbs
@@ -40,7 +55,7 @@ class Git::RefsController < ApplicationController
 
     # @rbs return: void
     def add_git_ref_breadcrumb
-      add_breadcrumb params[:ref], git_ref_path(ref: params[:ref])
+      add_breadcrumb git_ref, git_ref_path(ref: git_ref)
     end
   end
   include Breadcrumbs

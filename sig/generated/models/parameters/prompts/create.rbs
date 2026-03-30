@@ -1,0 +1,9 @@
+# Generated from app/models/parameters/prompts/create.rb with RBS::Inline
+
+class Parameters::Prompts::Create < Parameters::Prompts::Update
+  private
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: ActionController::Parameters
+  def permitted_params: (ActionController::Parameters params) -> ActionController::Parameters
+end

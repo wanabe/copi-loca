@@ -2,6 +2,15 @@
 # rbs_inline: enabled
 
 class Git::HeadsController < ApplicationController
+  # @rbs @new_parameters: Parameters::Git::Heads::New?
+  # @rbs @edit_parameters: Parameters::Git::Heads::Edit?
+  # @rbs @create_parameters: Parameters::Git::Heads::Create?
+  # @rbs @update_parameters: Parameters::Git::Heads::Update?
+  # @rbs @stage_parameters: Parameters::Git::Heads::Stage?
+  # @rbs @unstage_parameters: Parameters::Git::Heads::Unstage?
+  # @rbs @stage_line_parameters: Parameters::Git::Heads::StageLine?
+  # @rbs @unstage_line_parameters: Parameters::Git::Heads::Unstage
+
   before_action :add_git_breadcrumb
   before_action :add_git_refs_breadcrumb
   before_action :add_git_head_breadcrumb
@@ -18,7 +27,7 @@ class Git::HeadsController < ApplicationController
     unstaged_files.sort!
     unstaged_diff_map = unstaged_diff.patches.index_by { |patch| patch.header.src_path }
     staged_diff_map = staged_diff.patches.index_by { |patch| patch.header.dst_path }
-    open = params[:open]
+    open = new_parameters.open
 
     render Views::Git::Heads::New.new(
       breadcrumbs: breadcrumbs, flash: flash,
@@ -46,7 +55,7 @@ class Git::HeadsController < ApplicationController
     unstaged_files.sort!
     unstaged_diff_map = unstaged_diff.patches.index_by { |patch| patch.header.src_path }
     staged_diff_map = staged_diff.patches.index_by { |patch| patch.header.dst_path }
-    open = params[:open]
+    open = edit_parameters.open
 
     render Views::Git::Heads::Edit.new(
       breadcrumbs: breadcrumbs, flash: flash,
@@ -63,7 +72,7 @@ class Git::HeadsController < ApplicationController
   # Params: commit_message
   # @rbs return: void
   def create
-    commit_message = params[:commit_message]
+    commit_message = create_parameters.commit_message
     begin
       Git.call!("commit", "-m", commit_message)
       redirect_to new_git_head_path, notice: "Committed successfully."
@@ -76,7 +85,7 @@ class Git::HeadsController < ApplicationController
   # Params: commit_message
   # @rbs return: void
   def update
-    commit_message = params[:commit_message]
+    commit_message = update_parameters.commit_message
     begin
       Git.call!("commit", "--amend", "-m", commit_message)
       redirect_to new_git_head_path, notice: "Amended commit successfully."
@@ -89,8 +98,8 @@ class Git::HeadsController < ApplicationController
   # Params: file_path, amend (optional)
   # @rbs return: void
   def stage
-    amend = params[:amend] == "true"
-    file_path = params[:file_path]
+    amend = stage_parameters.amend
+    file_path = stage_parameters.file_path
     Git.call!("add", "--", file_path)
     redirect_path = amend ? edit_git_head_path : new_git_head_path
     redirect_to redirect_path, notice: "#{file_path} has been staged."
@@ -100,8 +109,8 @@ class Git::HeadsController < ApplicationController
   # Params: file_path, amend (optional)
   # @rbs return: void
   def unstage
-    amend = params[:amend] == "true"
-    file_path = params[:file_path]
+    amend = unstage_parameters.amend
+    file_path = unstage_parameters.file_path
     target_ref = amend ? "HEAD~" : "HEAD"
     Git.call!("reset", target_ref, "--", file_path)
     redirect_path = amend ? edit_git_head_path : new_git_head_path
@@ -112,11 +121,10 @@ class Git::HeadsController < ApplicationController
   # Params: path, hunk, lineno, for
   # @rbs return: void
   def stage_line
-    path = params[:path]
-    lineno = params[:lineno]&.to_i
-    for_param = params[:for]
-    for_param = "new" unless for_param == "edit"
-    hunk_str = params[:hunk]
+    path = stage_line_parameters.path
+    lineno = stage_line_parameters.lineno
+    for_param = stage_line_parameters.for
+    hunk_str = stage_line_parameters.hunk
     raise "Missing hunk parameter" if hunk_str.blank?
 
     Git::Apply.pick_line(path, hunk_str, lineno)
@@ -131,12 +139,10 @@ class Git::HeadsController < ApplicationController
   # Params: path, hunk, lineno, for
   # @rbs return: void
   def unstage_line
-    path = params[:path]
-    params[:hunk]
-    lineno = params[:lineno]&.to_i
-    for_param = params[:for]
-    for_param = "new" unless for_param == "edit"
-    hunk_str = params[:hunk]
+    path = unstage_line_parameters.path
+    lineno = unstage_line_parameters.lineno
+    for_param = unstage_line_parameters.for
+    hunk_str = unstage_line_parameters.hunk
     raise "Missing hunk parameter" if hunk_str.blank?
 
     Git::Apply.pick_line(path, hunk_str, lineno, reverse: true)
@@ -145,6 +151,72 @@ class Git::HeadsController < ApplicationController
     else
       redirect_to new_git_head_path(open: path), notice: "Line has been unstaged"
     end
+  end
+
+  private
+
+  # @rbs return: Parameters::Git::Heads::New?
+  def new_parameters
+    return @new_parameters if @new_parameters
+    return unless params[:action] == "new"
+
+    @new_parameters = Parameters::Git::Heads::New.new(params)
+  end
+
+  # @rbs return: Parameters::Git::Heads::Edit?
+  def edit_parameters
+    return @edit_parameters if @edit_parameters
+    return unless params[:action] == "edit"
+
+    @edit_parameters = Parameters::Git::Heads::Edit.new(params)
+  end
+
+  # @rbs return: Parameters::Git::Heads::Create?
+  def create_parameters
+    return @create_parameters if @create_parameters
+    return unless params[:action] == "create"
+
+    @create_parameters = Parameters::Git::Heads::Create.new(params)
+  end
+
+  # @rbs return: Parameters::Git::Heads::Update?
+  def update_parameters
+    return @update_parameters if @update_parameters
+    return unless params[:action] == "update"
+
+    @update_parameters = Parameters::Git::Heads::Update.new(params)
+  end
+
+  # @rbs return: Parameters::Git::Heads::Stage?
+  def stage_parameters
+    return @stage_parameters if @stage_parameters
+    return unless params[:action] == "stage"
+
+    @stage_parameters = Parameters::Git::Heads::Stage.new(params)
+  end
+
+  # @rbs return: Parameters::Git::Heads::Unstage?
+  def unstage_parameters
+    return @unstage_parameters if @unstage_parameters
+    return unless params[:action] == "unstage"
+
+    @unstage_parameters = Parameters::Git::Heads::Unstage.new(params)
+  end
+
+  # @rbs return: Parameters::Git::Heads::StageLine?
+  def stage_line_parameters
+    return @stage_line_parameters if @stage_line_parameters
+    return unless params[:action] == "stage_line"
+
+    @stage_line_parameters = Parameters::Git::Heads::StageLine.new(params)
+  end
+
+  # @rbs return: Parameters::Git::Heads::UnstageLine?
+  def unstage_line_parameters
+    return @unstage_line_parameters if @unstage_line_parameters
+    return unless params[:action] == "unstage_line"
+
+    @unstage_line_parameters = Parameters::Git::Heads::UnstageLine.new(params)
   end
 
   module Breadcrumbs

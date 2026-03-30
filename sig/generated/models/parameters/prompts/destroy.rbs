@@ -1,0 +1,4 @@
+# Generated from app/models/parameters/prompts/destroy.rb with RBS::Inline
+
+class Parameters::Prompts::Destroy < Parameters::Prompts::Show
+end

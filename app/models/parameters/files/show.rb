@@ -8,4 +8,18 @@ class Parameters::Files::Show < ApplicationParameter
 
   attribute :path, :string, default: "."
   attribute :raw, :boolean, default: true
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: void
+  def initialize(params)
+    super(permitted_params(params))
+  end
+
+  private
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: ActionController::Parameters
+  def permitted_params(params)
+    params.permit(:path, :raw)
+  end
 end

@@ -12,4 +12,10 @@ class ApplicationParameter
   def as_json(...)
     attributes.as_json(...)
   end
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: void
+  def initialize(params)
+    super(**params)
+  end
 end

@@ -1,6 +1,22 @@
 # Generated from app/controllers/git/heads_controller.rb with RBS::Inline
 
 class Git::HeadsController < ApplicationController
+  @unstage_line_parameters: Parameters::Git::Heads::Unstage
+
+  @stage_line_parameters: Parameters::Git::Heads::StageLine?
+
+  @unstage_parameters: Parameters::Git::Heads::Unstage?
+
+  @stage_parameters: Parameters::Git::Heads::Stage?
+
+  @update_parameters: Parameters::Git::Heads::Update?
+
+  @create_parameters: Parameters::Git::Heads::Create?
+
+  @edit_parameters: Parameters::Git::Heads::Edit?
+
+  @new_parameters: Parameters::Git::Heads::New?
+
   # @rbs return: void
   def new: () -> void
 
@@ -37,6 +53,32 @@ class Git::HeadsController < ApplicationController
   # Params: path, hunk, lineno, for
   # @rbs return: void
   def unstage_line: () -> void
+
+  private
+
+  # @rbs return: Parameters::Git::Heads::New?
+  def new_parameters: () -> Parameters::Git::Heads::New?
+
+  # @rbs return: Parameters::Git::Heads::Edit?
+  def edit_parameters: () -> Parameters::Git::Heads::Edit?
+
+  # @rbs return: Parameters::Git::Heads::Create?
+  def create_parameters: () -> Parameters::Git::Heads::Create?
+
+  # @rbs return: Parameters::Git::Heads::Update?
+  def update_parameters: () -> Parameters::Git::Heads::Update?
+
+  # @rbs return: Parameters::Git::Heads::Stage?
+  def stage_parameters: () -> Parameters::Git::Heads::Stage?
+
+  # @rbs return: Parameters::Git::Heads::Unstage?
+  def unstage_parameters: () -> Parameters::Git::Heads::Unstage?
+
+  # @rbs return: Parameters::Git::Heads::StageLine?
+  def stage_line_parameters: () -> Parameters::Git::Heads::StageLine?
+
+  # @rbs return: Parameters::Git::Heads::UnstageLine?
+  def unstage_line_parameters: () -> Parameters::Git::Heads::UnstageLine?
 
   module Breadcrumbs
     include Git::RefsController::Breadcrumbs

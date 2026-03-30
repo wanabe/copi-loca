@@ -4,4 +4,14 @@ class Parameters::Files::Show < ApplicationParameter
   attr_accessor path(): String
 
   attr_accessor raw(): bool
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: void
+  def initialize: (ActionController::Parameters params) -> void
+
+  private
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: ActionController::Parameters
+  def permitted_params: (ActionController::Parameters params) -> ActionController::Parameters
 end

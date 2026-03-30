@@ -1,0 +1,27 @@
+# Generated from lib/rubocop/cop/custom/restrict_params_access.rb with RBS::Inline
+
+module RuboCop
+  module Cop
+    module Custom
+      class RestrictParamsAccess < Base
+        MSG: ::String
+
+        def params_call?: (RuboCop::AST::SendNode) -> bool
+
+        # @rbs node: RuboCop::AST::SendNode
+        # @rbs return: void
+        def on_send: (RuboCop::AST::SendNode node) -> void
+
+        private
+
+        # @rbs node: RuboCop::AST::SendNode
+        # @rbs return: bool
+        def allowed_method_context?: (RuboCop::AST::SendNode node) -> bool
+
+        # @rbs node: RuboCop::AST::SendNode
+        # @rbs return: RuboCop::AST::DefNode | nil
+        def def_node: (RuboCop::AST::SendNode node) -> (RuboCop::AST::DefNode | nil)
+      end
+    end
+  end
+end

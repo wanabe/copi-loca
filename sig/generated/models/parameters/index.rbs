@@ -4,4 +4,14 @@ class Parameters::Index < ApplicationParameter
   attr_accessor page(): Integer
 
   attr_accessor per_page(): Integer
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: void
+  def initialize: (ActionController::Parameters params) -> void
+
+  private
+
+  # @rbs params: ActionController::Parameters
+  # @rbs return: ActionController::Parameters
+  def permitted_params: (ActionController::Parameters params) -> ActionController::Parameters
 end

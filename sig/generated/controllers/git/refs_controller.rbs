@@ -1,6 +1,10 @@
 # Generated from app/controllers/git/refs_controller.rb with RBS::Inline
 
 class Git::RefsController < ApplicationController
+  @show_parameters: Parameters::Git::Refs::Show
+
+  @git_ref: String?
+
   # GET /git/refs
   # @rbs return: void
   def index: () -> void
@@ -13,6 +17,12 @@ class Git::RefsController < ApplicationController
 
   # @rbs return: Array[String]
   def refs: () -> Array[String]
+
+  # @rbs return: Parameters::Git::Refs::Show?
+  def show_parameters: () -> Parameters::Git::Refs::Show?
+
+  # @rbs return: String?
+  def git_ref: () -> String?
 
   module Breadcrumbs
     include Git::DashboardController::Breadcrumbs

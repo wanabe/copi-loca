@@ -1,0 +1,4 @@
+# Generated from app/models/parameters/bin/index.rb with RBS::Inline
+
+class Parameters::Bin::Index < Parameters::Index
+end

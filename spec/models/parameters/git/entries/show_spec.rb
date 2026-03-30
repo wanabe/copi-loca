@@ -15,7 +15,7 @@ RSpec.describe Parameters::Git::Entries::Show do
     end
 
     it "has a raw attribute with default true" do
-      param = described_class.new
+      param = described_class.new({})
       expect(param.raw).to be(true)
     end
 

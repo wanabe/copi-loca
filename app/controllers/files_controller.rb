@@ -46,7 +46,7 @@ class FilesController < ApplicationController
 
   # @rbs return: Parameters::Files::Show
   def show_parameters
-    @show_parameters ||= Parameters::Files::Show.new(**params.permit(:path, :raw))
+    @show_parameters ||= Parameters::Files::Show.new(params)
   end
 
   # @rbs return: void
